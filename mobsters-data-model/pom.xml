@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.lvl6</groupId>
+    <artifactId>mobsters-server-aws</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>mobsters-data-model</artifactId>
+  <name>Mobsters Data Model</name>
+  <description>Module for Data Model and Persistence</description>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>mobsters-sql</module>
+  	<module>mobsters-dynamo</module>
+  	<module>mobsters-cache</module>
+  	<module>mobsters-proto</module>
+  </modules>
+</project>

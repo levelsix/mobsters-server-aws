@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.lvl6</groupId>
+  <artifactId>mobsters-server-aws</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Mobsters Server</name>
+  
+  <packaging>pom</packaging>
+  
+  <developers>
+  	<developer>
+  		<id>ashwin</id>
+  		<name>Ashwin</name>
+  		<email>ashwin@lvl6.com</email>
+  	</developer>
+  	<developer>
+  		<id>art</id>
+  		<name>Art</name>
+  		<email>art@lvl6.com</email>
+  	</developer>
+  	<developer>
+  		<id>kelly</id>
+  		<name>Kelly</name>
+  		<email>kelly@dekayd.com</email>
+  	</developer>
+  </developers>
+  <modules>
+  	<module>mobsters-data-model</module>
+  	<module>mobsters-functional</module>
+  </modules>
+  <organization>
+  	<name>Lvl6</name>
+  	<url>http://lvl6.com</url>
+  </organization>
+  <scm>
+  	<url>https://github.com/levelsix/mobsters-server-aws</url>
+  </scm>
+  <ciManagement>
+  	<system>Jenkins</system>
+  	<url>http://robot.lvl6.com</url>
+  </ciManagement>
+</project>
