@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class MonsterReward extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 2695141690452902009L;
 	@Column(name = "monster_id")
 	private int monsterId;

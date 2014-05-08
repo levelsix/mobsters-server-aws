@@ -3,6 +3,7 @@ package com.lvl6.info;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 @Entity
@@ -20,6 +21,8 @@ public class DailyBonusReward extends BasePersistentObject{
 	private int dayThreeDiamonds;
 	@Column(name = "day_four_coins")
 	private int dayFourCoins;
+	
+	@ElementCollection
 	@Column(name = "day_five_booster_pack_ids")
 	private List<Integer> dayFiveBoosterPackIds;  
 	public DailyBonusReward(){}

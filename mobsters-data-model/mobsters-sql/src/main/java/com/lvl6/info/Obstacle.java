@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Obstacle extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4770303583975177808L;	
 
 	@Column(name = "name")

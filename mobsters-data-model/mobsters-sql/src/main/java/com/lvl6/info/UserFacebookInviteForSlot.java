@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class UserFacebookInviteForSlot extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -1731978369694889921L;
 	@Column(name = "inviter_user_id")
 	private int inviterUserId;

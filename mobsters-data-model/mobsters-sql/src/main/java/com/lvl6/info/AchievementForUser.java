@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class AchievementForUser extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -4983025581174212987L;	
 
 	@Column(name = "user_id")

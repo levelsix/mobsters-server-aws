@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class CoordinatePair extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -5164418632501012001L;
 	@Column(name = "x")
 	private float x;

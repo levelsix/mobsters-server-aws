@@ -3,15 +3,30 @@ package com.lvl6.info;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 @Entity
 public class Dialogue extends BasePersistentObject{
 
-	@Column(name = "final")
-	private static final long serialVersionUID = -8118069262824842364L;  List<Boolean> isLeftSides;
+	
+	private static final long serialVersionUID = -8118069262824842364L;  
+	
+	
+	@ElementCollection
+	@Column(name = "is_left_sides")
+	List<Boolean> isLeftSides;
+	
+	
+	@ElementCollection
 	List<String> speakers;
-  List<String> speakerImages;
+	
+	@ElementCollection
+	@Column(name = "speaker_images")
+	List<String> speakerImages;
+	
+	@ElementCollection
+	@Column(name = "speaker_texts")
 	List<String> speakerTexts;
 
 	public Dialogue(){}

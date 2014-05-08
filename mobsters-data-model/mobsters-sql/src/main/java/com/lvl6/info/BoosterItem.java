@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class BoosterItem extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 6843248362650495626L;
 	@Column(name = "booster_pack_id")
 	private int boosterPackId;

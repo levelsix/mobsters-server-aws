@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 public class StructureForUser extends BasePersistentObject{	//any change in this class should also change the UpdateUtils.java method updateUserStructsLastretrieved()
 	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3430826000446530128L;	
 
 	@Column(name = "user_id")

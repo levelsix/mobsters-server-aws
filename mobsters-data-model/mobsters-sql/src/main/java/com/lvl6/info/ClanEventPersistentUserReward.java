@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 public class ClanEventPersistentUserReward extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -7227824016627786538L;
 	@Column(name = "user_id")
 	private int userId;

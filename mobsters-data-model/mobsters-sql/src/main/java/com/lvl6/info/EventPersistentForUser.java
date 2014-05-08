@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class EventPersistentForUser extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -5875488219039765364L;
 	@Column(name = "user_id")
 	private int userId;

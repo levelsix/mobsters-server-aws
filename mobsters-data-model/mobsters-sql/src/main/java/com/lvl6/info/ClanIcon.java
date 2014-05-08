@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class ClanIcon extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3648830914482901288L;	
 
 	@Column(name = "img_name")

@@ -8,10 +8,9 @@ import javax.persistence.Entity;
 @Entity
 public class MonsterForUser extends BasePersistentObject{
 
-	@Column(name = "final")
-	private static final long serialVersionUID = -6261386860780660263L;
-	@Column(name = "id")
-	private long id;
+
+	private static final long serialVersionUID = 8761455335098287924L;
+	
 	@Column(name = "user_id")
 	private int userId;
 	@Column(name = "monster_id")
@@ -33,7 +32,7 @@ public class MonsterForUser extends BasePersistentObject{
 	@Column(name = "source_of_pieces")
 	private String sourceOfPieces;  
 	public MonsterForUser(){}
-	public MonsterForUser(long id, int userId, int monsterId, int currentExp,
+	public MonsterForUser(int userId, int monsterId, int currentExp,
 			int currentLvl, int currentHealth, int numPieces, boolean isComplete,
 			Date combineStartTime, int teamSlotNum, String sourceOfPieces) {
 		super();

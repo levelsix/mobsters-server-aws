@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Location extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 5728974802271132910L;
 	@Column(name = "latitude")
 	private double latitude;

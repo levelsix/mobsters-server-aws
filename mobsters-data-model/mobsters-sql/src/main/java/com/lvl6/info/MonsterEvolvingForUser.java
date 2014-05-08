@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class MonsterEvolvingForUser extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -8663041420598844646L;
 	@Column(name = "catalyst_monster_for_user_id")
 	private long catalystMonsterForUserId;

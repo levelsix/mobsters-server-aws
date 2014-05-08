@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class UserClan extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4400616881122130880L;	
 
 	@Column(name = "user_id")

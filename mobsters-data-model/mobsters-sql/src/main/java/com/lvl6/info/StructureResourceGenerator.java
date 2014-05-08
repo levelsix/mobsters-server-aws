@@ -9,9 +9,9 @@ public class StructureResourceGenerator extends BasePersistentObject{
 	 * 
 	 */
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -2371172975086740032L;
-	//@Column(name = "final")
+	//
 	//	private static final long serialVersionUID = -2371172975086740032L;
 	@Column(name = "struct_id")
 	private int structId;

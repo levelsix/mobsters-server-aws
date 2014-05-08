@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Achievement extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4581761456535076556L;	
 
 	@Column(name = "achievement_name")
@@ -36,7 +36,7 @@ public class Achievement extends BasePersistentObject{
 	@Column(name = "successor_id")
 	private int successorId;	
 	public Achievement(){}
-	public Achievement(int id, String achievementName, String description,
+	public Achievement(String achievementName, String description,
 			int gemReward, int lvl, String achievementType,
 			String resourceType, String monsterElement, String monsterQuality,
 			int staticDataId, int quantity, int priority, int prerequisiteId,

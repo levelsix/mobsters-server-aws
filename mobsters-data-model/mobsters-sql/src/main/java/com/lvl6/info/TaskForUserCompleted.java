@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class TaskForUserCompleted extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 1056343725813049903L;
 	@Column(name = "user_id")
 	private int userId;

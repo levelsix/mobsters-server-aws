@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class ExpansionCost extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 1486947262199932773L;
 	@Column(name = "expansion_cost_cash")
 	private int expansionCostCash;

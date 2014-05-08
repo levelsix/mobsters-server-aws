@@ -6,11 +6,10 @@ import javax.persistence.Entity;
 @Entity
 public class TaskStageForUser extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -8159939137604127481L;	
 
-	@Column(name = "id")
-	private long id;
+
 	@Column(name = "user_task_id")
 	private long userTaskId;
 	@Column(name = "stage_num")
@@ -31,7 +30,7 @@ public class TaskStageForUser extends BasePersistentObject{
 	private int itemIdDropped;	//maybe should specify the (enhancement) level of monster dropped
 	
 	public TaskStageForUser(){}
-	public TaskStageForUser(long id, long userTaskId, int stageNum,
+	public TaskStageForUser(long userTaskId, int stageNum,
 			int taskStageMonsterId, String monsterType, int expGained,
 			int cashGained, int oilGained, boolean monsterPieceDropped,
 			int itemIdDropped) {

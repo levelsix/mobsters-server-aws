@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class GoldSale extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 7996839582751539192L;
 	@Column(name = "start_date")
 	private Date startDate;

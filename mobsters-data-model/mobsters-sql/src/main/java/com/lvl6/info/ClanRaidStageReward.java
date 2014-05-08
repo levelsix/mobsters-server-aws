@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 public class ClanRaidStageReward extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 5751587703340719676L;
 	@Column(name = "clan_raid_stage_id")
 	private int clanRaidStageId;

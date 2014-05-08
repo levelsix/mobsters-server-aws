@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class QuestJobForUser extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 2975888670470703532L;	
 
 	@Column(name = "user_id")

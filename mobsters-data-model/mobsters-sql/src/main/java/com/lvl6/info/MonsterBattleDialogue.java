@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class MonsterBattleDialogue extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -5528835530547990738L;
 	@Column(name = "monster_id")
 	private int monsterId;

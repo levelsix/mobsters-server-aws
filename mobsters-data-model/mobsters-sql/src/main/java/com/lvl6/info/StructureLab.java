@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class StructureLab extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 5038262297256522280L;
 	@Column(name = "struct_id")
 	private int structId;

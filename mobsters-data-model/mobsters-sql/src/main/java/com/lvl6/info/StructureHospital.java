@@ -9,9 +9,9 @@ public class StructureHospital extends BasePersistentObject{
 	 * 
 	 */
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3569030137246330339L;
-	//@Column(name = "final")
+	//
 	//	private static final long serialVersionUID = -3569030137246330339L;
 	@Column(name = "struct_id")
 	private int structId;

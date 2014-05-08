@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 public class CepfuRaidHistory extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3600025631841826924L;
 	@Column(name = "user_id")
 	private int userId;

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class Referral extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3007773158955045515L;
 	@Column(name = "referrer_id")
 	private int referrerId;

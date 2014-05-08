@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class NotificationTitleColor extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 491813211027909557L;
 	@Column(name = "red")
 	private double red;

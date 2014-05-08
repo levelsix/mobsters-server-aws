@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class TaskStage extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -4429232440756191289L;
 	@Column(name = "task_id")
 	private int taskId;

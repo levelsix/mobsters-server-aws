@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class QuestJobMonsterItem extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 9159046998370704510L;	
 
 	@Column(name = "quest_job_id")

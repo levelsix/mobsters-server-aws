@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Task extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4039380828851189212L;
 	@Column(name = "good_name")
 	private String goodName;

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class BossEvent extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 828184315386406610L;
 	@Column(name = "city_id")
 	private int cityId;

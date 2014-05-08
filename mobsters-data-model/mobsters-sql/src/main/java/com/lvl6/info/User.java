@@ -1,9 +1,6 @@
 package com.lvl6.info;
 
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class User extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3457856391646138824L;	
 
 	@Column(name = "name")
@@ -126,7 +123,7 @@ public class User extends BasePersistentObject{
 		this.numObstaclesRemoved = numObstaclesRemoved;
 	}
 
-	public boolean updateSetdevicetoken(String deviceToken) {
+/*	public boolean updateSetdevicetoken(String deviceToken) {
 		Map <String, Object> conditionParams = new HashMap<String, Object>();
 		conditionParams.put(DBConstants.USER__ID, id);
 
@@ -193,7 +190,7 @@ public class User extends BasePersistentObject{
 			return true;
 		}
 		return false;
-	}
+	}*/
 	
 //
 //	public boolean updateResetNumbadgesSetdevicetoken(String deviceToken) {
@@ -274,7 +271,7 @@ public class User extends BasePersistentObject{
 //		}
 //		return false;
 //	}
-
+/*
 	public boolean updateAbsoluteApsalaridLastloginBadgesNumConsecutiveDaysLoggedIn(String newApsalarId, Timestamp loginTime, 
 			int newBadges, int newNumConsecutiveDaysLoggedIn) {
 		Map <String, Object> conditionParams = new HashMap<String, Object>();
@@ -353,9 +350,9 @@ public class User extends BasePersistentObject{
 		return false;
 	}
 
-	/*
+	
 	 * used for purchasing and selling structures, redeeming quests
-	 */
+	 
 	public boolean updateRelativeGemsCashOilExperienceNaive (int gemChange,
 			int cashChange, int oilChange, int experienceChange) {
 		Map<String, Object> conditionParams = new HashMap<String, Object>();
@@ -391,10 +388,10 @@ public class User extends BasePersistentObject{
 		return false;
 	}
 
-	/*
+	
 	 * used for tasks
 	 *        * user- coins/exp/tasks_completed increase
-	 */
+	 
 	public boolean updateRelativeCashOilExpTasksCompleted (int expChange, int cashChange,
 			int oilChange, int tasksCompletedChange, Timestamp clientTime) {
 		Map <String, Object> conditionParams = new HashMap<String, Object>();
@@ -447,9 +444,9 @@ public class User extends BasePersistentObject{
 		return false;
 	}
 
-	/*
+	
 	 * used for in app purchases, finishingnormstructbuild, enhancing speedup
-	 */
+	 
 	public boolean updateRelativeGemsNaive (int diamondChange) {
 		Map <String, Object> conditionParams = new HashMap<String, Object>();
 		conditionParams.put(DBConstants.USER__ID, id);
@@ -672,7 +669,7 @@ public class User extends BasePersistentObject{
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 //	public boolean updateNameUserTypeUdid(String newName,
 //			String newUdid, int relativeDiamondCost) {
@@ -719,7 +716,7 @@ public class User extends BasePersistentObject{
 	}*/
 	
 	//obstaclesRemovedDelta is always positive
-	public boolean updateRelativeGemsObstacleTimeNumRemoved(int gemChange,
+/*	public boolean updateRelativeGemsObstacleTimeNumRemoved(int gemChange,
 			Timestamp lastObstacleSpawnedTime, int obstaclesRemovedDelta) {
 		Map <String, Object> conditionParams = new HashMap<String, Object>();
 		conditionParams.put(DBConstants.USER__ID, id);
@@ -761,7 +758,7 @@ public class User extends BasePersistentObject{
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 
 

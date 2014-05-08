@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class UserClanBossContribution extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 9153933930548195860L;
 	@Column(name = "user_id")
 	private int userId;

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class AnimatedSpriteOffset extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 8547110329111943501L;
 	@Column(name = "img_name")
 	private String imgName;

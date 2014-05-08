@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class EventPersistent extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 1511718617355339151L;
 	@Column(name = "day_of_week")
 	private String dayOfWeek;

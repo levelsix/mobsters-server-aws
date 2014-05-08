@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class StructureResidence extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 5657322728558293593L;
 	@Column(name = "struct_id")
 	private int structId;	//how many monster slots this residence gives the user (absolute number)

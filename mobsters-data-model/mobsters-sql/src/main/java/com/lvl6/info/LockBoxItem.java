@@ -8,7 +8,7 @@ public class LockBoxItem extends BasePersistentObject{/**
 	 * 
 	 */
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -8050037227928651857L;
 	@Column(name = "lock_box_event_id")
 	private int lockBoxEventId;

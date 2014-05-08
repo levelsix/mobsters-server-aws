@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class PvpLeague extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4071892938955324752L;	
 
 	@Column(name = "league_name")

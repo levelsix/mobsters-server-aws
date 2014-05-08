@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Structure extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -7838827750756218900L;	
 
 	@Column(name = "name")

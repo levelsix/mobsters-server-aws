@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class StaticUserLevelInfo extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -258608581176466155L;
 	@Column(name = "lvl")
 	private int lvl;

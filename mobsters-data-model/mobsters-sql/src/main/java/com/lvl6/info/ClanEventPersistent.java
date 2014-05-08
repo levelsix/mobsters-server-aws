@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class ClanEventPersistent extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3881447951245558541L;
 	@Column(name = "day_of_week")
 	private String dayOfWeek;

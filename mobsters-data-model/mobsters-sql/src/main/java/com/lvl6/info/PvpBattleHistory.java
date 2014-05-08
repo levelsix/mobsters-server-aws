@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 public class PvpBattleHistory extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -2619239431555979083L;	
 
 	@Column(name = "attacker_id")

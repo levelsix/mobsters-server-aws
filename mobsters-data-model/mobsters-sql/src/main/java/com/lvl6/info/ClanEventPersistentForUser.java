@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity
 public class ClanEventPersistentForUser extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -2606973933800935109L;
 	@Column(name = "user_id")
 	private int userId;

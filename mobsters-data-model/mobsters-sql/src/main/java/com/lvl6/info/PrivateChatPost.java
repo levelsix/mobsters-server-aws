@@ -2,18 +2,26 @@ package com.lvl6.info;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class PrivateChatPost extends BasePersistentObject{	protected static final long serialVersionUID = 8450554970377509383L;
-  	protected int id;
+public class PrivateChatPost extends BasePersistentObject{	
+	protected static final long serialVersionUID = 8450554970377509383L;
+
+	@Column(name="poster_id")
 	protected int posterId;
+	
+	@Column(name="recipient_id")
 	protected int recipientId;
+	
+	@Column(name="time_of_post")
 	protected Date timeOfPost;
+	
 	protected String content;
 
 	public PrivateChatPost(){}
-	public PrivateChatPost(int id, int posterId, int recipientId,
+	public PrivateChatPost(int posterId, int recipientId,
 			Date timeOfPost, String content) {
 		super();
 		this.posterId = posterId;

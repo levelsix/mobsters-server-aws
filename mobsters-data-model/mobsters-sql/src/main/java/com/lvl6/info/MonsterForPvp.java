@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class MonsterForPvp extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4013127890023301706L;	
 
 	@Column(name = "monster_id")

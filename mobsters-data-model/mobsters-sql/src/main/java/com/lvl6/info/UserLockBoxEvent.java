@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class UserLockBoxEvent extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -2707386084442793864L;
 	@Column(name = "lock_box_id")
 	private int lockBoxId;

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 public class Item extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 4660675777685331403L;	
 
 	@Column(name = "name")

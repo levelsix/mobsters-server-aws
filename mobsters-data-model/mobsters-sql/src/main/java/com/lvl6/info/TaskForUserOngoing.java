@@ -8,25 +8,29 @@ import javax.persistence.Entity;
 @Entity
 public class TaskForUserOngoing extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 8030638296503679697L;	
 
-	@Column(name = "id")
-	private long id;
+
 	@Column(name = "user_id")
 	private int userId;
 	@Column(name = "task_id")
-	private int taskId;	public int expGained;
-	public int cashGained;
-	public int oilGained;
-	public int numRevives;
+	private int taskId;	
+	@Column(name = "exp_gained")
+	private int expGained;
+	@Column(name = "cash_gained")
+	private int cashGained;
+	@Column(name = "oil_gained")
+	private int oilGained;
+	@Column(name = "num_revives")
+	private int numRevives;
 
 	@Column(name = "start_date")
 	private Date startDate;
 	@Column(name = "task_stage_id")
 	private int taskStageId;	
 	public TaskForUserOngoing(){}
-	public TaskForUserOngoing(long id, int userId, int taskId, int expGained,
+	public TaskForUserOngoing( int userId, int taskId, int expGained,
 			int cashGained, int oilGained, int numRevives, Date startDate,
 			int taskStageId) {
 		super();

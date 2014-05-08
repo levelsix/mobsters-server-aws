@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class PvpLeagueForUser extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 7323773679114371729L;	
 
 	@Column(name = "user_id")
@@ -39,7 +39,7 @@ public class PvpLeagueForUser extends BasePersistentObject{
 		super();
 	}
 
-	public PvpLeagueForUser(PvpUser pu) {
+/*	public PvpLeagueForUser(PvpUser pu) {
 		super();
 		this.userId = Integer.parseInt(pu.getUserId());
 		this.pvpLeagueId = pu.getPvpLeagueId();
@@ -51,7 +51,7 @@ public class PvpLeagueForUser extends BasePersistentObject{
 		this.defensesWon = pu.getDefensesWon();
 		this.attacksLost = pu.getAttacksLost();
 		this.defensesLost = pu.getDefensesLost();
-	}
+	}*/
 	
 	public PvpLeagueForUser(PvpLeagueForUser plfu) {
 		super();

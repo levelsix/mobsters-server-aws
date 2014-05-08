@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class TournamentEventForUser extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -4146319195339195482L;
 	@Column(name = "tournament_event_id")
 	private int tournamentEventId;

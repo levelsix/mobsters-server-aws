@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class ExpansionPurchaseForUser extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -5045515317226423462L;
 	@Column(name = "user_id")
 	private int userId;

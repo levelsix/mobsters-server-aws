@@ -3,12 +3,13 @@ package com.lvl6.info;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 @Entity
 public class Quest extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 943974595064267438L;	
 
 	//@Column(name = "city_id")
@@ -41,6 +42,8 @@ public class Quest extends BasePersistentObject{
 	private int monsterIdReward;
 	@Column(name = "is_complete_monster")
 	private boolean isCompleteMonster;
+	
+	@ElementCollection
 	@Column(name = "quests_required_for_this")
 	private List<Integer> questsRequiredForThis;
 	@Column(name = "quest_giver_name")

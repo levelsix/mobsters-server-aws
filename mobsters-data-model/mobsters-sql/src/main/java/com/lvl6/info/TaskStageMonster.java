@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class TaskStageMonster extends BasePersistentObject{
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = 6294339139996875888L;	
 
 	@Column(name = "stage_id")

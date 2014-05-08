@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Entity
 public class ObstacleForUser extends BasePersistentObject{	
 
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -4951893395081957418L;	
 
 	@Column(name = "user_id")

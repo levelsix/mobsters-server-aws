@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class TournamentEvent extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -3130246899148578214L;
 	@Column(name = "start_date")
 	private Date startDate;

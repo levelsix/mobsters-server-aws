@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class ClanChatPost extends BasePersistentObject{
-	@Column(name = "final")
+	
 	private static final long serialVersionUID = -7441177529235760896L;
 	@Column(name = "poster_id")
 	private int posterId;
