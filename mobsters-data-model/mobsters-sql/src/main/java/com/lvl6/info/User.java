@@ -76,7 +76,7 @@ public class User extends BasePersistentObject{
 	@Column(name = "num_obstacles_removed")
 	private int numObstaclesRemoved;
 	public User(){}
-	public User(int id, String name, int level, int gems, int cash, int oil,
+	public User(String name, int level, int gems, int cash, int oil,
 			int experience, int tasksCompleted, String referralCode,
 			int numReferrals, String udidForHistory, Date lastLogin,
 			Date lastLogout, String deviceToken, int numBadges, boolean isFake,
