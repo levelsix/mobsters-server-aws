@@ -1,4 +1,4 @@
-package com.lvl6.dynamo.tests;
+package com.lvl6.dynamo.test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -16,7 +16,7 @@ import com.lvl6.dynamo.setup.SetupDynamoDB;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-db.xml")
+@ContextConfiguration("classpath:spring-dynamo.xml")
 public class TestTableCreation {
 
 	

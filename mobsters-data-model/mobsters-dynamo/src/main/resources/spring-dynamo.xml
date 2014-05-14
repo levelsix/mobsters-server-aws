@@ -24,6 +24,10 @@
 		<constructor-arg index="0" ref="awsCredentials" />
 		<property name="endpoint" value="${aws.dynamo.endpoint}" />
 	</bean>
+
+	<bean id="dynamoMapper" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper" >
+		<constructor-arg index="0" ref="dynamoClient" />
+	</bean>
 	
 	<bean id="setupDynamoDB" class="com.lvl6.dynamo.setup.SetupDynamoDB">
 		<property name="checkTables" value="${aws.dynamo.checkTables}" />

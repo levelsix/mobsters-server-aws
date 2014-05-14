@@ -5,6 +5,7 @@ import com.lvl6.dynamo.AchievementForUser;
 @Component public class AchievementForUserRepository extends BaseDynamoRepository<AchievementForUser>{
 	public AchievementForUserRepository(){
 		super(AchievementForUser.class);
+		isActive = true;//for unit test
 	}
 
 }

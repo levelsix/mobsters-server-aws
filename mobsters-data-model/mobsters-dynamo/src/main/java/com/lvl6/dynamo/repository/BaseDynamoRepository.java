@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -24,7 +23,7 @@ import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 import com.amazonaws.services.dynamodbv2.model.UpdateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
 
-@Component public class BaseDynamoRepository<T> {
+abstract public class BaseDynamoRepository<T> {
 	
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepository.class);
@@ -37,6 +36,8 @@ import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
 	@Autowired
 	protected DynamoProvisioning provisioning = new DynamoProvisioning();
 	
+	
+	@Autowired
 	protected DynamoDBMapper mapper;
 	
 	protected Class<T> clss;
@@ -75,9 +76,13 @@ import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
 		    .withTableName(clss.getSimpleName())
 		    .withAttributeDefinitions(attributeDefinitions)
 		    .withKeySchema(ks)
-		    .withProvisionedThroughput(provisionedThroughput)
-		    .withGlobalSecondaryIndexes(getGlobalIndexes())
-		    .withLocalSecondaryIndexes(getLocalIndexes());
+		    .withProvisionedThroughput(provisionedThroughput);
+			if(getGlobalIndexes() != null && !getGlobalIndexes().isEmpty()) {
+				request.withGlobalSecondaryIndexes(getGlobalIndexes());
+			}
+			if(getLocalIndexes() != null && !getLocalIndexes().isEmpty()) {
+				request.withLocalSecondaryIndexes(getLocalIndexes());
+			}
 		    
 		CreateTableResult result = client.createTable(request);
 		}catch(Throwable e) {
@@ -144,7 +149,6 @@ import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
 
 	public void setClient(AmazonDynamoDBClient client) {
 		this.client = client;
-		mapper = new DynamoDBMapper(client);
 	}
 
 	public DynamoProvisioning getProvisioning() {
@@ -153,6 +157,16 @@ import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
 
 	public void setProvisioning(DynamoProvisioning provisioning) {
 		this.provisioning = provisioning;
+	}
+
+
+	public DynamoDBMapper getMapper() {
+		return mapper;
+	}
+
+
+	public void setMapper(DynamoDBMapper mapper) {
+		this.mapper = mapper;
 	}
 
 }
