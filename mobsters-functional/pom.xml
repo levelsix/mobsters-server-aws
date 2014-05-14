@@ -12,5 +12,6 @@
   <modules>
   	<module>mobsters-services</module>
   	<module>mobsters-controllers</module>
+  	<module>mobsters-api-events</module>
   </modules>
 </project>

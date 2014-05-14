@@ -58,10 +58,37 @@
 
 
 		<spring.version>4.0.3.RELEASE</spring.version>
+		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+
+			<!-- Lvl6 -->
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-cache</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-sql</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-dynamo</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-proto</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<!-- /Lvl6 -->
+
+			<!-- Third Party -->
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
@@ -122,6 +149,16 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-core</artifactId>
+				<version>${spring.integration.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-ip</artifactId>
+				<version>${spring.integration.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>
