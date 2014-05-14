@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
+import org.springframework.stereotype.Component;
+
 import com.lvl6.dynamo.QuestJobMonsterItem;
-public class QuestJobMonsterItemRepository extends BaseDynamoRepository<QuestJobMonsterItem>{
+@Component public class QuestJobMonsterItemRepository extends BaseDynamoRepository<QuestJobMonsterItem>{
 	public QuestJobMonsterItemRepository(){
 		super(QuestJobMonsterItem.class);
 	}

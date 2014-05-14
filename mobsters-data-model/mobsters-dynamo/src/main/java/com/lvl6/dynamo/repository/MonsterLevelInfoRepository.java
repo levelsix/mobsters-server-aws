@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
+import org.springframework.stereotype.Component;
+
 import com.lvl6.dynamo.MonsterLevelInfo;
-public class MonsterLevelInfoRepository extends BaseDynamoRepository<MonsterLevelInfo>{
+@Component public class MonsterLevelInfoRepository extends BaseDynamoRepository<MonsterLevelInfo>{
 	public MonsterLevelInfoRepository(){
 		super(MonsterLevelInfo.class);
 	}

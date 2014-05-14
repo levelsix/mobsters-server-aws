@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
+import org.springframework.stereotype.Component;
+
 import com.lvl6.dynamo.MonsterEvolvingForUser;
-public class MonsterEvolvingForUserRepository extends BaseDynamoRepository<MonsterEvolvingForUser>{
+@Component public class MonsterEvolvingForUserRepository extends BaseDynamoRepository<MonsterEvolvingForUser>{
 	public MonsterEvolvingForUserRepository(){
 		super(MonsterEvolvingForUser.class);
 	}

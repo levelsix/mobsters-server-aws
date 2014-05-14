@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
+import org.springframework.stereotype.Component;
+
 import com.lvl6.dynamo.StaticUserLevelInfo;
-public class StaticUserLevelInfoRepository extends BaseDynamoRepository<StaticUserLevelInfo>{
+@Component public class StaticUserLevelInfoRepository extends BaseDynamoRepository<StaticUserLevelInfo>{
 	public StaticUserLevelInfoRepository(){
 		super(StaticUserLevelInfo.class);
 	}

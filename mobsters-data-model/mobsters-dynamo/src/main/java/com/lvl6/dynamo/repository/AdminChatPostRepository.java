@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
+import org.springframework.stereotype.Component;
+
 import com.lvl6.dynamo.AdminChatPost;
-public class AdminChatPostRepository extends BaseDynamoRepository<AdminChatPost>{
+@Component public class AdminChatPostRepository extends BaseDynamoRepository<AdminChatPost>{
 	public AdminChatPostRepository(){
 		super(AdminChatPost.class);
 	}

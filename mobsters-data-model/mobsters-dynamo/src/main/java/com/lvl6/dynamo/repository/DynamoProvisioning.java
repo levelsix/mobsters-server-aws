@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
 
-public class DynamoProvisioning {
+import org.springframework.stereotype.Component;
+
+@Component public class DynamoProvisioning {
 	protected Long reads = 1l;
 	protected Long writes = 1l;
 	public Long getReads() {

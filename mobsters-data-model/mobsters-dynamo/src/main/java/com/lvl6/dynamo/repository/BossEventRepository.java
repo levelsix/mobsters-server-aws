@@ -1,6 +1,8 @@
 package com.lvl6.dynamo.repository;
+import org.springframework.stereotype.Component;
+
 import com.lvl6.dynamo.BossEvent;
-public class BossEventRepository extends BaseDynamoRepository<BossEvent>{
+@Component public class BossEventRepository extends BaseDynamoRepository<BossEvent>{
 	public BossEventRepository(){
 		super(BossEvent.class);
 	}

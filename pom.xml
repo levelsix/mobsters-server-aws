@@ -42,6 +42,16 @@
 	</ciManagement>
 
 	<properties>
+		<!-- AWS -->
+		<aws.accessKey>dummyKey</aws.accessKey>
+		<aws.secretKey>dummySecretKey</aws.secretKey>
+		
+		<!-- DynamoDB -->
+		<aws.dynamo.endpoint>http://localhost:8000</aws.dynamo.endpoint>
+		<aws.dynamo.checkTables>true</aws.dynamo.checkTables>
+	
+	
+		<!-- MySQL -->
 		<jdbc.url><![CDATA[jdbc:mysql://mobstersdev.cirdfrlgyccg.us-west-2.rds.amazonaws.com:3306/mobsters?useLegacyDatetimeCode=false]]></jdbc.url>
 		<jdbc.username>lvl6admin</jdbc.username>
 		<jdbc.password>robashen123</jdbc.password>
@@ -55,8 +65,13 @@
 		<jdbc.statementsCacheSize>500</jdbc.statementsCacheSize>
 		<jdbc.releaseHelperThreads>3</jdbc.releaseHelperThreads>
 
-
-
+		<!-- Redis/Elasticache -->
+		<lvl6.jedis.host>robot.lvl6.com</lvl6.jedis.host>
+		<lvl6.jedis.auth>L3v3lS!x_K!ngd0m$</lvl6.jedis.auth>
+		<lvl6.jedis.database>1</lvl6.jedis.database>
+		
+		
+		<!-- Dependencies -->
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 	</properties>
@@ -246,6 +261,12 @@
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk</artifactId>
 				<version>1.7.7</version>
+			</dependency>
+			<dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+				<version>2.4.2</version>
+				<type>jar</type>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
