@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.CreateTableResult;
@@ -40,6 +41,9 @@ abstract public class BaseDynamoRepository<T> {
 	@Autowired
 	protected DynamoDBMapper mapper;
 	
+	@Autowired
+	protected DynamoDBMapperConfig mapperConfig;
+	
 	protected Class<T> clss;
 	
 	
@@ -61,7 +65,7 @@ abstract public class BaseDynamoRepository<T> {
 	
 	protected void createTable() {
 		try {
-		log.info("Creating Dynamo table {}", clss.getSimpleName());
+		log.info("Creating Dynamo table {}", getTableName());
 		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName("id").withAttributeType("S"));
 		        
@@ -73,7 +77,7 @@ abstract public class BaseDynamoRepository<T> {
 		    .withWriteCapacityUnits(provisioning.getWrites());
 		        
 		CreateTableRequest request = new CreateTableRequest()
-		    .withTableName(clss.getSimpleName())
+		    .withTableName(getTableName())
 		    .withAttributeDefinitions(attributeDefinitions)
 		    .withKeySchema(ks)
 		    .withProvisionedThroughput(provisionedThroughput);
@@ -86,7 +90,7 @@ abstract public class BaseDynamoRepository<T> {
 		    
 		CreateTableResult result = client.createTable(request);
 		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", clss.getSimpleName(), e);
+			log.error("Error creating Dynamo table {}", getTableName(), e);
 			throw e;
 		}
 	}
@@ -98,13 +102,13 @@ abstract public class BaseDynamoRepository<T> {
 	        .withWriteCapacityUnits(provisioning.getWrites());
 
 	        UpdateTableRequest updateTableRequest = new UpdateTableRequest()
-	            .withTableName(clss.getSimpleName())
+	            .withTableName(getTableName())
 	            .withProvisionedThroughput(provisionedThroughput);
 	        
 	        UpdateTableResult result = client.updateTable(updateTableRequest);
 			
 		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", clss.getSimpleName(), e);
+			log.error("Error creating Dynamo table {}", getTableName(), e);
 			throw e;
 		}
 	}
@@ -114,12 +118,12 @@ abstract public class BaseDynamoRepository<T> {
 			return;
 		}
 		try {
-		DescribeTableResult result = client.describeTable(clss.getSimpleName());
+		DescribeTableResult result = client.describeTable(getTableName());
 		if(result != null && result.getTable().getCreationDateTime() != null) {
-			log.info("Dynamo table {} status: {}", clss.getSimpleName(), result.getTable().getTableStatus());
+			log.info("Dynamo table {} status: {}", getTableName(), result.getTable().getTableStatus());
 			ProvisionedThroughputDescription prov = result.getTable().getProvisionedThroughput();
 			if(prov.getReadCapacityUnits().equals(provisioning.getReads())&&prov.getWriteCapacityUnits().equals(provisioning.getWrites())) {
-				log.info("Dynamo table {}", clss.getSimpleName());
+				log.info("Dynamo table {}", getTableName());
 			}else {
 				updateTable();
 			}
@@ -129,9 +133,13 @@ abstract public class BaseDynamoRepository<T> {
 		}catch(ResourceNotFoundException re) {
 			createTable();
 		}catch(Throwable e) {
-			log.error("Error checking Dynamo table {}", clss.getSimpleName(), e);
+			log.error("Error checking Dynamo table {}", getTableName(), e);
 			throw e;
 		}
+	}
+	
+	protected String getTableName() {
+		return mapperConfig.getTableNameOverride().getTableNamePrefix()+clss.getSimpleName();
 	}
 	
 	
@@ -167,6 +175,16 @@ abstract public class BaseDynamoRepository<T> {
 
 	public void setMapper(DynamoDBMapper mapper) {
 		this.mapper = mapper;
+	}
+
+
+	public DynamoDBMapperConfig getMapperConfig() {
+		return mapperConfig;
+	}
+
+
+	public void setMapperConfig(DynamoDBMapperConfig mapperConfig) {
+		this.mapperConfig = mapperConfig;
 	}
 
 }

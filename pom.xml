@@ -45,12 +45,13 @@
 		<!-- AWS -->
 		<aws.accessKey>dummyKey</aws.accessKey>
 		<aws.secretKey>dummySecretKey</aws.secretKey>
-		
+
 		<!-- DynamoDB -->
 		<aws.dynamo.endpoint>http://localhost:8000</aws.dynamo.endpoint>
 		<aws.dynamo.checkTables>true</aws.dynamo.checkTables>
-	
-	
+		<aws.dynamo.table.name.prefix>DEV_</aws.dynamo.table.name.prefix>
+
+
 		<!-- MySQL -->
 		<jdbc.url><![CDATA[jdbc:mysql://mobstersdev.cirdfrlgyccg.us-west-2.rds.amazonaws.com:3306/mobsters?useLegacyDatetimeCode=false]]></jdbc.url>
 		<jdbc.username>lvl6admin</jdbc.username>
@@ -69,8 +70,8 @@
 		<lvl6.jedis.host>robot.lvl6.com</lvl6.jedis.host>
 		<lvl6.jedis.auth>L3v3lS!x_K!ngd0m$</lvl6.jedis.auth>
 		<lvl6.jedis.database>1</lvl6.jedis.database>
-		
-		
+
+
 		<!-- Dependencies -->
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
@@ -100,7 +101,21 @@
 				<artifactId>mobsters-proto</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-api-events</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-services</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-controllers</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 			<!-- /Lvl6 -->
 
 			<!-- Third Party -->
@@ -267,6 +282,11 @@
 				<artifactId>jedis</artifactId>
 				<version>2.4.2</version>
 				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>javax.websocket</groupId>
+				<artifactId>javax.websocket-api</artifactId>
+				<version>1.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

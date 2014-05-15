@@ -12,7 +12,10 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-services</artifactId>
+		</dependency>
 	</dependencies>
 
 

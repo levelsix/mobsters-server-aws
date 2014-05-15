@@ -13,5 +13,6 @@
   	<module>mobsters-services</module>
   	<module>mobsters-controllers</module>
   	<module>mobsters-api-events</module>
+  	<module>mobsters-http</module>
   </modules>
 </project>
