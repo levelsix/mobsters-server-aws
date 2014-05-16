@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.lvl6.events.PreDatabaseRequestEvent;
-import com.lvl6.proto.EventStartupProto.StartupRequestProto;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
 
 public class StartupRequestEvent extends PreDatabaseRequestEvent{
 

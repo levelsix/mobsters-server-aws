@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.lvl6.events.RequestEvent;
-import com.lvl6.proto.EventAchievementProto.AchievementRedeemRequestProto;
+import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementRedeemRequestProto;
 
 public class AchievementRedeemRequestEvent extends RequestEvent {
 	

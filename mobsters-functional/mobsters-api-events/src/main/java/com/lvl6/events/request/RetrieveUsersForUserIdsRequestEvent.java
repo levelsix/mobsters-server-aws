@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.lvl6.events.RequestEvent;
-import com.lvl6.proto.EventUserProto.RetrieveUsersForUserIdsRequestProto;
+import com.lvl6.mobsters.eventproto.EventUserProto.RetrieveUsersForUserIdsRequestProto;
 
 public class RetrieveUsersForUserIdsRequestEvent extends RequestEvent {
 	

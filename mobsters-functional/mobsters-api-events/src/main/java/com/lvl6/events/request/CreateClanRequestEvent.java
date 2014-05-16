@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.lvl6.events.RequestEvent;
-import com.lvl6.proto.EventClanProto.CreateClanRequestProto;
+import com.lvl6.mobsters.eventproto.EventClanProto.CreateClanRequestProto;
 
 public class CreateClanRequestEvent extends RequestEvent {
 
