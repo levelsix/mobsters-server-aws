@@ -1,0 +1,62 @@
+//ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
+//DO NO START PROPERTY METHODS WITH THE WORDS NEW OR COPY
+
+import "NoneventAchievement.proto";
+import "NoneventPvp.proto";
+import "NoneventBoosterPack.proto";
+import "NoneventCity.proto";
+import "NoneventClan.proto";
+import "NoneventMonster.proto";
+import "NoneventQuest.proto";
+import "NoneventStructure.proto";
+import "NoneventTask.proto";
+import "NoneventUser.proto";
+
+package proto;
+
+option java_package = "com.lvl6.mobsters.noneventproto";
+option java_outer_classname = "NoneventStaticDataProto";
+//DO NOT USE ID AS THE NAME OF A PROPERTY IN ANY PROTO
+
+
+message StaticDataProto {
+    optional MinimumUserProto sender = 1;
+	repeated CityExpansionCostProto expansionCosts = 2;
+	repeated FullCityProto allCities = 3;
+	repeated FullTaskProto allTasks = 4;
+	repeated MonsterProto allMonsters = 5;
+	repeated StaticUserLevelInfoProto slip = 6;
+	
+	repeated FullQuestProto inProgressQuests = 7; //has not been completed
+    repeated FullQuestProto unredeemedQuests = 8; //is complete
+	repeated FullQuestProto availableQuests = 9; 
+	
+	//optional RetrieveStaticDataStatus status = 10; //defined near the end
+	repeated BoosterPackProto boosterPacks = 11;
+	
+	repeated ResourceGeneratorProto allGenerators = 12;
+	repeated ResourceStorageProto allStorages = 13;
+	repeated HospitalProto allHospitals = 14;
+	repeated ResidenceProto allResidences = 15;
+	repeated LabProto allLabs = 17;
+	repeated TownHallProto allTownHalls = 16;
+	//repeated LabProto allLabs = 17; //defined above
+	repeated MiniJobCenterProto allMiniJobCenters = 27;
+	
+	
+	//the daily events where users can gain evolution and enhancement materials
+	repeated PersistentEventProto persistentEvents = 18;
+	repeated MonsterBattleDialogueProto mbds = 19;
+	
+	//these contains the stages. the stages contain the monsters and the rewards  
+	repeated ClanRaidProto raids = 20;
+	repeated PersistentClanEventProto persistentClanEvents = 21;
+	repeated ItemProto items = 22;
+	repeated ObstacleProto obstacles = 23; //might generate gems for user upon removal
+	repeated ClanIconProto clanIcons = 24;
+	repeated PvpLeagueProto leagues = 25;
+	repeated AchievementProto achievements = 26;
+	
+	//repeated MiniJobProto allMiniJobs = 27; defined above
+}
+	
