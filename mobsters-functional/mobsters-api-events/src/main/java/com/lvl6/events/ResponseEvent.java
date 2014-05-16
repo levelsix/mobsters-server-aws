@@ -2,7 +2,7 @@ package com.lvl6.events;
 
 import java.nio.ByteBuffer;
 
-import com.lvl6.proto.ProtocolsProto.EventProtocolResponse;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolResponse;
 
 /**
  * GameEventDefault.java
