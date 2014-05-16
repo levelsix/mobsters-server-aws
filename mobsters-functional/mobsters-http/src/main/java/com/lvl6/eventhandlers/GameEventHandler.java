@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lvl6.events.PreDatabaseRequestEvent;
 import com.lvl6.events.RequestEvent;
-import com.lvl6.proto.ProtocolsProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.server.ConnectedPlayer;
 
 public class GameEventHandler extends AbstractGameEventHandler {

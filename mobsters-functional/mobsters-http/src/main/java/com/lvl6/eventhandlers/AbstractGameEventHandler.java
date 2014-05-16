@@ -11,7 +11,7 @@ import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
 
 import com.lvl6.events.RequestEvent;
-import com.lvl6.proto.ProtocolsProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.server.ApplicationMode;
 import com.lvl6.utils.Attachment;
 

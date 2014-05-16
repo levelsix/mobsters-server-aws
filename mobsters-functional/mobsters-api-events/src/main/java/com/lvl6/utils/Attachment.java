@@ -7,8 +7,8 @@ import java.nio.ByteOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.properties.Globals;
-import com.lvl6.proto.ProtocolsProto.EventProtocolRequest;
 
 /**
  * Attachment.java
