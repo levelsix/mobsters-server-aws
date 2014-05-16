@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import com.google.protobuf.ByteString;
 import com.lvl6.events.NormalResponseEvent;
-import com.lvl6.proto.EventStructureProto.BeginObstacleRemovalResponseProto;
-import com.lvl6.proto.ProtocolsProto.EventProtocolResponse;
+import com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalResponseProto;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolResponse;
 
 public class BeginObstacleRemovalResponseEvent extends NormalResponseEvent {
 

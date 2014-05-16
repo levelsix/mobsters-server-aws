@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import com.google.protobuf.ByteString;
 import com.lvl6.events.NormalResponseEvent;
-import com.lvl6.proto.EventMonsterProto.AddMonsterToBattleTeamResponseProto;
-import com.lvl6.proto.ProtocolsProto.EventProtocolResponse;
+import com.lvl6.mobsters.eventproto.EventMonsterProto.AddMonsterToBattleTeamResponseProto;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolResponse;
 
 public class AddMonsterToBattleTeamResponseEvent extends NormalResponseEvent {
 

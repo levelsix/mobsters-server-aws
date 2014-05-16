@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import com.google.protobuf.ByteString;
 import com.lvl6.events.PreDatabaseResponseEvent;
-import com.lvl6.proto.EventStartupProto.StartupResponseProto;
-import com.lvl6.proto.ProtocolsProto.EventProtocolResponse;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolResponse;
 
 public class StartupResponseEvent extends PreDatabaseResponseEvent{
 

@@ -4,8 +4,8 @@ import java.nio.ByteBuffer;
 
 import com.google.protobuf.ByteString;
 import com.lvl6.events.NormalResponseEvent;
-import com.lvl6.proto.EventUserProto.UpdateUserCurrencyResponseProto;
-import com.lvl6.proto.ProtocolsProto.EventProtocolResponse;
+import com.lvl6.mobsters.eventproto.EventUserProto.UpdateUserCurrencyResponseProto;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolResponse;
 
 public class UpdateUserCurrencyResponseEvent extends NormalResponseEvent {
 
