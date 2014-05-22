@@ -23,8 +23,8 @@ public class UserCreateRequestEvent extends PreDatabaseRequestEvent{
     try { 
       userCreateRequestProto = UserCreateRequestProto.parseFrom(ByteString.copyFrom(buff));
       
-      // Player id is -1 since it won't be initialized yet. 
-      playerId = -1;
+      // Player id is "" since it won't be initialized yet. 
+      playerId = "";
       
       udid = userCreateRequestProto.getUdid();
     } catch (InvalidProtocolBufferException e) {

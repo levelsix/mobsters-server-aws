@@ -802,9 +802,9 @@ public final class NoneventUserProto {
   public interface MinimumUserProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // optional int32 userId = 1;
+    // optional string userId = 1;
     boolean hasUserId();
-    int getUserId();
+    String getUserId();
     
     // optional string name = 2;
     boolean hasName();
@@ -844,14 +844,36 @@ public final class NoneventUserProto {
     }
     
     private int bitField0_;
-    // optional int32 userId = 1;
+    // optional string userId = 1;
     public static final int USERID_FIELD_NUMBER = 1;
-    private int userId_;
+    private java.lang.Object userId_;
     public boolean hasUserId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public int getUserId() {
-      return userId_;
+    public String getUserId() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userId_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserIdBytes() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional string name = 2;
@@ -900,7 +922,7 @@ public final class NoneventUserProto {
     }
     
     private void initFields() {
-      userId_ = 0;
+      userId_ = "";
       name_ = "";
       clan_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumClanProto.getDefaultInstance();
     }
@@ -917,7 +939,7 @@ public final class NoneventUserProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, userId_);
+        output.writeBytes(1, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getNameBytes());
@@ -936,7 +958,7 @@ public final class NoneventUserProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, userId_);
+          .computeBytesSize(1, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1071,7 +1093,7 @@ public final class NoneventUserProto {
       
       public Builder clear() {
         super.clear();
-        userId_ = 0;
+        userId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         name_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1191,9 +1213,9 @@ public final class NoneventUserProto {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              userId_ = input.readInt32();
+              userId_ = input.readBytes();
               break;
             }
             case 18: {
@@ -1216,25 +1238,40 @@ public final class NoneventUserProto {
       
       private int bitField0_;
       
-      // optional int32 userId = 1;
-      private int userId_ ;
+      // optional string userId = 1;
+      private java.lang.Object userId_ = "";
       public boolean hasUserId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public int getUserId() {
-        return userId_;
+      public String getUserId() {
+        java.lang.Object ref = userId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userId_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserId(int value) {
-        bitField0_ |= 0x00000001;
+      public Builder setUserId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
         userId_ = value;
         onChanged();
         return this;
       }
       public Builder clearUserId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        userId_ = 0;
+        userId_ = getDefaultInstance().getUserId();
         onChanged();
         return this;
+      }
+      void setUserId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        userId_ = value;
+        onChanged();
       }
       
       // optional string name = 2;
@@ -7654,7 +7691,7 @@ public final class NoneventUserProto {
       "\n\ncreateTime\030\004 \001(\003\022\023\n\013description\030\005 \001(\t\022" +
       "\013\n\003tag\030\006 \001(\t\022\035\n\025requestToJoinRequired\030\007 " +
       "\001(\010\022\022\n\nclanIconId\030\010 \001(\005\"W\n\020MinimumUserPr" +
-      "oto\022\016\n\006userId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022%\n\004cla" +
+      "oto\022\016\n\006userId\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022%\n\004cla" +
       "n\030\003 \001(\0132\027.proto.MinimumClanProto\"Y\n\031Mini" +
       "mumUserProtoWithLevel\022-\n\014minUserProto\030\001 " +
       "\001(\0132\027.proto.MinimumUserProto\022\r\n\005level\030\002 " +
