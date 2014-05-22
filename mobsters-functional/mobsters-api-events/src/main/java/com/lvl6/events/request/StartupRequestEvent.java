@@ -23,8 +23,8 @@ public class StartupRequestEvent extends PreDatabaseRequestEvent{
     try {
       startupRequestProto = StartupRequestProto.parseFrom(ByteString.copyFrom(buff));
       
-      // Player id is -1 since it won't be initialized yet. 
-      playerId = -1;
+      // Player id is "" since it won't be initialized yet. 
+      playerId = "";
       
       udid = startupRequestProto.getUdid();
     } catch (InvalidProtocolBufferException e) {
