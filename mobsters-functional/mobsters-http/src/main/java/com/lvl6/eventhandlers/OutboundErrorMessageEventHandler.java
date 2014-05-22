@@ -8,33 +8,23 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.Message;
 import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
 
 import com.lvl6.events.NormalResponseEvent;
-import com.lvl6.server.ConnectedPlayer;
+import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
 
 public class OutboundErrorMessageEventHandler implements MessageHandler {
 
 	
 	private static final Logger log = LoggerFactory.getLogger(OutboundErrorMessageEventHandler.class);
 	
+	@Autowired
+	protected PlayerMapsCacheManager playerMaps;
 
-	@Resource(name="playersByPlayerId")
-	Map<Integer, ConnectedPlayer> playersByPlayerId; 
 	
-	
-	public Map<Integer, ConnectedPlayer> getPlayersByPlayerId() {
-		return playersByPlayerId;
-	}
-
-
-
-	public void setPlayersByPlayerId(Map<Integer, ConnectedPlayer> playersByPlayerId) {
-		this.playersByPlayerId = playersByPlayerId;
-	}
-
 
 
 	@Resource(name="messagesForDisconnectedPlayers")
@@ -70,13 +60,25 @@ public class OutboundErrorMessageEventHandler implements MessageHandler {
 				messagesForDisconnectedPlayers.put(user, playerPendingMessages);
 			}
 			playerPendingMessages.add(failedMessage);
-			if(playersByPlayerId.containsKey(user)) {
+			/*if(playersByPlayerId.containsKey(user)) {
 				playersByPlayerId.remove(user);
-			}
+			}*/
 		}else {
 			log.warn("Message that failed to send had no playerId header");
 			log.warn(failedMessage.getHeaders().toString());
 		}
+	}
+
+
+
+	public PlayerMapsCacheManager getPlayerMaps() {
+		return playerMaps;
+	}
+
+
+
+	public void setPlayerMaps(PlayerMapsCacheManager playerMaps) {
+		this.playerMaps = playerMaps;
 	}
 
 }

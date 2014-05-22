@@ -19,22 +19,6 @@
 			<artifactId>mobsters-cache</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-sql</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-dynamo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-proto</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-api-events</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
 		</dependency>

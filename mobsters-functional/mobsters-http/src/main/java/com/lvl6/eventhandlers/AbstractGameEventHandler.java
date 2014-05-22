@@ -11,8 +11,10 @@ import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
 
 import com.lvl6.events.RequestEvent;
+import com.lvl6.mobsters.controllers.ControllerManager;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.server.ApplicationMode;
+import com.lvl6.mobsters.server.ApplicationMode;
+import com.lvl6.mobsters.server.EventController;
 import com.lvl6.utils.Attachment;
 
 public abstract class AbstractGameEventHandler implements MessageHandler {
@@ -20,17 +22,11 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 	protected static Logger log = LoggerFactory.getLogger(AbstractGameEventHandler.class);
 
 	@Autowired
-	ApplicationMode applicationMode;
+	protected ApplicationMode applicationMode;
 
-	public ApplicationMode getApplicationMode() {
-		return applicationMode;
-	}
-
-	public void setApplicationMode(ApplicationMode applicationMode) {
-		this.applicationMode = applicationMode;
-	}
-
-
+	@Autowired
+	protected ControllerManager controllerManager;
+	
 
 	@Override
 	public void handleMessage(Message<?> msg) throws MessagingException {
@@ -45,8 +41,7 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 		while (attachment.eventReady()) {
 			RequestEvent event = getEvent(attachment);
 			log.debug("Recieved event from client: " + event.getPlayerId());
-			delegateEvent(payload, event, (String) msg.getHeaders().get("ip_connection_id"),
-					attachment.eventType);
+			delegateEvent(payload, event, attachment.eventType);
 			attachment.reset();
 
 		}
@@ -60,7 +55,7 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 		ByteBuffer bb = ByteBuffer.wrap(Arrays.copyOf(attachment.payload, attachment.payloadSize));
 
 		// get the controller and tell it to instantiate an event for us
-		EventController ec = server.getEventControllerByEventType(attachment.eventType);
+		EventController ec = getControllerManager().getEventControllerByEventType(attachment.eventType);
 
 		if (ec == null) {
 			return null;
@@ -73,6 +68,26 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 		return event;
 	}
 
-	protected abstract void delegateEvent(byte[] bytes, RequestEvent event, String ip_connection_id, EventProtocolRequest eventType);
+	protected abstract void delegateEvent(byte[] bytes, RequestEvent event, EventProtocolRequest eventType);
+	
+	
+
+	public ApplicationMode getApplicationMode() {
+		return applicationMode;
+	}
+
+	public void setApplicationMode(ApplicationMode applicationMode) {
+		this.applicationMode = applicationMode;
+	}
+
+	public ControllerManager getControllerManager() {
+		return controllerManager;
+	}
+
+	public void setControllerManager(ControllerManager controllerManager) {
+		this.controllerManager = controllerManager;
+	}
+
+	
 
 }

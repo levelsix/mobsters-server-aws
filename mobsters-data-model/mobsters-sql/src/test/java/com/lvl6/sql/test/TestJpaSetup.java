@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lvl6.info.Achievement;
-import com.lvl6.info.repository.AchievementRepository;
+import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.repository.AchievementRepository;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
