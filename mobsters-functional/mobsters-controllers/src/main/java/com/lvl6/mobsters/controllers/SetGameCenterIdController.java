@@ -50,7 +50,7 @@ public class SetGameCenterIdController extends EventController {
 		SetGameCenterIdRequestProto reqProto = ((SetGameCenterIdRequestEvent) event).getSetGameCenterIdRequestProto();
 
 		MinimumUserProto senderProto = reqProto.getSender();
-		String userId = senderProto.getUserId();
+		String userId = senderProto.getUserUuid();
 		String gameCenterId = reqProto.getGameCenterId();
 		if (gameCenterId != null && gameCenterId.isEmpty())
 			gameCenterId = null;
@@ -62,7 +62,7 @@ public class SetGameCenterIdController extends EventController {
 		}
 
 		try {
-			User user = getUserRepository().load(senderProto.getUserId());
+			User user = getUserRepository().load(senderProto.getUserUuid());
 
 			// boolean isDifferent =
 			// checkIfNewTokenDifferent(user.getGameCenterId(), gameCenterId);
@@ -74,7 +74,7 @@ public class SetGameCenterIdController extends EventController {
 				//resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
 
 			SetGameCenterIdResponseProto resProto = resBuilder.build();
-			SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(senderProto.getUserId());
+			SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(senderProto.getUserUuid());
 			resEvent.setSetGameCenterIdResponseProto(resProto);
 			getEventWriter().writeEvent(resEvent);
 

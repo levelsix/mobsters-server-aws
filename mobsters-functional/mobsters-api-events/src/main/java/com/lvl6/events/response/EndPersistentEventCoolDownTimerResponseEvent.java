@@ -11,7 +11,7 @@
 //
 //  private EndPersistentEventCoolDownTimerResponseProto endPersistentEventCoolDownTimerResponseProto;
 //  
-//  public EndPersistentEventCoolDownTimerResponseEvent(int playerId){
+//  public EndPersistentEventCoolDownTimerResponseEvent(String playerId){
 //    super(playerId);
 //    eventType = EventProtocolResponse.S_END_PERSISTENT_EVENT_COOL_DOWN_TIMER_EVENT;
 //  }

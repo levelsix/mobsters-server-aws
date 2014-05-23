@@ -11,7 +11,7 @@ public class EarnFreeDiamondsResponseEvent extends NormalResponseEvent {
 
   private EarnFreeDiamondsResponseProto earnFreeDiamondsResponseProto;
   
-  public EarnFreeDiamondsResponseEvent(int playerId){
+  public EarnFreeDiamondsResponseEvent(String playerId){
     super(playerId);
     eventType = EventProtocolResponse.S_EARN_FREE_DIAMONDS_EVENT;
   }

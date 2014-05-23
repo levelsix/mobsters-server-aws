@@ -11,7 +11,7 @@
 //
 //  private HealMonsterWaitTimeCompleteResponseProto healMonsterResponseProto;
 //  
-//  public HealMonsterWaitTimeCompleteResponseEvent(int playerId){
+//  public HealMonsterWaitTimeCompleteResponseEvent(String playerId){
 //    super(playerId);
 //    eventType = EventProtocolResponse.S_HEAL_MONSTER_WAIT_TIME_COMPLETE_EVENT;
 //  }
