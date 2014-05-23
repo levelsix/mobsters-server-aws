@@ -41,7 +41,7 @@
 	
 	
 	
-	<bean id="setupDynamoDB" class="com.lvl6.dynamo.setup.SetupDynamoDB">
+	<bean id="setupDynamoDB" class="com.lvl6.mobsters.dynamo.setup.SetupDynamoDB">
 		<property name="checkTables" value="${aws.dynamo.checkTables}" />
 	</bean>
 
