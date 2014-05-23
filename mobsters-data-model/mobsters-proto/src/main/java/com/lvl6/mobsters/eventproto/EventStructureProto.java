@@ -39,7 +39,7 @@ public final class EventStructureProto {
     
     // optional .proto.ResourceType resourceType = 7 [default = CASH];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
   }
   public static final class PurchaseNormStructureRequestProto extends
       com.google.protobuf.GeneratedMessage
@@ -138,11 +138,11 @@ public final class EventStructureProto {
     
     // optional .proto.ResourceType resourceType = 7 [default = CASH];
     public static final int RESOURCETYPE_FIELD_NUMBER = 7;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
@@ -153,7 +153,7 @@ public final class EventStructureProto {
       timeOfPurchase_ = 0L;
       gemsSpent_ = 0;
       resourceChange_ = 0;
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -371,7 +371,7 @@ public final class EventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         resourceChange_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
@@ -555,7 +555,7 @@ public final class EventStructureProto {
             }
             case 56: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(7, rawValue);
               } else {
@@ -835,14 +835,14 @@ public final class EventStructureProto {
       }
       
       // optional .proto.ResourceType resourceType = 7 [default = CASH];
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -853,7 +853,7 @@ public final class EventStructureProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         onChanged();
         return this;
       }
@@ -1502,11 +1502,11 @@ public final class EventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
     
-    // optional int32 userStructId = 2;
-    boolean hasUserStructId();
-    int getUserStructId();
+    // optional string userStructUuid = 2;
+    boolean hasUserStructUuid();
+    String getUserStructUuid();
     
-    // optional .proto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type = 3;
+    // optional .proto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type = 3 [default = MOVE];
     boolean hasType();
     com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType getType();
     
@@ -1627,17 +1627,39 @@ public final class EventStructureProto {
       return sender_;
     }
     
-    // optional int32 userStructId = 2;
-    public static final int USERSTRUCTID_FIELD_NUMBER = 2;
-    private int userStructId_;
-    public boolean hasUserStructId() {
+    // optional string userStructUuid = 2;
+    public static final int USERSTRUCTUUID_FIELD_NUMBER = 2;
+    private java.lang.Object userStructUuid_;
+    public boolean hasUserStructUuid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getUserStructId() {
-      return userStructId_;
+    public String getUserStructUuid() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userStructUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserStructUuidBytes() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userStructUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
-    // optional .proto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type = 3;
+    // optional .proto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type = 3 [default = MOVE];
     public static final int TYPE_FIELD_NUMBER = 3;
     private com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type_;
     public boolean hasType() {
@@ -1672,7 +1694,7 @@ public final class EventStructureProto {
     
     private void initFields() {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      userStructId_ = 0;
+      userStructUuid_ = "";
       type_ = com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType.MOVE;
       curStructCoordinates_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto.getDefaultInstance();
       newOrientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
@@ -1693,7 +1715,7 @@ public final class EventStructureProto {
         output.writeMessage(1, sender_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, userStructId_);
+        output.writeBytes(2, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeEnum(3, type_.getNumber());
@@ -1719,7 +1741,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, userStructId_);
+          .computeBytesSize(2, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1865,7 +1887,7 @@ public final class EventStructureProto {
           senderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        userStructId_ = 0;
+        userStructUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         type_ = com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType.MOVE;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1926,7 +1948,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.userStructId_ = userStructId_;
+        result.userStructUuid_ = userStructUuid_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -1962,8 +1984,8 @@ public final class EventStructureProto {
         if (other.hasSender()) {
           mergeSender(other.getSender());
         }
-        if (other.hasUserStructId()) {
-          setUserStructId(other.getUserStructId());
+        if (other.hasUserStructUuid()) {
+          setUserStructUuid(other.getUserStructUuid());
         }
         if (other.hasType()) {
           setType(other.getType());
@@ -2014,9 +2036,9 @@ public final class EventStructureProto {
               setSender(subBuilder.buildPartial());
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              userStructId_ = input.readInt32();
+              userStructUuid_ = input.readBytes();
               break;
             }
             case 24: {
@@ -2146,28 +2168,43 @@ public final class EventStructureProto {
         return senderBuilder_;
       }
       
-      // optional int32 userStructId = 2;
-      private int userStructId_ ;
-      public boolean hasUserStructId() {
+      // optional string userStructUuid = 2;
+      private java.lang.Object userStructUuid_ = "";
+      public boolean hasUserStructUuid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getUserStructId() {
-        return userStructId_;
+      public String getUserStructUuid() {
+        java.lang.Object ref = userStructUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userStructUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserStructId(int value) {
-        bitField0_ |= 0x00000002;
-        userStructId_ = value;
+      public Builder setUserStructUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userStructUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserStructId() {
+      public Builder clearUserStructUuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        userStructId_ = 0;
+        userStructUuid_ = getDefaultInstance().getUserStructUuid();
         onChanged();
         return this;
+      }
+      void setUserStructUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        userStructUuid_ = value;
+        onChanged();
       }
       
-      // optional .proto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type = 3;
+      // optional .proto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type = 3 [default = MOVE];
       private com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType type_ = com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType.MOVE;
       public boolean hasType() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
@@ -2883,9 +2920,9 @@ public final class EventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
     
-    // optional int32 userStructId = 2;
-    boolean hasUserStructId();
-    int getUserStructId();
+    // optional string userStructUuid = 2;
+    boolean hasUserStructUuid();
+    String getUserStructUuid();
     
     // optional int64 timeOfUpgrade = 3;
     boolean hasTimeOfUpgrade();
@@ -2901,7 +2938,7 @@ public final class EventStructureProto {
     
     // optional .proto.ResourceType resourceType = 6 [default = CASH];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
   }
   public static final class UpgradeNormStructureRequestProto extends
       com.google.protobuf.GeneratedMessage
@@ -2945,14 +2982,36 @@ public final class EventStructureProto {
       return sender_;
     }
     
-    // optional int32 userStructId = 2;
-    public static final int USERSTRUCTID_FIELD_NUMBER = 2;
-    private int userStructId_;
-    public boolean hasUserStructId() {
+    // optional string userStructUuid = 2;
+    public static final int USERSTRUCTUUID_FIELD_NUMBER = 2;
+    private java.lang.Object userStructUuid_;
+    public boolean hasUserStructUuid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getUserStructId() {
-      return userStructId_;
+    public String getUserStructUuid() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userStructUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserStructUuidBytes() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userStructUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional int64 timeOfUpgrade = 3;
@@ -2987,21 +3046,21 @@ public final class EventStructureProto {
     
     // optional .proto.ResourceType resourceType = 6 [default = CASH];
     public static final int RESOURCETYPE_FIELD_NUMBER = 6;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
     private void initFields() {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      userStructId_ = 0;
+      userStructUuid_ = "";
       timeOfUpgrade_ = 0L;
       gemsSpent_ = 0;
       resourceChange_ = 0;
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3019,7 +3078,7 @@ public final class EventStructureProto {
         output.writeMessage(1, sender_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, userStructId_);
+        output.writeBytes(2, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt64(3, timeOfUpgrade_);
@@ -3048,7 +3107,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, userStructId_);
+          .computeBytesSize(2, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -3197,7 +3256,7 @@ public final class EventStructureProto {
           senderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        userStructId_ = 0;
+        userStructUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         timeOfUpgrade_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -3205,7 +3264,7 @@ public final class EventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         resourceChange_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
@@ -3256,7 +3315,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.userStructId_ = userStructId_;
+        result.userStructUuid_ = userStructUuid_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -3292,8 +3351,8 @@ public final class EventStructureProto {
         if (other.hasSender()) {
           mergeSender(other.getSender());
         }
-        if (other.hasUserStructId()) {
-          setUserStructId(other.getUserStructId());
+        if (other.hasUserStructUuid()) {
+          setUserStructUuid(other.getUserStructUuid());
         }
         if (other.hasTimeOfUpgrade()) {
           setTimeOfUpgrade(other.getTimeOfUpgrade());
@@ -3347,9 +3406,9 @@ public final class EventStructureProto {
               setSender(subBuilder.buildPartial());
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              userStructId_ = input.readInt32();
+              userStructUuid_ = input.readBytes();
               break;
             }
             case 24: {
@@ -3369,7 +3428,7 @@ public final class EventStructureProto {
             }
             case 48: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(6, rawValue);
               } else {
@@ -3474,25 +3533,40 @@ public final class EventStructureProto {
         return senderBuilder_;
       }
       
-      // optional int32 userStructId = 2;
-      private int userStructId_ ;
-      public boolean hasUserStructId() {
+      // optional string userStructUuid = 2;
+      private java.lang.Object userStructUuid_ = "";
+      public boolean hasUserStructUuid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getUserStructId() {
-        return userStructId_;
+      public String getUserStructUuid() {
+        java.lang.Object ref = userStructUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userStructUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserStructId(int value) {
-        bitField0_ |= 0x00000002;
-        userStructId_ = value;
+      public Builder setUserStructUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userStructUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserStructId() {
+      public Builder clearUserStructUuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        userStructId_ = 0;
+        userStructUuid_ = getDefaultInstance().getUserStructUuid();
         onChanged();
         return this;
+      }
+      void setUserStructUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        userStructUuid_ = value;
+        onChanged();
       }
       
       // optional int64 timeOfUpgrade = 3;
@@ -3559,14 +3633,14 @@ public final class EventStructureProto {
       }
       
       // optional .proto.ResourceType resourceType = 6 [default = CASH];
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -3577,7 +3651,7 @@ public final class EventStructureProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         onChanged();
         return this;
       }
@@ -4178,9 +4252,9 @@ public final class EventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
     
-    // optional int32 userStructId = 2;
-    boolean hasUserStructId();
-    int getUserStructId();
+    // optional string userStructUuid = 2;
+    boolean hasUserStructUuid();
+    String getUserStructUuid();
     
     // optional int64 timeOfSpeedup = 3;
     boolean hasTimeOfSpeedup();
@@ -4232,14 +4306,36 @@ public final class EventStructureProto {
       return sender_;
     }
     
-    // optional int32 userStructId = 2;
-    public static final int USERSTRUCTID_FIELD_NUMBER = 2;
-    private int userStructId_;
-    public boolean hasUserStructId() {
+    // optional string userStructUuid = 2;
+    public static final int USERSTRUCTUUID_FIELD_NUMBER = 2;
+    private java.lang.Object userStructUuid_;
+    public boolean hasUserStructUuid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getUserStructId() {
-      return userStructId_;
+    public String getUserStructUuid() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userStructUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserStructUuidBytes() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userStructUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional int64 timeOfSpeedup = 3;
@@ -4264,7 +4360,7 @@ public final class EventStructureProto {
     
     private void initFields() {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      userStructId_ = 0;
+      userStructUuid_ = "";
       timeOfSpeedup_ = 0L;
       gemCostToSpeedup_ = 0;
     }
@@ -4284,7 +4380,7 @@ public final class EventStructureProto {
         output.writeMessage(1, sender_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, userStructId_);
+        output.writeBytes(2, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt64(3, timeOfSpeedup_);
@@ -4307,7 +4403,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, userStructId_);
+          .computeBytesSize(2, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -4448,7 +4544,7 @@ public final class EventStructureProto {
           senderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        userStructId_ = 0;
+        userStructUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         timeOfSpeedup_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -4503,7 +4599,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.userStructId_ = userStructId_;
+        result.userStructUuid_ = userStructUuid_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -4531,8 +4627,8 @@ public final class EventStructureProto {
         if (other.hasSender()) {
           mergeSender(other.getSender());
         }
-        if (other.hasUserStructId()) {
-          setUserStructId(other.getUserStructId());
+        if (other.hasUserStructUuid()) {
+          setUserStructUuid(other.getUserStructUuid());
         }
         if (other.hasTimeOfSpeedup()) {
           setTimeOfSpeedup(other.getTimeOfSpeedup());
@@ -4580,9 +4676,9 @@ public final class EventStructureProto {
               setSender(subBuilder.buildPartial());
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              userStructId_ = input.readInt32();
+              userStructUuid_ = input.readBytes();
               break;
             }
             case 24: {
@@ -4691,25 +4787,40 @@ public final class EventStructureProto {
         return senderBuilder_;
       }
       
-      // optional int32 userStructId = 2;
-      private int userStructId_ ;
-      public boolean hasUserStructId() {
+      // optional string userStructUuid = 2;
+      private java.lang.Object userStructUuid_ = "";
+      public boolean hasUserStructUuid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getUserStructId() {
-        return userStructId_;
+      public String getUserStructUuid() {
+        java.lang.Object ref = userStructUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userStructUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserStructId(int value) {
-        bitField0_ |= 0x00000002;
-        userStructId_ = value;
+      public Builder setUserStructUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userStructUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserStructId() {
+      public Builder clearUserStructUuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        userStructId_ = 0;
+        userStructUuid_ = getDefaultInstance().getUserStructUuid();
         onChanged();
         return this;
+      }
+      void setUserStructUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        userStructUuid_ = value;
+        onChanged();
       }
       
       // optional int64 timeOfSpeedup = 3;
@@ -5335,10 +5446,10 @@ public final class EventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
     com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
     
-    // repeated int32 userStructId = 2;
-    java.util.List<java.lang.Integer> getUserStructIdList();
-    int getUserStructIdCount();
-    int getUserStructId(int index);
+    // repeated string userStructUuid = 2;
+    java.util.List<String> getUserStructUuidList();
+    int getUserStructUuidCount();
+    String getUserStructUuid(int index);
     
     // optional int64 curTime = 3;
     boolean hasCurTime();
@@ -5386,18 +5497,18 @@ public final class EventStructureProto {
       return sender_;
     }
     
-    // repeated int32 userStructId = 2;
-    public static final int USERSTRUCTID_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Integer> userStructId_;
-    public java.util.List<java.lang.Integer>
-        getUserStructIdList() {
-      return userStructId_;
+    // repeated string userStructUuid = 2;
+    public static final int USERSTRUCTUUID_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList userStructUuid_;
+    public java.util.List<String>
+        getUserStructUuidList() {
+      return userStructUuid_;
     }
-    public int getUserStructIdCount() {
-      return userStructId_.size();
+    public int getUserStructUuidCount() {
+      return userStructUuid_.size();
     }
-    public int getUserStructId(int index) {
-      return userStructId_.get(index);
+    public String getUserStructUuid(int index) {
+      return userStructUuid_.get(index);
     }
     
     // optional int64 curTime = 3;
@@ -5412,7 +5523,7 @@ public final class EventStructureProto {
     
     private void initFields() {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      userStructId_ = java.util.Collections.emptyList();;
+      userStructUuid_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       curTime_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
@@ -5430,8 +5541,8 @@ public final class EventStructureProto {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, sender_);
       }
-      for (int i = 0; i < userStructId_.size(); i++) {
-        output.writeInt32(2, userStructId_.get(i));
+      for (int i = 0; i < userStructUuid_.size(); i++) {
+        output.writeBytes(2, userStructUuid_.getByteString(i));
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt64(3, curTime_);
@@ -5451,12 +5562,12 @@ public final class EventStructureProto {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < userStructId_.size(); i++) {
+        for (int i = 0; i < userStructUuid_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt32SizeNoTag(userStructId_.get(i));
+            .computeBytesSizeNoTag(userStructUuid_.getByteString(i));
         }
         size += dataSize;
-        size += 1 * getUserStructIdList().size();
+        size += 1 * getUserStructUuidList().size();
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -5593,7 +5704,7 @@ public final class EventStructureProto {
           senderBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        userStructId_ = java.util.Collections.emptyList();;
+        userStructUuid_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         curTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -5644,10 +5755,11 @@ public final class EventStructureProto {
           result.sender_ = senderBuilder_.build();
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          userStructId_ = java.util.Collections.unmodifiableList(userStructId_);
+          userStructUuid_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              userStructUuid_);
           bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.userStructId_ = userStructId_;
+        result.userStructUuid_ = userStructUuid_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -5671,13 +5783,13 @@ public final class EventStructureProto {
         if (other.hasSender()) {
           mergeSender(other.getSender());
         }
-        if (!other.userStructId_.isEmpty()) {
-          if (userStructId_.isEmpty()) {
-            userStructId_ = other.userStructId_;
+        if (!other.userStructUuid_.isEmpty()) {
+          if (userStructUuid_.isEmpty()) {
+            userStructUuid_ = other.userStructUuid_;
             bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureUserStructIdIsMutable();
-            userStructId_.addAll(other.userStructId_);
+            ensureUserStructUuidIsMutable();
+            userStructUuid_.addAll(other.userStructUuid_);
           }
           onChanged();
         }
@@ -5724,18 +5836,9 @@ public final class EventStructureProto {
               setSender(subBuilder.buildPartial());
               break;
             }
-            case 16: {
-              ensureUserStructIdIsMutable();
-              userStructId_.add(input.readInt32());
-              break;
-            }
             case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              while (input.getBytesUntilLimit() > 0) {
-                addUserStructId(input.readInt32());
-              }
-              input.popLimit(limit);
+              ensureUserStructUuidIsMutable();
+              userStructUuid_.add(input.readBytes());
               break;
             }
             case 24: {
@@ -5839,49 +5942,60 @@ public final class EventStructureProto {
         return senderBuilder_;
       }
       
-      // repeated int32 userStructId = 2;
-      private java.util.List<java.lang.Integer> userStructId_ = java.util.Collections.emptyList();;
-      private void ensureUserStructIdIsMutable() {
+      // repeated string userStructUuid = 2;
+      private com.google.protobuf.LazyStringList userStructUuid_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureUserStructUuidIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          userStructId_ = new java.util.ArrayList<java.lang.Integer>(userStructId_);
+          userStructUuid_ = new com.google.protobuf.LazyStringArrayList(userStructUuid_);
           bitField0_ |= 0x00000002;
          }
       }
-      public java.util.List<java.lang.Integer>
-          getUserStructIdList() {
-        return java.util.Collections.unmodifiableList(userStructId_);
+      public java.util.List<String>
+          getUserStructUuidList() {
+        return java.util.Collections.unmodifiableList(userStructUuid_);
       }
-      public int getUserStructIdCount() {
-        return userStructId_.size();
+      public int getUserStructUuidCount() {
+        return userStructUuid_.size();
       }
-      public int getUserStructId(int index) {
-        return userStructId_.get(index);
+      public String getUserStructUuid(int index) {
+        return userStructUuid_.get(index);
       }
-      public Builder setUserStructId(
-          int index, int value) {
-        ensureUserStructIdIsMutable();
-        userStructId_.set(index, value);
+      public Builder setUserStructUuid(
+          int index, String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserStructUuidIsMutable();
+        userStructUuid_.set(index, value);
         onChanged();
         return this;
       }
-      public Builder addUserStructId(int value) {
-        ensureUserStructIdIsMutable();
-        userStructId_.add(value);
+      public Builder addUserStructUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserStructUuidIsMutable();
+        userStructUuid_.add(value);
         onChanged();
         return this;
       }
-      public Builder addAllUserStructId(
-          java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureUserStructIdIsMutable();
-        super.addAll(values, userStructId_);
+      public Builder addAllUserStructUuid(
+          java.lang.Iterable<String> values) {
+        ensureUserStructUuidIsMutable();
+        super.addAll(values, userStructUuid_);
         onChanged();
         return this;
       }
-      public Builder clearUserStructId() {
-        userStructId_ = java.util.Collections.emptyList();;
+      public Builder clearUserStructUuid() {
+        userStructUuid_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
+      }
+      void addUserStructUuid(com.google.protobuf.ByteString value) {
+        ensureUserStructUuidIsMutable();
+        userStructUuid_.add(value);
+        onChanged();
       }
       
       // optional int64 curTime = 3;
@@ -8459,1426 +8573,6 @@ public final class EventStructureProto {
     // @@protoc_insertion_point(class_scope:proto.RetrieveCurrencyFromNormStructureResponseProto)
   }
   
-  public interface ExpansionWaitCompleteRequestProtoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // optional .proto.MinimumUserProto sender = 1;
-    boolean hasSender();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
-    
-    // optional int64 curTime = 2;
-    boolean hasCurTime();
-    long getCurTime();
-    
-    // optional sint32 xPosition = 3;
-    boolean hasXPosition();
-    int getXPosition();
-    
-    // optional sint32 yPosition = 4;
-    boolean hasYPosition();
-    int getYPosition();
-    
-    // optional bool speedUp = 5;
-    boolean hasSpeedUp();
-    boolean getSpeedUp();
-    
-    // optional int32 gemCostToSpeedup = 6;
-    boolean hasGemCostToSpeedup();
-    int getGemCostToSpeedup();
-  }
-  public static final class ExpansionWaitCompleteRequestProto extends
-      com.google.protobuf.GeneratedMessage
-      implements ExpansionWaitCompleteRequestProtoOrBuilder {
-    // Use ExpansionWaitCompleteRequestProto.newBuilder() to construct.
-    private ExpansionWaitCompleteRequestProto(Builder builder) {
-      super(builder);
-    }
-    private ExpansionWaitCompleteRequestProto(boolean noInit) {}
-    
-    private static final ExpansionWaitCompleteRequestProto defaultInstance;
-    public static ExpansionWaitCompleteRequestProto getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public ExpansionWaitCompleteRequestProto getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteRequestProto_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteRequestProto_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // optional .proto.MinimumUserProto sender = 1;
-    public static final int SENDER_FIELD_NUMBER = 1;
-    private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_;
-    public boolean hasSender() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
-      return sender_;
-    }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
-      return sender_;
-    }
-    
-    // optional int64 curTime = 2;
-    public static final int CURTIME_FIELD_NUMBER = 2;
-    private long curTime_;
-    public boolean hasCurTime() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public long getCurTime() {
-      return curTime_;
-    }
-    
-    // optional sint32 xPosition = 3;
-    public static final int XPOSITION_FIELD_NUMBER = 3;
-    private int xPosition_;
-    public boolean hasXPosition() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    public int getXPosition() {
-      return xPosition_;
-    }
-    
-    // optional sint32 yPosition = 4;
-    public static final int YPOSITION_FIELD_NUMBER = 4;
-    private int yPosition_;
-    public boolean hasYPosition() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    public int getYPosition() {
-      return yPosition_;
-    }
-    
-    // optional bool speedUp = 5;
-    public static final int SPEEDUP_FIELD_NUMBER = 5;
-    private boolean speedUp_;
-    public boolean hasSpeedUp() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    public boolean getSpeedUp() {
-      return speedUp_;
-    }
-    
-    // optional int32 gemCostToSpeedup = 6;
-    public static final int GEMCOSTTOSPEEDUP_FIELD_NUMBER = 6;
-    private int gemCostToSpeedup_;
-    public boolean hasGemCostToSpeedup() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    public int getGemCostToSpeedup() {
-      return gemCostToSpeedup_;
-    }
-    
-    private void initFields() {
-      sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      curTime_ = 0L;
-      xPosition_ = 0;
-      yPosition_ = 0;
-      speedUp_ = false;
-      gemCostToSpeedup_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, sender_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(2, curTime_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeSInt32(3, xPosition_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeSInt32(4, yPosition_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBool(5, speedUp_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, gemCostToSpeedup_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, sender_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, curTime_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(3, xPosition_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(4, yPosition_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(5, speedUp_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, gemCostToSpeedup_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProtoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteRequestProto_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteRequestProto_fieldAccessorTable;
-      }
-      
-      // Construct using com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getSenderFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        if (senderBuilder_ == null) {
-          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-        } else {
-          senderBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        curTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        xPosition_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        yPosition_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        speedUp_ = false;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        gemCostToSpeedup_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto.getDescriptor();
-      }
-      
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto getDefaultInstanceForType() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto.getDefaultInstance();
-      }
-      
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto build() {
-        com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto buildPartial() {
-        com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto result = new com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (senderBuilder_ == null) {
-          result.sender_ = sender_;
-        } else {
-          result.sender_ = senderBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.curTime_ = curTime_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.xPosition_ = xPosition_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.yPosition_ = yPosition_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.speedUp_ = speedUp_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.gemCostToSpeedup_ = gemCostToSpeedup_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto) {
-          return mergeFrom((com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto other) {
-        if (other == com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto.getDefaultInstance()) return this;
-        if (other.hasSender()) {
-          mergeSender(other.getSender());
-        }
-        if (other.hasCurTime()) {
-          setCurTime(other.getCurTime());
-        }
-        if (other.hasXPosition()) {
-          setXPosition(other.getXPosition());
-        }
-        if (other.hasYPosition()) {
-          setYPosition(other.getYPosition());
-        }
-        if (other.hasSpeedUp()) {
-          setSpeedUp(other.getSpeedUp());
-        }
-        if (other.hasGemCostToSpeedup()) {
-          setGemCostToSpeedup(other.getGemCostToSpeedup());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 10: {
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder();
-              if (hasSender()) {
-                subBuilder.mergeFrom(getSender());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setSender(subBuilder.buildPartial());
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              curTime_ = input.readInt64();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              xPosition_ = input.readSInt32();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              yPosition_ = input.readSInt32();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              speedUp_ = input.readBool();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              gemCostToSpeedup_ = input.readInt32();
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // optional .proto.MinimumUserProto sender = 1;
-      private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> senderBuilder_;
-      public boolean hasSender() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
-        if (senderBuilder_ == null) {
-          return sender_;
-        } else {
-          return senderBuilder_.getMessage();
-        }
-      }
-      public Builder setSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
-        if (senderBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          sender_ = value;
-          onChanged();
-        } else {
-          senderBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder setSender(
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder builderForValue) {
-        if (senderBuilder_ == null) {
-          sender_ = builderForValue.build();
-          onChanged();
-        } else {
-          senderBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder mergeSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
-        if (senderBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              sender_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance()) {
-            sender_ =
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder(sender_).mergeFrom(value).buildPartial();
-          } else {
-            sender_ = value;
-          }
-          onChanged();
-        } else {
-          senderBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder clearSender() {
-        if (senderBuilder_ == null) {
-          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-          onChanged();
-        } else {
-          senderBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder getSenderBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getSenderFieldBuilder().getBuilder();
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
-        if (senderBuilder_ != null) {
-          return senderBuilder_.getMessageOrBuilder();
-        } else {
-          return sender_;
-        }
-      }
-      private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> 
-          getSenderFieldBuilder() {
-        if (senderBuilder_ == null) {
-          senderBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder>(
-                  sender_,
-                  getParentForChildren(),
-                  isClean());
-          sender_ = null;
-        }
-        return senderBuilder_;
-      }
-      
-      // optional int64 curTime = 2;
-      private long curTime_ ;
-      public boolean hasCurTime() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public long getCurTime() {
-        return curTime_;
-      }
-      public Builder setCurTime(long value) {
-        bitField0_ |= 0x00000002;
-        curTime_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearCurTime() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        curTime_ = 0L;
-        onChanged();
-        return this;
-      }
-      
-      // optional sint32 xPosition = 3;
-      private int xPosition_ ;
-      public boolean hasXPosition() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      public int getXPosition() {
-        return xPosition_;
-      }
-      public Builder setXPosition(int value) {
-        bitField0_ |= 0x00000004;
-        xPosition_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearXPosition() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        xPosition_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional sint32 yPosition = 4;
-      private int yPosition_ ;
-      public boolean hasYPosition() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      public int getYPosition() {
-        return yPosition_;
-      }
-      public Builder setYPosition(int value) {
-        bitField0_ |= 0x00000008;
-        yPosition_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearYPosition() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        yPosition_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional bool speedUp = 5;
-      private boolean speedUp_ ;
-      public boolean hasSpeedUp() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      public boolean getSpeedUp() {
-        return speedUp_;
-      }
-      public Builder setSpeedUp(boolean value) {
-        bitField0_ |= 0x00000010;
-        speedUp_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearSpeedUp() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        speedUp_ = false;
-        onChanged();
-        return this;
-      }
-      
-      // optional int32 gemCostToSpeedup = 6;
-      private int gemCostToSpeedup_ ;
-      public boolean hasGemCostToSpeedup() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      public int getGemCostToSpeedup() {
-        return gemCostToSpeedup_;
-      }
-      public Builder setGemCostToSpeedup(int value) {
-        bitField0_ |= 0x00000020;
-        gemCostToSpeedup_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearGemCostToSpeedup() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        gemCostToSpeedup_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:proto.ExpansionWaitCompleteRequestProto)
-    }
-    
-    static {
-      defaultInstance = new ExpansionWaitCompleteRequestProto(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:proto.ExpansionWaitCompleteRequestProto)
-  }
-  
-  public interface ExpansionWaitCompleteResponseProtoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // optional .proto.MinimumUserProto sender = 1;
-    boolean hasSender();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
-    
-    // optional .proto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus status = 2;
-    boolean hasStatus();
-    com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus getStatus();
-    
-    // optional .proto.UserCityExpansionDataProto ucedp = 3;
-    boolean hasUcedp();
-    com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto getUcedp();
-    com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder getUcedpOrBuilder();
-  }
-  public static final class ExpansionWaitCompleteResponseProto extends
-      com.google.protobuf.GeneratedMessage
-      implements ExpansionWaitCompleteResponseProtoOrBuilder {
-    // Use ExpansionWaitCompleteResponseProto.newBuilder() to construct.
-    private ExpansionWaitCompleteResponseProto(Builder builder) {
-      super(builder);
-    }
-    private ExpansionWaitCompleteResponseProto(boolean noInit) {}
-    
-    private static final ExpansionWaitCompleteResponseProto defaultInstance;
-    public static ExpansionWaitCompleteResponseProto getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public ExpansionWaitCompleteResponseProto getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteResponseProto_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteResponseProto_fieldAccessorTable;
-    }
-    
-    public enum ExpansionWaitCompleteStatus
-        implements com.google.protobuf.ProtocolMessageEnum {
-      SUCCESS(0, 1),
-      FAIL_WAS_NOT_EXPANDING(1, 2),
-      FAIL_NOT_DONE_YET(2, 3),
-      FAIL_INSUFFICIENT_GEMS(3, 4),
-      FAIL_OTHER(4, 5),
-      ;
-      
-      public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_WAS_NOT_EXPANDING_VALUE = 2;
-      public static final int FAIL_NOT_DONE_YET_VALUE = 3;
-      public static final int FAIL_INSUFFICIENT_GEMS_VALUE = 4;
-      public static final int FAIL_OTHER_VALUE = 5;
-      
-      
-      public final int getNumber() { return value; }
-      
-      public static ExpansionWaitCompleteStatus valueOf(int value) {
-        switch (value) {
-          case 1: return SUCCESS;
-          case 2: return FAIL_WAS_NOT_EXPANDING;
-          case 3: return FAIL_NOT_DONE_YET;
-          case 4: return FAIL_INSUFFICIENT_GEMS;
-          case 5: return FAIL_OTHER;
-          default: return null;
-        }
-      }
-      
-      public static com.google.protobuf.Internal.EnumLiteMap<ExpansionWaitCompleteStatus>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<ExpansionWaitCompleteStatus>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<ExpansionWaitCompleteStatus>() {
-              public ExpansionWaitCompleteStatus findValueByNumber(int number) {
-                return ExpansionWaitCompleteStatus.valueOf(number);
-              }
-            };
-      
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.getDescriptor().getEnumTypes().get(0);
-      }
-      
-      private static final ExpansionWaitCompleteStatus[] VALUES = {
-        SUCCESS, FAIL_WAS_NOT_EXPANDING, FAIL_NOT_DONE_YET, FAIL_INSUFFICIENT_GEMS, FAIL_OTHER, 
-      };
-      
-      public static ExpansionWaitCompleteStatus valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-      
-      private final int index;
-      private final int value;
-      
-      private ExpansionWaitCompleteStatus(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-      
-      // @@protoc_insertion_point(enum_scope:proto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus)
-    }
-    
-    private int bitField0_;
-    // optional .proto.MinimumUserProto sender = 1;
-    public static final int SENDER_FIELD_NUMBER = 1;
-    private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_;
-    public boolean hasSender() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
-      return sender_;
-    }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
-      return sender_;
-    }
-    
-    // optional .proto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus status = 2;
-    public static final int STATUS_FIELD_NUMBER = 2;
-    private com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus status_;
-    public boolean hasStatus() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus getStatus() {
-      return status_;
-    }
-    
-    // optional .proto.UserCityExpansionDataProto ucedp = 3;
-    public static final int UCEDP_FIELD_NUMBER = 3;
-    private com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto ucedp_;
-    public boolean hasUcedp() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto getUcedp() {
-      return ucedp_;
-    }
-    public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder getUcedpOrBuilder() {
-      return ucedp_;
-    }
-    
-    private void initFields() {
-      sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      status_ = com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus.SUCCESS;
-      ucedp_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, sender_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeEnum(2, status_.getNumber());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, ucedp_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, sender_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, status_.getNumber());
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, ucedp_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProtoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteResponseProto_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.internal_static_proto_ExpansionWaitCompleteResponseProto_fieldAccessorTable;
-      }
-      
-      // Construct using com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getSenderFieldBuilder();
-          getUcedpFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        if (senderBuilder_ == null) {
-          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-        } else {
-          senderBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        status_ = com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus.SUCCESS;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (ucedpBuilder_ == null) {
-          ucedp_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance();
-        } else {
-          ucedpBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.getDescriptor();
-      }
-      
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto getDefaultInstanceForType() {
-        return com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.getDefaultInstance();
-      }
-      
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto build() {
-        com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto buildPartial() {
-        com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto result = new com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (senderBuilder_ == null) {
-          result.sender_ = sender_;
-        } else {
-          result.sender_ = senderBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.status_ = status_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        if (ucedpBuilder_ == null) {
-          result.ucedp_ = ucedp_;
-        } else {
-          result.ucedp_ = ucedpBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto) {
-          return mergeFrom((com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto other) {
-        if (other == com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.getDefaultInstance()) return this;
-        if (other.hasSender()) {
-          mergeSender(other.getSender());
-        }
-        if (other.hasStatus()) {
-          setStatus(other.getStatus());
-        }
-        if (other.hasUcedp()) {
-          mergeUcedp(other.getUcedp());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 10: {
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder();
-              if (hasSender()) {
-                subBuilder.mergeFrom(getSender());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setSender(subBuilder.buildPartial());
-              break;
-            }
-            case 16: {
-              int rawValue = input.readEnum();
-              com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus value = com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(2, rawValue);
-              } else {
-                bitField0_ |= 0x00000002;
-                status_ = value;
-              }
-              break;
-            }
-            case 26: {
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.newBuilder();
-              if (hasUcedp()) {
-                subBuilder.mergeFrom(getUcedp());
-              }
-              input.readMessage(subBuilder, extensionRegistry);
-              setUcedp(subBuilder.buildPartial());
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // optional .proto.MinimumUserProto sender = 1;
-      private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> senderBuilder_;
-      public boolean hasSender() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
-        if (senderBuilder_ == null) {
-          return sender_;
-        } else {
-          return senderBuilder_.getMessage();
-        }
-      }
-      public Builder setSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
-        if (senderBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          sender_ = value;
-          onChanged();
-        } else {
-          senderBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder setSender(
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder builderForValue) {
-        if (senderBuilder_ == null) {
-          sender_ = builderForValue.build();
-          onChanged();
-        } else {
-          senderBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder mergeSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
-        if (senderBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              sender_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance()) {
-            sender_ =
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder(sender_).mergeFrom(value).buildPartial();
-          } else {
-            sender_ = value;
-          }
-          onChanged();
-        } else {
-          senderBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      public Builder clearSender() {
-        if (senderBuilder_ == null) {
-          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
-          onChanged();
-        } else {
-          senderBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder getSenderBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getSenderFieldBuilder().getBuilder();
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
-        if (senderBuilder_ != null) {
-          return senderBuilder_.getMessageOrBuilder();
-        } else {
-          return sender_;
-        }
-      }
-      private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> 
-          getSenderFieldBuilder() {
-        if (senderBuilder_ == null) {
-          senderBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder>(
-                  sender_,
-                  getParentForChildren(),
-                  isClean());
-          sender_ = null;
-        }
-        return senderBuilder_;
-      }
-      
-      // optional .proto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus status = 2;
-      private com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus status_ = com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus.SUCCESS;
-      public boolean hasStatus() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus getStatus() {
-        return status_;
-      }
-      public Builder setStatus(com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000002;
-        status_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearStatus() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        status_ = com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.ExpansionWaitCompleteStatus.SUCCESS;
-        onChanged();
-        return this;
-      }
-      
-      // optional .proto.UserCityExpansionDataProto ucedp = 3;
-      private com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto ucedp_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto, com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder, com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder> ucedpBuilder_;
-      public boolean hasUcedp() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto getUcedp() {
-        if (ucedpBuilder_ == null) {
-          return ucedp_;
-        } else {
-          return ucedpBuilder_.getMessage();
-        }
-      }
-      public Builder setUcedp(com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto value) {
-        if (ucedpBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ucedp_ = value;
-          onChanged();
-        } else {
-          ucedpBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      public Builder setUcedp(
-          com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder builderForValue) {
-        if (ucedpBuilder_ == null) {
-          ucedp_ = builderForValue.build();
-          onChanged();
-        } else {
-          ucedpBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      public Builder mergeUcedp(com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto value) {
-        if (ucedpBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              ucedp_ != com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance()) {
-            ucedp_ =
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.newBuilder(ucedp_).mergeFrom(value).buildPartial();
-          } else {
-            ucedp_ = value;
-          }
-          onChanged();
-        } else {
-          ucedpBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      public Builder clearUcedp() {
-        if (ucedpBuilder_ == null) {
-          ucedp_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance();
-          onChanged();
-        } else {
-          ucedpBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder getUcedpBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getUcedpFieldBuilder().getBuilder();
-      }
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder getUcedpOrBuilder() {
-        if (ucedpBuilder_ != null) {
-          return ucedpBuilder_.getMessageOrBuilder();
-        } else {
-          return ucedp_;
-        }
-      }
-      private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto, com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder, com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder> 
-          getUcedpFieldBuilder() {
-        if (ucedpBuilder_ == null) {
-          ucedpBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto, com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder, com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder>(
-                  ucedp_,
-                  getParentForChildren(),
-                  isClean());
-          ucedp_ = null;
-        }
-        return ucedpBuilder_;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:proto.ExpansionWaitCompleteResponseProto)
-    }
-    
-    static {
-      defaultInstance = new ExpansionWaitCompleteResponseProto(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:proto.ExpansionWaitCompleteResponseProto)
-  }
-  
   public interface SpawnObstacleRequestProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
@@ -11487,11 +10181,11 @@ public final class EventStructureProto {
     
     // optional .proto.ResourceType resourceType = 5 [default = CASH];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
     
-    // optional int32 userObstacleId = 6;
-    boolean hasUserObstacleId();
-    int getUserObstacleId();
+    // optional string userObstacleUuid = 6;
+    boolean hasUserObstacleUuid();
+    String getUserObstacleUuid();
   }
   public static final class BeginObstacleRemovalRequestProto extends
       com.google.protobuf.GeneratedMessage
@@ -11567,22 +10261,44 @@ public final class EventStructureProto {
     
     // optional .proto.ResourceType resourceType = 5 [default = CASH];
     public static final int RESOURCETYPE_FIELD_NUMBER = 5;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
-    // optional int32 userObstacleId = 6;
-    public static final int USEROBSTACLEID_FIELD_NUMBER = 6;
-    private int userObstacleId_;
-    public boolean hasUserObstacleId() {
+    // optional string userObstacleUuid = 6;
+    public static final int USEROBSTACLEUUID_FIELD_NUMBER = 6;
+    private java.lang.Object userObstacleUuid_;
+    public boolean hasUserObstacleUuid() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
-    public int getUserObstacleId() {
-      return userObstacleId_;
+    public String getUserObstacleUuid() {
+      java.lang.Object ref = userObstacleUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userObstacleUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserObstacleUuidBytes() {
+      java.lang.Object ref = userObstacleUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userObstacleUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     private void initFields() {
@@ -11590,8 +10306,8 @@ public final class EventStructureProto {
       curTime_ = 0L;
       gemsSpent_ = 0;
       resourceChange_ = 0;
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
-      userObstacleId_ = 0;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
+      userObstacleUuid_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -11621,7 +10337,7 @@ public final class EventStructureProto {
         output.writeEnum(5, resourceType_.getNumber());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, userObstacleId_);
+        output.writeBytes(6, getUserObstacleUuidBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -11654,7 +10370,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, userObstacleId_);
+          .computeBytesSize(6, getUserObstacleUuidBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -11793,9 +10509,9 @@ public final class EventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         resourceChange_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         bitField0_ = (bitField0_ & ~0x00000010);
-        userObstacleId_ = 0;
+        userObstacleUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
@@ -11862,7 +10578,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.userObstacleId_ = userObstacleId_;
+        result.userObstacleUuid_ = userObstacleUuid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -11894,8 +10610,8 @@ public final class EventStructureProto {
         if (other.hasResourceType()) {
           setResourceType(other.getResourceType());
         }
-        if (other.hasUserObstacleId()) {
-          setUserObstacleId(other.getUserObstacleId());
+        if (other.hasUserObstacleUuid()) {
+          setUserObstacleUuid(other.getUserObstacleUuid());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -11954,7 +10670,7 @@ public final class EventStructureProto {
             }
             case 40: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(5, rawValue);
               } else {
@@ -11963,9 +10679,9 @@ public final class EventStructureProto {
               }
               break;
             }
-            case 48: {
+            case 50: {
               bitField0_ |= 0x00000020;
-              userObstacleId_ = input.readInt32();
+              userObstacleUuid_ = input.readBytes();
               break;
             }
           }
@@ -12128,14 +10844,14 @@ public final class EventStructureProto {
       }
       
       // optional .proto.ResourceType resourceType = 5 [default = CASH];
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -12146,30 +10862,45 @@ public final class EventStructureProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         onChanged();
         return this;
       }
       
-      // optional int32 userObstacleId = 6;
-      private int userObstacleId_ ;
-      public boolean hasUserObstacleId() {
+      // optional string userObstacleUuid = 6;
+      private java.lang.Object userObstacleUuid_ = "";
+      public boolean hasUserObstacleUuid() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
-      public int getUserObstacleId() {
-        return userObstacleId_;
+      public String getUserObstacleUuid() {
+        java.lang.Object ref = userObstacleUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userObstacleUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserObstacleId(int value) {
-        bitField0_ |= 0x00000020;
-        userObstacleId_ = value;
+      public Builder setUserObstacleUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        userObstacleUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserObstacleId() {
+      public Builder clearUserObstacleUuid() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        userObstacleId_ = 0;
+        userObstacleUuid_ = getDefaultInstance().getUserObstacleUuid();
         onChanged();
         return this;
+      }
+      void setUserObstacleUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000020;
+        userObstacleUuid_ = value;
+        onChanged();
       }
       
       // @@protoc_insertion_point(builder_scope:proto.BeginObstacleRemovalRequestProto)
@@ -12768,9 +11499,9 @@ public final class EventStructureProto {
     boolean hasGemsSpent();
     int getGemsSpent();
     
-    // optional int32 userObstacleId = 5;
-    boolean hasUserObstacleId();
-    int getUserObstacleId();
+    // optional string userObstacleUuid = 5;
+    boolean hasUserObstacleUuid();
+    String getUserObstacleUuid();
     
     // optional bool atMaxObstacles = 6;
     boolean hasAtMaxObstacles();
@@ -12848,14 +11579,36 @@ public final class EventStructureProto {
       return gemsSpent_;
     }
     
-    // optional int32 userObstacleId = 5;
-    public static final int USEROBSTACLEID_FIELD_NUMBER = 5;
-    private int userObstacleId_;
-    public boolean hasUserObstacleId() {
+    // optional string userObstacleUuid = 5;
+    public static final int USEROBSTACLEUUID_FIELD_NUMBER = 5;
+    private java.lang.Object userObstacleUuid_;
+    public boolean hasUserObstacleUuid() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
-    public int getUserObstacleId() {
-      return userObstacleId_;
+    public String getUserObstacleUuid() {
+      java.lang.Object ref = userObstacleUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userObstacleUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserObstacleUuidBytes() {
+      java.lang.Object ref = userObstacleUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userObstacleUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional bool atMaxObstacles = 6;
@@ -12873,7 +11626,7 @@ public final class EventStructureProto {
       curTime_ = 0L;
       speedUp_ = false;
       gemsSpent_ = 0;
-      userObstacleId_ = 0;
+      userObstacleUuid_ = "";
       atMaxObstacles_ = false;
     }
     private byte memoizedIsInitialized = -1;
@@ -12901,7 +11654,7 @@ public final class EventStructureProto {
         output.writeInt32(4, gemsSpent_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, userObstacleId_);
+        output.writeBytes(5, getUserObstacleUuidBytes());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBool(6, atMaxObstacles_);
@@ -12933,7 +11686,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, userObstacleId_);
+          .computeBytesSize(5, getUserObstacleUuidBytes());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
@@ -13076,7 +11829,7 @@ public final class EventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         gemsSpent_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        userObstacleId_ = 0;
+        userObstacleUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
         atMaxObstacles_ = false;
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -13141,7 +11894,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.userObstacleId_ = userObstacleId_;
+        result.userObstacleUuid_ = userObstacleUuid_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
@@ -13174,8 +11927,8 @@ public final class EventStructureProto {
         if (other.hasGemsSpent()) {
           setGemsSpent(other.getGemsSpent());
         }
-        if (other.hasUserObstacleId()) {
-          setUserObstacleId(other.getUserObstacleId());
+        if (other.hasUserObstacleUuid()) {
+          setUserObstacleUuid(other.getUserObstacleUuid());
         }
         if (other.hasAtMaxObstacles()) {
           setAtMaxObstacles(other.getAtMaxObstacles());
@@ -13235,9 +11988,9 @@ public final class EventStructureProto {
               gemsSpent_ = input.readInt32();
               break;
             }
-            case 40: {
+            case 42: {
               bitField0_ |= 0x00000010;
-              userObstacleId_ = input.readInt32();
+              userObstacleUuid_ = input.readBytes();
               break;
             }
             case 48: {
@@ -13404,25 +12157,40 @@ public final class EventStructureProto {
         return this;
       }
       
-      // optional int32 userObstacleId = 5;
-      private int userObstacleId_ ;
-      public boolean hasUserObstacleId() {
+      // optional string userObstacleUuid = 5;
+      private java.lang.Object userObstacleUuid_ = "";
+      public boolean hasUserObstacleUuid() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
-      public int getUserObstacleId() {
-        return userObstacleId_;
+      public String getUserObstacleUuid() {
+        java.lang.Object ref = userObstacleUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userObstacleUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserObstacleId(int value) {
-        bitField0_ |= 0x00000010;
-        userObstacleId_ = value;
+      public Builder setUserObstacleUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        userObstacleUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserObstacleId() {
+      public Builder clearUserObstacleUuid() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        userObstacleId_ = 0;
+        userObstacleUuid_ = getDefaultInstance().getUserObstacleUuid();
         onChanged();
         return this;
+      }
+      void setUserObstacleUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000010;
+        userObstacleUuid_ = value;
+        onChanged();
       }
       
       // optional bool atMaxObstacles = 6;
@@ -14085,16 +12853,6 @@ public final class EventStructureProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_proto_RetrieveCurrencyFromNormStructureResponseProto_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_proto_ExpansionWaitCompleteRequestProto_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_proto_ExpansionWaitCompleteRequestProto_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_proto_ExpansionWaitCompleteResponseProto_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_proto_ExpansionWaitCompleteResponseProto_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_proto_SpawnObstacleRequestProto_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -14133,138 +12891,126 @@ public final class EventStructureProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024EventStructure.proto\022\005proto\032\022NoneventC" +
-      "ity.proto\032\027NoneventStructure.proto\032\022None" +
-      "ventUser.proto\"\205\002\n!PurchaseNormStructure" +
-      "RequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min" +
-      "imumUserProto\0221\n\021structCoordinates\030\002 \001(\013" +
-      "2\026.proto.CoordinateProto\022\020\n\010structId\030\003 \001" +
-      "(\005\022\026\n\016timeOfPurchase\030\004 \001(\003\022\021\n\tgemsSpent\030" +
-      "\005 \001(\005\022\026\n\016resourceChange\030\006 \001(\021\022/\n\014resourc" +
-      "eType\030\007 \001(\0162\023.proto.ResourceType:\004CASH\"\312" +
-      "\002\n\"PurchaseNormStructureResponseProto\022\'\n",
-      "\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022U" +
-      "\n\006status\030\002 \001(\0162E.proto.PurchaseNormStruc" +
-      "tureResponseProto.PurchaseNormStructureS" +
-      "tatus\022\024\n\014userStructId\030\003 \001(\005\"\215\001\n\033Purchase" +
-      "NormStructureStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL" +
-      "_INSUFFICIENT_CASH\020\002\022\032\n\026FAIL_INSUFFICIEN" +
-      "T_GEMS\020\003\022\031\n\025FAIL_INSUFFICIENT_OIL\020\004\022\016\n\nF" +
-      "AIL_OTHER\020\005\"\331\002\n%MoveOrRotateNormStructur" +
-      "eRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Mi" +
-      "nimumUserProto\022\024\n\014userStructId\030\002 \001(\005\022U\n\004",
-      "type\030\003 \001(\0162G.proto.MoveOrRotateNormStruc" +
-      "tureRequestProto.MoveOrRotateNormStructT" +
-      "ype\0224\n\024curStructCoordinates\030\004 \001(\0132\026.prot" +
+      "\n\024EventStructure.proto\022\005proto\032\036ConfigNon" +
+      "eventSharedEnum.proto\032\022NoneventCity.prot" +
+      "o\032\027NoneventStructure.proto\032\022NoneventUser" +
+      ".proto\"\205\002\n!PurchaseNormStructureRequestP" +
+      "roto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUser" +
+      "Proto\0221\n\021structCoordinates\030\002 \001(\0132\026.proto" +
+      ".CoordinateProto\022\020\n\010structId\030\003 \001(\005\022\026\n\016ti" +
+      "meOfPurchase\030\004 \001(\003\022\021\n\tgemsSpent\030\005 \001(\005\022\026\n" +
+      "\016resourceChange\030\006 \001(\021\022/\n\014resourceType\030\007 " +
+      "\001(\0162\023.proto.ResourceType:\004CASH\"\312\002\n\"Purch",
+      "aseNormStructureResponseProto\022\'\n\006sender\030" +
+      "\001 \001(\0132\027.proto.MinimumUserProto\022U\n\006status" +
+      "\030\002 \001(\0162E.proto.PurchaseNormStructureResp" +
+      "onseProto.PurchaseNormStructureStatus\022\024\n" +
+      "\014userStructId\030\003 \001(\005\"\215\001\n\033PurchaseNormStru" +
+      "ctureStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFI" +
+      "CIENT_CASH\020\002\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\003" +
+      "\022\031\n\025FAIL_INSUFFICIENT_OIL\020\004\022\016\n\nFAIL_OTHE" +
+      "R\020\005\"\341\002\n%MoveOrRotateNormStructureRequest" +
+      "Proto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUse",
+      "rProto\022\026\n\016userStructUuid\030\002 \001(\t\022[\n\004type\030\003" +
+      " \001(\0162G.proto.MoveOrRotateNormStructureRe" +
+      "questProto.MoveOrRotateNormStructType:\004M" +
+      "OVE\0224\n\024curStructCoordinates\030\004 \001(\0132\026.prot" +
       "o.CoordinateProto\022<\n\016newOrientation\030\005 \001(" +
       "\0162\030.proto.StructOrientation:\nPOSITION_1\"" +
       "&\n\032MoveOrRotateNormStructType\022\010\n\004MOVE\020\001\"" +
       "\360\001\n&MoveOrRotateNormStructureResponsePro" +
       "to\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserPr" +
-      "oto\022]\n\006status\030\002 \001(\0162M.proto.MoveOrRotate" +
-      "NormStructureResponseProto.MoveOrRotateN",
+      "oto\022]\n\006status\030\002 \001(\0162M.proto.MoveOrRotate",
+      "NormStructureResponseProto.MoveOrRotateN" +
       "ormStructureStatus\">\n\037MoveOrRotateNormSt" +
       "ructureStatus\022\013\n\007SUCCESS\020\001\022\016\n\nOTHER_FAIL" +
-      "\020\002\"\324\001\n UpgradeNormStructureRequestProto\022" +
+      "\020\002\"\326\001\n UpgradeNormStructureRequestProto\022" +
       "\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto" +
-      "\022\024\n\014userStructId\030\002 \001(\005\022\025\n\rtimeOfUpgrade\030" +
-      "\003 \001(\003\022\021\n\tgemsSpent\030\004 \001(\005\022\026\n\016resourceChan" +
-      "ge\030\005 \001(\021\022/\n\014resourceType\030\006 \001(\0162\023.proto.R" +
-      "esourceType:\004CASH\"\374\002\n!UpgradeNormStructu" +
-      "reResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto." +
-      "MinimumUserProto\022S\n\006status\030\002 \001(\0162C.proto",
-      ".UpgradeNormStructureResponseProto.Upgra" +
-      "deNormStructureStatus\"\330\001\n\032UpgradeNormStr" +
-      "uctureStatus\022\013\n\007SUCCESS\020\001\022\030\n\024FAIL_NOT_EN" +
-      "OUGH_CASH\020\002\022\030\n\024FAIL_NOT_ENOUGH_GEMS\020\003\022\027\n" +
-      "\023FAIL_NOT_ENOUGH_OIL\020\004\022\026\n\022FAIL_NOT_BUILT" +
-      "_YET\020\005\022\031\n\025FAIL_NOT_USERS_STRUCT\020\006\022\035\n\031FAI" +
-      "L_AT_MAX_LEVEL_ALREADY\020\010\022\016\n\nFAIL_OTHER\020\t" +
-      "\"\242\001\n0FinishNormStructWaittimeWithDiamond" +
-      "sRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Mi" +
-      "nimumUserProto\022\024\n\014userStructId\030\002 \001(\005\022\025\n\r",
-      "timeOfSpeedup\030\003 \001(\003\022\030\n\020gemCostToSpeedup\030" +
-      "\004 \001(\005\"\236\002\n1FinishNormStructWaittimeWithDi" +
-      "amondsResponseProto\022\'\n\006sender\030\001 \001(\0132\027.pr" +
-      "oto.MinimumUserProto\022g\n\006status\030\002 \001(\0162W.p" +
-      "roto.FinishNormStructWaittimeWithDiamond" +
-      "sResponseProto.FinishNormStructWaittimeS" +
-      "tatus\"W\n\036FinishNormStructWaittimeStatus\022" +
-      "\013\n\007SUCCESS\020\001\022\030\n\024FAIL_NOT_ENOUGH_GEMS\020\002\022\016" +
-      "\n\nFAIL_OTHER\020\003\"t\n\"NormStructWaitComplete" +
-      "RequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min",
-      "imumUserProto\022\024\n\014userStructId\030\002 \003(\005\022\017\n\007c" +
-      "urTime\030\003 \001(\003\"\256\002\n#NormStructWaitCompleteR" +
-      "esponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min" +
-      "imumUserProto\022W\n\006status\030\002 \001(\0162G.proto.No" +
-      "rmStructWaitCompleteResponseProto.NormSt" +
-      "ructWaitCompleteStatus\0221\n\nuserStruct\030\003 \003" +
-      "(\0132\035.proto.FullUserStructureProto\"R\n\034Nor" +
-      "mStructWaitCompleteStatus\022\013\n\007SUCCESS\020\001\022\025" +
-      "\n\021FAIL_NOT_DONE_YET\020\002\022\016\n\nFAIL_OTHER\020\003\"\243\002" +
-      "\n-RetrieveCurrencyFromNormStructureReque",
-      "stProto\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumU" +
-      "serProtoWithMaxResources\022^\n\020structRetrie" +
-      "vals\030\002 \003(\0132D.proto.RetrieveCurrencyFromN" +
-      "ormStructureRequestProto.StructRetrieval" +
-      "\032Y\n\017StructRetrieval\022\024\n\014userStructId\030\001 \001(" +
-      "\005\022\027\n\017timeOfRetrieval\030\002 \001(\003\022\027\n\017amountColl" +
-      "ected\030\003 \001(\005\"\240\002\n.RetrieveCurrencyFromNorm" +
-      "StructureResponseProto\0227\n\006sender\030\001 \001(\0132\'" +
-      ".proto.MinimumUserProtoWithMaxResources\022" +
-      "m\n\006status\030\002 \001(\0162].proto.RetrieveCurrency",
-      "FromNormStructureResponseProto.RetrieveC" +
-      "urrencyFromNormStructureStatus\"F\n\'Retrie" +
-      "veCurrencyFromNormStructureStatus\022\013\n\007SUC" +
-      "CESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\256\001\n!ExpansionWait" +
-      "CompleteRequestProto\022\'\n\006sender\030\001 \001(\0132\027.p" +
-      "roto.MinimumUserProto\022\017\n\007curTime\030\002 \001(\003\022\021" +
-      "\n\txPosition\030\003 \001(\021\022\021\n\tyPosition\030\004 \001(\021\022\017\n\007" +
-      "speedUp\030\005 \001(\010\022\030\n\020gemCostToSpeedup\030\006 \001(\005\"" +
-      "\342\002\n\"ExpansionWaitCompleteResponseProto\022\'" +
-      "\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022",
-      "U\n\006status\030\002 \001(\0162E.proto.ExpansionWaitCom" +
-      "pleteResponseProto.ExpansionWaitComplete" +
-      "Status\0220\n\005ucedp\030\003 \001(\0132!.proto.UserCityEx" +
-      "pansionDataProto\"\211\001\n\033ExpansionWaitComple" +
-      "teStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_WAS_NOT_EX" +
-      "PANDING\020\002\022\025\n\021FAIL_NOT_DONE_YET\020\003\022\032\n\026FAIL" +
-      "_INSUFFICIENT_GEMS\020\004\022\016\n\nFAIL_OTHER\020\005\"\220\001\n" +
-      "\031SpawnObstacleRequestProto\022\'\n\006sender\030\001 \001" +
-      "(\0132\027.proto.MinimumUserProto\0229\n\024prospecti" +
-      "veObstacles\030\002 \003(\0132\033.proto.MinimumObstacl",
-      "eProto\022\017\n\007curTime\030\003 \001(\003\"\364\001\n\032SpawnObstacl" +
-      "eResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.M" +
-      "inimumUserProto\0222\n\020spawnedObstacles\030\002 \003(" +
-      "\0132\030.proto.UserObstacleProto\022E\n\006status\030\003 " +
-      "\001(\01625.proto.SpawnObstacleResponseProto.S" +
-      "pawnObstacleStatus\"2\n\023SpawnObstacleStatu" +
-      "s\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\320\001\n Begin" +
-      "ObstacleRemovalRequestProto\022\'\n\006sender\030\001 " +
-      "\001(\0132\027.proto.MinimumUserProto\022\017\n\007curTime\030" +
-      "\002 \001(\003\022\021\n\tgemsSpent\030\003 \001(\005\022\026\n\016resourceChan",
-      "ge\030\004 \001(\021\022/\n\014resourceType\030\005 \001(\0162\023.proto.R" +
-      "esourceType:\004CASH\022\026\n\016userObstacleId\030\006 \001(" +
-      "\005\"\230\002\n!BeginObstacleRemovalResponseProto\022" +
-      "\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto" +
-      "\022S\n\006status\030\002 \001(\0162C.proto.BeginObstacleRe" +
-      "movalResponseProto.BeginObstacleRemovalS" +
-      "tatus\"u\n\032BeginObstacleRemovalStatus\022\013\n\007S" +
-      "UCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\036\n\032" +
-      "FAIL_INSUFFICIENT_RESOURCE\020\003\022\016\n\nFAIL_OTH" +
-      "ER\020\004\"\263\001\n#ObstacleRemovalCompleteRequestP",
-      "roto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUser" +
-      "Proto\022\017\n\007curTime\030\002 \001(\003\022\017\n\007speedUp\030\003 \001(\010\022" +
-      "\021\n\tgemsSpent\030\004 \001(\005\022\026\n\016userObstacleId\030\005 \001" +
-      "(\005\022\026\n\016atMaxObstacles\030\006 \001(\010\"\204\002\n$ObstacleR" +
-      "emovalCompleteResponseProto\022\'\n\006sender\030\001 " +
-      "\001(\0132\027.proto.MinimumUserProto\022Y\n\006status\030\002" +
-      " \001(\0162I.proto.ObstacleRemovalCompleteResp" +
-      "onseProto.ObstacleRemovalCompleteStatus\"" +
-      "X\n\035ObstacleRemovalCompleteStatus\022\013\n\007SUCC" +
-      "ESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\016\n\nFAI",
-      "L_OTHER\020\003B3\n\034com.lvl6.mobsters.eventprot" +
-      "oB\023EventStructureProto"
+      "\022\026\n\016userStructUuid\030\002 \001(\t\022\025\n\rtimeOfUpgrad" +
+      "e\030\003 \001(\003\022\021\n\tgemsSpent\030\004 \001(\005\022\026\n\016resourceCh" +
+      "ange\030\005 \001(\021\022/\n\014resourceType\030\006 \001(\0162\023.proto" +
+      ".ResourceType:\004CASH\"\374\002\n!UpgradeNormStruc" +
+      "tureResponseProto\022\'\n\006sender\030\001 \001(\0132\027.prot",
+      "o.MinimumUserProto\022S\n\006status\030\002 \001(\0162C.pro" +
+      "to.UpgradeNormStructureResponseProto.Upg" +
+      "radeNormStructureStatus\"\330\001\n\032UpgradeNormS" +
+      "tructureStatus\022\013\n\007SUCCESS\020\001\022\030\n\024FAIL_NOT_" +
+      "ENOUGH_CASH\020\002\022\030\n\024FAIL_NOT_ENOUGH_GEMS\020\003\022" +
+      "\027\n\023FAIL_NOT_ENOUGH_OIL\020\004\022\026\n\022FAIL_NOT_BUI" +
+      "LT_YET\020\005\022\031\n\025FAIL_NOT_USERS_STRUCT\020\006\022\035\n\031F" +
+      "AIL_AT_MAX_LEVEL_ALREADY\020\010\022\016\n\nFAIL_OTHER" +
+      "\020\t\"\244\001\n0FinishNormStructWaittimeWithDiamo" +
+      "ndsRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.",
+      "MinimumUserProto\022\026\n\016userStructUuid\030\002 \001(\t" +
+      "\022\025\n\rtimeOfSpeedup\030\003 \001(\003\022\030\n\020gemCostToSpee" +
+      "dup\030\004 \001(\005\"\236\002\n1FinishNormStructWaittimeWi" +
+      "thDiamondsResponseProto\022\'\n\006sender\030\001 \001(\0132" +
+      "\027.proto.MinimumUserProto\022g\n\006status\030\002 \001(\016" +
+      "2W.proto.FinishNormStructWaittimeWithDia" +
+      "mondsResponseProto.FinishNormStructWaitt" +
+      "imeStatus\"W\n\036FinishNormStructWaittimeSta" +
+      "tus\022\013\n\007SUCCESS\020\001\022\030\n\024FAIL_NOT_ENOUGH_GEMS" +
+      "\020\002\022\016\n\nFAIL_OTHER\020\003\"v\n\"NormStructWaitComp",
+      "leteRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto" +
+      ".MinimumUserProto\022\026\n\016userStructUuid\030\002 \003(" +
+      "\t\022\017\n\007curTime\030\003 \001(\003\"\256\002\n#NormStructWaitCom" +
+      "pleteResponseProto\022\'\n\006sender\030\001 \001(\0132\027.pro" +
+      "to.MinimumUserProto\022W\n\006status\030\002 \001(\0162G.pr" +
+      "oto.NormStructWaitCompleteResponseProto." +
+      "NormStructWaitCompleteStatus\0221\n\nuserStru" +
+      "ct\030\003 \003(\0132\035.proto.FullUserStructureProto\"" +
+      "R\n\034NormStructWaitCompleteStatus\022\013\n\007SUCCE" +
+      "SS\020\001\022\025\n\021FAIL_NOT_DONE_YET\020\002\022\016\n\nFAIL_OTHE",
+      "R\020\003\"\243\002\n-RetrieveCurrencyFromNormStructur" +
+      "eRequestProto\0227\n\006sender\030\001 \001(\0132\'.proto.Mi" +
+      "nimumUserProtoWithMaxResources\022^\n\020struct" +
+      "Retrievals\030\002 \003(\0132D.proto.RetrieveCurrenc" +
+      "yFromNormStructureRequestProto.StructRet" +
+      "rieval\032Y\n\017StructRetrieval\022\024\n\014userStructI" +
+      "d\030\001 \001(\005\022\027\n\017timeOfRetrieval\030\002 \001(\003\022\027\n\017amou" +
+      "ntCollected\030\003 \001(\005\"\240\002\n.RetrieveCurrencyFr" +
+      "omNormStructureResponseProto\0227\n\006sender\030\001" +
+      " \001(\0132\'.proto.MinimumUserProtoWithMaxReso",
+      "urces\022m\n\006status\030\002 \001(\0162].proto.RetrieveCu" +
+      "rrencyFromNormStructureResponseProto.Ret" +
+      "rieveCurrencyFromNormStructureStatus\"F\n\'" +
+      "RetrieveCurrencyFromNormStructureStatus\022" +
+      "\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\220\001\n\031SpawnOb" +
+      "stacleRequestProto\022\'\n\006sender\030\001 \001(\0132\027.pro" +
+      "to.MinimumUserProto\0229\n\024prospectiveObstac" +
+      "les\030\002 \003(\0132\033.proto.MinimumObstacleProto\022\017" +
+      "\n\007curTime\030\003 \001(\003\"\364\001\n\032SpawnObstacleRespons" +
+      "eProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUs",
+      "erProto\0222\n\020spawnedObstacles\030\002 \003(\0132\030.prot" +
+      "o.UserObstacleProto\022E\n\006status\030\003 \001(\01625.pr" +
+      "oto.SpawnObstacleResponseProto.SpawnObst" +
+      "acleStatus\"2\n\023SpawnObstacleStatus\022\013\n\007SUC" +
+      "CESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\322\001\n BeginObstacle" +
+      "RemovalRequestProto\022\'\n\006sender\030\001 \001(\0132\027.pr" +
+      "oto.MinimumUserProto\022\017\n\007curTime\030\002 \001(\003\022\021\n" +
+      "\tgemsSpent\030\003 \001(\005\022\026\n\016resourceChange\030\004 \001(\021" +
+      "\022/\n\014resourceType\030\005 \001(\0162\023.proto.ResourceT" +
+      "ype:\004CASH\022\030\n\020userObstacleUuid\030\006 \001(\t\"\230\002\n!",
+      "BeginObstacleRemovalResponseProto\022\'\n\006sen" +
+      "der\030\001 \001(\0132\027.proto.MinimumUserProto\022S\n\006st" +
+      "atus\030\002 \001(\0162C.proto.BeginObstacleRemovalR" +
+      "esponseProto.BeginObstacleRemovalStatus\"" +
+      "u\n\032BeginObstacleRemovalStatus\022\013\n\007SUCCESS" +
+      "\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\036\n\032FAIL_I" +
+      "NSUFFICIENT_RESOURCE\020\003\022\016\n\nFAIL_OTHER\020\004\"\265" +
+      "\001\n#ObstacleRemovalCompleteRequestProto\022\'" +
+      "\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022" +
+      "\017\n\007curTime\030\002 \001(\003\022\017\n\007speedUp\030\003 \001(\010\022\021\n\tgem",
+      "sSpent\030\004 \001(\005\022\030\n\020userObstacleUuid\030\005 \001(\t\022\026" +
+      "\n\016atMaxObstacles\030\006 \001(\010\"\204\002\n$ObstacleRemov" +
+      "alCompleteResponseProto\022\'\n\006sender\030\001 \001(\0132" +
+      "\027.proto.MinimumUserProto\022Y\n\006status\030\002 \001(\016" +
+      "2I.proto.ObstacleRemovalCompleteResponse" +
+      "Proto.ObstacleRemovalCompleteStatus\"X\n\035O" +
+      "bstacleRemovalCompleteStatus\022\013\n\007SUCCESS\020" +
+      "\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\016\n\nFAIL_OT" +
+      "HER\020\003B3\n\034com.lvl6.mobsters.eventprotoB\023E" +
+      "ventStructureProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -14292,7 +13038,7 @@ public final class EventStructureProto {
           internal_static_proto_MoveOrRotateNormStructureRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_MoveOrRotateNormStructureRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "UserStructId", "Type", "CurStructCoordinates", "NewOrientation", },
+              new java.lang.String[] { "Sender", "UserStructUuid", "Type", "CurStructCoordinates", "NewOrientation", },
               com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.Builder.class);
           internal_static_proto_MoveOrRotateNormStructureResponseProto_descriptor =
@@ -14308,7 +13054,7 @@ public final class EventStructureProto {
           internal_static_proto_UpgradeNormStructureRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_UpgradeNormStructureRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "UserStructId", "TimeOfUpgrade", "GemsSpent", "ResourceChange", "ResourceType", },
+              new java.lang.String[] { "Sender", "UserStructUuid", "TimeOfUpgrade", "GemsSpent", "ResourceChange", "ResourceType", },
               com.lvl6.mobsters.eventproto.EventStructureProto.UpgradeNormStructureRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.UpgradeNormStructureRequestProto.Builder.class);
           internal_static_proto_UpgradeNormStructureResponseProto_descriptor =
@@ -14324,7 +13070,7 @@ public final class EventStructureProto {
           internal_static_proto_FinishNormStructWaittimeWithDiamondsRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FinishNormStructWaittimeWithDiamondsRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "UserStructId", "TimeOfSpeedup", "GemCostToSpeedup", },
+              new java.lang.String[] { "Sender", "UserStructUuid", "TimeOfSpeedup", "GemCostToSpeedup", },
               com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsRequestProto.Builder.class);
           internal_static_proto_FinishNormStructWaittimeWithDiamondsResponseProto_descriptor =
@@ -14340,7 +13086,7 @@ public final class EventStructureProto {
           internal_static_proto_NormStructWaitCompleteRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_NormStructWaitCompleteRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "UserStructId", "CurTime", },
+              new java.lang.String[] { "Sender", "UserStructUuid", "CurTime", },
               com.lvl6.mobsters.eventproto.EventStructureProto.NormStructWaitCompleteRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.NormStructWaitCompleteRequestProto.Builder.class);
           internal_static_proto_NormStructWaitCompleteResponseProto_descriptor =
@@ -14375,24 +13121,8 @@ public final class EventStructureProto {
               new java.lang.String[] { "Sender", "Status", },
               com.lvl6.mobsters.eventproto.EventStructureProto.RetrieveCurrencyFromNormStructureResponseProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.RetrieveCurrencyFromNormStructureResponseProto.Builder.class);
-          internal_static_proto_ExpansionWaitCompleteRequestProto_descriptor =
-            getDescriptor().getMessageTypes().get(12);
-          internal_static_proto_ExpansionWaitCompleteRequestProto_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_proto_ExpansionWaitCompleteRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "CurTime", "XPosition", "YPosition", "SpeedUp", "GemCostToSpeedup", },
-              com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto.class,
-              com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteRequestProto.Builder.class);
-          internal_static_proto_ExpansionWaitCompleteResponseProto_descriptor =
-            getDescriptor().getMessageTypes().get(13);
-          internal_static_proto_ExpansionWaitCompleteResponseProto_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_proto_ExpansionWaitCompleteResponseProto_descriptor,
-              new java.lang.String[] { "Sender", "Status", "Ucedp", },
-              com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.class,
-              com.lvl6.mobsters.eventproto.EventStructureProto.ExpansionWaitCompleteResponseProto.Builder.class);
           internal_static_proto_SpawnObstacleRequestProto_descriptor =
-            getDescriptor().getMessageTypes().get(14);
+            getDescriptor().getMessageTypes().get(12);
           internal_static_proto_SpawnObstacleRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_SpawnObstacleRequestProto_descriptor,
@@ -14400,7 +13130,7 @@ public final class EventStructureProto {
               com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleRequestProto.Builder.class);
           internal_static_proto_SpawnObstacleResponseProto_descriptor =
-            getDescriptor().getMessageTypes().get(15);
+            getDescriptor().getMessageTypes().get(13);
           internal_static_proto_SpawnObstacleResponseProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_SpawnObstacleResponseProto_descriptor,
@@ -14408,15 +13138,15 @@ public final class EventStructureProto {
               com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleResponseProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleResponseProto.Builder.class);
           internal_static_proto_BeginObstacleRemovalRequestProto_descriptor =
-            getDescriptor().getMessageTypes().get(16);
+            getDescriptor().getMessageTypes().get(14);
           internal_static_proto_BeginObstacleRemovalRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_BeginObstacleRemovalRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "CurTime", "GemsSpent", "ResourceChange", "ResourceType", "UserObstacleId", },
+              new java.lang.String[] { "Sender", "CurTime", "GemsSpent", "ResourceChange", "ResourceType", "UserObstacleUuid", },
               com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalRequestProto.Builder.class);
           internal_static_proto_BeginObstacleRemovalResponseProto_descriptor =
-            getDescriptor().getMessageTypes().get(17);
+            getDescriptor().getMessageTypes().get(15);
           internal_static_proto_BeginObstacleRemovalResponseProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_BeginObstacleRemovalResponseProto_descriptor,
@@ -14424,15 +13154,15 @@ public final class EventStructureProto {
               com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalResponseProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalResponseProto.Builder.class);
           internal_static_proto_ObstacleRemovalCompleteRequestProto_descriptor =
-            getDescriptor().getMessageTypes().get(18);
+            getDescriptor().getMessageTypes().get(16);
           internal_static_proto_ObstacleRemovalCompleteRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_ObstacleRemovalCompleteRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "CurTime", "SpeedUp", "GemsSpent", "UserObstacleId", "AtMaxObstacles", },
+              new java.lang.String[] { "Sender", "CurTime", "SpeedUp", "GemsSpent", "UserObstacleUuid", "AtMaxObstacles", },
               com.lvl6.mobsters.eventproto.EventStructureProto.ObstacleRemovalCompleteRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.ObstacleRemovalCompleteRequestProto.Builder.class);
           internal_static_proto_ObstacleRemovalCompleteResponseProto_descriptor =
-            getDescriptor().getMessageTypes().get(19);
+            getDescriptor().getMessageTypes().get(17);
           internal_static_proto_ObstacleRemovalCompleteResponseProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_ObstacleRemovalCompleteResponseProto_descriptor,
@@ -14445,6 +13175,7 @@ public final class EventStructureProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventCityProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventUserProto.getDescriptor(),

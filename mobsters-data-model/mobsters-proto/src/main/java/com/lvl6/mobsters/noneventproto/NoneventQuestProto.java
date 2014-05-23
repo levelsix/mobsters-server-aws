@@ -4137,9 +4137,9 @@ public final class NoneventQuestProto {
   public interface FullUserQuestProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // optional int32 userId = 1;
-    boolean hasUserId();
-    int getUserId();
+    // optional string userUuid = 1;
+    boolean hasUserUuid();
+    String getUserUuid();
     
     // optional int32 questId = 2;
     boolean hasQuestId();
@@ -4192,14 +4192,36 @@ public final class NoneventQuestProto {
     }
     
     private int bitField0_;
-    // optional int32 userId = 1;
-    public static final int USERID_FIELD_NUMBER = 1;
-    private int userId_;
-    public boolean hasUserId() {
+    // optional string userUuid = 1;
+    public static final int USERUUID_FIELD_NUMBER = 1;
+    private java.lang.Object userUuid_;
+    public boolean hasUserUuid() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public int getUserId() {
-      return userId_;
+    public String getUserUuid() {
+      java.lang.Object ref = userUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserUuidBytes() {
+      java.lang.Object ref = userUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional int32 questId = 2;
@@ -4254,7 +4276,7 @@ public final class NoneventQuestProto {
     }
     
     private void initFields() {
-      userId_ = 0;
+      userUuid_ = "";
       questId_ = 0;
       isRedeemed_ = false;
       isComplete_ = false;
@@ -4273,7 +4295,7 @@ public final class NoneventQuestProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, userId_);
+        output.writeBytes(1, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, questId_);
@@ -4298,7 +4320,7 @@ public final class NoneventQuestProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, userId_);
+          .computeBytesSize(1, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -4441,7 +4463,7 @@ public final class NoneventQuestProto {
       
       public Builder clear() {
         super.clear();
-        userId_ = 0;
+        userUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         questId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -4496,7 +4518,7 @@ public final class NoneventQuestProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.userId_ = userId_;
+        result.userUuid_ = userUuid_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -4534,8 +4556,8 @@ public final class NoneventQuestProto {
       
       public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto other) {
         if (other == com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto.getDefaultInstance()) return this;
-        if (other.hasUserId()) {
-          setUserId(other.getUserId());
+        if (other.hasUserUuid()) {
+          setUserUuid(other.getUserUuid());
         }
         if (other.hasQuestId()) {
           setQuestId(other.getQuestId());
@@ -4603,9 +4625,9 @@ public final class NoneventQuestProto {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              userId_ = input.readInt32();
+              userUuid_ = input.readBytes();
               break;
             }
             case 16: {
@@ -4635,25 +4657,40 @@ public final class NoneventQuestProto {
       
       private int bitField0_;
       
-      // optional int32 userId = 1;
-      private int userId_ ;
-      public boolean hasUserId() {
+      // optional string userUuid = 1;
+      private java.lang.Object userUuid_ = "";
+      public boolean hasUserUuid() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public int getUserId() {
-        return userId_;
+      public String getUserUuid() {
+        java.lang.Object ref = userUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserId(int value) {
-        bitField0_ |= 0x00000001;
-        userId_ = value;
+      public Builder setUserUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserId() {
+      public Builder clearUserUuid() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        userId_ = 0;
+        userUuid_ = getDefaultInstance().getUserUuid();
         onChanged();
         return this;
+      }
+      void setUserUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        userUuid_ = value;
+        onChanged();
       }
       
       // optional int32 questId = 2;
@@ -6232,9 +6269,9 @@ public final class NoneventQuestProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023NoneventQuest.proto\022\005proto\032\022NoneventCh" +
-      "at.proto\032\025NoneventMonster.proto\032\036ConfigN" +
-      "oneventSharedEnum.proto\032\027NoneventStructu" +
+      "\n\023NoneventQuest.proto\022\005proto\032\036ConfigNone" +
+      "ventSharedEnum.proto\032\022NoneventChat.proto" +
+      "\032\025NoneventMonster.proto\032\027NoneventStructu" +
       "re.proto\"\220\004\n\016FullQuestProto\022\017\n\007questId\030\001" +
       " \001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022" +
       "\024\n\014doneResponse\030\004 \001(\t\022,\n\016acceptDialogue\030" +
@@ -6262,17 +6299,18 @@ public final class NoneventQuestProto {
       " \003(\0132\'.proto.DialogueProto.SpeechSegment" +
       "Proto\032d\n\022SpeechSegmentProto\022\017\n\007speaker\030\001" +
       " \001(\t\022\024\n\014speakerImage\030\002 \001(\t\022\023\n\013speakerTex",
-      "t\030\003 \001(\t\022\022\n\nisLeftSide\030\004 \001(\010\"\216\001\n\022FullUser" +
-      "QuestProto\022\016\n\006userId\030\001 \001(\005\022\017\n\007questId\030\002 " +
-      "\001(\005\022\022\n\nisRedeemed\030\003 \001(\010\022\022\n\nisComplete\030\004 " +
-      "\001(\010\022/\n\ruserQuestJobs\030\005 \003(\0132\030.proto.UserQ" +
-      "uestJobProto\"^\n\021UserQuestJobProto\022\017\n\007que" +
-      "stId\030\001 \001(\005\022\022\n\nquestJobId\030\002 \001(\005\022\022\n\nisComp" +
-      "lete\030\003 \001(\010\022\020\n\010progress\030\004 \001(\005\"s\n\tItemProt" +
-      "o\022\016\n\006itemId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\017\n\007imgNa" +
-      "me\030\003 \001(\t\022\025\n\rborderImgName\030\004 \001(\t\022 \n\005color" +
-      "\030\005 \001(\0132\021.proto.ColorProtoB5\n\037com.lvl6.mo",
-      "bsters.noneventprotoB\022NoneventQuestProto"
+      "t\030\003 \001(\t\022\022\n\nisLeftSide\030\004 \001(\010\"\220\001\n\022FullUser" +
+      "QuestProto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007questId\030" +
+      "\002 \001(\005\022\022\n\nisRedeemed\030\003 \001(\010\022\022\n\nisComplete\030" +
+      "\004 \001(\010\022/\n\ruserQuestJobs\030\005 \003(\0132\030.proto.Use" +
+      "rQuestJobProto\"^\n\021UserQuestJobProto\022\017\n\007q" +
+      "uestId\030\001 \001(\005\022\022\n\nquestJobId\030\002 \001(\005\022\022\n\nisCo" +
+      "mplete\030\003 \001(\010\022\020\n\010progress\030\004 \001(\005\"s\n\tItemPr" +
+      "oto\022\016\n\006itemId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\017\n\007img" +
+      "Name\030\003 \001(\t\022\025\n\rborderImgName\030\004 \001(\t\022 \n\005col" +
+      "or\030\005 \001(\0132\021.proto.ColorProtoB5\n\037com.lvl6.",
+      "mobsters.noneventprotoB\022NoneventQuestPro" +
+      "to"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6316,7 +6354,7 @@ public final class NoneventQuestProto {
           internal_static_proto_FullUserQuestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FullUserQuestProto_descriptor,
-              new java.lang.String[] { "UserId", "QuestId", "IsRedeemed", "IsComplete", "UserQuestJobs", },
+              new java.lang.String[] { "UserUuid", "QuestId", "IsRedeemed", "IsComplete", "UserQuestJobs", },
               com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto.class,
               com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto.Builder.class);
           internal_static_proto_UserQuestJobProto_descriptor =
@@ -6341,9 +6379,9 @@ public final class NoneventQuestProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventChatProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventMonsterProto.getDescriptor(),
-          com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor(),
         }, assigner);
   }

@@ -1,5 +1,6 @@
 //BAD!!! DON'T START NAMES WITH NEW OR COPY
 
+import "ConfigNoneventSharedEnum.proto";
 import "NoneventStructure.proto";
 import "NoneventUser.proto";
 
@@ -9,29 +10,11 @@ option java_package = "com.lvl6.mobsters.noneventproto";
 option java_outer_classname = "NoneventCityProto";
 //DO NOT USE ID AS THE NAME OF A PROPERTY IN ANY PROTO
 
-message UserCityExpansionDataProto {
-	optional int32 userId = 1;
-	optional sint32 xPosition = 2;
-	optional sint32 yPosition = 3;
-	optional bool isExpanding = 4;
-	optional int64 expandStartTime = 5;
-}
-
-//------------------------------------------------------------------------------------------
-
-message CityExpansionCostProto {
-	optional int32 expansionNum = 1; //first, second,...or nth expansion
-	optional int32 expansionCostCash = 2;
-	optional int32 numMinutesToExpand = 3;
-}
-
-//------------------------------------------------------------------------------------------
-
 message CityElementProto {
 	optional int32 cityId = 1;
 	optional int32 assetId = 2;
 	//optional string name = 3;
-	optional CityElemType type = 4;
+	optional CityElemType type = 4 [default = NO_CITY_ELEM_TYPE];
 	optional CoordinateProto coords = 5;
 	optional float xLength = 6;
 	optional float yLength = 7;
@@ -44,6 +27,8 @@ message CityElementProto {
 		DECORATION = 2;
 		PERSON_NEUTRAL_ENEMY = 3;
 		BOSS = 4;
+		
+		NO_CITY_ELEM_TYPE = 5;
 	}
 }
 

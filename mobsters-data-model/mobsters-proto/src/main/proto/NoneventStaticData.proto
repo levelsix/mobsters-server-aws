@@ -21,7 +21,7 @@ option java_outer_classname = "NoneventStaticDataProto";
 
 message StaticDataProto {
     optional MinimumUserProto sender = 1;
-	repeated CityExpansionCostProto expansionCosts = 2;
+	//repeated CityExpansionCostProto expansionCosts = 2;
 	repeated FullCityProto allCities = 3;
 	repeated FullTaskProto allTasks = 4;
 	repeated MonsterProto allMonsters = 5;

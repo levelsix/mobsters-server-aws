@@ -9,14 +9,12 @@ option java_outer_classname = "NoneventUserProto";
 //DO NOT USE ID AS THE NAME OF A PROPERTY IN ANY PROTO
 
 //------------------------------------------------------------------------------------------
-
 //put in here because MinimumUserProto uses it.
 //Was in Clan.proto but that file references this file, so
 //import cycle is created, so not allowed.
-message MinimumClanProto {
-	optional int32 clanId = 1;
+message ClanProto {
+	optional string clanUuid = 1;
 	optional string name = 2;
-	//optional int32 ownerId = 3;
 	optional int64 createTime = 4;
 	optional string description = 5;
 	optional string tag = 6;
@@ -27,16 +25,10 @@ message MinimumClanProto {
 //------------------------------------------------------------------------------------------
 
 message MinimumUserProto {
-	optional string userId = 1;
+	optional string userUuid = 1;
 	optional string name = 2;
-	optional MinimumClanProto clan = 3;
-}
-
-//------------------------------------------------------------------------------------------
-
-message MinimumUserProtoWithLevel {
-	optional MinimumUserProto minUserProto = 1;
-	optional int32 level = 2;
+	optional ClanProto clan = 3;
+	optional int32 level = 4;
 }
 
 //------------------------------------------------------------------------------------------
@@ -58,12 +50,12 @@ message MinimumUserProtoWithMaxResources {
 //------------------------------------------------------------------------------------------
 
 message UserFacebookInviteForSlotProto {
-	optional int32 inviteId = 1;
+	optional string inviteUuid = 1;
 	optional MinimumUserProtoWithFacebookId inviter = 2;
 	optional string recipientFacebookId = 3;
 	optional int64 timeOfInvite = 4;
 	optional int64 timeAccepted = 5;
-	optional int32 userStructId = 6;
+	optional string userStructUuid = 6;
 	
 	//also represents the user struct lvl,
 	//most likely not the current struct lvl
@@ -74,59 +66,44 @@ message UserFacebookInviteForSlotProto {
 
 //------------------------------------------------------------------------------------------
 
-message FullUserProto {
-	optional int32 userId = 1;
-    optional string name = 2;
-    optional int32 level = 3;
-	optional int32 gems = 4;
-	optional int32 cash = 5;
-	optional int32 oil = 42; 
-	optional int32 experience = 6;
-	optional int32 tasksCompleted = 7;
-	optional string referralCode = 11;
-	optional int32 numReferrals = 12;
-	//optional string udidForHistory = 46; //defined below
-	optional int64 lastLoginTime = 14;
-	optional int64 lastLogoutTime = 15;
-	//optional string deviceToken = 16; //defined below
-	//optional int32 numBadges = 18; //defined below
-	optional bool isFake = 19;
-	//optional int64 createTime = 20; //defined below
-	optional bool isAdmin = 21;
-	//optional int32 apsalarId = 22; //defined below
-	optional int32 numCoinsRetrievedFromStructs = 23;
-	optional int32 numOilRetrievedFromStructs = 43;
-	//optional int32 numConsecutiveDaysPlayed = 24; defined below
-	optional MinimumClanProto clan = 25;
-	//optional int64 lastWallPostNotificationTime lwpnt = 26;
-	//optional string kabamNaid = 27;
-	optional bool hasReceivedfbReward = 28;
-	optional int32 numBeginnerSalesPurchased = 30;
-	optional string facebookId = 40;
-	//optional int32 oil = 42; //defined above
-	//optional int32 numOilRetrievedFromStructs = 43; //defined above
-	//optional bool fbIdSetOnUserCreate = 44; //defined below
-	optional string gameCenterId = 45;	
-	//optional string udid = 13; defined below, should be 46
-	optional int64 lastObstacleSpawnedTime = 47;
-	optional int32 numObstaclesRemoved = 49;
+message UserProto {
+	optional string userUuid = 1;
+	optional int32 name = 2;
+	optional int32 isAdmin = 3;
+	optional int32 level = 4;
+	optional int32 gems = 5;
+	optional int32 cash = 6;
+	optional int32 oil = 7;
+	optional int32 experience = 8;
 	
-	optional UserPvpLeagueProto pvpLeagueInfo = 48; 
-	//optional int32 numObstaclesRemoved = 49; //defined above
-	optional int64 lastMiniJobSpawnedTime = 50;
+	optional ClanProto clan = 9;
+}
+message UserCredentialProto {
+	optional string userUuid = 1;
+	optional string udid = 2;
+	optional string facebookId = 3;	
+}
+message UserDataRarelyUsedProto {
+	optional string userUuid = 1;
+	optional string udidForHistory = 2;
+	optional string gameCenterId = 3;
+	optional string deviceToken = 4;
+	optional bool fbIdSetOnUserCreate = 5;
+	optional int64 lastLogin = 6;
+	optional int64 lastLogout = 7;
+	optional int64 createTime = 8;
+	optional int64 lastObstacleSpawnTime = 9;
+	optional int64 lastMiniJobGeneratedTime = 10;
+}
 
-	//CreateInfoProtoUtils.java doesn't set these (I can't think of a time the client would need this
-	//consider making other fields like this
-	optional string udidForHistory = 46;
-	optional string deviceToken = 16;
-	optional int32 numBadges = 18;
-	optional int64 createTime = 20;
-	optional int32 apsalarId = 22;
-	optional int32 numConsecutiveDaysPlayed = 24;
-	optional int64 lastWallPostNotificationTime = 26;
-	optional string kabamNaid = 27;
-	optional bool fbIdSetOnUserCreate = 44;
-	optional string udid = 13;
+//set in startup; whenever UpdateUserClient is sent, FullUserProto is sent, but
+//most likely only one of the three will be set (mutually exclusive)
+message FullUserProto {
+	optional UserProto up = 1;
+	optional UserCredentialProto ucp = 2; 
+	optional UserDataRarelyUsedProto udrup = 3;
+	
+	optional UserPvpLeagueProto pvpLeagueInfo = 4;
 }
 
 //------------------------------------------------------------------------------------------
@@ -140,7 +117,7 @@ message StaticUserLevelInfoProto {
 
 //all the leaderboard information regarding user in pvp
 message UserPvpLeagueProto {
-	optional int32 userId = 1;
+	optional string userUuid = 1;
 	optional int32 leagueId = 2; //pvp league id
 	optional int32 rank = 3;
 	optional int32 elo = 4; //client doesn't really need it, so will not be set :P

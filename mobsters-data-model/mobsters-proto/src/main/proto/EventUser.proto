@@ -64,10 +64,10 @@ message LevelUpResponseProto {
 }
 
 //------------------------------------------------------------------------------------------
-
+/*
 message RetrieveUsersForUserIdsRequestProto {
     optional MinimumUserProto sender = 1;
-	repeated int32 requestedUserIds = 2;
+	repeated string requestedUserUuids = 2;
 	optional bool includeCurMonsterTeam = 3;
 }
 
@@ -77,7 +77,7 @@ message RetrieveUsersForUserIdsResponseProto {
 	repeated FullUserProto requestedUsers = 2;
 	repeated UserCurrentMonsterTeamProto curTeam = 3;
 }
-
+*/
 //------------------------------------------------------------------------------------------
 
 message LogoutRequestProto {

@@ -8,84 +8,6 @@ public final class NoneventStructureProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public enum ResourceType
-      implements com.google.protobuf.ProtocolMessageEnum {
-    NO_RESOURCE(0, 4),
-    CASH(1, 1),
-    OIL(2, 2),
-    GEMS(3, 3),
-    MONSTER(4, 20),
-    ;
-    
-    public static final int NO_RESOURCE_VALUE = 4;
-    public static final int CASH_VALUE = 1;
-    public static final int OIL_VALUE = 2;
-    public static final int GEMS_VALUE = 3;
-    public static final int MONSTER_VALUE = 20;
-    
-    
-    public final int getNumber() { return value; }
-    
-    public static ResourceType valueOf(int value) {
-      switch (value) {
-        case 4: return NO_RESOURCE;
-        case 1: return CASH;
-        case 2: return OIL;
-        case 3: return GEMS;
-        case 20: return MONSTER;
-        default: return null;
-      }
-    }
-    
-    public static com.google.protobuf.Internal.EnumLiteMap<ResourceType>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static com.google.protobuf.Internal.EnumLiteMap<ResourceType>
-        internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ResourceType>() {
-            public ResourceType findValueByNumber(int number) {
-              return ResourceType.valueOf(number);
-            }
-          };
-    
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(index);
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor().getEnumTypes().get(0);
-    }
-    
-    private static final ResourceType[] VALUES = {
-      NO_RESOURCE, CASH, OIL, GEMS, MONSTER, 
-    };
-    
-    public static ResourceType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-    
-    private final int index;
-    private final int value;
-    
-    private ResourceType(int index, int value) {
-      this.index = index;
-      this.value = value;
-    }
-    
-    // @@protoc_insertion_point(enum_scope:proto.ResourceType)
-  }
-  
   public enum StructOrientation
       implements com.google.protobuf.ProtocolMessageEnum {
     NO_ORIENTATION(0, 3),
@@ -131,7 +53,7 @@ public final class NoneventStructureProto {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor().getEnumTypes().get(1);
+      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor().getEnumTypes().get(0);
     }
     
     private static final StructOrientation[] VALUES = {
@@ -173,13 +95,13 @@ public final class NoneventStructureProto {
     boolean hasLevel();
     int getLevel();
     
-    // optional .proto.StructureInfoProto.StructType structType = 4;
+    // optional .proto.StructureInfoProto.StructType structType = 4 [default = NO_STRUCT];
     boolean hasStructType();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType getStructType();
     
-    // optional .proto.ResourceType buildResourceType = 5;
+    // optional .proto.ResourceType buildResourceType = 5 [default = NO_RESOURCE];
     boolean hasBuildResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getBuildResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getBuildResourceType();
     
     // optional int32 buildCost = 6;
     boolean hasBuildCost();
@@ -416,7 +338,7 @@ public final class NoneventStructureProto {
       return level_;
     }
     
-    // optional .proto.StructureInfoProto.StructType structType = 4;
+    // optional .proto.StructureInfoProto.StructType structType = 4 [default = NO_STRUCT];
     public static final int STRUCTTYPE_FIELD_NUMBER = 4;
     private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType structType_;
     public boolean hasStructType() {
@@ -426,13 +348,13 @@ public final class NoneventStructureProto {
       return structType_;
     }
     
-    // optional .proto.ResourceType buildResourceType = 5;
+    // optional .proto.ResourceType buildResourceType = 5 [default = NO_RESOURCE];
     public static final int BUILDRESOURCETYPE_FIELD_NUMBER = 5;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType buildResourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType buildResourceType_;
     public boolean hasBuildResourceType() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getBuildResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getBuildResourceType() {
       return buildResourceType_;
     }
     
@@ -689,7 +611,7 @@ public final class NoneventStructureProto {
       name_ = "";
       level_ = 0;
       structType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType.NO_STRUCT;
-      buildResourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      buildResourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       buildCost_ = 0;
       minutesToBuild_ = 0;
       prerequisiteTownHallLvl_ = 0;
@@ -1007,7 +929,7 @@ public final class NoneventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         structType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType.NO_STRUCT;
         bitField0_ = (bitField0_ & ~0x00000008);
-        buildResourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        buildResourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         bitField0_ = (bitField0_ & ~0x00000010);
         buildCost_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -1301,7 +1223,7 @@ public final class NoneventStructureProto {
             }
             case 40: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(5, rawValue);
               } else {
@@ -1474,7 +1396,7 @@ public final class NoneventStructureProto {
         return this;
       }
       
-      // optional .proto.StructureInfoProto.StructType structType = 4;
+      // optional .proto.StructureInfoProto.StructType structType = 4 [default = NO_STRUCT];
       private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType structType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType.NO_STRUCT;
       public boolean hasStructType() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
@@ -1498,15 +1420,15 @@ public final class NoneventStructureProto {
         return this;
       }
       
-      // optional .proto.ResourceType buildResourceType = 5;
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType buildResourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      // optional .proto.ResourceType buildResourceType = 5 [default = NO_RESOURCE];
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType buildResourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       public boolean hasBuildResourceType() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getBuildResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getBuildResourceType() {
         return buildResourceType_;
       }
-      public Builder setBuildResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setBuildResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1517,7 +1439,7 @@ public final class NoneventStructureProto {
       }
       public Builder clearBuildResourceType() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        buildResourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        buildResourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         onChanged();
         return this;
       }
@@ -1937,9 +1859,9 @@ public final class NoneventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder();
     
-    // optional .proto.ResourceType resourceType = 2;
+    // optional .proto.ResourceType resourceType = 2 [default = NO_RESOURCE];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
     
     // optional float productionRate = 3;
     boolean hasProductionRate();
@@ -1991,13 +1913,13 @@ public final class NoneventStructureProto {
       return structInfo_;
     }
     
-    // optional .proto.ResourceType resourceType = 2;
+    // optional .proto.ResourceType resourceType = 2 [default = NO_RESOURCE];
     public static final int RESOURCETYPE_FIELD_NUMBER = 2;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
@@ -2023,7 +1945,7 @@ public final class NoneventStructureProto {
     
     private void initFields() {
       structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       productionRate_ = 0F;
       capacity_ = 0;
     }
@@ -2207,7 +2129,7 @@ public final class NoneventStructureProto {
           structInfoBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         bitField0_ = (bitField0_ & ~0x00000002);
         productionRate_ = 0F;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -2341,7 +2263,7 @@ public final class NoneventStructureProto {
             }
             case 16: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(2, rawValue);
               } else {
@@ -2456,15 +2378,15 @@ public final class NoneventStructureProto {
         return structInfoBuilder_;
       }
       
-      // optional .proto.ResourceType resourceType = 2;
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      // optional .proto.ResourceType resourceType = 2 [default = NO_RESOURCE];
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -2475,7 +2397,7 @@ public final class NoneventStructureProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         onChanged();
         return this;
       }
@@ -2541,9 +2463,9 @@ public final class NoneventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder();
     
-    // optional .proto.ResourceType resourceType = 2;
+    // optional .proto.ResourceType resourceType = 2 [default = NO_RESOURCE];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
     
     // optional int32 capacity = 3;
     boolean hasCapacity();
@@ -2591,13 +2513,13 @@ public final class NoneventStructureProto {
       return structInfo_;
     }
     
-    // optional .proto.ResourceType resourceType = 2;
+    // optional .proto.ResourceType resourceType = 2 [default = NO_RESOURCE];
     public static final int RESOURCETYPE_FIELD_NUMBER = 2;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
@@ -2613,7 +2535,7 @@ public final class NoneventStructureProto {
     
     private void initFields() {
       structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       capacity_ = 0;
     }
     private byte memoizedIsInitialized = -1;
@@ -2789,7 +2711,7 @@ public final class NoneventStructureProto {
           structInfoBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         bitField0_ = (bitField0_ & ~0x00000002);
         capacity_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -2914,7 +2836,7 @@ public final class NoneventStructureProto {
             }
             case 16: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(2, rawValue);
               } else {
@@ -3024,15 +2946,15 @@ public final class NoneventStructureProto {
         return structInfoBuilder_;
       }
       
-      // optional .proto.ResourceType resourceType = 2;
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      // optional .proto.ResourceType resourceType = 2 [default = NO_RESOURCE];
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -3043,7 +2965,7 @@ public final class NoneventStructureProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         onChanged();
         return this;
       }
@@ -6437,13 +6359,13 @@ public final class NoneventStructureProto {
   public interface FullUserStructureProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // optional int32 userStructId = 1;
-    boolean hasUserStructId();
-    int getUserStructId();
+    // optional string userStructUuid = 1;
+    boolean hasUserStructUuid();
+    String getUserStructUuid();
     
-    // optional int32 userId = 2;
-    boolean hasUserId();
-    int getUserId();
+    // optional string userUuid = 2;
+    boolean hasUserUuid();
+    String getUserUuid();
     
     // optional int32 structId = 3;
     boolean hasStructId();
@@ -6466,7 +6388,7 @@ public final class NoneventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto getCoordinates();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProtoOrBuilder getCoordinatesOrBuilder();
     
-    // optional .proto.StructOrientation orientation = 8;
+    // optional .proto.StructOrientation orientation = 8 [default = NO_ORIENTATION];
     boolean hasOrientation();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getOrientation();
     
@@ -6503,24 +6425,68 @@ public final class NoneventStructureProto {
     }
     
     private int bitField0_;
-    // optional int32 userStructId = 1;
-    public static final int USERSTRUCTID_FIELD_NUMBER = 1;
-    private int userStructId_;
-    public boolean hasUserStructId() {
+    // optional string userStructUuid = 1;
+    public static final int USERSTRUCTUUID_FIELD_NUMBER = 1;
+    private java.lang.Object userStructUuid_;
+    public boolean hasUserStructUuid() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public int getUserStructId() {
-      return userStructId_;
+    public String getUserStructUuid() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userStructUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserStructUuidBytes() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userStructUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
-    // optional int32 userId = 2;
-    public static final int USERID_FIELD_NUMBER = 2;
-    private int userId_;
-    public boolean hasUserId() {
+    // optional string userUuid = 2;
+    public static final int USERUUID_FIELD_NUMBER = 2;
+    private java.lang.Object userUuid_;
+    public boolean hasUserUuid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getUserId() {
-      return userId_;
+    public String getUserUuid() {
+      java.lang.Object ref = userUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserUuidBytes() {
+      java.lang.Object ref = userUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional int32 structId = 3;
@@ -6576,7 +6542,7 @@ public final class NoneventStructureProto {
       return coordinates_;
     }
     
-    // optional .proto.StructOrientation orientation = 8;
+    // optional .proto.StructOrientation orientation = 8 [default = NO_ORIENTATION];
     public static final int ORIENTATION_FIELD_NUMBER = 8;
     private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientation_;
     public boolean hasOrientation() {
@@ -6597,8 +6563,8 @@ public final class NoneventStructureProto {
     }
     
     private void initFields() {
-      userStructId_ = 0;
-      userId_ = 0;
+      userStructUuid_ = "";
+      userUuid_ = "";
       structId_ = 0;
       lastRetrieved_ = 0L;
       purchaseTime_ = 0L;
@@ -6620,10 +6586,10 @@ public final class NoneventStructureProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, userStructId_);
+        output.writeBytes(1, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, userId_);
+        output.writeBytes(2, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, structId_);
@@ -6657,11 +6623,11 @@ public final class NoneventStructureProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, userStructId_);
+          .computeBytesSize(1, getUserStructUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, userId_);
+          .computeBytesSize(2, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -6816,9 +6782,9 @@ public final class NoneventStructureProto {
       
       public Builder clear() {
         super.clear();
-        userStructId_ = 0;
+        userStructUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        userId_ = 0;
+        userUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         structId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -6879,11 +6845,11 @@ public final class NoneventStructureProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.userStructId_ = userStructId_;
+        result.userStructUuid_ = userStructUuid_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.userId_ = userId_;
+        result.userUuid_ = userUuid_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -6932,11 +6898,11 @@ public final class NoneventStructureProto {
       
       public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventStructureProto.FullUserStructureProto other) {
         if (other == com.lvl6.mobsters.noneventproto.NoneventStructureProto.FullUserStructureProto.getDefaultInstance()) return this;
-        if (other.hasUserStructId()) {
-          setUserStructId(other.getUserStructId());
+        if (other.hasUserStructUuid()) {
+          setUserStructUuid(other.getUserStructUuid());
         }
-        if (other.hasUserId()) {
-          setUserId(other.getUserId());
+        if (other.hasUserUuid()) {
+          setUserUuid(other.getUserUuid());
         }
         if (other.hasStructId()) {
           setStructId(other.getStructId());
@@ -6990,14 +6956,14 @@ public final class NoneventStructureProto {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              userStructId_ = input.readInt32();
+              userStructUuid_ = input.readBytes();
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              userId_ = input.readInt32();
+              userUuid_ = input.readBytes();
               break;
             }
             case 24: {
@@ -7051,46 +7017,76 @@ public final class NoneventStructureProto {
       
       private int bitField0_;
       
-      // optional int32 userStructId = 1;
-      private int userStructId_ ;
-      public boolean hasUserStructId() {
+      // optional string userStructUuid = 1;
+      private java.lang.Object userStructUuid_ = "";
+      public boolean hasUserStructUuid() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public int getUserStructId() {
-        return userStructId_;
+      public String getUserStructUuid() {
+        java.lang.Object ref = userStructUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userStructUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserStructId(int value) {
-        bitField0_ |= 0x00000001;
-        userStructId_ = value;
+      public Builder setUserStructUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userStructUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserStructId() {
+      public Builder clearUserStructUuid() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        userStructId_ = 0;
+        userStructUuid_ = getDefaultInstance().getUserStructUuid();
         onChanged();
         return this;
+      }
+      void setUserStructUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        userStructUuid_ = value;
+        onChanged();
       }
       
-      // optional int32 userId = 2;
-      private int userId_ ;
-      public boolean hasUserId() {
+      // optional string userUuid = 2;
+      private java.lang.Object userUuid_ = "";
+      public boolean hasUserUuid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getUserId() {
-        return userId_;
+      public String getUserUuid() {
+        java.lang.Object ref = userUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserId(int value) {
-        bitField0_ |= 0x00000002;
-        userId_ = value;
+      public Builder setUserUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserId() {
+      public Builder clearUserUuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        userId_ = 0;
+        userUuid_ = getDefaultInstance().getUserUuid();
         onChanged();
         return this;
+      }
+      void setUserUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        userUuid_ = value;
+        onChanged();
       }
       
       // optional int32 structId = 3;
@@ -7267,7 +7263,7 @@ public final class NoneventStructureProto {
         return coordinatesBuilder_;
       }
       
-      // optional .proto.StructOrientation orientation = 8;
+      // optional .proto.StructOrientation orientation = 8 [default = NO_ORIENTATION];
       private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.NO_ORIENTATION;
       public boolean hasOrientation() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
@@ -8210,9 +8206,9 @@ public final class NoneventStructureProto {
     boolean hasName();
     String getName();
     
-    // optional .proto.ResourceType removalCostType = 3;
+    // optional .proto.ResourceType removalCostType = 3 [default = NO_RESOURCE];
     boolean hasRemovalCostType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getRemovalCostType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getRemovalCostType();
     
     // optional int32 cost = 4;
     boolean hasCost();
@@ -8329,13 +8325,13 @@ public final class NoneventStructureProto {
       }
     }
     
-    // optional .proto.ResourceType removalCostType = 3;
+    // optional .proto.ResourceType removalCostType = 3 [default = NO_RESOURCE];
     public static final int REMOVALCOSTTYPE_FIELD_NUMBER = 3;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType removalCostType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType removalCostType_;
     public boolean hasRemovalCostType() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getRemovalCostType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getRemovalCostType() {
       return removalCostType_;
     }
     
@@ -8518,7 +8514,7 @@ public final class NoneventStructureProto {
     private void initFields() {
       obstacleId_ = 0;
       name_ = "";
-      removalCostType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      removalCostType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       cost_ = 0;
       secondsToRemove_ = 0;
       width_ = 0;
@@ -8778,7 +8774,7 @@ public final class NoneventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         name_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        removalCostType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        removalCostType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         bitField0_ = (bitField0_ & ~0x00000004);
         cost_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -8997,7 +8993,7 @@ public final class NoneventStructureProto {
             }
             case 24: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(3, rawValue);
               } else {
@@ -9124,15 +9120,15 @@ public final class NoneventStructureProto {
         onChanged();
       }
       
-      // optional .proto.ResourceType removalCostType = 3;
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType removalCostType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      // optional .proto.ResourceType removalCostType = 3 [default = NO_RESOURCE];
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType removalCostType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       public boolean hasRemovalCostType() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getRemovalCostType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getRemovalCostType() {
         return removalCostType_;
       }
-      public Builder setRemovalCostType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setRemovalCostType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -9143,7 +9139,7 @@ public final class NoneventStructureProto {
       }
       public Builder clearRemovalCostType() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        removalCostType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        removalCostType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         onChanged();
         return this;
       }
@@ -9447,7 +9443,7 @@ public final class NoneventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto getCoordinate();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProtoOrBuilder getCoordinateOrBuilder();
     
-    // optional .proto.StructOrientation orientation = 5;
+    // optional .proto.StructOrientation orientation = 3 [default = NO_ORIENTATION];
     boolean hasOrientation();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getOrientation();
   }
@@ -9503,8 +9499,8 @@ public final class NoneventStructureProto {
       return coordinate_;
     }
     
-    // optional .proto.StructOrientation orientation = 5;
-    public static final int ORIENTATION_FIELD_NUMBER = 5;
+    // optional .proto.StructOrientation orientation = 3 [default = NO_ORIENTATION];
+    public static final int ORIENTATION_FIELD_NUMBER = 3;
     private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientation_;
     public boolean hasOrientation() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
@@ -9537,7 +9533,7 @@ public final class NoneventStructureProto {
         output.writeMessage(2, coordinate_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(5, orientation_.getNumber());
+        output.writeEnum(3, orientation_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -9558,7 +9554,7 @@ public final class NoneventStructureProto {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, orientation_.getNumber());
+          .computeEnumSize(3, orientation_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9819,11 +9815,11 @@ public final class NoneventStructureProto {
               setCoordinate(subBuilder.buildPartial());
               break;
             }
-            case 40: {
+            case 24: {
               int rawValue = input.readEnum();
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(5, rawValue);
+                unknownFields.mergeVarintField(3, rawValue);
               } else {
                 bitField0_ |= 0x00000004;
                 orientation_ = value;
@@ -9947,7 +9943,7 @@ public final class NoneventStructureProto {
         return coordinateBuilder_;
       }
       
-      // optional .proto.StructOrientation orientation = 5;
+      // optional .proto.StructOrientation orientation = 3 [default = NO_ORIENTATION];
       private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.NO_ORIENTATION;
       public boolean hasOrientation() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
@@ -9985,13 +9981,13 @@ public final class NoneventStructureProto {
   public interface UserObstacleProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // optional int32 userObstacleId = 1;
-    boolean hasUserObstacleId();
-    int getUserObstacleId();
+    // optional string userObstacleUuid = 1;
+    boolean hasUserObstacleUuid();
+    String getUserObstacleUuid();
     
-    // optional int32 userId = 2;
-    boolean hasUserId();
-    int getUserId();
+    // optional string userUuid = 2;
+    boolean hasUserUuid();
+    String getUserUuid();
     
     // optional int32 obstacleId = 3;
     boolean hasObstacleId();
@@ -10002,7 +9998,7 @@ public final class NoneventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto getCoordinates();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProtoOrBuilder getCoordinatesOrBuilder();
     
-    // optional .proto.StructOrientation orientation = 5;
+    // optional .proto.StructOrientation orientation = 5 [default = NO_ORIENTATION];
     boolean hasOrientation();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getOrientation();
     
@@ -10039,24 +10035,68 @@ public final class NoneventStructureProto {
     }
     
     private int bitField0_;
-    // optional int32 userObstacleId = 1;
-    public static final int USEROBSTACLEID_FIELD_NUMBER = 1;
-    private int userObstacleId_;
-    public boolean hasUserObstacleId() {
+    // optional string userObstacleUuid = 1;
+    public static final int USEROBSTACLEUUID_FIELD_NUMBER = 1;
+    private java.lang.Object userObstacleUuid_;
+    public boolean hasUserObstacleUuid() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public int getUserObstacleId() {
-      return userObstacleId_;
+    public String getUserObstacleUuid() {
+      java.lang.Object ref = userObstacleUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userObstacleUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserObstacleUuidBytes() {
+      java.lang.Object ref = userObstacleUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userObstacleUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
-    // optional int32 userId = 2;
-    public static final int USERID_FIELD_NUMBER = 2;
-    private int userId_;
-    public boolean hasUserId() {
+    // optional string userUuid = 2;
+    public static final int USERUUID_FIELD_NUMBER = 2;
+    private java.lang.Object userUuid_;
+    public boolean hasUserUuid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getUserId() {
-      return userId_;
+    public String getUserUuid() {
+      java.lang.Object ref = userUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserUuidBytes() {
+      java.lang.Object ref = userUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     // optional int32 obstacleId = 3;
@@ -10082,7 +10122,7 @@ public final class NoneventStructureProto {
       return coordinates_;
     }
     
-    // optional .proto.StructOrientation orientation = 5;
+    // optional .proto.StructOrientation orientation = 5 [default = NO_ORIENTATION];
     public static final int ORIENTATION_FIELD_NUMBER = 5;
     private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientation_;
     public boolean hasOrientation() {
@@ -10103,8 +10143,8 @@ public final class NoneventStructureProto {
     }
     
     private void initFields() {
-      userObstacleId_ = 0;
-      userId_ = 0;
+      userObstacleUuid_ = "";
+      userUuid_ = "";
       obstacleId_ = 0;
       coordinates_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto.getDefaultInstance();
       orientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.NO_ORIENTATION;
@@ -10123,10 +10163,10 @@ public final class NoneventStructureProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, userObstacleId_);
+        output.writeBytes(1, getUserObstacleUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, userId_);
+        output.writeBytes(2, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, obstacleId_);
@@ -10151,11 +10191,11 @@ public final class NoneventStructureProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, userObstacleId_);
+          .computeBytesSize(1, getUserObstacleUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, userId_);
+          .computeBytesSize(2, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -10298,9 +10338,9 @@ public final class NoneventStructureProto {
       
       public Builder clear() {
         super.clear();
-        userObstacleId_ = 0;
+        userObstacleUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        userId_ = 0;
+        userUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         obstacleId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -10355,11 +10395,11 @@ public final class NoneventStructureProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.userObstacleId_ = userObstacleId_;
+        result.userObstacleUuid_ = userObstacleUuid_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.userId_ = userId_;
+        result.userUuid_ = userUuid_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -10396,11 +10436,11 @@ public final class NoneventStructureProto {
       
       public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventStructureProto.UserObstacleProto other) {
         if (other == com.lvl6.mobsters.noneventproto.NoneventStructureProto.UserObstacleProto.getDefaultInstance()) return this;
-        if (other.hasUserObstacleId()) {
-          setUserObstacleId(other.getUserObstacleId());
+        if (other.hasUserObstacleUuid()) {
+          setUserObstacleUuid(other.getUserObstacleUuid());
         }
-        if (other.hasUserId()) {
-          setUserId(other.getUserId());
+        if (other.hasUserUuid()) {
+          setUserUuid(other.getUserUuid());
         }
         if (other.hasObstacleId()) {
           setObstacleId(other.getObstacleId());
@@ -10445,14 +10485,14 @@ public final class NoneventStructureProto {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              userObstacleId_ = input.readInt32();
+              userObstacleUuid_ = input.readBytes();
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              userId_ = input.readInt32();
+              userUuid_ = input.readBytes();
               break;
             }
             case 24: {
@@ -10491,46 +10531,76 @@ public final class NoneventStructureProto {
       
       private int bitField0_;
       
-      // optional int32 userObstacleId = 1;
-      private int userObstacleId_ ;
-      public boolean hasUserObstacleId() {
+      // optional string userObstacleUuid = 1;
+      private java.lang.Object userObstacleUuid_ = "";
+      public boolean hasUserObstacleUuid() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public int getUserObstacleId() {
-        return userObstacleId_;
+      public String getUserObstacleUuid() {
+        java.lang.Object ref = userObstacleUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userObstacleUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserObstacleId(int value) {
-        bitField0_ |= 0x00000001;
-        userObstacleId_ = value;
+      public Builder setUserObstacleUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userObstacleUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserObstacleId() {
+      public Builder clearUserObstacleUuid() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        userObstacleId_ = 0;
+        userObstacleUuid_ = getDefaultInstance().getUserObstacleUuid();
         onChanged();
         return this;
+      }
+      void setUserObstacleUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        userObstacleUuid_ = value;
+        onChanged();
       }
       
-      // optional int32 userId = 2;
-      private int userId_ ;
-      public boolean hasUserId() {
+      // optional string userUuid = 2;
+      private java.lang.Object userUuid_ = "";
+      public boolean hasUserUuid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getUserId() {
-        return userId_;
+      public String getUserUuid() {
+        java.lang.Object ref = userUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserId(int value) {
-        bitField0_ |= 0x00000002;
-        userId_ = value;
+      public Builder setUserUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserId() {
+      public Builder clearUserUuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        userId_ = 0;
+        userUuid_ = getDefaultInstance().getUserUuid();
         onChanged();
         return this;
+      }
+      void setUserUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        userUuid_ = value;
+        onChanged();
       }
       
       // optional int32 obstacleId = 3;
@@ -10644,7 +10714,7 @@ public final class NoneventStructureProto {
         return coordinatesBuilder_;
       }
       
-      // optional .proto.StructOrientation orientation = 5;
+      // optional .proto.StructOrientation orientation = 5 [default = NO_ORIENTATION];
       private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.NO_ORIENTATION;
       public boolean hasOrientation() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
@@ -10779,87 +10849,89 @@ public final class NoneventStructureProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\027NoneventStructure.proto\022\005proto\"\325\005\n\022Str" +
-      "uctureInfoProto\022\020\n\010structId\030\001 \001(\005\022\014\n\004nam" +
-      "e\030\002 \001(\t\022\r\n\005level\030\003 \001(\005\0228\n\nstructType\030\004 \001" +
-      "(\0162$.proto.StructureInfoProto.StructType" +
-      "\022.\n\021buildResourceType\030\005 \001(\0162\023.proto.Reso" +
-      "urceType\022\021\n\tbuildCost\030\006 \001(\005\022\026\n\016minutesTo" +
-      "Build\030\007 \001(\005\022\037\n\027prerequisiteTownHallLvl\030\010" +
-      " \001(\005\022\r\n\005width\030\t \001(\005\022\016\n\006height\030\n \001(\005\022\033\n\023p" +
-      "redecessorStructId\030\014 \001(\005\022\031\n\021successorStr" +
-      "uctId\030\r \001(\005\022\017\n\007imgName\030\016 \001(\t\022\036\n\026imgVerti",
-      "calPixelOffset\030\017 \001(\002\022 \n\030imgHorizontalPix" +
-      "elOffset\030\022 \001(\002\022\023\n\013description\030\020 \001(\t\022\030\n\020s" +
-      "hortDescription\030\021 \001(\t\022\025\n\rshadowImgName\030\023" +
-      " \001(\t\022\034\n\024shadowVerticalOffset\030\024 \001(\002\022\037\n\027sh" +
-      "adowHorizontalOfffset\030\025 \001(\002\022\023\n\013shadowSca" +
-      "le\030\026 \001(\002\"\225\001\n\nStructType\022\r\n\tNO_STRUCT\020\010\022\026" +
-      "\n\022RESOURCE_GENERATOR\020\001\022\024\n\020RESOURCE_STORA" +
-      "GE\020\002\022\014\n\010HOSPITAL\020\003\022\r\n\tRESIDENCE\020\004\022\r\n\tTOW" +
-      "N_HALL\020\005\022\007\n\003LAB\020\006\022\007\n\003EVO\020\007\022\014\n\010MINI_JOB\020\t" +
-      "\"\234\001\n\026ResourceGeneratorProto\022-\n\nstructInf",
-      "o\030\001 \001(\0132\031.proto.StructureInfoProto\022)\n\014re" +
-      "sourceType\030\002 \001(\0162\023.proto.ResourceType\022\026\n" +
-      "\016productionRate\030\003 \001(\002\022\020\n\010capacity\030\004 \001(\005\"" +
-      "\202\001\n\024ResourceStorageProto\022-\n\nstructInfo\030\001" +
-      " \001(\0132\031.proto.StructureInfoProto\022)\n\014resou" +
-      "rceType\030\002 \001(\0162\023.proto.ResourceType\022\020\n\010ca" +
-      "pacity\030\003 \001(\005\"j\n\rHospitalProto\022-\n\nstructI" +
-      "nfo\030\001 \001(\0132\031.proto.StructureInfoProto\022\021\n\t" +
-      "queueSize\030\002 \001(\005\022\027\n\017healthPerSecond\030\003 \001(\002" +
-      "\"e\n\010LabProto\022-\n\nstructInfo\030\001 \001(\0132\031.proto",
-      ".StructureInfoProto\022\021\n\tqueueSize\030\002 \001(\005\022\027" +
-      "\n\017pointsPerSecond\030\003 \001(\002\"\305\001\n\016ResidencePro" +
-      "to\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structure" +
-      "InfoProto\022\027\n\017numMonsterSlots\030\002 \001(\005\022\034\n\024nu" +
-      "mBonusMonsterSlots\030\003 \001(\005\022\027\n\017numGemsRequi" +
-      "red\030\004 \001(\005\022\034\n\024numAcceptedFbInvites\030\005 \001(\005\022" +
-      "\026\n\016occupationName\030\006 \001(\t\"\315\002\n\rTownHallProt" +
-      "o\022-\n\nstructInfo\030\001 \001(\0132\031.proto.StructureI" +
-      "nfoProto\022 \n\030numResourceOneGenerators\030\002 \001" +
-      "(\005\022\036\n\026numResourceOneStorages\030\003 \001(\005\022 \n\030nu",
-      "mResourceTwoGenerators\030\004 \001(\005\022\036\n\026numResou" +
-      "rceTwoStorages\030\005 \001(\005\022\024\n\014numHospitals\030\006 \001" +
-      "(\005\022\025\n\rnumResidences\030\007 \001(\005\022\027\n\017numMonsterS" +
-      "lots\030\010 \001(\005\022\017\n\007numLabs\030\t \001(\005\022\030\n\020pvpQueueC" +
-      "ashCost\030\n \001(\005\022\030\n\020resourceCapacity\030\013 \001(\005\"" +
-      "\201\001\n\022MiniJobCenterProto\022-\n\nstructInfo\030\001 \001" +
-      "(\0132\031.proto.StructureInfoProto\022\031\n\021generat" +
-      "edJobLimit\030\002 \001(\005\022!\n\031hoursBetweenJobGener" +
-      "ation\030\003 \001(\005\"\210\002\n\026FullUserStructureProto\022\024" +
-      "\n\014userStructId\030\001 \001(\005\022\016\n\006userId\030\002 \001(\005\022\020\n\010",
-      "structId\030\003 \001(\005\022\025\n\rlastRetrieved\030\004 \001(\003\022\024\n" +
-      "\014purchaseTime\030\005 \001(\003\022\022\n\nisComplete\030\006 \001(\010\022" +
-      "+\n\013coordinates\030\007 \001(\0132\026.proto.CoordinateP" +
-      "roto\022-\n\013orientation\030\010 \001(\0162\030.proto.Struct" +
-      "Orientation\022\031\n\021fbInviteStructLvl\030\t \001(\005\"\'" +
-      "\n\017CoordinateProto\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\"" +
-      "S\n\023TutorialStructProto\022\020\n\010structId\030\001 \001(\005" +
-      "\022*\n\ncoordinate\030\002 \001(\0132\026.proto.CoordinateP" +
-      "roto\"\331\002\n\rObstacleProto\022\022\n\nobstacleId\030\001 \001" +
-      "(\005\022\014\n\004name\030\002 \001(\t\022,\n\017removalCostType\030\003 \001(",
-      "\0162\023.proto.ResourceType\022\014\n\004cost\030\004 \001(\005\022\027\n\017" +
-      "secondsToRemove\030\005 \001(\005\022\r\n\005width\030\006 \001(\005\022\016\n\006" +
-      "height\030\007 \001(\005\022\017\n\007imgName\030\010 \001(\t\022\036\n\026imgVert" +
-      "icalPixelOffset\030\t \001(\002\022\023\n\013description\030\n \001" +
-      "(\t\022\026\n\016chanceToAppear\030\013 \001(\002\022\025\n\rshadowImgN" +
-      "ame\030\014 \001(\t\022\034\n\024shadowVerticalOffset\030\r \001(\002\022" +
-      "\037\n\027shadowHorizontalOfffset\030\016 \001(\002\"\205\001\n\024Min" +
-      "imumObstacleProto\022\022\n\nobstacleId\030\001 \001(\005\022*\n" +
-      "\ncoordinate\030\002 \001(\0132\026.proto.CoordinateProt" +
-      "o\022-\n\013orientation\030\005 \001(\0162\030.proto.StructOri",
-      "entation\"\305\001\n\021UserObstacleProto\022\026\n\016userOb" +
-      "stacleId\030\001 \001(\005\022\016\n\006userId\030\002 \001(\005\022\022\n\nobstac" +
-      "leId\030\003 \001(\005\022+\n\013coordinates\030\004 \001(\0132\026.proto." +
-      "CoordinateProto\022-\n\013orientation\030\005 \001(\0162\030.p" +
-      "roto.StructOrientation\022\030\n\020removalStartTi" +
-      "me\030\006 \001(\003*I\n\014ResourceType\022\017\n\013NO_RESOURCE\020" +
-      "\004\022\010\n\004CASH\020\001\022\007\n\003OIL\020\002\022\010\n\004GEMS\020\003\022\013\n\007MONSTE" +
-      "R\020\024*G\n\021StructOrientation\022\022\n\016NO_ORIENTATI" +
-      "ON\020\003\022\016\n\nPOSITION_1\020\001\022\016\n\nPOSITION_2\020\002B9\n\037" +
-      "com.lvl6.mobsters.noneventprotoB\026Noneven",
-      "tStructureProto"
+      "\n\027NoneventStructure.proto\022\005proto\032\036Config" +
+      "NoneventSharedEnum.proto\"\355\005\n\022StructureIn" +
+      "foProto\022\020\n\010structId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022" +
+      "\r\n\005level\030\003 \001(\005\022C\n\nstructType\030\004 \001(\0162$.pro" +
+      "to.StructureInfoProto.StructType:\tNO_STR" +
+      "UCT\022;\n\021buildResourceType\030\005 \001(\0162\023.proto.R" +
+      "esourceType:\013NO_RESOURCE\022\021\n\tbuildCost\030\006 " +
+      "\001(\005\022\026\n\016minutesToBuild\030\007 \001(\005\022\037\n\027prerequis" +
+      "iteTownHallLvl\030\010 \001(\005\022\r\n\005width\030\t \001(\005\022\016\n\006h" +
+      "eight\030\n \001(\005\022\033\n\023predecessorStructId\030\014 \001(\005",
+      "\022\031\n\021successorStructId\030\r \001(\005\022\017\n\007imgName\030\016" +
+      " \001(\t\022\036\n\026imgVerticalPixelOffset\030\017 \001(\002\022 \n\030" +
+      "imgHorizontalPixelOffset\030\022 \001(\002\022\023\n\013descri" +
+      "ption\030\020 \001(\t\022\030\n\020shortDescription\030\021 \001(\t\022\025\n" +
+      "\rshadowImgName\030\023 \001(\t\022\034\n\024shadowVerticalOf" +
+      "fset\030\024 \001(\002\022\037\n\027shadowHorizontalOfffset\030\025 " +
+      "\001(\002\022\023\n\013shadowScale\030\026 \001(\002\"\225\001\n\nStructType\022" +
+      "\r\n\tNO_STRUCT\020\010\022\026\n\022RESOURCE_GENERATOR\020\001\022\024" +
+      "\n\020RESOURCE_STORAGE\020\002\022\014\n\010HOSPITAL\020\003\022\r\n\tRE" +
+      "SIDENCE\020\004\022\r\n\tTOWN_HALL\020\005\022\007\n\003LAB\020\006\022\007\n\003EVO",
+      "\020\007\022\014\n\010MINI_JOB\020\t\"\251\001\n\026ResourceGeneratorPr" +
+      "oto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structur" +
+      "eInfoProto\0226\n\014resourceType\030\002 \001(\0162\023.proto" +
+      ".ResourceType:\013NO_RESOURCE\022\026\n\016production" +
+      "Rate\030\003 \001(\002\022\020\n\010capacity\030\004 \001(\005\"\217\001\n\024Resourc" +
+      "eStorageProto\022-\n\nstructInfo\030\001 \001(\0132\031.prot" +
+      "o.StructureInfoProto\0226\n\014resourceType\030\002 \001" +
+      "(\0162\023.proto.ResourceType:\013NO_RESOURCE\022\020\n\010" +
+      "capacity\030\003 \001(\005\"j\n\rHospitalProto\022-\n\nstruc" +
+      "tInfo\030\001 \001(\0132\031.proto.StructureInfoProto\022\021",
+      "\n\tqueueSize\030\002 \001(\005\022\027\n\017healthPerSecond\030\003 \001" +
+      "(\002\"e\n\010LabProto\022-\n\nstructInfo\030\001 \001(\0132\031.pro" +
+      "to.StructureInfoProto\022\021\n\tqueueSize\030\002 \001(\005" +
+      "\022\027\n\017pointsPerSecond\030\003 \001(\002\"\305\001\n\016ResidenceP" +
+      "roto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structu" +
+      "reInfoProto\022\027\n\017numMonsterSlots\030\002 \001(\005\022\034\n\024" +
+      "numBonusMonsterSlots\030\003 \001(\005\022\027\n\017numGemsReq" +
+      "uired\030\004 \001(\005\022\034\n\024numAcceptedFbInvites\030\005 \001(" +
+      "\005\022\026\n\016occupationName\030\006 \001(\t\"\315\002\n\rTownHallPr" +
+      "oto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structur",
+      "eInfoProto\022 \n\030numResourceOneGenerators\030\002" +
+      " \001(\005\022\036\n\026numResourceOneStorages\030\003 \001(\005\022 \n\030" +
+      "numResourceTwoGenerators\030\004 \001(\005\022\036\n\026numRes" +
+      "ourceTwoStorages\030\005 \001(\005\022\024\n\014numHospitals\030\006" +
+      " \001(\005\022\025\n\rnumResidences\030\007 \001(\005\022\027\n\017numMonste" +
+      "rSlots\030\010 \001(\005\022\017\n\007numLabs\030\t \001(\005\022\030\n\020pvpQueu" +
+      "eCashCost\030\n \001(\005\022\030\n\020resourceCapacity\030\013 \001(" +
+      "\005\"\201\001\n\022MiniJobCenterProto\022-\n\nstructInfo\030\001" +
+      " \001(\0132\031.proto.StructureInfoProto\022\031\n\021gener" +
+      "atedJobLimit\030\002 \001(\005\022!\n\031hoursBetweenJobGen",
+      "eration\030\003 \001(\005\"\234\002\n\026FullUserStructureProto" +
+      "\022\026\n\016userStructUuid\030\001 \001(\t\022\020\n\010userUuid\030\002 \001" +
+      "(\t\022\020\n\010structId\030\003 \001(\005\022\025\n\rlastRetrieved\030\004 " +
+      "\001(\003\022\024\n\014purchaseTime\030\005 \001(\003\022\022\n\nisComplete\030" +
+      "\006 \001(\010\022+\n\013coordinates\030\007 \001(\0132\026.proto.Coord" +
+      "inateProto\022=\n\013orientation\030\010 \001(\0162\030.proto." +
+      "StructOrientation:\016NO_ORIENTATION\022\031\n\021fbI" +
+      "nviteStructLvl\030\t \001(\005\"\'\n\017CoordinateProto\022" +
+      "\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\"S\n\023TutorialStructP" +
+      "roto\022\020\n\010structId\030\001 \001(\005\022*\n\ncoordinate\030\002 \001",
+      "(\0132\026.proto.CoordinateProto\"\346\002\n\rObstacleP" +
+      "roto\022\022\n\nobstacleId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\0229" +
+      "\n\017removalCostType\030\003 \001(\0162\023.proto.Resource" +
+      "Type:\013NO_RESOURCE\022\014\n\004cost\030\004 \001(\005\022\027\n\017secon" +
+      "dsToRemove\030\005 \001(\005\022\r\n\005width\030\006 \001(\005\022\016\n\006heigh" +
+      "t\030\007 \001(\005\022\017\n\007imgName\030\010 \001(\t\022\036\n\026imgVerticalP" +
+      "ixelOffset\030\t \001(\002\022\023\n\013description\030\n \001(\t\022\026\n" +
+      "\016chanceToAppear\030\013 \001(\002\022\025\n\rshadowImgName\030\014" +
+      " \001(\t\022\034\n\024shadowVerticalOffset\030\r \001(\002\022\037\n\027sh" +
+      "adowHorizontalOfffset\030\016 \001(\002\"\225\001\n\024MinimumO",
+      "bstacleProto\022\022\n\nobstacleId\030\001 \001(\005\022*\n\ncoor" +
+      "dinate\030\002 \001(\0132\026.proto.CoordinateProto\022=\n\013" +
+      "orientation\030\003 \001(\0162\030.proto.StructOrientat" +
+      "ion:\016NO_ORIENTATION\"\331\001\n\021UserObstacleProt" +
+      "o\022\030\n\020userObstacleUuid\030\001 \001(\t\022\020\n\010userUuid\030" +
+      "\002 \001(\t\022\022\n\nobstacleId\030\003 \001(\005\022+\n\013coordinates" +
+      "\030\004 \001(\0132\026.proto.CoordinateProto\022=\n\013orient" +
+      "ation\030\005 \001(\0162\030.proto.StructOrientation:\016N" +
+      "O_ORIENTATION\022\030\n\020removalStartTime\030\006 \001(\003*" +
+      "G\n\021StructOrientation\022\022\n\016NO_ORIENTATION\020\003",
+      "\022\016\n\nPOSITION_1\020\001\022\016\n\nPOSITION_2\020\002B9\n\037com." +
+      "lvl6.mobsters.noneventprotoB\026NoneventStr" +
+      "uctureProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -10935,7 +11007,7 @@ public final class NoneventStructureProto {
           internal_static_proto_FullUserStructureProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FullUserStructureProto_descriptor,
-              new java.lang.String[] { "UserStructId", "UserId", "StructId", "LastRetrieved", "PurchaseTime", "IsComplete", "Coordinates", "Orientation", "FbInviteStructLvl", },
+              new java.lang.String[] { "UserStructUuid", "UserUuid", "StructId", "LastRetrieved", "PurchaseTime", "IsComplete", "Coordinates", "Orientation", "FbInviteStructLvl", },
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.FullUserStructureProto.class,
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.FullUserStructureProto.Builder.class);
           internal_static_proto_CoordinateProto_descriptor =
@@ -10975,7 +11047,7 @@ public final class NoneventStructureProto {
           internal_static_proto_UserObstacleProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_UserObstacleProto_descriptor,
-              new java.lang.String[] { "UserObstacleId", "UserId", "ObstacleId", "Coordinates", "Orientation", "RemovalStartTime", },
+              new java.lang.String[] { "UserObstacleUuid", "UserUuid", "ObstacleId", "Coordinates", "Orientation", "RemovalStartTime", },
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.UserObstacleProto.class,
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.UserObstacleProto.Builder.class);
           return null;
@@ -10984,6 +11056,7 @@ public final class NoneventStructureProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor(),
         }, assigner);
   }
   

@@ -1,6 +1,8 @@
 //ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
 //DO NO START PROPERTY METHODS WITH THE WORDS NEW OR COPY
 
+import "ConfigNoneventSharedEnum.proto";
+
 package proto;
 
 option java_package = "com.lvl6.mobsters.noneventproto";
@@ -13,10 +15,10 @@ message StructureInfoProto {
 	optional int32 structId = 1;
 	optional string name = 2;
 	optional int32 level = 3;
-	optional StructType structType = 4;
+	optional StructType structType = 4 [default = NO_STRUCT];
 	
 	//cash, other soft currency (like CoC's gold, elixir, dark elixir)
-	optional ResourceType buildResourceType = 5; 
+	optional ResourceType buildResourceType = 5 [default = NO_RESOURCE]; 
 	optional int32 buildCost = 6;
 	optional int32 minutesToBuild = 7;
 	optional int32 prerequisiteTownHallLvl = 8;
@@ -53,24 +55,13 @@ message StructureInfoProto {
 	}
 }
 
-enum ResourceType {
-	NO_RESOURCE = 4;
-	CASH = 1;
-	OIL = 2;
-	GEMS = 3;
-	
-	//NO_RESOURCE = 4; defined above
-	
-	MONSTER = 20;
-}
-
 //------------------------------------------------------------------------------------------
 
 message ResourceGeneratorProto {
 	optional StructureInfoProto structInfo = 1;
 	
 	//the type of resource that is generated
-	optional ResourceType resourceType = 2;
+	optional ResourceType resourceType = 2 [default = NO_RESOURCE];
 	
 	//at the moment, some amount per hour
 	optional float productionRate = 3;
@@ -83,7 +74,7 @@ message ResourceStorageProto {
 	optional StructureInfoProto structInfo = 1;
 	
 	//the type of resource that is stored
-	optional ResourceType resourceType = 2;
+	optional ResourceType resourceType = 2 [default = NO_RESOURCE];
 	optional int32 capacity = 3;
 }
 
@@ -166,14 +157,14 @@ message MiniJobCenterProto {
 //------------------------------------------------------------------------------------------
 
 message FullUserStructureProto {
-	optional int32 userStructId = 1;
-	optional int32 userId = 2;
+	optional string userStructUuid = 1;
+	optional string userUuid = 2;
 	optional int32 structId = 3;
 	optional int64 lastRetrieved = 4;
 	optional int64 purchaseTime = 5;
 	optional bool isComplete = 6;
 	optional CoordinateProto coordinates = 7;
-	optional StructOrientation orientation = 8;
+	optional StructOrientation orientation = 8 [default = NO_ORIENTATION];
 	optional int32 fbInviteStructLvl = 9;
 }
 
@@ -207,7 +198,7 @@ message TutorialStructProto {
 message ObstacleProto {
 	optional int32 obstacleId = 1;
 	optional string name = 2;
-	optional ResourceType removalCostType = 3; //costs cash, oil, or other to remove
+	optional ResourceType removalCostType = 3 [default = NO_RESOURCE]; //costs cash, oil, or other to remove
 	optional int32 cost = 4;
 	optional int32 secondsToRemove = 5;
 	optional int32 width = 6;
@@ -224,15 +215,15 @@ message ObstacleProto {
 message MinimumObstacleProto {
 	optional int32 obstacleId = 1;
 	optional CoordinateProto coordinate = 2;
-	optional StructOrientation orientation = 5;
+	optional StructOrientation orientation = 3 [default = NO_ORIENTATION];
 }
 
 message UserObstacleProto {
-	optional int32 userObstacleId = 1;
-	optional int32 userId = 2;
+	optional string userObstacleUuid = 1;
+	optional string userUuid = 2;
 	optional int32 obstacleId = 3;
 	optional CoordinateProto coordinates = 4;
-	optional StructOrientation orientation = 5;
+	optional StructOrientation orientation = 5 [default = NO_ORIENTATION];
 	optional int64 removalStartTime = 6;
 }
 

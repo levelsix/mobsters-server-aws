@@ -83,10 +83,10 @@ public final class NoneventPvpProto {
   public interface PvpProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // optional .proto.MinimumUserProtoWithLevel defender = 1;
+    // optional .proto.MinimumUserProto defender = 1;
     boolean hasDefender();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel getDefender();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevelOrBuilder getDefenderOrBuilder();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getDefender();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getDefenderOrBuilder();
     
     // repeated .proto.MinimumUserMonsterProto defenderMonsters = 3;
     java.util.List<com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MinimumUserMonsterProto> 
@@ -140,16 +140,16 @@ public final class NoneventPvpProto {
     }
     
     private int bitField0_;
-    // optional .proto.MinimumUserProtoWithLevel defender = 1;
+    // optional .proto.MinimumUserProto defender = 1;
     public static final int DEFENDER_FIELD_NUMBER = 1;
-    private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel defender_;
+    private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto defender_;
     public boolean hasDefender() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel getDefender() {
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getDefender() {
       return defender_;
     }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevelOrBuilder getDefenderOrBuilder() {
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getDefenderOrBuilder() {
       return defender_;
     }
     
@@ -208,7 +208,7 @@ public final class NoneventPvpProto {
     }
     
     private void initFields() {
-      defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.getDefaultInstance();
+      defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
       defenderMonsters_ = java.util.Collections.emptyList();
       prospectiveCashWinnings_ = 0;
       prospectiveOilWinnings_ = 0;
@@ -398,7 +398,7 @@ public final class NoneventPvpProto {
       public Builder clear() {
         super.clear();
         if (defenderBuilder_ == null) {
-          defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.getDefaultInstance();
+          defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
         } else {
           defenderBuilder_.clear();
         }
@@ -576,7 +576,7 @@ public final class NoneventPvpProto {
               break;
             }
             case 10: {
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.newBuilder();
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder();
               if (hasDefender()) {
                 subBuilder.mergeFrom(getDefender());
               }
@@ -615,21 +615,21 @@ public final class NoneventPvpProto {
       
       private int bitField0_;
       
-      // optional .proto.MinimumUserProtoWithLevel defender = 1;
-      private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.getDefaultInstance();
+      // optional .proto.MinimumUserProto defender = 1;
+      private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevelOrBuilder> defenderBuilder_;
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> defenderBuilder_;
       public boolean hasDefender() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel getDefender() {
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getDefender() {
         if (defenderBuilder_ == null) {
           return defender_;
         } else {
           return defenderBuilder_.getMessage();
         }
       }
-      public Builder setDefender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel value) {
+      public Builder setDefender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
         if (defenderBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -643,7 +643,7 @@ public final class NoneventPvpProto {
         return this;
       }
       public Builder setDefender(
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.Builder builderForValue) {
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder builderForValue) {
         if (defenderBuilder_ == null) {
           defender_ = builderForValue.build();
           onChanged();
@@ -653,12 +653,12 @@ public final class NoneventPvpProto {
         bitField0_ |= 0x00000001;
         return this;
       }
-      public Builder mergeDefender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel value) {
+      public Builder mergeDefender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
         if (defenderBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              defender_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.getDefaultInstance()) {
+              defender_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance()) {
             defender_ =
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.newBuilder(defender_).mergeFrom(value).buildPartial();
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder(defender_).mergeFrom(value).buildPartial();
           } else {
             defender_ = value;
           }
@@ -671,7 +671,7 @@ public final class NoneventPvpProto {
       }
       public Builder clearDefender() {
         if (defenderBuilder_ == null) {
-          defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.getDefaultInstance();
+          defender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
           onChanged();
         } else {
           defenderBuilder_.clear();
@@ -679,12 +679,12 @@ public final class NoneventPvpProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.Builder getDefenderBuilder() {
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder getDefenderBuilder() {
         bitField0_ |= 0x00000001;
         onChanged();
         return getDefenderFieldBuilder().getBuilder();
       }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevelOrBuilder getDefenderOrBuilder() {
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getDefenderOrBuilder() {
         if (defenderBuilder_ != null) {
           return defenderBuilder_.getMessageOrBuilder();
         } else {
@@ -692,11 +692,11 @@ public final class NoneventPvpProto {
         }
       }
       private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevelOrBuilder> 
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> 
           getDefenderFieldBuilder() {
         if (defenderBuilder_ == null) {
           defenderBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevel.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithLevelOrBuilder>(
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder>(
                   defender_,
                   getParentForChildren(),
                   isClean());
@@ -1041,10 +1041,10 @@ public final class NoneventPvpProto {
     boolean hasBattleEndTime();
     long getBattleEndTime();
     
-    // optional .proto.FullUserProto attacker = 1;
+    // optional .proto.UserProto attacker = 1;
     boolean hasAttacker();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto getAttacker();
-    com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProtoOrBuilder getAttackerOrBuilder();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto getAttacker();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProtoOrBuilder getAttackerOrBuilder();
     
     // repeated .proto.MinimumUserMonsterProto attackersMonsters = 2;
     java.util.List<com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MinimumUserMonsterProto> 
@@ -1139,16 +1139,16 @@ public final class NoneventPvpProto {
       return battleEndTime_;
     }
     
-    // optional .proto.FullUserProto attacker = 1;
+    // optional .proto.UserProto attacker = 1;
     public static final int ATTACKER_FIELD_NUMBER = 1;
-    private com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto attacker_;
+    private com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto attacker_;
     public boolean hasAttacker() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto getAttacker() {
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto getAttacker() {
       return attacker_;
     }
-    public com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProtoOrBuilder getAttackerOrBuilder() {
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProtoOrBuilder getAttackerOrBuilder() {
       return attacker_;
     }
     
@@ -1287,7 +1287,7 @@ public final class NoneventPvpProto {
     
     private void initFields() {
       battleEndTime_ = 0L;
-      attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.getDefaultInstance();
+      attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.getDefaultInstance();
       attackersMonsters_ = java.util.Collections.emptyList();
       attackerWon_ = false;
       defenderCashChange_ = 0;
@@ -1545,7 +1545,7 @@ public final class NoneventPvpProto {
         battleEndTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
         if (attackerBuilder_ == null) {
-          attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.getDefaultInstance();
+          attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.getDefaultInstance();
         } else {
           attackerBuilder_.clear();
         }
@@ -1817,7 +1817,7 @@ public final class NoneventPvpProto {
               break;
             }
             case 10: {
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.newBuilder();
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.newBuilder();
               if (hasAttacker()) {
                 subBuilder.mergeFrom(getAttacker());
               }
@@ -1929,21 +1929,21 @@ public final class NoneventPvpProto {
         return this;
       }
       
-      // optional .proto.FullUserProto attacker = 1;
-      private com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.getDefaultInstance();
+      // optional .proto.UserProto attacker = 1;
+      private com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProtoOrBuilder> attackerBuilder_;
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProtoOrBuilder> attackerBuilder_;
       public boolean hasAttacker() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto getAttacker() {
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto getAttacker() {
         if (attackerBuilder_ == null) {
           return attacker_;
         } else {
           return attackerBuilder_.getMessage();
         }
       }
-      public Builder setAttacker(com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto value) {
+      public Builder setAttacker(com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto value) {
         if (attackerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1957,7 +1957,7 @@ public final class NoneventPvpProto {
         return this;
       }
       public Builder setAttacker(
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.Builder builderForValue) {
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.Builder builderForValue) {
         if (attackerBuilder_ == null) {
           attacker_ = builderForValue.build();
           onChanged();
@@ -1967,12 +1967,12 @@ public final class NoneventPvpProto {
         bitField0_ |= 0x00000002;
         return this;
       }
-      public Builder mergeAttacker(com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto value) {
+      public Builder mergeAttacker(com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto value) {
         if (attackerBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              attacker_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.getDefaultInstance()) {
+              attacker_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.getDefaultInstance()) {
             attacker_ =
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.newBuilder(attacker_).mergeFrom(value).buildPartial();
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.newBuilder(attacker_).mergeFrom(value).buildPartial();
           } else {
             attacker_ = value;
           }
@@ -1985,7 +1985,7 @@ public final class NoneventPvpProto {
       }
       public Builder clearAttacker() {
         if (attackerBuilder_ == null) {
-          attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.getDefaultInstance();
+          attacker_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.getDefaultInstance();
           onChanged();
         } else {
           attackerBuilder_.clear();
@@ -1993,12 +1993,12 @@ public final class NoneventPvpProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.Builder getAttackerBuilder() {
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.Builder getAttackerBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
         return getAttackerFieldBuilder().getBuilder();
       }
-      public com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProtoOrBuilder getAttackerOrBuilder() {
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProtoOrBuilder getAttackerOrBuilder() {
         if (attackerBuilder_ != null) {
           return attackerBuilder_.getMessageOrBuilder();
         } else {
@@ -2006,11 +2006,11 @@ public final class NoneventPvpProto {
         }
       }
       private com.google.protobuf.SingleFieldBuilder<
-          com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProtoOrBuilder> 
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProtoOrBuilder> 
           getAttackerFieldBuilder() {
         if (attackerBuilder_ == null) {
           attackerBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProtoOrBuilder>(
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProtoOrBuilder>(
                   attacker_,
                   getParentForChildren(),
                   isClean());
@@ -3518,33 +3518,32 @@ public final class NoneventPvpProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\021NoneventPvp.proto\022\005proto\032\025NoneventMons" +
-      "ter.proto\032\022NoneventUser.proto\"\354\001\n\010PvpPro" +
-      "to\0222\n\010defender\030\001 \001(\0132 .proto.MinimumUser" +
-      "ProtoWithLevel\0228\n\020defenderMonsters\030\003 \003(\013" +
-      "2\036.proto.MinimumUserMonsterProto\022\037\n\027pros" +
-      "pectiveCashWinnings\030\004 \001(\005\022\036\n\026prospective" +
-      "OilWinnings\030\005 \001(\005\0221\n\016pvpLeagueStats\030\006 \001(" +
-      "\0132\031.proto.UserPvpLeagueProto\"\372\003\n\017PvpHist" +
-      "oryProto\022\025\n\rbattleEndTime\030\t \001(\003\022&\n\010attac" +
-      "ker\030\001 \001(\0132\024.proto.FullUserProto\0229\n\021attac",
-      "kersMonsters\030\002 \003(\0132\036.proto.MinimumUserMo" +
-      "nsterProto\022\023\n\013attackerWon\030\003 \001(\010\022\032\n\022defen" +
-      "derCashChange\030\004 \001(\021\022\031\n\021defenderOilChange" +
-      "\030\005 \001(\021\022\026\n\016exactedRevenge\030\006 \001(\010\022\037\n\027prospe" +
-      "ctiveCashWinnings\030\007 \001(\005\022\036\n\026prospectiveOi" +
-      "lWinnings\030\010 \001(\005\0221\n\016attackerBefore\030\n \001(\0132" +
-      "\031.proto.UserPvpLeagueProto\0220\n\rattackerAf" +
-      "ter\030\013 \001(\0132\031.proto.UserPvpLeagueProto\0221\n\016" +
-      "defenderBefore\030\014 \001(\0132\031.proto.UserPvpLeag" +
-      "ueProto\0220\n\rdefenderAfter\030\r \001(\0132\031.proto.U",
-      "serPvpLeagueProto\"\220\001\n\016PvpLeagueProto\022\020\n\010" +
-      "leagueId\030\001 \001(\005\022\022\n\nleagueName\030\002 \001(\t\022\021\n\tim" +
-      "gPrefix\030\003 \001(\t\022\020\n\010numRanks\030\004 \001(\005\022\023\n\013descr" +
-      "iption\030\005 \001(\t\022\016\n\006minElo\030\006 \001(\005\022\016\n\006maxElo\030\007" +
-      " \001(\005*E\n\014BattleResult\022\020\n\014ATTACKER_WIN\020\001\022\020" +
-      "\n\014DEFENDER_WIN\020\002\022\021\n\rATTACKER_FLEE\020\003B3\n\037c" +
-      "om.lvl6.mobsters.noneventprotoB\020Nonevent" +
-      "PvpProto"
+      "ter.proto\032\022NoneventUser.proto\"\343\001\n\010PvpPro" +
+      "to\022)\n\010defender\030\001 \001(\0132\027.proto.MinimumUser" +
+      "Proto\0228\n\020defenderMonsters\030\003 \003(\0132\036.proto." +
+      "MinimumUserMonsterProto\022\037\n\027prospectiveCa" +
+      "shWinnings\030\004 \001(\005\022\036\n\026prospectiveOilWinnin" +
+      "gs\030\005 \001(\005\0221\n\016pvpLeagueStats\030\006 \001(\0132\031.proto" +
+      ".UserPvpLeagueProto\"\366\003\n\017PvpHistoryProto\022" +
+      "\025\n\rbattleEndTime\030\t \001(\003\022\"\n\010attacker\030\001 \001(\013" +
+      "2\020.proto.UserProto\0229\n\021attackersMonsters\030",
+      "\002 \003(\0132\036.proto.MinimumUserMonsterProto\022\023\n" +
+      "\013attackerWon\030\003 \001(\010\022\032\n\022defenderCashChange" +
+      "\030\004 \001(\021\022\031\n\021defenderOilChange\030\005 \001(\021\022\026\n\016exa" +
+      "ctedRevenge\030\006 \001(\010\022\037\n\027prospectiveCashWinn" +
+      "ings\030\007 \001(\005\022\036\n\026prospectiveOilWinnings\030\010 \001" +
+      "(\005\0221\n\016attackerBefore\030\n \001(\0132\031.proto.UserP" +
+      "vpLeagueProto\0220\n\rattackerAfter\030\013 \001(\0132\031.p" +
+      "roto.UserPvpLeagueProto\0221\n\016defenderBefor" +
+      "e\030\014 \001(\0132\031.proto.UserPvpLeagueProto\0220\n\rde" +
+      "fenderAfter\030\r \001(\0132\031.proto.UserPvpLeagueP",
+      "roto\"\220\001\n\016PvpLeagueProto\022\020\n\010leagueId\030\001 \001(" +
+      "\005\022\022\n\nleagueName\030\002 \001(\t\022\021\n\timgPrefix\030\003 \001(\t" +
+      "\022\020\n\010numRanks\030\004 \001(\005\022\023\n\013description\030\005 \001(\t\022" +
+      "\016\n\006minElo\030\006 \001(\005\022\016\n\006maxElo\030\007 \001(\005*E\n\014Battl" +
+      "eResult\022\020\n\014ATTACKER_WIN\020\001\022\020\n\014DEFENDER_WI" +
+      "N\020\002\022\021\n\rATTACKER_FLEE\020\003B3\n\037com.lvl6.mobst" +
+      "ers.noneventprotoB\020NoneventPvpProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

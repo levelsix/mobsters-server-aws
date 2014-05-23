@@ -8,1024 +8,6 @@ public final class NoneventCityProto {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface UserCityExpansionDataProtoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // optional int32 userId = 1;
-    boolean hasUserId();
-    int getUserId();
-    
-    // optional sint32 xPosition = 2;
-    boolean hasXPosition();
-    int getXPosition();
-    
-    // optional sint32 yPosition = 3;
-    boolean hasYPosition();
-    int getYPosition();
-    
-    // optional bool isExpanding = 4;
-    boolean hasIsExpanding();
-    boolean getIsExpanding();
-    
-    // optional int64 expandStartTime = 5;
-    boolean hasExpandStartTime();
-    long getExpandStartTime();
-  }
-  public static final class UserCityExpansionDataProto extends
-      com.google.protobuf.GeneratedMessage
-      implements UserCityExpansionDataProtoOrBuilder {
-    // Use UserCityExpansionDataProto.newBuilder() to construct.
-    private UserCityExpansionDataProto(Builder builder) {
-      super(builder);
-    }
-    private UserCityExpansionDataProto(boolean noInit) {}
-    
-    private static final UserCityExpansionDataProto defaultInstance;
-    public static UserCityExpansionDataProto getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public UserCityExpansionDataProto getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_UserCityExpansionDataProto_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_UserCityExpansionDataProto_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // optional int32 userId = 1;
-    public static final int USERID_FIELD_NUMBER = 1;
-    private int userId_;
-    public boolean hasUserId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public int getUserId() {
-      return userId_;
-    }
-    
-    // optional sint32 xPosition = 2;
-    public static final int XPOSITION_FIELD_NUMBER = 2;
-    private int xPosition_;
-    public boolean hasXPosition() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public int getXPosition() {
-      return xPosition_;
-    }
-    
-    // optional sint32 yPosition = 3;
-    public static final int YPOSITION_FIELD_NUMBER = 3;
-    private int yPosition_;
-    public boolean hasYPosition() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    public int getYPosition() {
-      return yPosition_;
-    }
-    
-    // optional bool isExpanding = 4;
-    public static final int ISEXPANDING_FIELD_NUMBER = 4;
-    private boolean isExpanding_;
-    public boolean hasIsExpanding() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    public boolean getIsExpanding() {
-      return isExpanding_;
-    }
-    
-    // optional int64 expandStartTime = 5;
-    public static final int EXPANDSTARTTIME_FIELD_NUMBER = 5;
-    private long expandStartTime_;
-    public boolean hasExpandStartTime() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    public long getExpandStartTime() {
-      return expandStartTime_;
-    }
-    
-    private void initFields() {
-      userId_ = 0;
-      xPosition_ = 0;
-      yPosition_ = 0;
-      isExpanding_ = false;
-      expandStartTime_ = 0L;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, userId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeSInt32(2, xPosition_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeSInt32(3, yPosition_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBool(4, isExpanding_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt64(5, expandStartTime_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, userId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(2, xPosition_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(3, yPosition_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(4, isExpanding_);
-      }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, expandStartTime_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProtoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_UserCityExpansionDataProto_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_UserCityExpansionDataProto_fieldAccessorTable;
-      }
-      
-      // Construct using com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        userId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        xPosition_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        yPosition_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        isExpanding_ = false;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        expandStartTime_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDescriptor();
-      }
-      
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto getDefaultInstanceForType() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance();
-      }
-      
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto build() {
-        com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto buildPartial() {
-        com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto result = new com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.userId_ = userId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.xPosition_ = xPosition_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.yPosition_ = yPosition_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.isExpanding_ = isExpanding_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.expandStartTime_ = expandStartTime_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto) {
-          return mergeFrom((com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto other) {
-        if (other == com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.getDefaultInstance()) return this;
-        if (other.hasUserId()) {
-          setUserId(other.getUserId());
-        }
-        if (other.hasXPosition()) {
-          setXPosition(other.getXPosition());
-        }
-        if (other.hasYPosition()) {
-          setYPosition(other.getYPosition());
-        }
-        if (other.hasIsExpanding()) {
-          setIsExpanding(other.getIsExpanding());
-        }
-        if (other.hasExpandStartTime()) {
-          setExpandStartTime(other.getExpandStartTime());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              userId_ = input.readInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              xPosition_ = input.readSInt32();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              yPosition_ = input.readSInt32();
-              break;
-            }
-            case 32: {
-              bitField0_ |= 0x00000008;
-              isExpanding_ = input.readBool();
-              break;
-            }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              expandStartTime_ = input.readInt64();
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // optional int32 userId = 1;
-      private int userId_ ;
-      public boolean hasUserId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public int getUserId() {
-        return userId_;
-      }
-      public Builder setUserId(int value) {
-        bitField0_ |= 0x00000001;
-        userId_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearUserId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        userId_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional sint32 xPosition = 2;
-      private int xPosition_ ;
-      public boolean hasXPosition() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public int getXPosition() {
-        return xPosition_;
-      }
-      public Builder setXPosition(int value) {
-        bitField0_ |= 0x00000002;
-        xPosition_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearXPosition() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        xPosition_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional sint32 yPosition = 3;
-      private int yPosition_ ;
-      public boolean hasYPosition() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      public int getYPosition() {
-        return yPosition_;
-      }
-      public Builder setYPosition(int value) {
-        bitField0_ |= 0x00000004;
-        yPosition_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearYPosition() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        yPosition_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional bool isExpanding = 4;
-      private boolean isExpanding_ ;
-      public boolean hasIsExpanding() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      public boolean getIsExpanding() {
-        return isExpanding_;
-      }
-      public Builder setIsExpanding(boolean value) {
-        bitField0_ |= 0x00000008;
-        isExpanding_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearIsExpanding() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        isExpanding_ = false;
-        onChanged();
-        return this;
-      }
-      
-      // optional int64 expandStartTime = 5;
-      private long expandStartTime_ ;
-      public boolean hasExpandStartTime() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      public long getExpandStartTime() {
-        return expandStartTime_;
-      }
-      public Builder setExpandStartTime(long value) {
-        bitField0_ |= 0x00000010;
-        expandStartTime_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearExpandStartTime() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        expandStartTime_ = 0L;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:proto.UserCityExpansionDataProto)
-    }
-    
-    static {
-      defaultInstance = new UserCityExpansionDataProto(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:proto.UserCityExpansionDataProto)
-  }
-  
-  public interface CityExpansionCostProtoOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-    
-    // optional int32 expansionNum = 1;
-    boolean hasExpansionNum();
-    int getExpansionNum();
-    
-    // optional int32 expansionCostCash = 2;
-    boolean hasExpansionCostCash();
-    int getExpansionCostCash();
-    
-    // optional int32 numMinutesToExpand = 3;
-    boolean hasNumMinutesToExpand();
-    int getNumMinutesToExpand();
-  }
-  public static final class CityExpansionCostProto extends
-      com.google.protobuf.GeneratedMessage
-      implements CityExpansionCostProtoOrBuilder {
-    // Use CityExpansionCostProto.newBuilder() to construct.
-    private CityExpansionCostProto(Builder builder) {
-      super(builder);
-    }
-    private CityExpansionCostProto(boolean noInit) {}
-    
-    private static final CityExpansionCostProto defaultInstance;
-    public static CityExpansionCostProto getDefaultInstance() {
-      return defaultInstance;
-    }
-    
-    public CityExpansionCostProto getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-    
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_CityExpansionCostProto_descriptor;
-    }
-    
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_CityExpansionCostProto_fieldAccessorTable;
-    }
-    
-    private int bitField0_;
-    // optional int32 expansionNum = 1;
-    public static final int EXPANSIONNUM_FIELD_NUMBER = 1;
-    private int expansionNum_;
-    public boolean hasExpansionNum() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    public int getExpansionNum() {
-      return expansionNum_;
-    }
-    
-    // optional int32 expansionCostCash = 2;
-    public static final int EXPANSIONCOSTCASH_FIELD_NUMBER = 2;
-    private int expansionCostCash_;
-    public boolean hasExpansionCostCash() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public int getExpansionCostCash() {
-      return expansionCostCash_;
-    }
-    
-    // optional int32 numMinutesToExpand = 3;
-    public static final int NUMMINUTESTOEXPAND_FIELD_NUMBER = 3;
-    private int numMinutesToExpand_;
-    public boolean hasNumMinutesToExpand() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    public int getNumMinutesToExpand() {
-      return numMinutesToExpand_;
-    }
-    
-    private void initFields() {
-      expansionNum_ = 0;
-      expansionCostCash_ = 0;
-      numMinutesToExpand_ = 0;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-      
-      memoizedIsInitialized = 1;
-      return true;
-    }
-    
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, expansionNum_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, expansionCostCash_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, numMinutesToExpand_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-    
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-    
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, expansionNum_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, expansionCostCash_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, numMinutesToExpand_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-    
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-    
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return newBuilder().mergeFrom(data, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      Builder builder = newBuilder();
-      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
-        return builder.buildParsed();
-      } else {
-        return null;
-      }
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input).buildParsed();
-    }
-    public static com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return newBuilder().mergeFrom(input, extensionRegistry)
-               .buildParsed();
-    }
-    
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-    
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProtoOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_CityExpansionCostProto_descriptor;
-      }
-      
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.internal_static_proto_CityExpansionCostProto_fieldAccessorTable;
-      }
-      
-      // Construct using com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-      
-      private Builder(BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-      
-      public Builder clear() {
-        super.clear();
-        expansionNum_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        expansionCostCash_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        numMinutesToExpand_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-      
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto.getDescriptor();
-      }
-      
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto getDefaultInstanceForType() {
-        return com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto.getDefaultInstance();
-      }
-      
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto build() {
-        com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-      
-      private com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto buildParsed()
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(
-            result).asInvalidProtocolBufferException();
-        }
-        return result;
-      }
-      
-      public com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto buildPartial() {
-        com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto result = new com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.expansionNum_ = expansionNum_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.expansionCostCash_ = expansionCostCash_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.numMinutesToExpand_ = numMinutesToExpand_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-      
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto) {
-          return mergeFrom((com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-      
-      public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto other) {
-        if (other == com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto.getDefaultInstance()) return this;
-        if (other.hasExpansionNum()) {
-          setExpansionNum(other.getExpansionNum());
-        }
-        if (other.hasExpansionCostCash()) {
-          setExpansionCostCash(other.getExpansionCostCash());
-        }
-        if (other.hasNumMinutesToExpand()) {
-          setNumMinutesToExpand(other.getNumMinutesToExpand());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-      
-      public final boolean isInitialized() {
-        return true;
-      }
-      
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder(
-            this.getUnknownFields());
-        while (true) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              this.setUnknownFields(unknownFields.build());
-              onChanged();
-              return this;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                this.setUnknownFields(unknownFields.build());
-                onChanged();
-                return this;
-              }
-              break;
-            }
-            case 8: {
-              bitField0_ |= 0x00000001;
-              expansionNum_ = input.readInt32();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              expansionCostCash_ = input.readInt32();
-              break;
-            }
-            case 24: {
-              bitField0_ |= 0x00000004;
-              numMinutesToExpand_ = input.readInt32();
-              break;
-            }
-          }
-        }
-      }
-      
-      private int bitField0_;
-      
-      // optional int32 expansionNum = 1;
-      private int expansionNum_ ;
-      public boolean hasExpansionNum() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      public int getExpansionNum() {
-        return expansionNum_;
-      }
-      public Builder setExpansionNum(int value) {
-        bitField0_ |= 0x00000001;
-        expansionNum_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearExpansionNum() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        expansionNum_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional int32 expansionCostCash = 2;
-      private int expansionCostCash_ ;
-      public boolean hasExpansionCostCash() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public int getExpansionCostCash() {
-        return expansionCostCash_;
-      }
-      public Builder setExpansionCostCash(int value) {
-        bitField0_ |= 0x00000002;
-        expansionCostCash_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearExpansionCostCash() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        expansionCostCash_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional int32 numMinutesToExpand = 3;
-      private int numMinutesToExpand_ ;
-      public boolean hasNumMinutesToExpand() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      public int getNumMinutesToExpand() {
-        return numMinutesToExpand_;
-      }
-      public Builder setNumMinutesToExpand(int value) {
-        bitField0_ |= 0x00000004;
-        numMinutesToExpand_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearNumMinutesToExpand() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        numMinutesToExpand_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // @@protoc_insertion_point(builder_scope:proto.CityExpansionCostProto)
-    }
-    
-    static {
-      defaultInstance = new CityExpansionCostProto(true);
-      defaultInstance.initFields();
-    }
-    
-    // @@protoc_insertion_point(class_scope:proto.CityExpansionCostProto)
-  }
-  
   public interface CityElementProtoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
@@ -1037,7 +19,7 @@ public final class NoneventCityProto {
     boolean hasAssetId();
     int getAssetId();
     
-    // optional .proto.CityElementProto.CityElemType type = 4;
+    // optional .proto.CityElementProto.CityElemType type = 4 [default = NO_CITY_ELEM_TYPE];
     boolean hasType();
     com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType getType();
     
@@ -1101,12 +83,14 @@ public final class NoneventCityProto {
       DECORATION(1, 2),
       PERSON_NEUTRAL_ENEMY(2, 3),
       BOSS(3, 4),
+      NO_CITY_ELEM_TYPE(4, 5),
       ;
       
       public static final int BUILDING_VALUE = 1;
       public static final int DECORATION_VALUE = 2;
       public static final int PERSON_NEUTRAL_ENEMY_VALUE = 3;
       public static final int BOSS_VALUE = 4;
+      public static final int NO_CITY_ELEM_TYPE_VALUE = 5;
       
       
       public final int getNumber() { return value; }
@@ -1117,6 +101,7 @@ public final class NoneventCityProto {
           case 2: return DECORATION;
           case 3: return PERSON_NEUTRAL_ENEMY;
           case 4: return BOSS;
+          case 5: return NO_CITY_ELEM_TYPE;
           default: return null;
         }
       }
@@ -1147,7 +132,7 @@ public final class NoneventCityProto {
       }
       
       private static final CityElemType[] VALUES = {
-        BUILDING, DECORATION, PERSON_NEUTRAL_ENEMY, BOSS, 
+        BUILDING, DECORATION, PERSON_NEUTRAL_ENEMY, BOSS, NO_CITY_ELEM_TYPE, 
       };
       
       public static CityElemType valueOf(
@@ -1191,7 +176,7 @@ public final class NoneventCityProto {
       return assetId_;
     }
     
-    // optional .proto.CityElementProto.CityElemType type = 4;
+    // optional .proto.CityElementProto.CityElemType type = 4 [default = NO_CITY_ELEM_TYPE];
     public static final int TYPE_FIELD_NUMBER = 4;
     private com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType type_;
     public boolean hasType() {
@@ -1292,7 +277,7 @@ public final class NoneventCityProto {
     private void initFields() {
       cityId_ = 0;
       assetId_ = 0;
-      type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.BUILDING;
+      type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.NO_CITY_ELEM_TYPE;
       coords_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto.getDefaultInstance();
       xLength_ = 0F;
       yLength_ = 0F;
@@ -1514,7 +499,7 @@ public final class NoneventCityProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         assetId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.BUILDING;
+        type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.NO_CITY_ELEM_TYPE;
         bitField0_ = (bitField0_ & ~0x00000004);
         if (coordsBuilder_ == null) {
           coords_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto.getDefaultInstance();
@@ -1805,8 +790,8 @@ public final class NoneventCityProto {
         return this;
       }
       
-      // optional .proto.CityElementProto.CityElemType type = 4;
-      private com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.BUILDING;
+      // optional .proto.CityElementProto.CityElemType type = 4 [default = NO_CITY_ELEM_TYPE];
+      private com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.NO_CITY_ELEM_TYPE;
       public boolean hasType() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
@@ -1824,7 +809,7 @@ public final class NoneventCityProto {
       }
       public Builder clearType() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.BUILDING;
+        type_ = com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.CityElemType.NO_CITY_ELEM_TYPE;
         onChanged();
         return this;
       }
@@ -3325,16 +2310,6 @@ public final class NoneventCityProto {
   }
   
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_proto_UserCityExpansionDataProto_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_proto_UserCityExpansionDataProto_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_proto_CityExpansionCostProto_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_proto_CityExpansionCostProto_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_proto_CityElementProto_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3353,30 +2328,26 @@ public final class NoneventCityProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\022NoneventCity.proto\022\005proto\032\027NoneventStr" +
-      "ucture.proto\032\022NoneventUser.proto\"\200\001\n\032Use" +
-      "rCityExpansionDataProto\022\016\n\006userId\030\001 \001(\005\022" +
-      "\021\n\txPosition\030\002 \001(\021\022\021\n\tyPosition\030\003 \001(\021\022\023\n" +
-      "\013isExpanding\030\004 \001(\010\022\027\n\017expandStartTime\030\005 " +
-      "\001(\003\"e\n\026CityExpansionCostProto\022\024\n\014expansi" +
-      "onNum\030\001 \001(\005\022\031\n\021expansionCostCash\030\002 \001(\005\022\032" +
-      "\n\022numMinutesToExpand\030\003 \001(\005\"\373\002\n\020CityEleme" +
-      "ntProto\022\016\n\006cityId\030\001 \001(\005\022\017\n\007assetId\030\002 \001(\005" +
-      "\0222\n\004type\030\004 \001(\0162$.proto.CityElementProto.",
-      "CityElemType\022&\n\006coords\030\005 \001(\0132\026.proto.Coo" +
-      "rdinateProto\022\017\n\007xLength\030\006 \001(\002\022\017\n\007yLength" +
-      "\030\007 \001(\002\022\r\n\005imgId\030\010 \001(\t\0229\n\013orientation\030\t \001" +
-      "(\0162\030.proto.StructOrientation:\nPOSITION_1" +
-      "\022,\n\014spriteCoords\030\n \001(\0132\026.proto.Coordinat" +
-      "eProto\"P\n\014CityElemType\022\014\n\010BUILDING\020\001\022\016\n\n" +
-      "DECORATION\020\002\022\030\n\024PERSON_NEUTRAL_ENEMY\020\003\022\010" +
-      "\n\004BOSS\020\004\"\361\001\n\rFullCityProto\022\016\n\006cityId\030\001 \001" +
+      "\n\022NoneventCity.proto\022\005proto\032\036ConfigNonev" +
+      "entSharedEnum.proto\032\027NoneventStructure.p" +
+      "roto\032\022NoneventUser.proto\"\245\003\n\020CityElement" +
+      "Proto\022\016\n\006cityId\030\001 \001(\005\022\017\n\007assetId\030\002 \001(\005\022E" +
+      "\n\004type\030\004 \001(\0162$.proto.CityElementProto.Ci" +
+      "tyElemType:\021NO_CITY_ELEM_TYPE\022&\n\006coords\030" +
+      "\005 \001(\0132\026.proto.CoordinateProto\022\017\n\007xLength" +
+      "\030\006 \001(\002\022\017\n\007yLength\030\007 \001(\002\022\r\n\005imgId\030\010 \001(\t\0229" +
+      "\n\013orientation\030\t \001(\0162\030.proto.StructOrient" +
+      "ation:\nPOSITION_1\022,\n\014spriteCoords\030\n \001(\0132",
+      "\026.proto.CoordinateProto\"g\n\014CityElemType\022" +
+      "\014\n\010BUILDING\020\001\022\016\n\nDECORATION\020\002\022\030\n\024PERSON_" +
+      "NEUTRAL_ENEMY\020\003\022\010\n\004BOSS\020\004\022\025\n\021NO_CITY_ELE" +
+      "M_TYPE\020\005\"\361\001\n\rFullCityProto\022\016\n\006cityId\030\001 \001" +
       "(\005\022\014\n\004name\030\002 \001(\t\022\022\n\nmapImgName\030\003 \001(\t\022&\n\006" +
-      "center\030\004 \001(\0132\026.proto.CoordinateProto\022\023\n\013",
+      "center\030\004 \001(\0132\026.proto.CoordinateProto\022\023\n\013" +
       "roadImgName\030\005 \001(\t\022\022\n\nmapTmxName\030\006 \001(\t\022-\n" +
       "\rroadImgCoords\030\007 \001(\0132\026.proto.CoordinateP" +
       "roto\022\017\n\007taskIds\030\010 \003(\005\022\035\n\025attackMapLabelI" +
-      "mgName\030\t \001(\tB4\n\037com.lvl6.mobsters.noneve" +
+      "mgName\030\t \001(\tB4\n\037com.lvl6.mobsters.noneve",
       "ntprotoB\021NoneventCityProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
@@ -3384,24 +2355,8 @@ public final class NoneventCityProto {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_proto_UserCityExpansionDataProto_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_proto_UserCityExpansionDataProto_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_proto_UserCityExpansionDataProto_descriptor,
-              new java.lang.String[] { "UserId", "XPosition", "YPosition", "IsExpanding", "ExpandStartTime", },
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.class,
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.UserCityExpansionDataProto.Builder.class);
-          internal_static_proto_CityExpansionCostProto_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_proto_CityExpansionCostProto_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_proto_CityExpansionCostProto_descriptor,
-              new java.lang.String[] { "ExpansionNum", "ExpansionCostCash", "NumMinutesToExpand", },
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto.class,
-              com.lvl6.mobsters.noneventproto.NoneventCityProto.CityExpansionCostProto.Builder.class);
           internal_static_proto_CityElementProto_descriptor =
-            getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(0);
           internal_static_proto_CityElementProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_CityElementProto_descriptor,
@@ -3409,7 +2364,7 @@ public final class NoneventCityProto {
               com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.class,
               com.lvl6.mobsters.noneventproto.NoneventCityProto.CityElementProto.Builder.class);
           internal_static_proto_FullCityProto_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(1);
           internal_static_proto_FullCityProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FullCityProto_descriptor,
@@ -3422,6 +2377,7 @@ public final class NoneventCityProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventUserProto.getDescriptor(),
         }, assigner);

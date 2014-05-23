@@ -72,7 +72,8 @@ message StartupResponseProto {
 	repeated UserMonsterHealingProto monstersHealing = 20;
 	optional UserEnhancementProto enhancements = 21;
 	optional UserMonsterEvolutionProto evolution = 29;
-	repeated RareBoosterPurchaseProto rareBoosterPurchases = 22;
+	
+	//repeated RareBoosterPurchaseProto rareBoosterPurchases = 22;
 	
 	optional string kabamNaid = 23;
 	
@@ -113,9 +114,6 @@ message StartupResponseProto {
 	
 	
 
-	//repeated LockBoxEventProto lockBoxEvents = ;
-	//repeated UserLockBoxEventProto userLockBoxEvents = ;
-
 	message AttackedNotificationProto {
 		optional MinimumUserProto attacker = 1;
 		optional int64 battleCompleteTime = 2;
@@ -146,7 +144,7 @@ message StartupResponseProto {
 		optional TournamentConstants touramentConstants = 12;
 		optional int32 fbConnectRewardDiamonds = 13;
 		optional string faqFileName = 14;
-		optional MinimumUserProto adminChatUserProto = 15;
+		optional MinimumUserProto adminChatMinimumUserProto = 15;
 		optional int32 numBeginnerSalesAllowed = 16;
 		
 		optional UserMonsterConstants userMonsterConstants = 17;

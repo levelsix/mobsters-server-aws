@@ -3019,7 +3019,7 @@ public final class EventInAppPurchaseProto {
     
     // optional .proto.ResourceType resourceType = 4 [default = CASH];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
     
     // optional int64 clientTime = 5;
     boolean hasClientTime();
@@ -3089,11 +3089,11 @@ public final class EventInAppPurchaseProto {
     
     // optional .proto.ResourceType resourceType = 4 [default = CASH];
     public static final int RESOURCETYPE_FIELD_NUMBER = 4;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
@@ -3111,7 +3111,7 @@ public final class EventInAppPurchaseProto {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithMaxResources.getDefaultInstance();
       numGems_ = 0;
       numResources_ = 0;
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
       clientTime_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
@@ -3305,7 +3305,7 @@ public final class EventInAppPurchaseProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         numResources_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         bitField0_ = (bitField0_ & ~0x00000008);
         clientTime_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -3454,7 +3454,7 @@ public final class EventInAppPurchaseProto {
             }
             case 32: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(4, rawValue);
               } else {
@@ -3607,14 +3607,14 @@ public final class EventInAppPurchaseProto {
       }
       
       // optional .proto.ResourceType resourceType = 4 [default = CASH];
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -3625,7 +3625,7 @@ public final class EventInAppPurchaseProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.CASH;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.CASH;
         onChanged();
         return this;
       }
@@ -4263,47 +4263,48 @@ public final class EventInAppPurchaseProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030EventInAppPurchase.proto\022\005proto\032\033Nonev" +
-      "entInAppPurchase.proto\032\027NoneventStructur" +
-      "e.proto\032\022NoneventUser.proto\"\240\001\n\031InAppPur" +
-      "chaseRequestProto\022\'\n\006sender\030\001 \001(\0132\027.prot" +
-      "o.MinimumUserProto\022\017\n\007receipt\030\002 \001(\t\022\022\n\nl" +
-      "ocalcents\030\003 \001(\t\022\025\n\rlocalcurrency\030\004 \001(\t\022\016" +
-      "\n\006locale\030\005 \001(\t\022\016\n\006ipaddr\030\006 \001(\t\"\272\002\n\032InApp" +
-      "PurchaseResponseProto\022\'\n\006sender\030\001 \001(\0132\027." +
-      "proto.MinimumUserProto\022E\n\006status\030\002 \001(\01625" +
-      ".proto.InAppPurchaseResponseProto.InAppP",
-      "urchaseStatus\022\026\n\016diamondsGained\030\003 \001(\005\022\023\n" +
-      "\013coinsGained\030\004 \001(\005\022\023\n\013packageName\030\005 \001(\t\022" +
-      "\024\n\014packagePrice\030\006 \001(\001\022\017\n\007receipt\030\007 \001(\t\"C" +
-      "\n\023InAppPurchaseStatus\022\013\n\007SUCCESS\020\001\022\010\n\004FA" +
-      "IL\020\002\022\025\n\021DUPLICATE_RECEIPT\020\003\"\236\001\n\034EarnFree" +
-      "DiamondsRequestProto\022\'\n\006sender\030\001 \001(\0132\027.p" +
-      "roto.MinimumUserProto\022A\n\020freeDiamondsTyp" +
-      "e\030\002 \001(\0162\033.proto.EarnFreeDiamondsType:\nFB" +
-      "_CONNECT\022\022\n\nclientTime\030\003 \001(\003\"\320\002\n\035EarnFre" +
-      "eDiamondsResponseProto\022\'\n\006sender\030\001 \001(\0132\027",
-      ".proto.MinimumUserProto\022K\n\006status\030\002 \001(\0162" +
-      ";.proto.EarnFreeDiamondsResponseProto.Ea" +
-      "rnFreeDiamondsStatus\022A\n\020freeDiamondsType" +
-      "\030\003 \001(\0162\033.proto.EarnFreeDiamondsType:\nFB_" +
-      "CONNECT\"v\n\026EarnFreeDiamondsStatus\022\013\n\007SUC" +
-      "CESS\020\001\022%\n!CLIENT_TOO_APART_FROM_SERVER_T" +
-      "IME\020\002\022\030\n\024METHOD_NOT_SUPPORTED\020\003\022\016\n\nOTHER" +
-      "_FAIL\020\004\"\313\001\n$ExchangeGemsForResourcesRequ" +
-      "estProto\0227\n\006sender\030\001 \001(\0132\'.proto.Minimum" +
-      "UserProtoWithMaxResources\022\017\n\007numGems\030\002 \001",
-      "(\005\022\024\n\014numResources\030\003 \001(\005\022/\n\014resourceType" +
-      "\030\004 \001(\0162\023.proto.ResourceType:\004CASH\022\022\n\ncli" +
-      "entTime\030\005 \001(\003\"\230\002\n%ExchangeGemsForResourc" +
-      "esResponseProto\0227\n\006sender\030\001 \001(\0132\'.proto." +
-      "MinimumUserProtoWithMaxResources\022[\n\006stat" +
-      "us\030\002 \001(\0162K.proto.ExchangeGemsForResource" +
-      "sResponseProto.ExchangeGemsForResourcesS" +
-      "tatus\"Y\n\036ExchangeGemsForResourcesStatus\022" +
-      "\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\022\032\n\026FAIL_INS" +
-      "UFFICIENT_GEMS\020\003B7\n\034com.lvl6.mobsters.ev",
-      "entprotoB\027EventInAppPurchaseProto"
+      "\n\030EventInAppPurchase.proto\022\005proto\032\036Confi" +
+      "gNoneventSharedEnum.proto\032\033NoneventInApp" +
+      "Purchase.proto\032\027NoneventStructure.proto\032" +
+      "\022NoneventUser.proto\"\240\001\n\031InAppPurchaseReq" +
+      "uestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minimu" +
+      "mUserProto\022\017\n\007receipt\030\002 \001(\t\022\022\n\nlocalcent" +
+      "s\030\003 \001(\t\022\025\n\rlocalcurrency\030\004 \001(\t\022\016\n\006locale" +
+      "\030\005 \001(\t\022\016\n\006ipaddr\030\006 \001(\t\"\272\002\n\032InAppPurchase" +
+      "ResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Mi" +
+      "nimumUserProto\022E\n\006status\030\002 \001(\01625.proto.I",
+      "nAppPurchaseResponseProto.InAppPurchaseS" +
+      "tatus\022\026\n\016diamondsGained\030\003 \001(\005\022\023\n\013coinsGa" +
+      "ined\030\004 \001(\005\022\023\n\013packageName\030\005 \001(\t\022\024\n\014packa" +
+      "gePrice\030\006 \001(\001\022\017\n\007receipt\030\007 \001(\t\"C\n\023InAppP" +
+      "urchaseStatus\022\013\n\007SUCCESS\020\001\022\010\n\004FAIL\020\002\022\025\n\021" +
+      "DUPLICATE_RECEIPT\020\003\"\236\001\n\034EarnFreeDiamonds" +
+      "RequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min" +
+      "imumUserProto\022A\n\020freeDiamondsType\030\002 \001(\0162" +
+      "\033.proto.EarnFreeDiamondsType:\nFB_CONNECT" +
+      "\022\022\n\nclientTime\030\003 \001(\003\"\320\002\n\035EarnFreeDiamond",
+      "sResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.M" +
+      "inimumUserProto\022K\n\006status\030\002 \001(\0162;.proto." +
+      "EarnFreeDiamondsResponseProto.EarnFreeDi" +
+      "amondsStatus\022A\n\020freeDiamondsType\030\003 \001(\0162\033" +
+      ".proto.EarnFreeDiamondsType:\nFB_CONNECT\"" +
+      "v\n\026EarnFreeDiamondsStatus\022\013\n\007SUCCESS\020\001\022%" +
+      "\n!CLIENT_TOO_APART_FROM_SERVER_TIME\020\002\022\030\n" +
+      "\024METHOD_NOT_SUPPORTED\020\003\022\016\n\nOTHER_FAIL\020\004\"" +
+      "\313\001\n$ExchangeGemsForResourcesRequestProto" +
+      "\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumUserProt",
+      "oWithMaxResources\022\017\n\007numGems\030\002 \001(\005\022\024\n\014nu" +
+      "mResources\030\003 \001(\005\022/\n\014resourceType\030\004 \001(\0162\023" +
+      ".proto.ResourceType:\004CASH\022\022\n\nclientTime\030" +
+      "\005 \001(\003\"\230\002\n%ExchangeGemsForResourcesRespon" +
+      "seProto\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumU" +
+      "serProtoWithMaxResources\022[\n\006status\030\002 \001(\016" +
+      "2K.proto.ExchangeGemsForResourcesRespons" +
+      "eProto.ExchangeGemsForResourcesStatus\"Y\n" +
+      "\036ExchangeGemsForResourcesStatus\022\013\n\007SUCCE" +
+      "SS\020\001\022\016\n\nFAIL_OTHER\020\002\022\032\n\026FAIL_INSUFFICIEN",
+      "T_GEMS\020\003B7\n\034com.lvl6.mobsters.eventproto" +
+      "B\027EventInAppPurchaseProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4364,6 +4365,7 @@ public final class EventInAppPurchaseProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventInAppPurchaseProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventStructureProto.getDescriptor(),
           com.lvl6.mobsters.noneventproto.NoneventUserProto.getDescriptor(),

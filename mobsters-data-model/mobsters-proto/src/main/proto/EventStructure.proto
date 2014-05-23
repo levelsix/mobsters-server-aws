@@ -1,6 +1,7 @@
 //ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
 //DO NO START PROPERTY METHODS WITH THE WORDS NEW OR COPY
 
+import "ConfigNoneventSharedEnum.proto";
 import "NoneventCity.proto";
 import "NoneventStructure.proto";
 import "NoneventUser.proto";
@@ -46,8 +47,8 @@ message PurchaseNormStructureResponseProto {
 //------------------------------------------------------------------------------------------
 message MoveOrRotateNormStructureRequestProto {
 	optional MinimumUserProto sender = 1;
-	optional int32 userStructId = 2;
-	optional MoveOrRotateNormStructType type = 3;
+	optional string userStructUuid = 2;
+	optional MoveOrRotateNormStructType type = 3 [default = MOVE];
 	optional CoordinateProto curStructCoordinates = 4;
 	optional StructOrientation newOrientation = 5 [default = POSITION_1];
 	
@@ -71,7 +72,7 @@ message MoveOrRotateNormStructureResponseProto {
 //user initiating a structure upgrade, similar to a purchase norm structure
 message UpgradeNormStructureRequestProto {
 	optional MinimumUserProto sender = 1;
-	optional int32 userStructId = 2;
+	optional string userStructUuid = 2;
 	optional int64 timeOfUpgrade = 3;	
 	
 	//if user needs, say, five more cash, then user can spend gems to replace
@@ -108,7 +109,7 @@ message UpgradeNormStructureResponseProto {
 					//rename to speed up norm struct 
 message FinishNormStructWaittimeWithDiamondsRequestProto {
 	optional MinimumUserProto sender = 1;
-	optional int32 userStructId = 2;
+	optional string userStructUuid = 2;
 	
 	//user's userstruct's lastRetrieved will start with this date
 	//if the structure is a generator, the uncollected resources will be lost when upgraded
@@ -140,7 +141,7 @@ message FinishNormStructWaittimeWithDiamondsResponseProto {
 //NOT VERY EFFICIENT..extra db call. and for every newly built building, new db call. but w/e for now.																						
 message NormStructWaitCompleteRequestProto {
 	optional MinimumUserProto sender = 1;
-	repeated int32 userStructId = 2;
+	repeated string userStructUuid = 2;
 	
 	//if the structure is a generator, the uncollected resources will be lost when upgraded
 	//server will compute last retrieved times
@@ -188,7 +189,7 @@ message RetrieveCurrencyFromNormStructureResponseProto {
 }
 
 //------------------------------------------------------------------------------------------
-																						//DONE
+/*																						//DONE
 message ExpansionWaitCompleteRequestProto {
 	optional MinimumUserProto sender = 1;
 	optional int64 curTime = 2;						//used for checking
@@ -216,7 +217,7 @@ message ExpansionWaitCompleteResponseProto {
      	FAIL_OTHER = 5;
      }
 }
-
+*/
 //------------------------------------------------------------------------------------------
 message SpawnObstacleRequestProto {
 	optional MinimumUserProto sender = 1;
@@ -247,7 +248,7 @@ message BeginObstacleRemovalRequestProto {
 	optional sint32 resourceChange = 4; 
 	optional ResourceType resourceType = 5 [default = CASH]; 
 	
-	optional int32 userObstacleId = 6;
+	optional string userObstacleUuid = 6;
 }
 
 message BeginObstacleRemovalResponseProto {
@@ -273,7 +274,7 @@ message ObstacleRemovalCompleteRequestProto {
 	//said five cash. (positive number, server will convert it to negative)
 	optional int32 gemsSpent = 4;
 	
-	optional int32 userObstacleId = 5;
+	optional string userObstacleUuid = 5;
 	
 	//if user is at max obstacles and hasn't logged into the game in a while, then
 	//when he clears one, the last spawned time should be when he cleared this obstacle

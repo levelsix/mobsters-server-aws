@@ -10,13 +10,13 @@ option java_package = "com.lvl6.mobsters.noneventproto";
 option java_outer_classname = "NoneventBoosterPackProto";
 //DO NOT USE ID AS THE NAME OF A PROPERTY IN ANY PROTO
 
-//Not used at the moment
+/*//Not used at the moment
 message RareBoosterPurchaseProto {
 	optional MinimumUserProto user = 1;
 	optional BoosterPackProto booster = 2;
 	optional uint64 timeOfPurchase = 3;
 	optional int32 monsterId = 4;
-}
+}*/
 
 //------------------------------------------------------------------------------------------
 

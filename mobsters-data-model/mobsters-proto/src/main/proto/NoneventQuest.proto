@@ -1,9 +1,9 @@
 //ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
 //DO NO START PROPERTY METHODS WITH THE WORDS NEW OR COPY
 
+import "ConfigNoneventSharedEnum.proto";
 import "NoneventChat.proto";
 import "NoneventMonster.proto";
-import "ConfigNoneventSharedEnum.proto";
 import "NoneventStructure.proto";
 
 package proto;
@@ -105,7 +105,7 @@ message DialogueProto {
 //------------------------------------------------------------------------------------------
 
 message FullUserQuestProto {
-     optional int32 userId = 1;
+     optional string userUuid = 1;
      optional int32 questId = 2;
      optional bool isRedeemed = 3;
      optional bool isComplete = 4;

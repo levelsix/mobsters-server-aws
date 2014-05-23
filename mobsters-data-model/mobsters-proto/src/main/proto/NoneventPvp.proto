@@ -9,14 +9,6 @@ option java_package = "com.lvl6.mobsters.noneventproto";
 option java_outer_classname = "NoneventPvpProto";
 //DO NOT USE ID AS THE NAME OF A PROPERTY IN ANY PROTO
 
-/*
-message MinimumUserProtoWithBattleHistory {
-	optional MinimumUserProtoWithLevel minUserProtoWithLevel = 1;
-	optional int32 battlesWon = 2;
-	optional int32 battlesLost = 3;
-}
-*/
-//------------------------------------------------------------------------------------------
 
 enum BattleResult {
    	ATTACKER_WIN = 1;
@@ -27,7 +19,7 @@ enum BattleResult {
 //------------------------------------------------------------------------------------------
 
 message PvpProto {
-	optional MinimumUserProtoWithLevel defender = 1;
+	optional MinimumUserProto defender = 1;
 	//optional int32 curElo = 2; //the defender's current elo
 	repeated MinimumUserMonsterProto defenderMonsters = 3;
 	optional int32 prospectiveCashWinnings = 4;
@@ -43,7 +35,7 @@ message PvpHistoryProto {
 	//if exacting revenge then need to send battle end time
 	optional int64 battleEndTime = 9;
 	
-	optional FullUserProto attacker = 1; //the person who acted as the attacker
+	optional UserProto attacker = 1; //the person who acted as the attacker
 	repeated MinimumUserMonsterProto attackersMonsters = 2; //atm, current monster team
 	optional bool attackerWon = 3;
 	optional sint32 defenderCashChange = 4;
@@ -79,6 +71,5 @@ message PvpLeagueProto {
 }
 
 //------------------------------------------------------------------------------------------
-
 
 ///atm, this file is used by EventPvp.proto

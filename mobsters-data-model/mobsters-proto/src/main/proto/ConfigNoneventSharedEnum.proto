@@ -44,3 +44,14 @@ enum Quality {
 	
 	EVO = 7; //MONSTERS USED FOR EVOLVING
 }
+
+enum ResourceType {
+	NO_RESOURCE = 4;
+	CASH = 1;
+	OIL = 2;
+	GEMS = 3;
+	
+	//NO_RESOURCE = 4; defined above
+	
+	MONSTER = 20;
+}

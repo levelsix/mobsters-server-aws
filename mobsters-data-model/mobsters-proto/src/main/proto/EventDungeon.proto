@@ -57,7 +57,7 @@ message BeginDungeonResponseProto {
 
 message EndDungeonRequestProto {
 	optional MinimumUserProtoWithMaxResources sender = 1;
-	optional int64 userTaskId = 2;
+	optional string userTaskUuid = 2;
 	optional bool userWon = 3; 
 	optional int64 clientTime = 4;
 	
@@ -88,7 +88,7 @@ message EndDungeonResponseProto {
 
 message ReviveInDungeonRequestProto {
 	optional MinimumUserProto sender = 1;
-	optional int64 userTaskId = 2;
+	optional string userTaskUuid = 2;
 	optional int64 clientTime = 3; //tracking purposes 
 	repeated UserMonsterCurrentHealthProto reviveMe = 4;
 	

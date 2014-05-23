@@ -41,10 +41,10 @@ message PurchaseBoosterPackResponseProto {
 }
 
 //------------------------------------------------------------------------------------------
-
+/*
 message ReceivedRareBoosterPurchaseResponseProto {
 	optional RareBoosterPurchaseProto rareBoosterPurchase = 1;
 }
-
+*/
 //------------------------------------------------------------------------------------------
 

@@ -31,13 +31,13 @@ public final class NoneventAchievementProto {
     boolean hasLvl();
     int getLvl();
     
-    // optional .proto.AchievementProto.AchievementType achievementType = 6;
+    // optional .proto.AchievementProto.AchievementType achievementType = 6 [default = NO_ACHIEVEMENT];
     boolean hasAchievementType();
     com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType getAchievementType();
     
     // optional .proto.ResourceType resourceType = 7 [default = NO_RESOURCE];
     boolean hasResourceType();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType();
     
     // optional .proto.Element element = 8 [default = NO_ELEMENT];
     boolean hasElement();
@@ -304,7 +304,7 @@ public final class NoneventAchievementProto {
       return lvl_;
     }
     
-    // optional .proto.AchievementProto.AchievementType achievementType = 6;
+    // optional .proto.AchievementProto.AchievementType achievementType = 6 [default = NO_ACHIEVEMENT];
     public static final int ACHIEVEMENTTYPE_FIELD_NUMBER = 6;
     private com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType achievementType_;
     public boolean hasAchievementType() {
@@ -316,11 +316,11 @@ public final class NoneventAchievementProto {
     
     // optional .proto.ResourceType resourceType = 7 [default = NO_RESOURCE];
     public static final int RESOURCETYPE_FIELD_NUMBER = 7;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_;
     public boolean hasResourceType() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
       return resourceType_;
     }
     
@@ -401,7 +401,7 @@ public final class NoneventAchievementProto {
       gemReward_ = 0;
       lvl_ = 0;
       achievementType_ = com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType.NO_ACHIEVEMENT;
-      resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       element_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.NO_ELEMENT;
       quality_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality.NO_QUALITY;
       staticDataId_ = 0;
@@ -665,7 +665,7 @@ public final class NoneventAchievementProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         achievementType_ = com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType.NO_ACHIEVEMENT;
         bitField0_ = (bitField0_ & ~0x00000020);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         bitField0_ = (bitField0_ & ~0x00000040);
         element_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.NO_ELEMENT;
         bitField0_ = (bitField0_ & ~0x00000080);
@@ -902,7 +902,7 @@ public final class NoneventAchievementProto {
             }
             case 56: {
               int rawValue = input.readEnum();
-              com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.valueOf(rawValue);
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(7, rawValue);
               } else {
@@ -1099,7 +1099,7 @@ public final class NoneventAchievementProto {
         return this;
       }
       
-      // optional .proto.AchievementProto.AchievementType achievementType = 6;
+      // optional .proto.AchievementProto.AchievementType achievementType = 6 [default = NO_ACHIEVEMENT];
       private com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType achievementType_ = com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType.NO_ACHIEVEMENT;
       public boolean hasAchievementType() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
@@ -1124,14 +1124,14 @@ public final class NoneventAchievementProto {
       }
       
       // optional .proto.ResourceType resourceType = 7 [default = NO_RESOURCE];
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
       public boolean hasResourceType() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType getResourceType() {
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType getResourceType() {
         return resourceType_;
       }
-      public Builder setResourceType(com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType value) {
+      public Builder setResourceType(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1142,7 +1142,7 @@ public final class NoneventAchievementProto {
       }
       public Builder clearResourceType() {
         bitField0_ = (bitField0_ & ~0x00000040);
-        resourceType_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceType.NO_RESOURCE;
+        resourceType_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType.NO_RESOURCE;
         onChanged();
         return this;
       }
@@ -1841,31 +1841,31 @@ public final class NoneventAchievementProto {
     java.lang.String[] descriptorData = {
       "\n\031NoneventAchievement.proto\022\005proto\032\036Conf" +
       "igNoneventSharedEnum.proto\032\025NoneventMons" +
-      "ter.proto\032\027NoneventStructure.proto\"\205\006\n\020A" +
+      "ter.proto\032\027NoneventStructure.proto\"\225\006\n\020A" +
       "chievementProto\022\025\n\rachievementId\030\001 \001(\005\022\014" +
       "\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\021\n\tgem" +
-      "Reward\030\004 \001(\005\022\013\n\003lvl\030\005 \001(\005\022@\n\017achievement" +
+      "Reward\030\004 \001(\005\022\013\n\003lvl\030\005 \001(\005\022P\n\017achievement" +
       "Type\030\006 \001(\0162\'.proto.AchievementProto.Achi" +
-      "evementType\0226\n\014resourceType\030\007 \001(\0162\023.prot" +
-      "o.ResourceType:\013NO_RESOURCE\022+\n\007element\030\010" +
-      " \001(\0162\016.proto.Element:\nNO_ELEMENT\022+\n\007qual",
-      "ity\030\t \001(\0162\016.proto.Quality:\nNO_QUALITY\022\024\n" +
-      "\014staticDataId\030\n \001(\005\022\020\n\010quantity\030\013 \001(\005\022\020\n" +
-      "\010priority\030\014 \001(\005\022\026\n\016prerequisiteId\030\r \001(\005\022" +
-      "\023\n\013successorId\030\016 \001(\005\"\333\002\n\017AchievementType" +
-      "\022\022\n\016NO_ACHIEVEMENT\020\021\022\024\n\020COLLECT_RESOURCE" +
-      "\020\001\022\022\n\016CREATE_GRENADE\020\002\022\022\n\016CREATE_RAINBOW" +
-      "\020\003\022\021\n\rCREATE_ROCKET\020\004\022\023\n\017DEFEAT_MONSTERS" +
-      "\020\005\022\020\n\014DESTROY_ORBS\020\006\022\022\n\016ENHANCE_POINTS\020\007" +
-      "\022\021\n\rHEAL_MONSTERS\020\010\022\017\n\013JOIN_LEAGUE\020\t\022\016\n\n" +
-      "MAKE_COMBO\020\n\022\023\n\017REMOVE_OBSTACLE\020\013\022\020\n\014SEL",
-      "L_MONSTER\020\014\022\022\n\016STEAL_RESOURCE\020\r\022\017\n\013TAKE_" +
-      "DAMAGE\020\016\022\024\n\020UPGRADE_BUILDING\020\017\022\022\n\016WIN_PV" +
-      "P_BATTLE\020\020\"g\n\024UserAchievementProto\022\025\n\rac" +
-      "hievementId\030\001 \001(\005\022\020\n\010progress\030\002 \001(\005\022\022\n\ni" +
-      "sComplete\030\003 \001(\010\022\022\n\nisRedeemed\030\004 \001(\010B;\n\037c" +
-      "om.lvl6.mobsters.noneventprotoB\030Nonevent" +
-      "AchievementProto"
+      "evementType:\016NO_ACHIEVEMENT\0226\n\014resourceT" +
+      "ype\030\007 \001(\0162\023.proto.ResourceType:\013NO_RESOU" +
+      "RCE\022+\n\007element\030\010 \001(\0162\016.proto.Element:\nNO",
+      "_ELEMENT\022+\n\007quality\030\t \001(\0162\016.proto.Qualit" +
+      "y:\nNO_QUALITY\022\024\n\014staticDataId\030\n \001(\005\022\020\n\010q" +
+      "uantity\030\013 \001(\005\022\020\n\010priority\030\014 \001(\005\022\026\n\016prere" +
+      "quisiteId\030\r \001(\005\022\023\n\013successorId\030\016 \001(\005\"\333\002\n" +
+      "\017AchievementType\022\022\n\016NO_ACHIEVEMENT\020\021\022\024\n\020" +
+      "COLLECT_RESOURCE\020\001\022\022\n\016CREATE_GRENADE\020\002\022\022" +
+      "\n\016CREATE_RAINBOW\020\003\022\021\n\rCREATE_ROCKET\020\004\022\023\n" +
+      "\017DEFEAT_MONSTERS\020\005\022\020\n\014DESTROY_ORBS\020\006\022\022\n\016" +
+      "ENHANCE_POINTS\020\007\022\021\n\rHEAL_MONSTERS\020\010\022\017\n\013J" +
+      "OIN_LEAGUE\020\t\022\016\n\nMAKE_COMBO\020\n\022\023\n\017REMOVE_O",
+      "BSTACLE\020\013\022\020\n\014SELL_MONSTER\020\014\022\022\n\016STEAL_RES" +
+      "OURCE\020\r\022\017\n\013TAKE_DAMAGE\020\016\022\024\n\020UPGRADE_BUIL" +
+      "DING\020\017\022\022\n\016WIN_PVP_BATTLE\020\020\"g\n\024UserAchiev" +
+      "ementProto\022\025\n\rachievementId\030\001 \001(\005\022\020\n\010pro" +
+      "gress\030\002 \001(\005\022\022\n\nisComplete\030\003 \001(\010\022\022\n\nisRed" +
+      "eemed\030\004 \001(\010B;\n\037com.lvl6.mobsters.noneven" +
+      "tprotoB\030NoneventAchievementProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

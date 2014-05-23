@@ -263,6 +263,84 @@ public final class ConfigNoneventSharedEnumProto {
     // @@protoc_insertion_point(enum_scope:proto.Quality)
   }
   
+  public enum ResourceType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    NO_RESOURCE(0, 4),
+    CASH(1, 1),
+    OIL(2, 2),
+    GEMS(3, 3),
+    MONSTER(4, 20),
+    ;
+    
+    public static final int NO_RESOURCE_VALUE = 4;
+    public static final int CASH_VALUE = 1;
+    public static final int OIL_VALUE = 2;
+    public static final int GEMS_VALUE = 3;
+    public static final int MONSTER_VALUE = 20;
+    
+    
+    public final int getNumber() { return value; }
+    
+    public static ResourceType valueOf(int value) {
+      switch (value) {
+        case 4: return NO_RESOURCE;
+        case 1: return CASH;
+        case 2: return OIL;
+        case 3: return GEMS;
+        case 20: return MONSTER;
+        default: return null;
+      }
+    }
+    
+    public static com.google.protobuf.Internal.EnumLiteMap<ResourceType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<ResourceType>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ResourceType>() {
+            public ResourceType findValueByNumber(int number) {
+              return ResourceType.valueOf(number);
+            }
+          };
+    
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.getDescriptor().getEnumTypes().get(3);
+    }
+    
+    private static final ResourceType[] VALUES = {
+      NO_RESOURCE, CASH, OIL, GEMS, MONSTER, 
+    };
+    
+    public static ResourceType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+    
+    private final int index;
+    private final int value;
+    
+    private ResourceType(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+    
+    // @@protoc_insertion_point(enum_scope:proto.ResourceType)
+  }
+  
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -280,9 +358,11 @@ public final class ConfigNoneventSharedEnumProto {
       "WATER\020\003\022\t\n\005LIGHT\020\004\022\010\n\004DARK\020\005\022\010\n\004ROCK\020\006\022\016" +
       "\n\nNO_ELEMENT\020\007*\\\n\007Quality\022\016\n\nNO_QUALITY\020" +
       "\001\022\n\n\006COMMON\020\002\022\010\n\004RARE\020\003\022\t\n\005ULTRA\020\004\022\010\n\004EP" +
-      "IC\020\005\022\r\n\tLEGENDARY\020\006\022\007\n\003EVO\020\007B@\n\037com.lvl6" +
-      ".mobsters.noneventprotoB\035ConfigNoneventS",
-      "haredEnumProto"
+      "IC\020\005\022\r\n\tLEGENDARY\020\006\022\007\n\003EVO\020\007*I\n\014Resource" +
+      "Type\022\017\n\013NO_RESOURCE\020\004\022\010\n\004CASH\020\001\022\007\n\003OIL\020\002",
+      "\022\010\n\004GEMS\020\003\022\013\n\007MONSTER\020\024B@\n\037com.lvl6.mobs" +
+      "ters.noneventprotoB\035ConfigNoneventShared" +
+      "EnumProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
