@@ -16,7 +16,7 @@ public abstract class EventWriter {
 
 	}
 
-	public void handleEvent(GameEvent event) {
+	public void writeEvent(GameEvent event) {
 		try {
 			processEvent(event);
 		} catch (Throwable e) {

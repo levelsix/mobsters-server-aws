@@ -9,9 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.lvl6.dynamo.AchievementForUser;
-import com.lvl6.dynamo.repository.AchievementForUserRepository;
-import com.lvl6.dynamo.setup.SetupDynamoDB;
+import com.lvl6.mobsters.dynamo.AchievementForUser;
+import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
+import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 
 
