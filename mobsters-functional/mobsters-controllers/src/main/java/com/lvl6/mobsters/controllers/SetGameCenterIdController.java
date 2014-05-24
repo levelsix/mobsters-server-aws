@@ -10,8 +10,8 @@ import com.lvl6.events.RequestEvent;
 import com.lvl6.events.request.SetGameCenterIdRequestEvent;
 import com.lvl6.events.response.SetGameCenterIdResponseEvent;
 import com.lvl6.events.response.UpdateClientUserResponseEvent;
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.repository.UserRepository;
+import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
+import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto.SetGameCenterIdStatus;
@@ -27,7 +27,7 @@ public class SetGameCenterIdController extends EventController {
 	}.getClass().getEnclosingClass());
 
 	@Autowired
-	protected UserRepository userRepository;
+	protected UserDataRarelyAccessedRepository userDataRarelyAccessedRepository;
 
 	@Autowired
 	protected EventWriter eventWriter;
@@ -62,14 +62,14 @@ public class SetGameCenterIdController extends EventController {
 		}
 
 		try {
-			User user = getUserRepository().load(senderProto.getUserUuid());
+			UserDataRarelyAccessed user = getUserDataRarelyAccessedRepository().load(senderProto.getUserUuid());
 
 			// boolean isDifferent =
 			// checkIfNewTokenDifferent(user.getGameCenterId(), gameCenterId);
 			//boolean legit = writeChangesToDb(user, gameCenterId);
 
 			user.setGameCenterId(gameCenterId);
-			getUserRepository().save(user);
+			getUserDataRarelyAccessedRepository().save(user);
 			resBuilder.setStatus(SetGameCenterIdStatus.SUCCESS);
 				//resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
 
@@ -90,6 +90,7 @@ public class SetGameCenterIdController extends EventController {
 		} catch(ConditionalCheckFailedException e) {
 			//TODO: version was probably out of date... meaning some other thread updated this item after you loaded it but before you save it
 			//handle this case
+			//need to reread and do some more logic, basically call this method again...
 			
 		}
 		catch (Exception e) {
@@ -109,12 +110,14 @@ public class SetGameCenterIdController extends EventController {
 
 
 
-	public UserRepository getUserRepository() {
-		return userRepository;
+
+	public UserDataRarelyAccessedRepository getUserDataRarelyAccessedRepository() {
+		return userDataRarelyAccessedRepository;
 	}
 
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public void setUserDataRarelyAccessedRepository(
+			UserDataRarelyAccessedRepository userDataRarelyAccessedRepository) {
+		this.userDataRarelyAccessedRepository = userDataRarelyAccessedRepository;
 	}
 
 	public EventWriter getEventWriter() {
