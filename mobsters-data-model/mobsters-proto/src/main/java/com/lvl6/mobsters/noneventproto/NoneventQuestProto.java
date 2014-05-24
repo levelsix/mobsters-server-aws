@@ -2053,7 +2053,7 @@ public final class NoneventQuestProto {
     boolean hasQuestId();
     int getQuestId();
     
-    // optional .proto.QuestJobProto.QuestJobType questJobType = 3;
+    // optional .proto.QuestJobProto.QuestJobType questJobType = 3 [default = NO_QUEST_JOB_TYPE];
     boolean hasQuestJobType();
     com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType getQuestJobType();
     
@@ -2111,14 +2111,16 @@ public final class NoneventQuestProto {
     
     public enum QuestJobType
         implements com.google.protobuf.ProtocolMessageEnum {
-      KILL_SPECIFIC_MONSTER(0, 1),
-      KILL_MONSTER_IN_CITY(1, 2),
-      DONATE_MONSTER(2, 3),
-      COMPLETE_TASK(3, 4),
-      UPGRADE_STRUCT(4, 5),
-      COLLECT_SPECIAL_ITEM(5, 6),
+      NO_QUEST_JOB_TYPE(0, 7),
+      KILL_SPECIFIC_MONSTER(1, 1),
+      KILL_MONSTER_IN_CITY(2, 2),
+      DONATE_MONSTER(3, 3),
+      COMPLETE_TASK(4, 4),
+      UPGRADE_STRUCT(5, 5),
+      COLLECT_SPECIAL_ITEM(6, 6),
       ;
       
+      public static final int NO_QUEST_JOB_TYPE_VALUE = 7;
       public static final int KILL_SPECIFIC_MONSTER_VALUE = 1;
       public static final int KILL_MONSTER_IN_CITY_VALUE = 2;
       public static final int DONATE_MONSTER_VALUE = 3;
@@ -2131,6 +2133,7 @@ public final class NoneventQuestProto {
       
       public static QuestJobType valueOf(int value) {
         switch (value) {
+          case 7: return NO_QUEST_JOB_TYPE;
           case 1: return KILL_SPECIFIC_MONSTER;
           case 2: return KILL_MONSTER_IN_CITY;
           case 3: return DONATE_MONSTER;
@@ -2167,7 +2170,7 @@ public final class NoneventQuestProto {
       }
       
       private static final QuestJobType[] VALUES = {
-        KILL_SPECIFIC_MONSTER, KILL_MONSTER_IN_CITY, DONATE_MONSTER, COMPLETE_TASK, UPGRADE_STRUCT, COLLECT_SPECIAL_ITEM, 
+        NO_QUEST_JOB_TYPE, KILL_SPECIFIC_MONSTER, KILL_MONSTER_IN_CITY, DONATE_MONSTER, COMPLETE_TASK, UPGRADE_STRUCT, COLLECT_SPECIAL_ITEM, 
       };
       
       public static QuestJobType valueOf(
@@ -2211,7 +2214,7 @@ public final class NoneventQuestProto {
       return questId_;
     }
     
-    // optional .proto.QuestJobProto.QuestJobType questJobType = 3;
+    // optional .proto.QuestJobProto.QuestJobType questJobType = 3 [default = NO_QUEST_JOB_TYPE];
     public static final int QUESTJOBTYPE_FIELD_NUMBER = 3;
     private com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType questJobType_;
     public boolean hasQuestJobType() {
@@ -2306,7 +2309,7 @@ public final class NoneventQuestProto {
     private void initFields() {
       questJobId_ = 0;
       questId_ = 0;
-      questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.KILL_SPECIFIC_MONSTER;
+      questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.NO_QUEST_JOB_TYPE;
       description_ = "";
       staticDataId_ = 0;
       quantity_ = 0;
@@ -2526,7 +2529,7 @@ public final class NoneventQuestProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         questId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.KILL_SPECIFIC_MONSTER;
+        questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.NO_QUEST_JOB_TYPE;
         bitField0_ = (bitField0_ & ~0x00000004);
         description_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -2787,8 +2790,8 @@ public final class NoneventQuestProto {
         return this;
       }
       
-      // optional .proto.QuestJobProto.QuestJobType questJobType = 3;
-      private com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.KILL_SPECIFIC_MONSTER;
+      // optional .proto.QuestJobProto.QuestJobType questJobType = 3 [default = NO_QUEST_JOB_TYPE];
+      private com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.NO_QUEST_JOB_TYPE;
       public boolean hasQuestJobType() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
@@ -2806,7 +2809,7 @@ public final class NoneventQuestProto {
       }
       public Builder clearQuestJobType() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.KILL_SPECIFIC_MONSTER;
+        questJobType_ = com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.QuestJobType.NO_QUEST_JOB_TYPE;
         onChanged();
         return this;
       }
@@ -6285,32 +6288,33 @@ public final class NoneventQuestProto {
       "\n\023questGiverImgOffset\030\021 \001(\0132\026.proto.Coor" +
       "dinateProto\0222\n\016monsterElement\030\023 \001(\0162\016.pr" +
       "oto.Element:\nNO_ELEMENT\022\"\n\004jobs\030\025 \003(\0132\024." +
-      "proto.QuestJobProto\"\375\002\n\rQuestJobProto\022\022\n" +
-      "\nquestJobId\030\001 \001(\005\022\017\n\007questId\030\002 \001(\005\0227\n\014qu" +
+      "proto.QuestJobProto\"\247\003\n\rQuestJobProto\022\022\n" +
+      "\nquestJobId\030\001 \001(\005\022\017\n\007questId\030\002 \001(\005\022J\n\014qu" +
       "estJobType\030\003 \001(\0162!.proto.QuestJobProto.Q" +
-      "uestJobType\022\023\n\013description\030\004 \001(\t\022\024\n\014stat",
-      "icDataId\030\005 \001(\005\022\020\n\010quantity\030\006 \001(\005\022\020\n\010prio" +
-      "rity\030\007 \001(\005\022\016\n\006cityId\030\010 \001(\005\022\024\n\014cityAssetN" +
-      "um\030\t \001(\005\"\230\001\n\014QuestJobType\022\031\n\025KILL_SPECIF" +
-      "IC_MONSTER\020\001\022\030\n\024KILL_MONSTER_IN_CITY\020\002\022\022" +
-      "\n\016DONATE_MONSTER\020\003\022\021\n\rCOMPLETE_TASK\020\004\022\022\n" +
-      "\016UPGRADE_STRUCT\020\005\022\030\n\024COLLECT_SPECIAL_ITE" +
-      "M\020\006\"\265\001\n\rDialogueProto\022>\n\rspeechSegment\030\001" +
-      " \003(\0132\'.proto.DialogueProto.SpeechSegment" +
-      "Proto\032d\n\022SpeechSegmentProto\022\017\n\007speaker\030\001" +
-      " \001(\t\022\024\n\014speakerImage\030\002 \001(\t\022\023\n\013speakerTex",
-      "t\030\003 \001(\t\022\022\n\nisLeftSide\030\004 \001(\010\"\220\001\n\022FullUser" +
-      "QuestProto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007questId\030" +
-      "\002 \001(\005\022\022\n\nisRedeemed\030\003 \001(\010\022\022\n\nisComplete\030" +
-      "\004 \001(\010\022/\n\ruserQuestJobs\030\005 \003(\0132\030.proto.Use" +
-      "rQuestJobProto\"^\n\021UserQuestJobProto\022\017\n\007q" +
-      "uestId\030\001 \001(\005\022\022\n\nquestJobId\030\002 \001(\005\022\022\n\nisCo" +
-      "mplete\030\003 \001(\010\022\020\n\010progress\030\004 \001(\005\"s\n\tItemPr" +
-      "oto\022\016\n\006itemId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\017\n\007img" +
-      "Name\030\003 \001(\t\022\025\n\rborderImgName\030\004 \001(\t\022 \n\005col" +
-      "or\030\005 \001(\0132\021.proto.ColorProtoB5\n\037com.lvl6.",
-      "mobsters.noneventprotoB\022NoneventQuestPro" +
-      "to"
+      "uestJobType:\021NO_QUEST_JOB_TYPE\022\023\n\013descri",
+      "ption\030\004 \001(\t\022\024\n\014staticDataId\030\005 \001(\005\022\020\n\010qua" +
+      "ntity\030\006 \001(\005\022\020\n\010priority\030\007 \001(\005\022\016\n\006cityId\030" +
+      "\010 \001(\005\022\024\n\014cityAssetNum\030\t \001(\005\"\257\001\n\014QuestJob" +
+      "Type\022\025\n\021NO_QUEST_JOB_TYPE\020\007\022\031\n\025KILL_SPEC" +
+      "IFIC_MONSTER\020\001\022\030\n\024KILL_MONSTER_IN_CITY\020\002" +
+      "\022\022\n\016DONATE_MONSTER\020\003\022\021\n\rCOMPLETE_TASK\020\004\022" +
+      "\022\n\016UPGRADE_STRUCT\020\005\022\030\n\024COLLECT_SPECIAL_I" +
+      "TEM\020\006\"\265\001\n\rDialogueProto\022>\n\rspeechSegment" +
+      "\030\001 \003(\0132\'.proto.DialogueProto.SpeechSegme" +
+      "ntProto\032d\n\022SpeechSegmentProto\022\017\n\007speaker",
+      "\030\001 \001(\t\022\024\n\014speakerImage\030\002 \001(\t\022\023\n\013speakerT" +
+      "ext\030\003 \001(\t\022\022\n\nisLeftSide\030\004 \001(\010\"\220\001\n\022FullUs" +
+      "erQuestProto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007questI" +
+      "d\030\002 \001(\005\022\022\n\nisRedeemed\030\003 \001(\010\022\022\n\nisComplet" +
+      "e\030\004 \001(\010\022/\n\ruserQuestJobs\030\005 \003(\0132\030.proto.U" +
+      "serQuestJobProto\"^\n\021UserQuestJobProto\022\017\n" +
+      "\007questId\030\001 \001(\005\022\022\n\nquestJobId\030\002 \001(\005\022\022\n\nis" +
+      "Complete\030\003 \001(\010\022\020\n\010progress\030\004 \001(\005\"s\n\tItem" +
+      "Proto\022\016\n\006itemId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\017\n\007i" +
+      "mgName\030\003 \001(\t\022\025\n\rborderImgName\030\004 \001(\t\022 \n\005c",
+      "olor\030\005 \001(\0132\021.proto.ColorProtoB5\n\037com.lvl" +
+      "6.mobsters.noneventprotoB\022NoneventQuestP" +
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

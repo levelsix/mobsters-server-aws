@@ -41,7 +41,7 @@ message FullQuestProto {
 message QuestJobProto {
 	optional int32 questJobId = 1;
 	optional int32 questId = 2;
-	optional QuestJobType questJobType = 3;
+	optional QuestJobType questJobType = 3 [default = NO_QUEST_JOB_TYPE];
 	optional string description = 4;
 	optional int32 staticDataId = 5;
 	optional int32 quantity = 6;
@@ -57,6 +57,8 @@ message QuestJobProto {
 	optional int32 cityAssetNum = 9;
 	
 	enum QuestJobType {
+		NO_QUEST_JOB_TYPE = 7;
+		
      	//staticDataId is monster id, quantity is num to kill
      	//if staticDataId is null or 0 then this means kill any monster
      	KILL_SPECIFIC_MONSTER = 1; 
@@ -85,6 +87,7 @@ message QuestJobProto {
 		//staticDataId is item id, quantity is number of items to collect
      	COLLECT_SPECIAL_ITEM = 6;
      	
+     	//NO_QUEST_JOB_TYPE = 7;
      }
 }
 

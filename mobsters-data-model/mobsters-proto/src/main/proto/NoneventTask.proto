@@ -33,7 +33,7 @@ message MinimumUserTaskProto {
      optional string userUuid = 1;
      optional int32 taskId = 2;
      optional int32 curTaskStageId = 3;
-     optional int64 userTaskId = 4;
+     optional string userTaskId = 4;
 }
 
 //------------------------------------------------------------------------------------------
@@ -70,12 +70,14 @@ message PersistentEventProto {
 	optional int32 eventDurationMinutes = 4;
 	optional int32 taskId = 5;
 	optional int32 cooldownMinutes = 6;
-	optional EventType type = 7;
+	optional EventType type = 7 [default = NO_PERSISTENT_EVENT_TYPE];
 	optional Element monsterElement = 8 [default = NO_ELEMENT];
 	
 	enum EventType {
 		ENHANCE = 1;
 		EVOLUTION = 2;
+		
+		NO_PERSISTENT_EVENT_TYPE = 3;
 	}
 }
 
