@@ -19,7 +19,6 @@ import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 @Component public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>{
 	
@@ -63,9 +62,7 @@ import com.lvl6.mobsters.dynamo.QuestForUser;
 	
 	
 
-	ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
-    .withReadCapacityUnits(provisioning.getReads())
-    .withWriteCapacityUnits(provisioning.getWrites());
+	
 	
 	@Override
 	protected void createTable() {

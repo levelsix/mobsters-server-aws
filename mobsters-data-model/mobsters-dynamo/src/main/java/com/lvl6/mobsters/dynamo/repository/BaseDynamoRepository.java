@@ -47,6 +47,12 @@ abstract public class BaseDynamoRepository<T> {
 	protected Class<T> clss;
 	
 	
+	ProvisionedThroughput provisionedThroughput= new ProvisionedThroughput()
+    .withReadCapacityUnits(1l)
+    .withWriteCapacityUnits(1l);
+	
+	
+	
 	public BaseDynamoRepository(Class<T> clss) {
 		super();
 		this.clss = clss;
@@ -170,6 +176,9 @@ abstract public class BaseDynamoRepository<T> {
 
 	public void setProvisioning(DynamoProvisioning provisioning) {
 		this.provisioning = provisioning;
+		 provisionedThroughput = new ProvisionedThroughput()
+		    .withReadCapacityUnits(provisioning.getReads())
+		    .withWriteCapacityUnits(provisioning.getWrites());
 	}
 
 
