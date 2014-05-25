@@ -1,4 +1,4 @@
-package com.lvl6.dynamo.test;
+package com.lvl6.mobsters.dynamo.test;
 
 import static org.junit.Assert.assertTrue;
 

@@ -138,6 +138,11 @@ abstract public class BaseDynamoRepository<T> {
 		}
 	}
 	
+	public String getBoolean(boolean bool) {
+		return bool ? "1" : "0";
+	}
+	
+	
 	protected String getTableName() {
 		return mapperConfig.getTableNameOverride().getTableNamePrefix()+clss.getSimpleName();
 	}
