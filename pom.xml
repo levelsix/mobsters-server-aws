@@ -79,9 +79,34 @@
 
 
 		<!-- Dependencies -->
+		<apns.version>0.1.6</apns.version>
+		<awaitility.version>1.2.4</awaitility.version>
+		<bonecp.version>0.7.1.RELEASE</bonecp.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool.version>1.5.3</commons-pool.version>
+		<guava.version>12.0</guava.version>
+		<hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
+		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
+		<httpclient.version>4.2.1</httpclient.version>
+		<javax.servlet-api.version>3.0.1</javax.servlet-api.version>
+		<javax.mail.version>1.4.5</javax.mail.version>
+		<javax.websocket-api.version>1.0</javax.websocket-api.version>
+		<jedis.version>2.4.2</jedis.version>
+		<joda-time.version>2.1</joda-time.version>
+		<chill-java.version>0.3.6</chill-java.version>
+		<aws-java-sdk.version>1.7.7</aws-java-sdk.version>
+		<commons-beanutils.version>1.8.3</commons-beanutils.version>
+		<junit.version>4.10</junit.version>
+		<logback-classic.version>1.1.2</logback-classic.version>
+		<mysql-connector.version>5.1.20</mysql-connector.version>
+		<protobuf.version>2.4.1</protobuf.version>
+		<slf4j.version>1.6.6</slf4j.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
+		<spring.data-jpa.version>1.5.2.RELEASE</spring.data-jpa.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
+		<spring.support.version>2.0.8.RELEASE</spring.support.version>
+		<tomcat.version>7.0.27</tomcat.version>
 	</properties>
 
 	<dependencyManagement>
@@ -129,47 +154,47 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.20</version>
+				<version>${mysql-connector.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-simple</artifactId>
-				<version>1.6.6</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.protobuf</groupId>
 				<artifactId>protobuf-java</artifactId>
-				<version>2.4.1</version>
+				<version>${protobuf.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.6.6</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.1.2</version>
+				<version>${logback-classic.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>c3p0</groupId>
 				<artifactId>c3p0</artifactId>
-				<version>0.9.1.2</version>
+				<version>${c3p0.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.jolbox</groupId>
 				<artifactId>bonecp</artifactId>
-				<version>0.7.1.RELEASE</version>
+				<version>${bonecp.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.notnoop.apns</groupId>
 				<artifactId>apns</artifactId>
-				<version>0.1.6</version>
+				<version>${apns.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.tomcat</groupId>
 				<artifactId>tomcat-servlet-api</artifactId>
-				<version>7.0.27</version>
+				<version>${tomcat.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -200,7 +225,7 @@
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
-				<version>2.6</version>
+				<version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-pool</groupId>
@@ -210,28 +235,28 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.10</version>
+				<version>${junit.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>12.0</version>
+				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
-				<version>3.0.1</version>
+				<version>${javax.servlet-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
-				<version>4.2</version>
+				<version>${httpclient.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.jayway.awaitility</groupId>
 				<artifactId>awaitility</artifactId>
-				<version>1.3.4</version>
+				<version>${awaitility.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -247,63 +272,58 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
-				<version>1.5.2.RELEASE</version>
+				<version>${spring.data-jpa.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>4.3.5.Final</version>
+				<version>${hibernate-entitymanager.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
-				<version>5.1.0.Final</version>
+				<version>${hibernate-validator.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
-				<version>2.1</version>
+				<version>${joda-time.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-support</artifactId>
-				<version>2.0.8</version>
+				<version>${spring-support.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.mail</groupId>
 				<artifactId>mail</artifactId>
-				<version>1.4.5</version>
+				<version>${javax.mail.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
-				<version>1.8.3</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.2.1</version>
+				<version>${commons-beanutils.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.amazonaws</groupId>
 				<artifactId>aws-java-sdk</artifactId>
-				<version>1.7.7</version>
+				<version>${aws-java-sdk.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>redis.clients</groupId>
 				<artifactId>jedis</artifactId>
-				<version>2.4.2</version>
+				<version>${jedis.version}</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>javax.websocket</groupId>
 				<artifactId>javax.websocket-api</artifactId>
-				<version>1.0</version>
+				<version>${javax.websocket-api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.twitter</groupId>
 				<artifactId>chill-java</artifactId>
-				<version>0.3.6</version>
+				<version>${chill-java.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
