@@ -10,8 +10,8 @@ import org.springframework.integration.Message;
 import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
 
-import com.lvl6.events.RequestEvent;
 import com.lvl6.mobsters.controllers.ControllerManager;
+import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.server.ApplicationMode;
 import com.lvl6.mobsters.server.EventController;

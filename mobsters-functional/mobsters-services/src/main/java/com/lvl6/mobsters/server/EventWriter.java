@@ -3,8 +3,8 @@ package com.lvl6.mobsters.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.lvl6.events.GameEvent;
-import com.lvl6.events.ResponseEvent;
+import com.lvl6.mobsters.events.GameEvent;
+import com.lvl6.mobsters.events.ResponseEvent;
 
 public abstract class EventWriter {
 

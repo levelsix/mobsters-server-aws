@@ -13,8 +13,8 @@ import org.springframework.integration.Message;
 import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
 
-import com.lvl6.events.NormalResponseEvent;
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
+import com.lvl6.mobsters.events.NormalResponseEvent;
 
 public class OutboundErrorMessageEventHandler implements MessageHandler {
 

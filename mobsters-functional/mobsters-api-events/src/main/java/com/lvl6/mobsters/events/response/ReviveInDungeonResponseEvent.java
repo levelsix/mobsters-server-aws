@@ -1,0 +1,34 @@
+package com.lvl6.mobsters.events.response;
+
+import java.nio.ByteBuffer;
+
+import com.google.protobuf.ByteString;
+import com.lvl6.mobsters.eventproto.EventDungeonProto.ReviveInDungeonResponseProto;
+import com.lvl6.mobsters.events.NormalResponseEvent;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolResponse;
+
+public class ReviveInDungeonResponseEvent extends NormalResponseEvent {
+
+  private ReviveInDungeonResponseProto reviveInDungeonResponseProto;
+  
+  public ReviveInDungeonResponseEvent(String playerId){
+    super(playerId);
+    eventType = EventProtocolResponse.S_REVIVE_IN_DUNGEON_EVENT;
+  }
+  
+  @Override
+  public int write(ByteBuffer bb) {
+    ByteString b = reviveInDungeonResponseProto.toByteString();
+    b.copyTo(bb);
+    return b.size();
+  }
+
+  public void setReviveInDungeonResponseProto(ReviveInDungeonResponseProto reviveInDungeonResponseProto) {
+    this.reviveInDungeonResponseProto = reviveInDungeonResponseProto;
+  }
+
+  public ReviveInDungeonResponseProto getReviveInDungeonResponseProto() {   //because APNS required
+    return reviveInDungeonResponseProto;
+  }
+  
+}

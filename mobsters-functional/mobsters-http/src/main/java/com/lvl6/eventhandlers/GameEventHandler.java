@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lvl6.events.PreDatabaseRequestEvent;
-import com.lvl6.events.RequestEvent;
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
+import com.lvl6.mobsters.events.PreDatabaseRequestEvent;
+import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.info.ConnectedPlayer;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.server.EventController;

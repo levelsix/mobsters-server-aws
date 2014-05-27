@@ -2,12 +2,12 @@ package com.lvl6.mobsters.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.events.GameEvent;
-import com.lvl6.events.RequestEvent;
+import com.lvl6.mobsters.events.ControllerResponseEvents;
+import com.lvl6.mobsters.events.GameEvent;
+import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.properties.Globals;
 
@@ -15,18 +15,6 @@ import com.lvl6.properties.Globals;
 public abstract class EventController{
 
 
-
-	//------------------------------------------------------------------------------------
-	@Autowired
-	private EventWriter eventWriter;
-
-	public EventWriter getEventWriter() {
-		return eventWriter;
-	}
-
-	public void setEventWriter(EventWriter eventWriter) {
-		this.eventWriter = eventWriter;
-	}
 	
 
 	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass().getEnclosingClass());
@@ -51,13 +39,14 @@ public abstract class EventController{
 
 	public void handleEvent(GameEvent event) {
 		try {
-			processEvent(event);
+			ControllerResponseEvents cre = new ControllerResponseEvents();
+			processEvent(event, cre);
 		} catch (Exception e) {
 			log.error("Error handling game event: {}", event, e);
 		}
 	}
 	
-	protected void processEvent(GameEvent event) throws Exception {
+	protected void processEvent(GameEvent event, ControllerResponseEvents eventWriter) throws Exception {
 		final RequestEvent reqEvent = (RequestEvent) event;
 		/*MiscMethods
 				.setMDCProperties(
@@ -70,7 +59,7 @@ public abstract class EventController{
 		final long startTime = System.nanoTime();
 		final long endTime;
 		try {
-			processRequestEvent(reqEvent);
+			processRequestEvent(reqEvent, eventWriter);
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -94,8 +83,7 @@ public abstract class EventController{
 	public abstract EventProtocolRequest getEventType();
 
 	@Async
-	protected abstract void processRequestEvent(RequestEvent event)
-			throws Exception;
+	protected abstract void processRequestEvent(RequestEvent event, ControllerResponseEvents eventWriter) throws Exception;
 
 	protected int numAllocatedThreads = 0;
 

@@ -2,6 +2,7 @@ package com.lvl6.mobsters.dynamo;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 
@@ -9,13 +10,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 public class UserCredential {
 
 
-
-	private String userId;
+	@DynamoDBVersionAttribute
 	private Long version;
 
 	
+	@DynamoDBHashKey(attributeName = "userId")
+	private String userId;
 
+	@DynamoDBIndexHashKey(globalSecondaryIndexName="udidGlobalIndex")
 	private String udid;
+	
+	@DynamoDBIndexHashKey(globalSecondaryIndexName="facebookIdGlobalIndex")
 	private String facebookId;
 	
 	public UserCredential(){}
@@ -26,10 +31,8 @@ public class UserCredential {
 		this.facebookId = facebookId;
 	}
 
-	@DynamoDBHashKey(attributeName = "userId")
 	public String getUserId(){return userId;}
 	
-	@DynamoDBVersionAttribute
 	public Long getVersion(){return version;}
 	public void setVersion(Long version){this.version = version;}
 

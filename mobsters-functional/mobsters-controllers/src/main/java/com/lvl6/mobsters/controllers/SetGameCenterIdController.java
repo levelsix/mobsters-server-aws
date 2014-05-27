@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
-import com.lvl6.events.RequestEvent;
-import com.lvl6.events.request.SetGameCenterIdRequestEvent;
-import com.lvl6.events.response.SetGameCenterIdResponseEvent;
-import com.lvl6.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto.SetGameCenterIdStatus;
+import com.lvl6.mobsters.events.ControllerResponseEvents;
+import com.lvl6.mobsters.events.RequestEvent;
+import com.lvl6.mobsters.events.request.SetGameCenterIdRequestEvent;
+import com.lvl6.mobsters.events.response.SetGameCenterIdResponseEvent;
+import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
-import com.lvl6.mobsters.server.EventWriter;
 
 @Component
 public class SetGameCenterIdController extends EventController {
@@ -29,8 +29,8 @@ public class SetGameCenterIdController extends EventController {
 	@Autowired
 	protected UserDataRarelyAccessedRepository userDataRarelyAccessedRepository;
 
-	@Autowired
-	protected EventWriter eventWriter;
+/*	@Autowired
+	protected EventWriter eventWriter;*/
 
 	public SetGameCenterIdController() {
 	}
@@ -46,7 +46,7 @@ public class SetGameCenterIdController extends EventController {
 	}
 
 	@Override
-	protected void processRequestEvent(RequestEvent event) throws Exception {
+	protected void processRequestEvent(RequestEvent event, ControllerResponseEvents eventWriter) throws Exception {
 		SetGameCenterIdRequestProto reqProto = ((SetGameCenterIdRequestEvent) event).getSetGameCenterIdRequestProto();
 
 		MinimumUserProto senderProto = reqProto.getSender();
@@ -76,7 +76,7 @@ public class SetGameCenterIdController extends EventController {
 			SetGameCenterIdResponseProto resProto = resBuilder.build();
 			SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(senderProto.getUserUuid());
 			resEvent.setSetGameCenterIdResponseProto(resProto);
-			getEventWriter().writeEvent(resEvent);
+			eventWriter.writeEvent(resEvent);
 
 			// game center id might have changed
 			// null PvpLeagueFromUser means will pull from hazelcast instead
@@ -85,7 +85,7 @@ public class SetGameCenterIdController extends EventController {
 			// TODO: Make a service for this in mobsters-services
 			UpdateClientUserResponseEvent resEventUpdate = null;// MiscMethods.createUpdateClientUserResponseEventAndUpdateLeaderboard(user, null);
 			resEventUpdate.setTag(event.getTag());
-			getEventWriter().writeEvent(resEventUpdate);
+			eventWriter.writeEvent(resEventUpdate);
 
 		} catch(ConditionalCheckFailedException e) {
 			//TODO: version was probably out of date... meaning some other thread updated this item after you loaded it but before you save it
@@ -97,11 +97,12 @@ public class SetGameCenterIdController extends EventController {
 			log.error("exception in SetGameCenterIdController processEvent", e);
 			// don't let the client hang
 			try {
+				eventWriter.clearResponses();
 				resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
 				SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
 				resEvent.setTag(event.getTag());
 				resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
-				getEventWriter().writeEvent(resEvent);
+				eventWriter.writeEvent(resEvent);
 			} catch (Exception e2) {
 				log.error("exception2 in SetGameCenterIdController processEvent", e);
 			}
@@ -120,11 +121,4 @@ public class SetGameCenterIdController extends EventController {
 		this.userDataRarelyAccessedRepository = userDataRarelyAccessedRepository;
 	}
 
-	public EventWriter getEventWriter() {
-		return eventWriter;
-	}
-
-	public void setEventWriter(EventWriter eventWriter) {
-		this.eventWriter = eventWriter;
-	}
 }
