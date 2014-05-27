@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+// @Entity
 public class PrivateChatPost extends BasePersistentObject{	
 	protected static final long serialVersionUID = 8450554970377509383L;
 
