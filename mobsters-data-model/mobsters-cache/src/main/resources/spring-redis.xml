@@ -56,7 +56,7 @@
 	
 	<bean id="kryoInstantiator" class="com.twitter.chill.KryoInstantiator" />
 	
-	<bean id="kryo" class="com.twitter.chill.KryoPool" factoryMethod="withByteArrayOutputStream" >
+	<bean id="kryo" class="com.twitter.chill.KryoPool" factory-method="withByteArrayOutputStream" >
 		<constructor-arg index="0" value="40" />
 		<constructor-arg index="1" ref="kryoInstantiator" />
 	</bean>

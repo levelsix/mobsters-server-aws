@@ -79,6 +79,7 @@
 
 
 		<!-- Dependencies -->
+		<commons-pool.version>1.5.3</commons-pool.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 	</properties>
@@ -200,6 +201,11 @@
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
 				<version>2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-pool</groupId>
+				<artifactId>commons-pool</artifactId>
+				<version>${commons-pool.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>

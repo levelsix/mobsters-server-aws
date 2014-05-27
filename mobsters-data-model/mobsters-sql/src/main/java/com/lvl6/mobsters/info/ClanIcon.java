@@ -5,12 +5,12 @@ import javax.persistence.Entity;
 
 @Entity
 public class ClanIcon extends BasePersistentObject{
-
 	
 	private static final long serialVersionUID = -3648830914482901288L;	
 
 	@Column(name = "img_name")
 	private String imgName;
+
 	@Column(name = "is_available")
 	private boolean isAvailable;	
 	
@@ -18,13 +18,11 @@ public class ClanIcon extends BasePersistentObject{
 		super();
 	}
 
-	public ClanIcon(int id, String imgName, boolean isAvailable) {
-		super();
+	public ClanIcon(final int id, final String imgName, final boolean isAvailable) {
+		// super(id);
 		this.imgName = imgName;
 		this.isAvailable = isAvailable;
 	}
-
-
 
 	public String getImgName() {
 		return imgName;
@@ -47,5 +45,4 @@ public class ClanIcon extends BasePersistentObject{
 		return "ClanIcon [id=" + id + ", imgName=" + imgName + ", isAvailable="
 				+ isAvailable + "]";
 	}
-	
 }

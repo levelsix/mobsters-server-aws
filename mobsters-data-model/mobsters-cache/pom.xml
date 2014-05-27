@@ -57,6 +57,10 @@
 			<groupId>com.twitter</groupId>
 			<artifactId>chill-java</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+		</dependency>
 	</dependencies>
 
 
