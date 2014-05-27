@@ -66,11 +66,11 @@ import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
 		log.info("Creating Dynamo table {}", getTableName());
 		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName("userId").withAttributeType("S"));
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName("pvpLeagueId").withAttributeType("S"));
+		//attributeDefinitions.add(new AttributeDefinition().withAttributeName("pvpLeagueId").withAttributeType("S"));
 		
 		ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
 		ks.add(new KeySchemaElement().withAttributeName("userId").withKeyType(KeyType.HASH));
-		ks.add(new KeySchemaElement().withAttributeName("pvpLeagueId").withKeyType(KeyType.RANGE));
+		//ks.add(new KeySchemaElement().withAttributeName("pvpLeagueId").withKeyType(KeyType.RANGE));
 		
 		  
 		CreateTableRequest request = new CreateTableRequest()

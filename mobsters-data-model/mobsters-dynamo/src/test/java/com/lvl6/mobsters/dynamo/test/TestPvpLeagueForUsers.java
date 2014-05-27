@@ -29,7 +29,7 @@ public class TestPvpLeagueForUsers {
 
 	
 	
-	private static final Logger log = LoggerFactory.getLogger(TestQuestForUsers.class);
+	private static final Logger log = LoggerFactory.getLogger(TestPvpLeagueForUsers.class);
 	
 	
 	@Autowired
@@ -44,7 +44,7 @@ public class TestPvpLeagueForUsers {
 	
 	
 	
-	public static String userId = UUID.randomUUID().toString();
+	public static List<String> userIds = Arrays.asList(UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString());
 	public static List<String> pvpLeagueIds = Arrays.asList(UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString());
 	public static List<PvpLeagueForUser> leagues = new ArrayList<>();
 	
@@ -56,6 +56,7 @@ public class TestPvpLeagueForUsers {
 			DateTime tim = new DateTime();
 			tim.minusWeeks(index);
 			index--;
+			String userId = userIds.get(index);
 			PvpLeagueForUser pvp = new PvpLeagueForUser(userId, league, index, index, tim.getMillis(), tim.getMillis(), index, index, index, index, tim.getMillis());
 			repo.save(pvp);
 			leagues.add(pvp);
