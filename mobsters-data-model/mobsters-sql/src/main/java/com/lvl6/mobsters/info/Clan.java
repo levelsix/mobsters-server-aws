@@ -69,9 +69,9 @@ public class Clan extends BasePersistentObject{
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+//	public void setCreateTime(Date createTime) {
+//		this.createTime = createTime;
+//	}
 
 	public String getDescription() {
 		return description;
