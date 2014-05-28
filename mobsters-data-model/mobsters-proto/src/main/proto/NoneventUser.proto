@@ -68,8 +68,8 @@ message UserFacebookInviteForSlotProto {
 
 message UserProto {
 	optional string userUuid = 1;
-	optional int32 name = 2;
-	optional int32 isAdmin = 3;
+	optional string name = 2;
+	optional bool isAdmin = 3;
 	optional int32 level = 4;
 	optional int32 gems = 5;
 	optional int32 cash = 6;

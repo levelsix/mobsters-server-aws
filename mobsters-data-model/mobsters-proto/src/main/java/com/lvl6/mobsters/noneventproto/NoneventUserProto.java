@@ -3502,13 +3502,13 @@ public final class NoneventUserProto {
     boolean hasUserUuid();
     String getUserUuid();
     
-    // optional int32 name = 2;
+    // optional string name = 2;
     boolean hasName();
-    int getName();
+    String getName();
     
-    // optional int32 isAdmin = 3;
+    // optional bool isAdmin = 3;
     boolean hasIsAdmin();
-    int getIsAdmin();
+    boolean getIsAdmin();
     
     // optional int32 level = 4;
     boolean hasLevel();
@@ -3596,23 +3596,45 @@ public final class NoneventUserProto {
       }
     }
     
-    // optional int32 name = 2;
+    // optional string name = 2;
     public static final int NAME_FIELD_NUMBER = 2;
-    private int name_;
+    private java.lang.Object name_;
     public boolean hasName() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public int getName() {
-      return name_;
+    public String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          name_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
-    // optional int32 isAdmin = 3;
+    // optional bool isAdmin = 3;
     public static final int ISADMIN_FIELD_NUMBER = 3;
-    private int isAdmin_;
+    private boolean isAdmin_;
     public boolean hasIsAdmin() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
-    public int getIsAdmin() {
+    public boolean getIsAdmin() {
       return isAdmin_;
     }
     
@@ -3681,8 +3703,8 @@ public final class NoneventUserProto {
     
     private void initFields() {
       userUuid_ = "";
-      name_ = 0;
-      isAdmin_ = 0;
+      name_ = "";
+      isAdmin_ = false;
       level_ = 0;
       gems_ = 0;
       cash_ = 0;
@@ -3706,10 +3728,10 @@ public final class NoneventUserProto {
         output.writeBytes(1, getUserUuidBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, name_);
+        output.writeBytes(2, getNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, isAdmin_);
+        output.writeBool(3, isAdmin_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(4, level_);
@@ -3744,11 +3766,11 @@ public final class NoneventUserProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, name_);
+          .computeBytesSize(2, getNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, isAdmin_);
+          .computeBoolSize(3, isAdmin_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
@@ -3901,9 +3923,9 @@ public final class NoneventUserProto {
         super.clear();
         userUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        name_ = 0;
+        name_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        isAdmin_ = 0;
+        isAdmin_ = false;
         bitField0_ = (bitField0_ & ~0x00000004);
         level_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -4078,14 +4100,14 @@ public final class NoneventUserProto {
               userUuid_ = input.readBytes();
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              name_ = input.readInt32();
+              name_ = input.readBytes();
               break;
             }
             case 24: {
               bitField0_ |= 0x00000004;
-              isAdmin_ = input.readInt32();
+              isAdmin_ = input.readBool();
               break;
             }
             case 32: {
@@ -4164,36 +4186,51 @@ public final class NoneventUserProto {
         onChanged();
       }
       
-      // optional int32 name = 2;
-      private int name_ ;
+      // optional string name = 2;
+      private java.lang.Object name_ = "";
       public boolean hasName() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public int getName() {
-        return name_;
+      public String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setName(int value) {
-        bitField0_ |= 0x00000002;
+      public Builder setName(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
         name_ = value;
         onChanged();
         return this;
       }
       public Builder clearName() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        name_ = 0;
+        name_ = getDefaultInstance().getName();
         onChanged();
         return this;
       }
+      void setName(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000002;
+        name_ = value;
+        onChanged();
+      }
       
-      // optional int32 isAdmin = 3;
-      private int isAdmin_ ;
+      // optional bool isAdmin = 3;
+      private boolean isAdmin_ ;
       public boolean hasIsAdmin() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public int getIsAdmin() {
+      public boolean getIsAdmin() {
         return isAdmin_;
       }
-      public Builder setIsAdmin(int value) {
+      public Builder setIsAdmin(boolean value) {
         bitField0_ |= 0x00000004;
         isAdmin_ = value;
         onChanged();
@@ -4201,7 +4238,7 @@ public final class NoneventUserProto {
       }
       public Builder clearIsAdmin() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        isAdmin_ = 0;
+        isAdmin_ = false;
         onChanged();
         return this;
       }
@@ -8022,8 +8059,8 @@ public final class NoneventUserProto {
       "meOfInvite\030\004 \001(\003\022\024\n\014timeAccepted\030\005 \001(\003\022\026" +
       "\n\016userStructUuid\030\006 \001(\t\022\023\n\013structFbLvl\030\007 " +
       "\001(\005\022\024\n\014redeemedTime\030\010 \001(\003\"\250\001\n\tUserProto\022" +
-      "\020\n\010userUuid\030\001 \001(\t\022\014\n\004name\030\002 \001(\005\022\017\n\007isAdm",
-      "in\030\003 \001(\005\022\r\n\005level\030\004 \001(\005\022\014\n\004gems\030\005 \001(\005\022\014\n" +
+      "\020\n\010userUuid\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007isAdm",
+      "in\030\003 \001(\010\022\r\n\005level\030\004 \001(\005\022\014\n\004gems\030\005 \001(\005\022\014\n" +
       "\004cash\030\006 \001(\005\022\013\n\003oil\030\007 \001(\005\022\022\n\nexperience\030\010" +
       " \001(\005\022\036\n\004clan\030\t \001(\0132\020.proto.ClanProto\"I\n\023" +
       "UserCredentialProto\022\020\n\010userUuid\030\001 \001(\t\022\014\n" +
