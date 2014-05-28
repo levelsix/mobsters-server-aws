@@ -35,9 +35,13 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 			log.debug(key + ": " + msg.getHeaders().get(key));
 		}
 		// log.info("Payload: "+msg.getPayload());
+		//handleEvent((byte[]) msg.getPayload());
+	}
+
+	public void handleEvent(ByteBuffer bytes) {
 		Attachment attachment = new Attachment();
-		byte[] payload = (byte[]) msg.getPayload();
-		attachment.readBuff = ByteBuffer.wrap(payload);
+		byte[] payload = (byte[]) bytes.asReadOnlyBuffer().array();
+		attachment.readBuff = bytes;
 		while (attachment.eventReady()) {
 			RequestEvent event = getEvent(attachment);
 			log.debug("Recieved event from client: " + event.getPlayerId());

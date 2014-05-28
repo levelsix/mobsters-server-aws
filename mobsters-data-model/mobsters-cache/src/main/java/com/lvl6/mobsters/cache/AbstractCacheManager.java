@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import com.lvl6.mobsters.info.BasePersistentObject;
-import com.lvl6.mobsters.info.ConnectedPlayer;
 import com.twitter.chill.KryoPool;
 
 
 
-abstract class AbstractCacheManager<T extends BasePersistentObject> {
+abstract class AbstractCacheManager<T> {
 	
 	@Autowired
 	protected JedisPool jedisPool;
@@ -21,14 +19,22 @@ abstract class AbstractCacheManager<T extends BasePersistentObject> {
 	@Resource(name="kryoPool")
 	protected KryoPool kryoPool;
 	
+	protected Class<T> type;
 	
-	protected T getEntity(final String fromCollection, final Class<T> ofType, final String withKey) {
+	
+	
+	public AbstractCacheManager(Class<T> type) {
+		super();
+		this.type = type;
+	}
+
+	public T getEntity(final String fromCollection, final String withKey) {
 		return new JedisGetTask<T>(jedisPool) {
 			@Override
 			public T task(Jedis jedis) {
 				byte[] bytes = jedis.hget(fromCollection.getBytes(), withKey.getBytes());
 				if(bytes != null) {
-					T retVal = kryoPool.fromBytes(bytes, ofType);
+					T retVal = kryoPool.fromBytes(bytes, type);
 					return retVal;
 				}else {
 					return null;
@@ -37,7 +43,7 @@ abstract class AbstractCacheManager<T extends BasePersistentObject> {
 		}.get();
 	}
 	
-	protected void saveEntity(final T entity, final String toCollection, final String withKey) {
+	public void saveEntity(final T entity, final String toCollection, final String withKey) {
 		new JedisPutTask(jedisPool) {
 			@Override
 			public void task(Jedis jedis) {
@@ -46,10 +52,7 @@ abstract class AbstractCacheManager<T extends BasePersistentObject> {
 		}.put();
 	}
 	
-	
-	//TODO: need cleanup job for disconnected players
-	
-	
+
 	
 	public void setJedisPool(JedisPool jedisPool) {
 		this.jedisPool = jedisPool;

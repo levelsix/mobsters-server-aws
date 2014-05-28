@@ -49,12 +49,12 @@ public class GameEventHandler extends AbstractGameEventHandler {
 
 	protected void updatePlayerToServerMaps(RequestEvent event) {
 		log.debug("Updating player to server maps for player: "	+ event.getPlayerId());
-		ConnectedPlayer p = playerMaps.getPlayer(event.getPlayerId());
+		ConnectedPlayer p = playerMaps.getEntity(PlayerMapsCacheManager.connectedPlayers, event.getPlayerId());
 		if (p != null) {
 			p.setLastMessageSentToServer(new Date());
 			p.setServerHostName(server.serverId());
 			
-			playerMaps.savePlayer(p);
+			playerMaps.saveEntity(p, PlayerMapsCacheManager.connectedPlayers, p.getPlayerId());
 		} else {
 			addNewConnection(event);
 		}
@@ -66,10 +66,10 @@ public class GameEventHandler extends AbstractGameEventHandler {
 		if (event.getPlayerId() != "") {
 			log.info("Player logged on: " + event.getPlayerId());
 			newp.setPlayerId(event.getPlayerId());
-			playerMaps.savePlayer(newp);
+			playerMaps.saveEntity(newp, PlayerMapsCacheManager.connectedPlayers, newp.getPlayerId());
 		} else {
 			newp.setUdid(((PreDatabaseRequestEvent) event).getUdid());
-			playerMaps.savePlayerPreDatabase(newp);
+			playerMaps.saveEntity(newp, PlayerMapsCacheManager.connectedPlayersPreDB, newp.getUdid());
 			log.info("New player with UdId: " + newp.getUdid());
 		}
 	}

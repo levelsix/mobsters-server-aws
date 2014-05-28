@@ -10,4 +10,5 @@ public interface AchievementRepository extends CrudRepository<Achievement, Strin
 	Collection<Achievement> findByQuantityGreaterThan(Integer low);
 	
 	Collection<Achievement> findByAchievementNameStartingWith(String startsWith);
+	
 }

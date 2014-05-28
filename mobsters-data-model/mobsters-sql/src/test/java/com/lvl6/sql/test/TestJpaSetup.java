@@ -2,6 +2,8 @@ package com.lvl6.sql.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class TestJpaSetup {
 
 	@Test
 	public void test() {
+		Collection<Achievement> achs = achRepo.findByAchievementNameStartingWith("test");
+		achRepo.delete(achs);
 		Achievement ach = new Achievement("test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, 0, 0);
 		achRepo.save(ach);
 		ach = new Achievement("test1", "test1", 1, 1, "test1", "test1", "test1", "test1", 1, 1, 1, 1, 1);

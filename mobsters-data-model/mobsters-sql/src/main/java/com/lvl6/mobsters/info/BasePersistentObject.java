@@ -3,35 +3,41 @@ package com.lvl6.mobsters.info;
 import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @MappedSuperclass
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public class BasePersistentObject implements Serializable{
 
 	private static final long serialVersionUID = 6615796821793149044L;
 
+	
+	/*
+	 * IDs are String UUID for two reasons:
+	 * 1. Impossible to reliably generate sequential Integers in distributed databases. Which this database will be if it gets big enough. If we were going to use numeric IDs they would be Longs.
+	 * 2. To maintain consistency with Dynamo which will only auto generate String UUIDs. 
+	 * 
+	 */
+	
 	@Id 
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	// @GeneratedValue(generator="system-uuid")
-	// @GenericGenerator(name="system-uuid", strategy = "uuid")
-	protected Integer id;
+	@GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	protected String id;
 
 	protected BasePersistentObject() { }
 	
-	protected BasePersistentObject(final Integer id) {
+	protected BasePersistentObject(final String id) {
 		this.id = id;
 	}
 	
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 

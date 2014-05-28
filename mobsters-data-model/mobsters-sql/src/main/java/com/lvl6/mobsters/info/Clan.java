@@ -46,7 +46,7 @@ public class Clan extends BasePersistentObject{
 		super();
 	}
 
-	public Clan(final int id, final String name, final Date createTime, final String description,
+	public Clan(final String id, final String name, final Date createTime, final String description,
 			final String tag, final boolean requestToJoinRequired, final ClanIcon clanIcon) {
 		super(id);
 		this.name = name;
