@@ -45,10 +45,11 @@ public class TestJpaSetup {
 		achRepo.save(ach);
 		ach = new Achievement("test3", "test3", 3, 3, "test3", "test3", "test3", "test3", 3, 3,3, 3, 3);
 		achRepo.save(ach);
-		assertTrue("Quantity is 3", achRepo.findByQuantityGreaterThan(0).size() == 3);
+		int size = achRepo.findByQuantityGreaterThan(0).size();
+		assertTrue("Quantity expected: 3. actual:" + size, size == 3);
 		assertTrue("Lvl is 3", achRepo.findByLvlBetween(1, 3).size() == 3);
 		achRepo.delete(achRepo.findByAchievementNameStartingWith("test"));
-		
+
 	}
 
 }
