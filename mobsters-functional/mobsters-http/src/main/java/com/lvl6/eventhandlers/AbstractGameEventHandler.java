@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.Message;
 import org.springframework.integration.MessagingException;
 import org.springframework.integration.core.MessageHandler;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.lvl6.mobsters.controllers.ControllerManager;
 import com.lvl6.mobsters.events.RequestEvent;
@@ -30,7 +31,7 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 
 	@Override
 	public void handleMessage(Message<?> msg) throws MessagingException {
-		log.debug("Received message: ");
+		log.trace("Received message: ");
 		for (String key : msg.getHeaders().keySet()) {
 			log.debug(key + ": " + msg.getHeaders().get(key));
 		}
@@ -38,14 +39,14 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 		//handleEvent((byte[]) msg.getPayload());
 	}
 
-	public void handleEvent(ByteBuffer bytes) {
+	public void handleEvent(ByteBuffer bytes, WebSocketSession session) {
 		Attachment attachment = new Attachment();
 		byte[] payload = (byte[]) bytes.asReadOnlyBuffer().array();
 		attachment.readBuff = bytes;
 		while (attachment.eventReady()) {
 			RequestEvent event = getEvent(attachment);
-			log.debug("Recieved event from client: " + event.getPlayerId());
-			delegateEvent(payload, event, attachment.eventType);
+			log.trace("Recieved event from client: " + event.getPlayerId());
+			delegateEvent(payload, event, attachment.eventType, session);
 			attachment.reset();
 
 		}
@@ -72,7 +73,7 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 		return event;
 	}
 
-	protected abstract void delegateEvent(byte[] bytes, RequestEvent event, EventProtocolRequest eventType);
+	protected abstract void delegateEvent(byte[] bytes, RequestEvent event, EventProtocolRequest eventType, WebSocketSession session);
 	
 	
 
