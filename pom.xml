@@ -71,6 +71,10 @@
              wish to set 'none' in their custom profile to avoid spending time in an update phase on Hibernate-dependenent tests
              unless their changes are schema-impacting. -->
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
+		<!-- Developers may toggle these flags on in their local profile to get more verbose
+		     output from Hibernate about session boundaries and queries evaluated. -->
+		<hibernate.generate_statistics>false</hibernate.generate_statistics>
+		<hibernate.show_sql>false</hibernate.show_sql>
 
 		<!-- Redis/Elasticache -->
 		<lvl6.jedis.host>robot.lvl6.com</lvl6.jedis.host>
