@@ -22,9 +22,9 @@ public class PvpLeague extends BasePersistentObject{
 	@Column(name = "max_elo")
 	private int maxElo;	
 	public PvpLeague(){}
-	public PvpLeague(int id, String leagueName, String imgPrefix, int numRanks,
+	public PvpLeague(String id, String leagueName, String imgPrefix, int numRanks,
 			String description, int minElo, int maxElo) {
-		super();
+		super(id);
 		this.leagueName = leagueName;
 		this.imgPrefix = imgPrefix;
 		this.numRanks = numRanks;

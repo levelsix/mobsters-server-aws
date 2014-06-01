@@ -26,11 +26,11 @@ public class ClanRaid extends BasePersistentObject{
 	@Column(name = "spotlight_monster_img_name")
 	private String spotlightMonsterImgName;	
 	public ClanRaid(){}
-	public ClanRaid(int id, String clanRaidName, String activeTitleImgName,
+	public ClanRaid(String id, String clanRaidName, String activeTitleImgName,
 			String activeBackgroundImgName, String activeDescription,
 			String inactiveMonsterImgName, String inactiveDescription,
 			String dialogueText, String spotlightMonsterImgName) {
-		super();
+		super(id);
 		this.clanRaidName = clanRaidName;
 		this.activeTitleImgName = activeTitleImgName;
 		this.activeBackgroundImgName = activeBackgroundImgName;

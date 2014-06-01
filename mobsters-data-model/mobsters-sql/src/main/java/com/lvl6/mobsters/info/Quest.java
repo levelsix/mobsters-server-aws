@@ -61,13 +61,13 @@ public class Quest extends BasePersistentObject{
 	@Column(name = "monster_element")
 	private String monsterElement;	
 	public Quest(){}
-	public Quest(int id, String questName, String description, String doneResponse,
+	public Quest(String id, String questName, String description, String doneResponse,
 			Dialogue acceptDialogue, int cashReward, int oilReward, int gemReward,
 			int expReward, int monsterIdReward, boolean isCompleteMonster,
 			List<Quest> questsRequiredForThis, String questGiverName,
 			String questGiverImagePrefix, int priority, String carrotId,
 			String monsterElement) {
-		super();
+		super(id);
 		this.questName = questName;
 		this.description = description;
 		this.doneResponse = doneResponse;

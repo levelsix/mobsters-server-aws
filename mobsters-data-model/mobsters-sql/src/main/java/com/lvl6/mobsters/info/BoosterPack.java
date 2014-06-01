@@ -23,10 +23,10 @@ public class BoosterPack extends BasePersistentObject{
 	@Column(name = "machine_img_name")
 	private String machineImgName;  
 	public BoosterPack(){}
-	public BoosterPack(int id, String name, int gemPrice,
+	public BoosterPack(String id, String name, int gemPrice,
 			String listBackgroundImgName, String listDescription,
 			String navBarImgName, String navTitleImgName, String machineImgName) {
-		super();
+		super(id);
 		this.name = name;
 		this.gemPrice = gemPrice;
 		this.listBackgroundImgName = listBackgroundImgName;

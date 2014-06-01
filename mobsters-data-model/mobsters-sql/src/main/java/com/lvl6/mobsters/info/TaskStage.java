@@ -13,8 +13,8 @@ public class TaskStage extends BasePersistentObject{
 	@Column(name = "stage_num")
 	private int stageNum;	
 	public TaskStage(){}
-	public TaskStage(int id, int taskId, int stageNum) {
-		super();
+	public TaskStage(String id, int taskId, int stageNum) {
+		super(id);
 		this.taskId = taskId;
 		this.stageNum = stageNum;
 	}

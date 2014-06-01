@@ -31,9 +31,9 @@ public class MonsterForPvp extends BasePersistentObject{
 	@Column(name = "rand")
 	private Random rand;	
 	public MonsterForPvp(){}
-	public MonsterForPvp(int id, int monsterId, int monsterLvl, int elo,
+	public MonsterForPvp(String id, int monsterId, int monsterLvl, int elo,
 			int minCashReward, int maxCashReward, int minOilReward, int maxOilReward) {
-		super();
+		super(id);
 		this.monsterId = monsterId;
 		this.monsterLvl = monsterLvl;
 		this.elo = elo;

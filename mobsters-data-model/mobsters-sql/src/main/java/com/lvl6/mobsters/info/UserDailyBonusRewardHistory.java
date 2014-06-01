@@ -23,10 +23,10 @@ public class UserDailyBonusRewardHistory extends BasePersistentObject{
 	@Column(name = "date_awarded")
 	private Date dateAwarded;  
 	public UserDailyBonusRewardHistory(){}
-  public UserDailyBonusRewardHistory(int id, int userId, int currencyRewarded,
+  public UserDailyBonusRewardHistory(String id, int userId, int currencyRewarded,
       boolean isCoins, int boosterPackIdRewarded, int equipIdRewarded,
       int nthConsecutiveDay, Date dateAwarded) {
-    super();
+    super(id);
     this.userId = userId;
     this.currencyRewarded = currencyRewarded;
     this.isCoins = isCoins;

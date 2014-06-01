@@ -16,8 +16,8 @@ public class MonsterReward extends BasePersistentObject{
 	private float dropRate;	
 
 	public MonsterReward(){}
-  public MonsterReward(int id, int monsterId, int equipId, float dropRate) {
-    super();
+  public MonsterReward(String id, int monsterId, int equipId, float dropRate) {
+    super(id);
     this.monsterId = monsterId;
     this.equipId = equipId;
     this.dropRate = dropRate;

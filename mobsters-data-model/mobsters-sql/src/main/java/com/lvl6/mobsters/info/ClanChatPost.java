@@ -18,9 +18,9 @@ public class ClanChatPost extends BasePersistentObject{
 	@Column(name = "content")
 	private String content;
 	public ClanChatPost(){}
-  public ClanChatPost(int id, int posterId, int clanId,
+  public ClanChatPost(String id, int posterId, int clanId,
       Date timeOfPost, String content) {
-    super();
+    super(id);
     this.posterId = posterId;
     this.clanId = clanId;
     this.timeOfPost = timeOfPost;

@@ -23,9 +23,9 @@ public class ClanRaidStageMonster extends BasePersistentObject{
 	@Column(name = "monster_num")
 	private int monsterNum;	
 	public ClanRaidStageMonster(){}
-	public ClanRaidStageMonster(int id, int clanRaidStageId, int monsterId,
+	public ClanRaidStageMonster(String id, int clanRaidStageId, int monsterId,
 			int monsterHp, int minDmg, int maxDmg, int monsterNum) {
-		super();
+		super(id);
 		this.clanRaidStageId = clanRaidStageId;
 		this.monsterId = monsterId;
 		this.monsterHp = monsterHp;

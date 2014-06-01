@@ -43,9 +43,10 @@ public class Task extends BasePersistentObject{
 		super();
 	}
 
-	public Task(final int id, final String goodName, final String description, final City city,
+
+	public Task(final String id, final String goodName, final String description, final City city,
 			final int assetNumberWithinCity, final Task prerequisiteTask, final Quest prerequisiteQuest) {
-		// super(id);
+		super(id);
 		this.goodName = goodName;
 		this.description = description;
 		this.city = city;

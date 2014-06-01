@@ -31,10 +31,10 @@ public class StructureForUser extends BasePersistentObject{	//any change in this
 	@Column(name = "fb_invite_struct_lvl")
 	private int fbInviteStructLvl;	
 	public StructureForUser(){}
-	public StructureForUser(int id, int userId, int structId,
+	public StructureForUser(String id, int userId, int structId,
 			Date lastRetrieved, CoordinatePair coordinates, Date purchaseTime,
 			boolean isComplete, String orientation, int fbInviteStructLvl) {
-		super();
+		super(id);
 		this.userId = userId;
 		this.structId = structId;
 		this.lastRetrieved = lastRetrieved;

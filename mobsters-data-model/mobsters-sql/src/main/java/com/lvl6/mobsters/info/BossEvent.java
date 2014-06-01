@@ -34,11 +34,11 @@ public class BossEvent extends BasePersistentObject{
 	@Column(name = "info_description")
 	private String infoDescription;  
 	public BossEvent(){}
-  public BossEvent(int id, int cityId, Date startDate, Date endDate,
+  public BossEvent(String id, int cityId, Date startDate, Date endDate,
       String eventName, String headerImage, int leftEquipId, String leftTag,
       int middleEquipId, String middleTag, int rightEquipId, String rightTag,
       String infoDescription) {
-    super();
+    super(id);
     this.cityId = cityId;
     this.startDate = startDate;
     this.endDate = endDate;

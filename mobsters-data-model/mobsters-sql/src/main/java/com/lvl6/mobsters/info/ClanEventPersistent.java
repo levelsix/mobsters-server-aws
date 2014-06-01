@@ -17,9 +17,9 @@ public class ClanEventPersistent extends BasePersistentObject{
 	@Column(name = "clan_raid_id")
 	private int clanRaidId;	
 	public ClanEventPersistent(){}
-	public ClanEventPersistent(int id, String dayOfWeek, int startHour,
+	public ClanEventPersistent(String id, String dayOfWeek, int startHour,
 			int eventDurationMinutes, int clanRaidId) {
-		super();
+		super(id);
 		this.dayOfWeek = dayOfWeek;
 		this.startHour = startHour;
 		this.eventDurationMinutes = eventDurationMinutes;

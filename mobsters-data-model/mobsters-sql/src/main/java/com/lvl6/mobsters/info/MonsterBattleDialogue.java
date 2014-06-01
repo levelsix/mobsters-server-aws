@@ -17,9 +17,9 @@ public class MonsterBattleDialogue extends BasePersistentObject{
 	@Column(name = "probability_uttered")
 	private float probabilityUttered;	
 	public MonsterBattleDialogue(){}
-	public MonsterBattleDialogue(int id, int monsterId, String dialogueType,
+	public MonsterBattleDialogue(String id, int monsterId, String dialogueType,
 			String dialogue, float probabilityUttered) {
-		super();
+		super(id);
 		this.monsterId = monsterId;
 		this.dialogueType = dialogueType;
 		this.dialogue = dialogue;
