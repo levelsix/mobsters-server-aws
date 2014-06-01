@@ -46,12 +46,10 @@ public class UserDataRarelyAccessedServiceImpl implements UserDataRarelyAccessed
 	}
 	
 	//setters and getters for the Setter Dependency Injection (or something)****************************************************************
-	@Override
 	public UserDataRarelyAccessedRepository getUserDataRarelyAccessedRepository() {
 		return userDataRarelyAccessedRepository;
 	}
 	
-	@Override
 	public void setUserDataRarelyAccessedRepository(
 			UserDataRarelyAccessedRepository userDataRarelyAccessedRepository) {
 		this.userDataRarelyAccessedRepository = userDataRarelyAccessedRepository;
