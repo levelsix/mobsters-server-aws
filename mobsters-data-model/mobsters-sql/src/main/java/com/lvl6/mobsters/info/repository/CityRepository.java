@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.info.repository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.City;
-public interface CityRepository extends CrudRepository<City, String>{
+public interface CityRepository extends JpaRepository<City, String>{
 
 }
