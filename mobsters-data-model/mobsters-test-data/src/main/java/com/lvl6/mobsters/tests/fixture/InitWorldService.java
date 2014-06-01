@@ -24,26 +24,21 @@ public class InitWorldService {
 	
     @Transactional
     public void tearDown() {
-    	System.out.println("Purging");
     	for( final JpaRepository<?, ?> nextRepo : resetRepos ) {
     		nextRepo.deleteAllInBatch();
-    		System.out.println("Invoked one deleteAll");
     	}
     	this.itemMap = null;
 	}
 	
     @Transactional
-    public void buildUp() {
+    public void buildUp() { 
     	itemMap = new HashMap<String, ObjectMeta<?>>();
-    	System.out.println("Populating");
     	for (PartialDataSet nextDataSet : partialDataSets) {
     		nextDataSet.repopulate();
     		for (final ObjectMeta<?> nextObject : nextDataSet.getObjects()) {
     			itemMap.put(nextObject.getName(), nextObject);
     		}
     	}
-    	System.out.println( "Items: " + itemMap.size() );
-    	
     }
     
     public <T> T getItem(String name) {
@@ -67,6 +62,5 @@ public class InitWorldService {
     	for (final PartialDataSet nextDataSet : partialDataSets) {
     		resetRepos.addAll(nextDataSet.getUsedRepositories());
     	}
-    	System.out.println("Processed " + partialDataSets.size() + " data sets for " + resetRepos.size() + " reset repos" );
     }
 }
