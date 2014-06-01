@@ -19,11 +19,11 @@ abstract class AbstractCacheManager<T> {
 	@Resource(name="kryoPool")
 	protected KryoPool kryoPool;
 	
-	protected Class<T> type;
+	final protected Class<T> type;
 	
 	
 	
-	public AbstractCacheManager(Class<T> type) {
+	public AbstractCacheManager(final Class<T> type) {
 		super();
 		this.type = type;
 	}
