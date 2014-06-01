@@ -14,7 +14,7 @@ import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthRequest
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto.Builder;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto.UpdateMonsterHealthStatus;
-import com.lvl6.mobsters.events.ControllerResponseEvents;
+import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.UpdateMonsterHealthRequestEvent;
 import com.lvl6.mobsters.events.response.UpdateMonsterHealthResponseEvent;
@@ -49,7 +49,7 @@ public class UpdateMonsterHealthController extends EventController {
 	}
 
 	@Override
-	protected void processRequestEvent(RequestEvent event, ControllerResponseEvents eventWriter) {
+	protected void processRequestEvent(RequestEvent event, EventsToDispatch eventWriter) {
 		// identify client request.
 		final UpdateMonsterHealthRequestProto reqProto = 
 			((UpdateMonsterHealthRequestEvent) event).getUpdateMonsterHealthRequestProto();
