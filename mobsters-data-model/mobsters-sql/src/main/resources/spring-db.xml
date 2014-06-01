@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:repo="http://www.springframework.org/schema/data/jpa"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/aop 
-		http://www.springframework.org/schema/aop/spring-aop.xsd
-        http://www.springframework.org/schema/tx 
-     	http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/util 
+     	http://www.springframework.org/schema/util/spring-util-4.0.xsd
      	http://www.springframework.org/schema/data/jpa
     	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		">
 
-
-	
+    <!--
+       This has no effect unless its declared in a Spring context where @Transactional @Components are
+       declared.  We don't have those until the mobsters-services project.
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	-->
 
+    <bean id="dataSource-proxy" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy"
+        p:targetDataSource-ref="dataSource" p:defaultAutoCommit="false">
+        <property name="defaultTransactionIsolation">
+        	<util:constant static-field="java.sql.Connection.TRANSACTION_REPEATABLE_READ" />
+        </property>
+    </bean>
+    
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="${jdbc.driverClassName}" />
@@ -35,8 +45,8 @@
 		<property name="releaseHelperThreads" value="${jdbc.releaseHelperThreads}" />
 	</bean>
 	
-	<repo:repositories base-package="com.lvl6.mobsters.info.repository" />
-	
+	<jpa:repositories base-package="com.lvl6.mobsters.info.repository" entity-manager-factory-ref="lvl6Emf"
+	   transaction-manager-ref="lvl6Txm"/>
 	
 	<bean id="lvl6Emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
       <property name="dataSource" ref="dataSource" />
@@ -45,18 +55,32 @@
          <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
       </property>
       <property name="jpaProperties">
-         <props>
+         <props merge="true">
             <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
             <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            <prop key="hibernate.jdbc.fetch_size">100</prop>
+            <prop key="hibernate.jdbc.batch_size">30</prop>
+            <prop key="hibernate.jdbc.batch_versioned_data">true</prop>
+            <prop key="hibernate.order_updates">true</prop>
+            <prop key="hibernate.default_batch_fetch_size">16</prop>
+            <prop key="hibernate.max_fetch_depth">3</prop>
+            <prop key="hibernate.current_session_context_class">thread</prop>
+            <prop key="hibernate.connection.autocommit">false</prop>
+            <prop key="hibernate.connection.release_mode">after_transaction</prop>
+            <prop key="hibernate.cache.use_second_level_cache">true</prop>
+            <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+            <prop key="hibernate.generate_statistics">${hibernate.generate_statistics}</prop>
+            <prop key="hibernate.use_sql_comments">${hibernate.show_sql}</prop>
+            <prop key="hibernate.format_sql">${hibernate.show_sql}</prop>
+            <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
          </props>
       </property>
    </bean>
 
-   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+   <bean id="lvl6Txm" class="org.springframework.orm.jpa.JpaTransactionManager">
       <property name="entityManagerFactory" ref="lvl6Emf" />
+      <property name="dataSource" ref="dataSource-proxy" />
    </bean>
 
    <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-	
-
 </beans>
