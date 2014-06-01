@@ -2,12 +2,13 @@ package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="monster")
 public class Monster extends BasePersistentObject{	
 
-	
-	private static final long serialVersionUID = 2671875938930580866L;	
+	private static final long serialVersionUID = -7228847551326085808L;
 
 	@Column(name = "name")
 	private String name;
@@ -61,8 +62,8 @@ public class Monster extends BasePersistentObject{
 	private int atkAnimationRepeatedFramesEnd;
 	@Column(name = "shorter_name")
 	private String shorterName;	
-	public Monster(){}
-	public Monster(int id, String name, String monsterGroup, String quality,
+	public Monster() { }
+	public Monster(String id, String name, String monsterGroup, String quality,
 			int evolutionLevel, String displayName, String element,
 			String imagePrefix, int numPuzzlePieces,
 			int minutesToCombinePieces, int maxLevel, int evolutionMonsterId,
@@ -73,7 +74,7 @@ public class Monster extends BasePersistentObject{
 			String atkSoundFile, int atkSoundAnimationFrame,
 			int atkAnimationRepeatedFramesStart,
 			int atkAnimationRepeatedFramesEnd, String shorterName) {
-		super();
+		super(id);
 		this.name = name;
 		this.monsterGroup = monsterGroup;
 		this.quality = quality;

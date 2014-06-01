@@ -5,8 +5,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="dialogue")
 public class Dialogue extends BasePersistentObject{
 
 	

@@ -7,6 +7,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 @Entity
+@Table(name="quest")
 public class Quest extends BasePersistentObject{
 
 	

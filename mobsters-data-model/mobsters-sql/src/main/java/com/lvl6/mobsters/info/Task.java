@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
+@Table(name="task")
 public class Task extends BasePersistentObject{
 
 	

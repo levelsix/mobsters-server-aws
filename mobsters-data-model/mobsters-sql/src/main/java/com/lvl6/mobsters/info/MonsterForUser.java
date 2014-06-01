@@ -4,10 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
+
+/**
+ * The persistent class for the monster_for_user database table.
+ * 
+ */
 @Entity
-public class MonsterForUser extends BasePersistentObject{
-
 
 	private static final long serialVersionUID = 8761455335098287924L;
 	
@@ -20,6 +24,8 @@ public class MonsterForUser extends BasePersistentObject{
 	@Column(name = "current_lvl")
 	private int currentLvl;
 	@Column(name = "current_health")
+@Table(name="monster_for_user")
+public class MonsterForUser extends BasePersistentObject {
 	private int currentHealth;
 	@Column(name = "num_pieces")
 	private int numPieces;
