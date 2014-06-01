@@ -1,7 +1,9 @@
 package com.lvl6.mobsters.info.repository;
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.MonsterForUser;
-public interface MonsterForUserRepository extends CrudRepository<MonsterForUser, String>{
-
+public interface MonsterForUserRepository extends JpaRepository<MonsterForUser, String>{
+	List<MonsterForUser> findByUserIdAndId(String userId, Iterable<String> iterable);
 }
