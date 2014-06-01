@@ -141,6 +141,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-test-data</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
 				<artifactId>mobsters-api-events</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
