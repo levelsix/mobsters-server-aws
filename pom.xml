@@ -109,7 +109,7 @@
 		<powermock.version>1.5.4</powermock.version>
 		<slf4j.version>1.6.6</slf4j.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
-		<spring.data-jpa.version>1.5.2.RELEASE</spring.data-jpa.version>
+		<spring.data-jpa.version>1.6.0.RELEASE</spring.data-jpa.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
 		<tomcat.version>7.0.27</tomcat.version>
