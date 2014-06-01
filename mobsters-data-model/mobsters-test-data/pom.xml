@@ -3,29 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.lvl6</groupId>
-		<artifactId>mobsters-functional</artifactId>
+		<artifactId>mobsters-data-model</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>mobsters-services</artifactId>
-	<name>Mobsters Services</name>
-	<description>Module for Services Layer</description>
-
+	<artifactId>mobsters-test-data</artifactId>
+	<name>Mobsters Test Data</name>
+	<description>Reusable components for integration/acceptance testing that load/wipe/reload fixed data between tests.  Builds upon trusted "repository" layer.</description>
 
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-cache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-test-data</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.websocket</groupId>
-			<artifactId>javax.websocket-api</artifactId>
+			<artifactId>mobsters-sql</artifactId>
 		</dependency>
 	</dependencies>
 

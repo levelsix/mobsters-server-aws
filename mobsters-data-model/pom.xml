@@ -14,5 +14,6 @@
   	<module>mobsters-dynamo</module>
   	<module>mobsters-cache</module>
   	<module>mobsters-proto</module>
+  	<module>mobsters-test-data</module>
   </modules>
 </project>

@@ -16,6 +16,11 @@
 			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-services</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-test-data</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 
