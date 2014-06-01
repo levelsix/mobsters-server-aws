@@ -14,15 +14,15 @@
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<!-- Action to take when trying to acquire a connection and all connections 
 			are taken -->
-		<property name="whenExhaustedAction">
+        <property name="blockWhenExhausted" value="true"/>
 			<!-- Fail-fast behaviour, we don't like to keep the kids waiting -->
 			<!-- <util:constant
 				static-field="org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL" /> -->
 			<!-- Default behaviour, block the caller until a resource becomes available -->
-			<util:constant static-field="org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_BLOCK"/> 
-		</property>
+			<!-- util:constant static-field="org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_BLOCK"/--> 
+		<!--/property-->
 		<!-- Maximum active connections to Redis instance -->
-		<property name="maxActive" value="30" />
+		<property name="maxTotal" value="30" />
 		<!-- Number of connections to Redis that just sit there and do nothing -->
 		<property name="maxIdle" value="5" />
 		<!-- Minimum number of idle connections to Redis - these can be seen as 
@@ -42,7 +42,7 @@
 		<property name="timeBetweenEvictionRunsMillis" value="3000" />
 		<!-- Maximum time, in milliseconds, to wait for a resource when exausted 
 			action is set to WHEN_EXAUSTED_BLOCK -->
-		<property name="maxWait" value="5000" />
+		<property name="maxWaitMillis" value="5000" />
 	</bean>
 
 	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
