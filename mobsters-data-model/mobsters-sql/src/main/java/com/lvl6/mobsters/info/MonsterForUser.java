@@ -1,9 +1,15 @@
 package com.lvl6.mobsters.info;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -12,138 +18,140 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-
-	private static final long serialVersionUID = 8761455335098287924L;
-	
-	@Column(name = "user_id")
-	private int userId;
-	@Column(name = "monster_id")
-	private int monsterId;
-	@Column(name = "current_exp")
-	private int currentExp;
-	@Column(name = "current_lvl")
-	private int currentLvl;
-	@Column(name = "current_health")
 @Table(name="monster_for_user")
 public class MonsterForUser extends BasePersistentObject {
+
+	private static final long serialVersionUID = 7211130161525778567L;
+
+	@Column(name="combine_start_time")
+	private Timestamp combineStartTime;
+
+	@Column(name="current_experience")
+	private int currentExperience;
+
+	@Column(name="current_health")
 	private int currentHealth;
-	@Column(name = "num_pieces")
-	private int numPieces;
-	@Column(name = "is_complete")
-	private boolean isComplete;
-	@Column(name = "combine_start_time")
-	private Date combineStartTime;
-	@Column(name = "team_slot_num")
-	private int teamSlotNum;
-	@Column(name = "source_of_pieces")
-	private String sourceOfPieces;  
-	public MonsterForUser(){}
-	public MonsterForUser(int userId, int monsterId, int currentExp,
-			int currentLvl, int currentHealth, int numPieces, boolean isComplete,
-			Date combineStartTime, int teamSlotNum, String sourceOfPieces) {
-		super();
-		this.userId = userId;
-		this.monsterId = monsterId;
-		this.currentExp = currentExp;
-		this.currentLvl = currentLvl;
-		this.currentHealth = currentHealth;
-		this.numPieces = numPieces;
-		this.isComplete = isComplete;
+
+	@Column(name="current_level")
+	private byte currentLevel;
+
+	@Column(name="is_complete")
+	private byte isComplete;
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "monster_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Monster monster;
+
+	@Column(name="num_pieces")
+	private byte numPieces;
+
+	@Column(name="source_of_pieces", length=1000)
+	private String sourceOfPieces;
+
+	@Column(name="team_slot_num")
+	private byte teamSlotNum;
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "user_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private User user;
+
+	public MonsterForUser() { }
+
+	public MonsterForUser(String id, Timestamp combineStartTime,
+			int currentExperience, int currentHealth, byte currentLevel,
+			byte isComplete, Monster monster, byte numPieces,
+			String sourceOfPieces, byte teamSlotNum, User user) {
+		super(id);
 		this.combineStartTime = combineStartTime;
-		this.teamSlotNum = teamSlotNum;
+		this.currentExperience = currentExperience;
+		this.currentHealth = currentHealth;
+		this.currentLevel = currentLevel;
+		this.isComplete = isComplete;
+		this.monster = monster;
+		this.numPieces = numPieces;
 		this.sourceOfPieces = sourceOfPieces;
+		this.teamSlotNum = teamSlotNum;
+		this.user = user;
 	}
 
-
-
-	public int getUserId() {
-		return userId;
+	public Timestamp getCombineStartTime() {
+		return this.combineStartTime;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setCombineStartTime(Timestamp combineStartTime) {
+		this.combineStartTime = combineStartTime;
 	}
 
-	public int getMonsterId() {
-		return monsterId;
+	public int getCurrentExperience() {
+		return this.currentExperience;
 	}
 
-	public void setMonsterId(int monsterId) {
-		this.monsterId = monsterId;
-	}
-
-	public int getCurrentExp() {
-		return currentExp;
-	}
-
-	public void setCurrentExp(int currentExp) {
-		this.currentExp = currentExp;
-	}
-
-	public int getCurrentLvl() {
-		return currentLvl;
-	}
-
-	public void setCurrentLvl(int currentLvl) {
-		this.currentLvl = currentLvl;
+	public void setCurrentExperience(int currentExperience) {
+		this.currentExperience = currentExperience;
 	}
 
 	public int getCurrentHealth() {
-		return currentHealth;
+		return this.currentHealth;
 	}
 
 	public void setCurrentHealth(int currentHealth) {
 		this.currentHealth = currentHealth;
 	}
 
-	public int getNumPieces() {
-		return numPieces;
+	public byte getCurrentLevel() {
+		return this.currentLevel;
 	}
 
-	public void setNumPieces(int numPieces) {
-		this.numPieces = numPieces;
+	public void setCurrentLevel(byte currentLevel) {
+		this.currentLevel = currentLevel;
 	}
 
-	public boolean isComplete() {
-		return isComplete;
+	public byte getIsComplete() {
+		return this.isComplete;
 	}
 
-	public void setComplete(boolean isComplete) {
+	public void setIsComplete(byte isComplete) {
 		this.isComplete = isComplete;
 	}
 
-	public Date getCombineStartTime() {
-		return combineStartTime;
+	public Monster getMonster() {
+		return this.monster;
 	}
 
-	public void setCombineStartTime(Date combineStartTime) {
-		this.combineStartTime = combineStartTime;
+	public void setMonster(Monster monster) {
+		this.monster = monster;
 	}
 
-	public int getTeamSlotNum() {
-		return teamSlotNum;
+	public byte getNumPieces() {
+		return this.numPieces;
 	}
 
-	public void setTeamSlotNum(int teamSlotNum) {
-		this.teamSlotNum = teamSlotNum;
+	public void setNumPieces(byte numPieces) {
+		this.numPieces = numPieces;
 	}
 
 	public String getSourceOfPieces() {
-		return sourceOfPieces;
+		return this.sourceOfPieces;
 	}
 
 	public void setSourceOfPieces(String sourceOfPieces) {
 		this.sourceOfPieces = sourceOfPieces;
 	}
 
-	@Override
-	public String toString() {
-		return "MonsterForUser [id=" + id + ", userId=" + userId + ", monsterId="
-				+ monsterId + ", currentExp=" + currentExp + ", currentLvl="
-				+ currentLvl + ", currentHealth=" + currentHealth + ", numPieces="
-				+ numPieces + ", isComplete=" + isComplete + ", combineStartTime="
-				+ combineStartTime + ", teamSlotNum=" + teamSlotNum
-				+ ", sourceOfPieces=" + sourceOfPieces + "]";
+	public byte getTeamSlotNum() {
+		return this.teamSlotNum;
 	}
-  
+
+	public void setTeamSlotNum(byte teamSlotNum) {
+		this.teamSlotNum = teamSlotNum;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 }

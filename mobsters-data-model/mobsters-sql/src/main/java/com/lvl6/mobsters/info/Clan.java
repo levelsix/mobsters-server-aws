@@ -40,7 +40,7 @@ public class Clan extends BasePersistentObject{
 	@Column(name = "request_to_join_required")
 	private boolean requestToJoinRequired;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "clan_icon_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private ClanIcon clanIcon;	
 

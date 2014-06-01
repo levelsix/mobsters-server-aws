@@ -3,8 +3,10 @@ package com.lvl6.mobsters.info;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="quest")
@@ -43,10 +45,9 @@ public class Quest extends BasePersistentObject{
 	private int monsterIdReward;
 	@Column(name = "is_complete_monster")
 	private boolean isCompleteMonster;
-	
-	@ElementCollection
+	@ManyToMany(fetch=FetchType.LAZY)
 	@Column(name = "quests_required_for_this")
-	private List<Integer> questsRequiredForThis;
+	private List<Quest> questsRequiredForThis;
 	@Column(name = "quest_giver_name")
 	private String questGiverName;
 	@Column(name = "quest_giver_image_prefix")
@@ -63,7 +64,7 @@ public class Quest extends BasePersistentObject{
 	public Quest(int id, String questName, String description, String doneResponse,
 			Dialogue acceptDialogue, int cashReward, int oilReward, int gemReward,
 			int expReward, int monsterIdReward, boolean isCompleteMonster,
-			List<Integer> questsRequiredForThis, String questGiverName,
+			List<Quest> questsRequiredForThis, String questGiverName,
 			String questGiverImagePrefix, int priority, String carrotId,
 			String monsterElement) {
 		super();
@@ -167,11 +168,11 @@ public class Quest extends BasePersistentObject{
 		this.isCompleteMonster = isCompleteMonster;
 	}
 
-	public List<Integer> getQuestsRequiredForThis() {
+	public List<Quest> getQuestsRequiredForThis() {
 		return questsRequiredForThis;
 	}
 
-	public void setQuestsRequiredForThis(List<Integer> questsRequiredForThis) {
+	public void setQuestsRequiredForThis(List<Quest> questsRequiredForThis) {
 		this.questsRequiredForThis = questsRequiredForThis;
 	}
 
