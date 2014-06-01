@@ -89,6 +89,7 @@
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool.version>1.5.3</commons-pool.version>
+		<easymock.version>3.2</easymock.version>
 		<guava.version>12.0</guava.version>
 		<hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
 		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
@@ -105,6 +106,7 @@
 		<logback-classic.version>1.1.2</logback-classic.version>
 		<mysql-connector.version>5.1.20</mysql-connector.version>
 		<protobuf.version>2.4.1</protobuf.version>
+		<powermock.version>1.5.4</powermock.version>
 		<slf4j.version>1.6.6</slf4j.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<spring.data-jpa.version>1.5.2.RELEASE</spring.data-jpa.version>
@@ -331,4 +333,69 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<dependencies>
+		<!-- Testing frameworks and tools should be available without
+		     explicit declaration -->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-core</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-classloading-base</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-reflect</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-support</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-easymock</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-common</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule-agent</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
