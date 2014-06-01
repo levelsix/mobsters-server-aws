@@ -12,7 +12,7 @@ import com.lvl6.mobsters.events.RequestEvent;
 
 public class UpdateMonsterHealthRequestEvent extends RequestEvent {
 
-	private Logger log = LoggerFactory.getLogger(new Object() { }.getClass().getEnclosingClass());
+	private static final Logger LOG = LoggerFactory.getLogger(UpdateMonsterHealthRequestEvent.class);
 
   private UpdateMonsterHealthRequestProto updateMonsterHealthRequestProto;
   
@@ -24,7 +24,7 @@ public class UpdateMonsterHealthRequestEvent extends RequestEvent {
       updateMonsterHealthRequestProto = UpdateMonsterHealthRequestProto.parseFrom(ByteString.copyFrom(buff));
       playerId = updateMonsterHealthRequestProto.getSender().getUserUuid();
     } catch (InvalidProtocolBufferException e) {
-      log.error("update monster health request exception", e);
+      LOG.error("update monster health request exception", e);
     }
   }
 
@@ -32,3 +32,4 @@ public class UpdateMonsterHealthRequestEvent extends RequestEvent {
     return updateMonsterHealthRequestProto;
   }
 }
+

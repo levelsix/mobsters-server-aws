@@ -4,6 +4,7 @@ public abstract class PreDatabaseResponseEvent extends ResponseEvent{
   protected String udid;
   
   public PreDatabaseResponseEvent(String udid) {
+	super();
     this.udid = udid;
   }
 

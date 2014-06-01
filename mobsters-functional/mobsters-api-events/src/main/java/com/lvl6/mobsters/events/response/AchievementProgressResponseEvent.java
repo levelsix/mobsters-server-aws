@@ -12,8 +12,7 @@ public class AchievementProgressResponseEvent extends NormalResponseEvent {
   private AchievementProgressResponseProto achievementProgressResponseProto;
   
   public AchievementProgressResponseEvent(String playerId){
-    super(playerId);
-    eventType = EventProtocolResponse.S_ACHIEVEMENT_PROGRESS_EVENT;
+    super(playerId, EventProtocolResponse.S_ACHIEVEMENT_PROGRESS_EVENT);
   }
   
   @Override

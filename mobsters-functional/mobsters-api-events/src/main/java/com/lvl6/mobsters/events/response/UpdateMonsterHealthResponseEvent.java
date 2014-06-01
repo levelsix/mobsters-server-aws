@@ -11,9 +11,8 @@ public class UpdateMonsterHealthResponseEvent extends NormalResponseEvent {
 
   private UpdateMonsterHealthResponseProto updateMonsterHealthResponseProto;
   
-  public UpdateMonsterHealthResponseEvent(String playerId){
-    super(playerId);
-    eventType = EventProtocolResponse.S_UPDATE_MONSTER_HEALTH_EVENT;
+  public UpdateMonsterHealthResponseEvent(final String playerId, final int tag){
+    super(playerId, EventProtocolResponse.S_UPDATE_MONSTER_HEALTH_EVENT, tag);
   }
   
   @Override
