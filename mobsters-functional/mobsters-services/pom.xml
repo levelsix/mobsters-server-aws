@@ -19,6 +19,11 @@
 			<artifactId>mobsters-cache</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-test-data</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
 		</dependency>

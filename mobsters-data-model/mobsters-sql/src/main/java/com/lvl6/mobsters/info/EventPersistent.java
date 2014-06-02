@@ -23,10 +23,10 @@ public class EventPersistent extends BasePersistentObject{
 	@Column(name = "monster_element")
 	private String monsterElement;	
 	public EventPersistent(){}
-	public EventPersistent(int id, String dayOfWeek, int startHour,
+	public EventPersistent(String id, String dayOfWeek, int startHour,
 			int eventDurationMinutes, int taskId, int cooldownMinutes,
 			String eventType, String monsterElement) {
-		super();
+		super(id);
 		this.dayOfWeek = dayOfWeek;
 		this.startHour = startHour;
 		this.eventDurationMinutes = eventDurationMinutes;

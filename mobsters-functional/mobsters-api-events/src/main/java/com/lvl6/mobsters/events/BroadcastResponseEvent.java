@@ -1,16 +1,17 @@
 package com.lvl6.mobsters.events;
 
+import java.util.List;
+
 public abstract class BroadcastResponseEvent extends ResponseEvent {
 
-  protected int numRecipients;
-  protected int recipients[];
-  
-  public int[] getRecipients() {
-    return recipients;    
-  }
-  
-  public void setRecipients(int[] recipients) {
-    this.recipients = recipients;
-  }
+	protected List<String> recipients;
+
+	public List<String> getRecipients() {
+		return recipients;
+	}
+
+	public void setRecipients(List<String> recipients) {
+		this.recipients = recipients;
+	}
 
 }

@@ -30,10 +30,10 @@ public class ClanEventPersistentUserReward extends BasePersistentObject{
 	@Column(name = "time_redeemed")
 	private Date timeRedeemed;	
 	public ClanEventPersistentUserReward(){}
-	public ClanEventPersistentUserReward(int id, int userId, Date crsStartTime,
+	public ClanEventPersistentUserReward(String id, int userId, Date crsStartTime,
 			int crsId, Date crsEndTime, String resourceType, int staticDataId,
 			int quantity, int clanEventPersistentId, Date timeRedeemed) {
-		super();
+		super(id);
 		this.userId = userId;
 		this.crsStartTime = crsStartTime;
 		this.crsId = crsId;

@@ -25,10 +25,10 @@ public class UserFacebookInviteForSlot extends BasePersistentObject{
 	@Column(name = "time_redeemed")
 	private Date timeRedeemed;	
 	public UserFacebookInviteForSlot(){}
-	public UserFacebookInviteForSlot(int id, int inviterUserId,
+	public UserFacebookInviteForSlot(String id, int inviterUserId,
 			String recipientFacebookId, Date timeOfInvite, Date timeAccepted,
 			int userStructId, int userStructFbLvl, Date timeRedeemed) {
-		super();
+		super(id);
 		this.inviterUserId = inviterUserId;
 		this.recipientFacebookId = recipientFacebookId;
 		this.timeOfInvite = timeOfInvite;

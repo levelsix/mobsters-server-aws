@@ -30,10 +30,10 @@ public class ClanRaidStageReward extends BasePersistentObject{
 	@Column(name = "rand")
 	private Random rand;	
 	public ClanRaidStageReward(){}
-	public ClanRaidStageReward(int id, int clanRaidStageId, int minOilReward,
+	public ClanRaidStageReward(String id, int clanRaidStageId, int minOilReward,
 			int maxOilReward, int minCashReward, int maxCashReward, int monsterId,
 			int expectedMonsterRewardQuantity) {
-		super();
+		super(id);
 		this.clanRaidStageId = clanRaidStageId;
 		this.minOilReward = minOilReward;
 		this.maxOilReward = maxOilReward;

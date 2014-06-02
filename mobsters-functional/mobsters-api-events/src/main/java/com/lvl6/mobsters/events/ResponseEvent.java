@@ -10,18 +10,35 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
  * A basic GameEvent class, this can be extended for other Events
  * or a completely different class may be used as required by a specific game.
  */
-
-public abstract class ResponseEvent extends GameEvent{
+public abstract class ResponseEvent extends GameEvent {
   
-  /** event type */
-  protected EventProtocolResponse eventType;
+	/** event type */
+	protected EventProtocolResponse eventType;
 	protected int tag;
-     
-  public EventProtocolResponse getEventType() {
-    return eventType;
-  }
-    
-  public abstract int write (ByteBuffer bb);
+
+	// Only required for PreDatabaseResponseEvent!
+	protected ResponseEvent() {
+		this.eventType = null;
+		this.tag = 0;
+	}
+
+	// Event type with a default tag
+	public ResponseEvent(final EventProtocolResponse eventType) {
+		this.eventType = eventType;
+		this.tag = 0;
+	}
+	   
+	// Event type with an explicit tag
+	protected ResponseEvent(final EventProtocolResponse eventType, final int tag) {
+		this.eventType = eventType;
+		this.tag = tag;
+	}
+
+	public EventProtocolResponse getEventType() {
+	  return eventType;
+	}
+	  
+	public abstract int write (ByteBuffer bb);
 
 	public int getTag() {
 		return tag;

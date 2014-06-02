@@ -144,7 +144,7 @@ abstract public class BaseDynamoRepository<T> {
 		}
 	}
 	
-	public String getBoolean(boolean bool) {
+	protected String getBoolean(boolean bool) {
 		return bool ? "1" : "0";
 	}
 	

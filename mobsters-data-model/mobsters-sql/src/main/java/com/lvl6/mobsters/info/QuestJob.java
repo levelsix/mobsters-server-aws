@@ -33,10 +33,10 @@ public class QuestJob extends BasePersistentObject{
 	@Column(name = "city_asset_num")
 	private int cityAssetNum;	
 	public QuestJob(){}
-	public QuestJob(int id, int questId, String questJobType,
+	public QuestJob(String id, int questId, String questJobType,
 			String description, int staticDataId, int quantity, int priority,
 			int cityId, int cityAssetNum) {
-		super();
+		super(id);
 		this.questId = questId;
 		this.questJobType = questJobType;
 		this.description = description;

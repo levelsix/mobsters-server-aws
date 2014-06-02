@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.events.ControllerResponseEvents;
+import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.GameEvent;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
@@ -37,17 +37,21 @@ public abstract class EventController{
 	 * @throws Exception
 	 */
 
-	public void handleEvent(GameEvent event) {
+	public EventsToDispatch handleEvent(GameEvent event) {
 		try {
-			ControllerResponseEvents cre = new ControllerResponseEvents();
+			EventsToDispatch cre = new EventsToDispatch();
 			processEvent(event, cre);
+			return cre;
 		} catch (Exception e) {
 			log.error("Error handling game event: {}", event, e);
 		}
+		return new EventsToDispatch();
 	}
 	
-	protected void processEvent(GameEvent event, ControllerResponseEvents eventWriter) throws Exception {
+	protected void processEvent(GameEvent event, EventsToDispatch eventWriter) throws Exception {
 		final RequestEvent reqEvent = (RequestEvent) event;
+		
+		//TODO: fix this
 		/*MiscMethods
 				.setMDCProperties(
 						null,
@@ -83,7 +87,7 @@ public abstract class EventController{
 	public abstract EventProtocolRequest getEventType();
 
 	@Async
-	protected abstract void processRequestEvent(RequestEvent event, ControllerResponseEvents eventWriter) throws Exception;
+	protected abstract void processRequestEvent(RequestEvent event, EventsToDispatch eventWriter) throws Exception;
 
 	protected int numAllocatedThreads = 0;
 

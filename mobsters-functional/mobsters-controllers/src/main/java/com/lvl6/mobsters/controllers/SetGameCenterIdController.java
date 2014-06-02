@@ -11,7 +11,7 @@ import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto.SetGameCenterIdStatus;
 import com.lvl6.mobsters.eventproto.utils.CreateEventProtoUtil;
-import com.lvl6.mobsters.events.ControllerResponseEvents;
+import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.SetGameCenterIdRequestEvent;
 import com.lvl6.mobsters.events.response.SetGameCenterIdResponseEvent;
@@ -47,7 +47,7 @@ public class SetGameCenterIdController extends EventController {
 	}
 
 	@Override
-	protected void processRequestEvent(RequestEvent event, ControllerResponseEvents eventWriter) throws Exception {
+	protected void processRequestEvent(RequestEvent event, EventsToDispatch eventWriter) throws Exception {
 		SetGameCenterIdRequestProto reqProto = ((SetGameCenterIdRequestEvent) event).getSetGameCenterIdRequestProto();
 
 		MinimumUserProto senderProto = reqProto.getSender();
@@ -99,12 +99,7 @@ public class SetGameCenterIdController extends EventController {
 			log.error("optimistic lock exception in SetGameCenterIdController processEvent", e);
 			// don't let the client hang
 			try {
-				eventWriter.clearResponses();
-				resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
-				SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
-				resEvent.setTag(event.getTag());
-				resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
-				eventWriter.writeEvent(resEvent);
+				failureCase(event, eventWriter, userId, resBuilder);
 			} catch (Exception e2) {
 				log.error("optimistic lock exception2  in SetGameCenterIdController processEvent", e);
 			}	
@@ -113,16 +108,21 @@ public class SetGameCenterIdController extends EventController {
 			log.error("exception in SetGameCenterIdController processEvent", e);
 			// don't let the client hang
 			try {
-				eventWriter.clearResponses();
-				resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
-				SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
-				resEvent.setTag(event.getTag());
-				resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
-				eventWriter.writeEvent(resEvent);
+				failureCase(event, eventWriter, userId, resBuilder);
 			} catch (Exception e2) {
 				log.error("exception2 in SetGameCenterIdController processEvent", e);
 			}
 		}
+	}
+
+	private void failureCase(RequestEvent event, EventsToDispatch eventWriter, String userId,
+		SetGameCenterIdResponseProto.Builder resBuilder) {
+		eventWriter.clearResponses();
+		resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
+		SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
+		resEvent.setTag(event.getTag());
+		resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
+		eventWriter.writeEvent(resEvent);
 	}
 
 	private boolean writeChangesToDb(UserDataRarelyAccessed user,

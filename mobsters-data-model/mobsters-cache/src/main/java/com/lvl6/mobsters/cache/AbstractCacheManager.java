@@ -19,16 +19,17 @@ abstract class AbstractCacheManager<T> {
 	@Resource(name="kryoPool")
 	protected KryoPool kryoPool;
 	
-	protected Class<T> type;
+	final protected Class<T> type;
 	
+    byte[] bex = { 0x65, 0x78 };
+    byte[] binaryValue;
 	
-	
-	public AbstractCacheManager(Class<T> type) {
+	public AbstractCacheManager(final Class<T> type) {
 		super();
 		this.type = type;
 	}
 
-	public T getEntity(final String fromCollection, final String withKey) {
+	protected T getEntityFromCollection(final String fromCollection, final String withKey) {
 		return new JedisGetTask<T>(jedisPool) {
 			@Override
 			public T task(Jedis jedis) {
@@ -43,16 +44,52 @@ abstract class AbstractCacheManager<T> {
 		}.get();
 	}
 	
-	public void saveEntity(final T entity, final String toCollection, final String withKey) {
+	protected void saveEntityToCollection(final T entity, final String toCollection, final String withKey) {
 		new JedisPutTask(jedisPool) {
 			@Override
 			public void task(Jedis jedis) {
 				jedis.hset(toCollection.getBytes(), withKey.getBytes(), kryoPool.toBytesWithClass(entity));
+				
 			}
 		}.put();
 	}
 	
+	
+	protected T getEntity(final String withKey) {
+		return new JedisGetTask<T>(jedisPool) {
+			@Override
+			public T task(Jedis jedis) {
+				byte[] bytes = jedis.get(withKey.getBytes());
+				if(bytes != null) {
+					T retVal = kryoPool.fromBytes(bytes, type);
+					return retVal;
+				}else {
+					return null;
+				}
+			}
+		}.get();
+	}
+	
+	protected void saveEntity(final T entity, final String withKey, final Long ttlSeconds) {
+		new JedisPutTask(jedisPool) {
+			@Override
+			public void task(Jedis jedis) {
+				jedis.set(withKey.getBytes(), kryoPool.toBytesWithClass(entity),binaryValue, bex, ttlSeconds);
+				
+			}
+		}.put();
+	}
 
+	protected void saveEntity(final T entity, final String withKey) {
+		new JedisPutTask(jedisPool) {
+			@Override
+			public void task(Jedis jedis) {
+				jedis.set(withKey.getBytes(), kryoPool.toBytesWithClass(entity));
+				
+			}
+		}.put();
+	}	
+	
 	
 	public void setJedisPool(JedisPool jedisPool) {
 		this.jedisPool = jedisPool;

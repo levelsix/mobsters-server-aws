@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.info.repository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.QuestForUser;
-public interface QuestForUserRepository extends CrudRepository<QuestForUser, String>{
+public interface QuestForUserRepository extends JpaRepository<QuestForUser, String>{
 
 }

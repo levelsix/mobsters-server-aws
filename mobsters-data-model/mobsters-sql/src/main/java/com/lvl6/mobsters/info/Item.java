@@ -22,9 +22,9 @@ public class Item extends BasePersistentObject{
 	@Column(name = "red")
 	private int red;	
 	public Item(){}
-	public Item(int id, String name, String imgName, String borderImgName,
+	public Item(String id, String name, String imgName, String borderImgName,
 			int blue, int green, int red) {
-		super();
+		super(id);
 		this.name = name;
 		this.imgName = imgName;
 		this.borderImgName = borderImgName;

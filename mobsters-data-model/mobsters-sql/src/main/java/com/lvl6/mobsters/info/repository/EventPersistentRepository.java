@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.info.repository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.EventPersistent;
-public interface EventPersistentRepository extends CrudRepository<EventPersistent, String>{
+public interface EventPersistentRepository extends JpaRepository<EventPersistent, String>{
 
 }

@@ -23,10 +23,10 @@ public class City extends BasePersistentObject{
 	@Column(name = "attack_map_label_img_name")
 	private String attackMapLabelImgName;	
 	public City(){}
-	public City(int id, String name, String mapImgName, CoordinatePair center,
+	public City(String id, String name, String mapImgName, CoordinatePair center,
 			String roadImgName, String mapTmxName, CoordinatePair roadImgCoords,
 			String attackMapLabelImgName) {
-		super();
+		super(id);
 		this.name = name;
 		this.mapImgName = mapImgName;
 		this.center = center;

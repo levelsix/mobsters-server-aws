@@ -37,11 +37,11 @@ public class TaskStageMonster extends BasePersistentObject{
 	@Column(name = "rand")
 	private Random rand;
 	public TaskStageMonster(){}
-	public TaskStageMonster(int id, int stageId, int monsterId, String monsterType,
+	public TaskStageMonster(String id, int stageId, int monsterId, String monsterType,
 		int expReward, int minCashDrop, int maxCashDrop, int minOilDrop,
 		int maxOilDrop, float puzzlePieceDropRate, int level,
 		float chanceToAppear) {
-	super();
+	super(id);
 	this.stageId = stageId;
 	this.monsterId = monsterId;
 	this.monsterType = monsterType;

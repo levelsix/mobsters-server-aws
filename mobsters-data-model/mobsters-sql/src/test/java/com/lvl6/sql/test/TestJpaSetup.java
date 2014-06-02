@@ -1,5 +1,6 @@
 package com.lvl6.sql.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -48,8 +49,8 @@ public class TestJpaSetup {
 		int size = achRepo.findByQuantityGreaterThan(0).size();
 		assertTrue("Quantity expected: 3. actual:" + size, size == 3);
 		assertTrue("Lvl is 3", achRepo.findByLvlBetween(1, 3).size() == 3);
-		achRepo.delete(achRepo.findByAchievementNameStartingWith("test"));
-
+		achRepo.deleteInBatch(achRepo.findByAchievementNameStartingWith("test"));
+	    assertEquals("No achievements left post-delete", 0, achRepo.findAll().size());
 	}
 
 }

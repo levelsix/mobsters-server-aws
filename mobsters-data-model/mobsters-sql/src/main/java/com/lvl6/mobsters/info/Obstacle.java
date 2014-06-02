@@ -33,12 +33,12 @@ public class Obstacle extends BasePersistentObject{
   float shadowHorizontalOffset;
   
 	public Obstacle(){}
-	public Obstacle(int id, String name, String removalCostType, int cost,
+	public Obstacle(String id, String name, String removalCostType, int cost,
 			int secondsToRemove, int width, int height, String imgName,
 			float imgVerticalPixelOffset, String description, float chanceToAppear,
 			String shadowImgName, float shadowVerticalOffset,
 			float shadowHorizontalOffset) {
-		super();
+		super(id);
 		this.name = name;
 		this.removalCostType = removalCostType;
 		this.cost = cost;

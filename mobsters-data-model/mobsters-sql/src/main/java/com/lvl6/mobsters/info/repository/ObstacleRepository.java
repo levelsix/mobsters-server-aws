@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.info.repository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.Obstacle;
-public interface ObstacleRepository extends CrudRepository<Obstacle, String>{
+public interface ObstacleRepository extends JpaRepository<Obstacle, String>{
 
 }

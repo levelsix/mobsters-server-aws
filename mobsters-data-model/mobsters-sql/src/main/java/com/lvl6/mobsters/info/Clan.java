@@ -10,10 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name="clan")
 @Cacheable(value=true)
 public class Clan extends BasePersistentObject{	
 
@@ -38,7 +40,7 @@ public class Clan extends BasePersistentObject{
 	@Column(name = "request_to_join_required")
 	private boolean requestToJoinRequired;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "clan_icon_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private ClanIcon clanIcon;	
 

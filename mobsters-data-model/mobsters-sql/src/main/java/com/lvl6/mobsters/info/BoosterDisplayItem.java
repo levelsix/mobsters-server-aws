@@ -22,10 +22,10 @@ public class BoosterDisplayItem extends BasePersistentObject{
 	@Column(name = "quantity")
 	private int quantity;  
 	public BoosterDisplayItem(){}
-	public BoosterDisplayItem(int id, int boosterPackId, boolean isMonster,
+	public BoosterDisplayItem(String id, int boosterPackId, boolean isMonster,
 			boolean isComplete, String monsterQuality, int gemReward,
 			int quantity) {
-		super();
+		super(id);
 		this.boosterPackId = boosterPackId;
 		this.isMonster = isMonster;
 		this.isComplete = isComplete;

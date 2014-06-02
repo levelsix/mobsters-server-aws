@@ -66,11 +66,16 @@
 		<jdbc.statementsCacheSize>500</jdbc.statementsCacheSize>
 		<jdbc.releaseHelperThreads>3</jdbc.releaseHelperThreads>
 
-        <!-- Hibernate -->
-        <!-- Production deployment will likely want to set this to 'none'.  Developers content with their own schema may also
-             wish to set 'none' in their custom profile to avoid spending time in an update phase on Hibernate-dependenent tests
-             unless their changes are schema-impacting. -->
+		<!-- Hibernate -->
+		<!-- Production deployment will likely want to set this to 'none'. Developers 
+			content with their own schema may also wish to set 'none' in their custom 
+			profile to avoid spending time in an update phase on Hibernate-dependenent 
+			tests unless their changes are schema-impacting. -->
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
+		<!-- Developers may toggle these flags on in their local profile to get more verbose
+		     output from Hibernate about session boundaries and queries evaluated. -->
+		<hibernate.generate_statistics>false</hibernate.generate_statistics>
+		<hibernate.show_sql>false</hibernate.show_sql>
 
 		<!-- Redis/Elasticache -->
 		<lvl6.jedis.host>robot.lvl6.com</lvl6.jedis.host>
@@ -85,13 +90,16 @@
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool.version>1.5.3</commons-pool.version>
+		<easymock.version>3.2</easymock.version>
 		<guava.version>12.0</guava.version>
 		<hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
 		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
 		<httpclient.version>4.2.1</httpclient.version>
+
 		<javax.servlet-api.version>3.0.1</javax.servlet-api.version>
 		<javax.mail.version>1.4.5</javax.mail.version>
 		<javax.websocket-api.version>1.0</javax.websocket-api.version>
+
 		<jedis.version>2.4.2</jedis.version>
 		<joda-time.version>2.1</joda-time.version>
 		<chill-java.version>0.3.6</chill-java.version>
@@ -101,11 +109,14 @@
 		<logback-classic.version>1.1.2</logback-classic.version>
 		<mysql-connector.version>5.1.20</mysql-connector.version>
 		<protobuf.version>2.4.1</protobuf.version>
+		<powermock.version>1.5.4</powermock.version>
 		<slf4j.version>1.6.6</slf4j.version>
+
 		<spring.version>4.0.3.RELEASE</spring.version>
-		<spring.data-jpa.version>1.5.2.RELEASE</spring.data-jpa.version>
+		<spring.data-jpa.version>1.6.0.RELEASE</spring.data-jpa.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
+
 		<tomcat.version>7.0.27</tomcat.version>
 	</properties>
 
@@ -132,6 +143,12 @@
 				<groupId>com.lvl6</groupId>
 				<artifactId>mobsters-proto</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-test-data</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.lvl6</groupId>
@@ -200,6 +217,16 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-websocket</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
@@ -327,4 +354,69 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<dependencies>
+		<!-- Testing frameworks and tools should be available without
+		     explicit declaration -->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-core</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-classloading-base</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-reflect</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-support</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-easymock</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-common</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-rule-agent</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

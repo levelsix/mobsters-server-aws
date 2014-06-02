@@ -25,10 +25,10 @@ public class BoosterItem extends BasePersistentObject{
 	@Column(name = "chance_to_appear")
 	private float chanceToAppear;  
 	public BoosterItem(){}
-	public BoosterItem(int id, int boosterPackId, int monsterId, int numPieces,
+	public BoosterItem(String id, int boosterPackId, int monsterId, int numPieces,
 			boolean isComplete, boolean isSpecial, int gemReward, int cashReward,
 			float chanceToAppear) {
-		super();
+		super(id);
 		this.boosterPackId = boosterPackId;
 		this.monsterId = monsterId;
 		this.numPieces = numPieces;

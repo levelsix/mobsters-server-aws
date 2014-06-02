@@ -1,37 +1,58 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="task")
 public class Task extends BasePersistentObject{
 
-	
-	private static final long serialVersionUID = 4039380828851189212L;
+	private static final long serialVersionUID = -520057120226567292L;
+
 	@Column(name = "good_name")
 	private String goodName;
+
 	@Column(name = "description")
 	private String description;
-	@Column(name = "city_id")
-	private int cityId;
-	//@Column(name = "energy_cost")
-//	private int energyCost;
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "city_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private City city;
+
+	// @Column(name = "energy_cost")
+	// private int energyCost;
+
 	@Column(name = "asset_number_within_city")
 	private int assetNumberWithinCity;
-	@Column(name = "prerequisite_task_id")
-	private int prerequisiteTaskId;
-	@Column(name = "prerequisite_quest_id")
-	private int prerequisiteQuestId;	
-	public Task(){}
-	public Task(int id, String goodName, String description, int cityId,
-			int assetNumberWithinCity, int prerequisiteTaskId, int prerequisiteQuestId) {
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "prerequisite_task_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	Task prerequisiteTask;
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "prerequisite_quest_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Quest prerequisiteQuest;	
+
+	public Task() {
 		super();
+	}
+
+
+	public Task(final String id, final String goodName, final String description, final City city,
+			final int assetNumberWithinCity, final Task prerequisiteTask, final Quest prerequisiteQuest) {
+		super(id);
 		this.goodName = goodName;
 		this.description = description;
-		this.cityId = cityId;
+		this.city = city;
 		this.assetNumberWithinCity = assetNumberWithinCity;
-		this.prerequisiteTaskId = prerequisiteTaskId;
-		this.prerequisiteQuestId = prerequisiteQuestId;
+		this.prerequisiteTask = prerequisiteTask;
+		this.prerequisiteQuest = prerequisiteQuest;
 	}
 	
 	public String getGoodName() {
@@ -46,11 +67,11 @@ public class Task extends BasePersistentObject{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getCityId() {
-		return cityId;
+	public City getCity() {
+		return city;
 	}
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
+	public void setCity(City city) {
+		this.city = city;
 	}
 	public int getAssetNumberWithinCity() {
 		return assetNumberWithinCity;
@@ -58,25 +79,25 @@ public class Task extends BasePersistentObject{
 	public void setAssetNumberWithinCity(int assetNumberWithinCity) {
 		this.assetNumberWithinCity = assetNumberWithinCity;
 	}
-	public int getPrerequisiteTaskId() {
-		return prerequisiteTaskId;
+	public Task getPrerequisiteTask() {
+		return prerequisiteTask;
 	}
-	public void setPrerequisiteTaskId(int prerequisiteTaskId) {
-		this.prerequisiteTaskId = prerequisiteTaskId;
+	public void setPrerequisiteTask(Task prerequisiteTask) {
+		this.prerequisiteTask = prerequisiteTask;
 	}
-	public int getPrerequisiteQuestId() {
-		return prerequisiteQuestId;
+	public Quest getPrerequisiteQuest() {
+		return prerequisiteQuest;
 	}
-	public void setPrerequisiteQuestId(int prerequisiteQuestId) {
-		this.prerequisiteQuestId = prerequisiteQuestId;
+	public void setPrerequisiteQuest(Quest prerequisiteQuest) {
+		this.prerequisiteQuest = prerequisiteQuest;
 	}
-
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", goodName=" + goodName + ", description="
-				+ description + ", cityId=" + cityId + ", assetNumberWithinCity="
-				+ assetNumberWithinCity + ", prerequisiteTaskId=" + prerequisiteTaskId
-				+ ", prerequisiteQuestId=" + prerequisiteQuestId + "]";
+		return "Task [goodName=" + goodName + ", description=" + description
+				+ ", city=" + city + ", assetNumberWithinCity="
+				+ assetNumberWithinCity + ", prerequisiteTask="
+				+ prerequisiteTask + ", prerequisiteQuest="
+				+ prerequisiteQuest + "]";
 	}
 	
 }

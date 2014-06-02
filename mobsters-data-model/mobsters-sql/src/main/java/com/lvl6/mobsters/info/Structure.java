@@ -50,7 +50,7 @@ public class Structure extends BasePersistentObject{
 	@Column(name = "shadow_scale")
 	private float shadowScale;	
 	public Structure(){}
-	public Structure(int id, String name, int level, String structType,
+	public Structure(String id, String name, int level, String structType,
 			String buildResourceType, int buildCost, int minutesToBuild,
 			int requiredTownHallLvl, int width, int height,
 			int predecessorStructId, int successorStructId, String imgName,
@@ -58,7 +58,7 @@ public class Structure extends BasePersistentObject{
 			String description, String shortDescription, String shadowImgName,
 			float shadowVerticalOffset, float shadowHorizontalOffset,
 			float shadowScale) {
-		super();
+		super(id);
 		this.name = name;
 		this.level = level;
 		this.structType = structType;

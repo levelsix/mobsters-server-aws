@@ -27,9 +27,9 @@ public class ObstacleForUser extends BasePersistentObject{
 		super();
 	}
 
-	public ObstacleForUser(int id, int userId, int obstacleId, int xcoord,
+	public ObstacleForUser(String id, int userId, int obstacleId, int xcoord,
 			int ycoord, Date removalTime, String orientation) {
-		super();
+		super(id);
 		this.userId = userId;
 		this.obstacleId = obstacleId;
 		this.xcoord = xcoord;

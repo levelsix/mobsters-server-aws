@@ -18,8 +18,8 @@ public class ClanIcon extends BasePersistentObject{
 		super();
 	}
 
-	public ClanIcon(final int id, final String imgName, final boolean isAvailable) {
-		// super(id);
+	public ClanIcon(final String id, final String imgName, final boolean isAvailable) {
+		super(id);
 		this.imgName = imgName;
 		this.isAvailable = isAvailable;
 	}

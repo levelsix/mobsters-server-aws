@@ -16,6 +16,11 @@
 			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-services</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-test-data</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 
@@ -34,6 +39,8 @@
 				<configuration>
 					<includes>
 						<include>**/test/*.java</include>
+						<include>**/Test*.java</include>
+						<include>**/E2ETest*.java</include>
 					</includes>
 				</configuration>
 			</plugin>

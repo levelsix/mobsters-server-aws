@@ -5,27 +5,30 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="dialogue")
 public class Dialogue extends BasePersistentObject{
 
 	
 	private static final long serialVersionUID = -8118069262824842364L;  
 	
 	
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@Column(name = "is_left_sides")
 	List<Boolean> isLeftSides;
 	
-	
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Column(name = "speakers")
 	List<String> speakers;
 	
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@Column(name = "speaker_images")
 	List<String> speakerImages;
 	
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@Column(name = "speaker_texts")
 	List<String> speakerTexts;
 

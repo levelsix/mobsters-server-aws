@@ -9,8 +9,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
-//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class BasePersistentObject implements Serializable{
+public abstract class BasePersistentObject implements Serializable{
 
 	private static final long serialVersionUID = 6615796821793149044L;
 
