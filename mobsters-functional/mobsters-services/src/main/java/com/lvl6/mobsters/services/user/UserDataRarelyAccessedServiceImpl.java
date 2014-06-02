@@ -22,6 +22,7 @@ public class UserDataRarelyAccessedServiceImpl implements UserDataRarelyAccessed
 	
 	
 	//RETRIEVE STUFF****************************************************************
+	@Override
 	public UserDataRarelyAccessed getUserDataRarelyAccessedByUserId(String userId) {
 		UserDataRarelyAccessed udra =
 				getUserDataRarelyAccessedRepository().load(userId);
