@@ -58,6 +58,7 @@ public class SetGameCenterIdController extends EventController {
 		}
 
 		SetGameCenterIdResponseProto.Builder resBuilder = SetGameCenterIdResponseProto.newBuilder();
+		resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
 		resBuilder.setSender(senderProto);
 		if (null != gameCenterId) {
 			resBuilder.setGameCenterId(gameCenterId);
@@ -71,8 +72,6 @@ public class SetGameCenterIdController extends EventController {
 
 			if (legit) {
 				resBuilder.setStatus(SetGameCenterIdStatus.SUCCESS);
-			} else {
-				resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
 			}
 
 			SetGameCenterIdResponseProto resProto = resBuilder.build();
@@ -128,7 +127,8 @@ public class SetGameCenterIdController extends EventController {
 	private boolean writeChangesToDb(UserDataRarelyAccessed user,
 			String gameCenterId) {
 		try {
-			
+			getUserDataRarelyAccessedService()
+			.updateGameCenterId(user, gameCenterId);
 			return true;
 		} catch (Exception e) {
 			log.error("problem with updating user game center id. user=" + user +
