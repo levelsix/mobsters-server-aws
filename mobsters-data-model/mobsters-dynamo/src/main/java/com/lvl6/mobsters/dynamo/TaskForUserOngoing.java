@@ -9,7 +9,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 @DynamoDBTable(tableName="TaskForUserOngoing")
 public class TaskForUserOngoing {
 
-	@DynamoDBVersionAttribute
 	private Long version;
 
 	//private String id;
@@ -50,6 +49,7 @@ public class TaskForUserOngoing {
 	public void setId(String id){this.id = id;}*/
 
 
+	@DynamoDBVersionAttribute
 	public Long getVersion(){return version;}
 	public void setVersion(Long version){this.version = version;}
 
