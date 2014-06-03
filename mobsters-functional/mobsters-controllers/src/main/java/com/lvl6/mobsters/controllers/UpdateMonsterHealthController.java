@@ -36,12 +36,11 @@ public class UpdateMonsterHealthController extends EventController {
 	public UpdateMonsterHealthController() {
 		numAllocatedThreads = 4;
 	}
-	
+
 	@Override
 	public RequestEvent createRequestEvent() {
 		return new UpdateMonsterHealthRequestEvent();
 	}
-
 
 	@Override
 	public EventProtocolRequest getEventType() {
@@ -58,16 +57,22 @@ public class UpdateMonsterHealthController extends EventController {
 
 		// prepare to send response back to client
 		Builder responseBuilder = UpdateMonsterHealthResponseProto.newBuilder();
-		UpdateMonsterHealthResponseEvent resEvent =
-			new UpdateMonsterHealthResponseEvent(userIdString, event.getTag());
+		responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
+		UpdateMonsterHealthResponseEvent resEvent = new UpdateMonsterHealthResponseEvent(
+				userIdString, event.getTag());
 
-		// Check values client sent for syntax errors.  Call service only if syntax checks out ok
-		final List<UserMonsterCurrentHealthProto> umchpList = reqProto.getUmchpList();
-        if (StringUtils.hasContent(userIdString) || CollectionUtils.lacksSubstance(umchpList)) {
-			responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
+		// Check values client sent for syntax errors. Call service only if
+		// syntax checks out ok
+		final List<UserMonsterCurrentHealthProto> umchpList = reqProto
+				.getUmchpList();
+		ImmutableMap<String, Integer> idToHealthMap = null;
+		if (StringUtils.hasContent(userIdString)
+				|| CollectionUtils.lacksSubstance(umchpList)) {
+			sendFailure(eventWriter, responseBuilder, resEvent, null);
 		} else {
-			//extract the ids so it's easier to get userMonsters from db
-			com.google.common.collect.ImmutableMap.Builder<String, Integer> mapBuilder = ImmutableMap.builder();
+			// extract the ids so it's easier to get userMonsters from db
+			com.google.common.collect.ImmutableMap.Builder<String, Integer> mapBuilder =
+				ImmutableMap.builder();
 			for (final UserMonsterCurrentHealthProto nextMonsterUnit : umchpList) {
 				mapBuilder.put(
 					nextMonsterUnit.getUserMonsterUuid(),
@@ -76,57 +81,38 @@ public class UpdateMonsterHealthController extends EventController {
 					)
 				);
 			}
-			ImmutableMap<String,Integer> idToHealthMap = mapBuilder.build();
-			
-			if (CollectionUtils.lacksSubstance(idToHealthMap)) {
-				responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
-			} else {
-				try {
-					monsterService.updateUserMonsterHealth(userIdString, idToHealthMap);
-					resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
-					responseBuilder.setStatus(UpdateMonsterHealthStatus.SUCCESS);
+			idToHealthMap = mapBuilder.build();
 
-					//write to client
-					LOG.info("Writing event: " + resEvent);
-					eventWriter.writeEvent(resEvent);
-				} catch (Exception e) {
-					LOG.error("exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService", e);
-					try {
-						//try to tell client that something failed
-						responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
-						resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
-						eventWriter.writeEvent(resEvent);
-					} catch (Exception e2) {
-						LOG.error("fatal exception in UpdateMonsterHealthController processRequestEvent", e2);
-					}
-				}
+			if (CollectionUtils.lacksSubstance(idToHealthMap)) {
+				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder
+						.build());
+			} else {
+				responseBuilder.setStatus(UpdateMonsterHealthStatus.SUCCESS);
 			}
 		}
-	}
-	
-	/*
-	private boolean isValidRequest(Builder resBuilder, Map<UUID, MonsterForUser> mfuList,
-			List<UUID> userMonsterIds, List<UserMonsterCurrentHealthProto> umchpList) {
-		if (null == umchpList || umchpList.isEmpty()) {
-	  		LOG.error("client error: no user monsters sent.");
-	  		return false;
-	  	}
 
-		if (null == mfuList || mfuList.isEmpty()) {
-			LOG.error("unexpected error: userMonsterIds don't exist. ids=" + userMonsterIds);
-			return false;
+		if (responseBuilder.getStatus() == UpdateMonsterHealthStatus.SUCCESS) {
+			try {
+				monsterService.updateUserMonsterHealth(userIdString,
+						idToHealthMap);
+				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder
+						.build());
+			} catch (Exception e) {
+				LOG.error("exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService", e);
+				responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
+				resEvent.setUpdateMonsterHealthResponseProto(
+					responseBuilder.build());
+			}
 		}
 
-		//see if the user has the equips
-	  	if (mfuList.size() != umchpList.size()) {
-	  		LOG.error("unexpected error: mismatch between user equips client sent and " +
-	  				"what is in the db. clientUserMonsterIds=" + userMonsterIds + "\t inDb=" +
-	  				mfuList + "\t continuing the processing");
-	  	}
-	  	
-		return true;
+		// write to client
+		LOG.info("Writing event: " + resEvent);
+		try {
+			eventWriter.writeEvent(resEvent);
+		} catch (Exception exp) {
+			LOG.error("fatal exception in UpdateMonsterHealthController processRequestEvent", exp);
+		}
 	}
-	*/
 
 	public MonsterService getMonsterService() {
 		return monsterService;
