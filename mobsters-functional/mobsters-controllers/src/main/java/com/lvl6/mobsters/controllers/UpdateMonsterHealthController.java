@@ -6,10 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
-import com.lvl6.mobsters.common.utils.StringUtils;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthRequestProto;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto.Builder;
@@ -23,6 +24,7 @@ import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterCurrentHe
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.monster.MonsterService;
+import com.lvl6.mobsters.services.monster.MonsterService.MonsterForUserOp;
 
 
 @Component
@@ -65,36 +67,26 @@ public class UpdateMonsterHealthController extends EventController {
 		// syntax checks out ok
 		final List<UserMonsterCurrentHealthProto> umchpList = reqProto
 				.getUmchpList();
-		ImmutableMap<String, Integer> idToHealthMap = null;
-		if (StringUtils.hasContent(userIdString)
-				|| CollectionUtils.lacksSubstance(umchpList)) {
-			sendFailure(eventWriter, responseBuilder, resEvent, null);
-		} else {
+		Table<String, MonsterForUserOp, Object> details = HashBasedTable.create();
+		if (StringUtils.hasText(userIdString)
+				&& !CollectionUtils.lacksSubstance(umchpList)) {
 			// extract the ids so it's easier to get userMonsters from db
-			com.google.common.collect.ImmutableMap.Builder<String, Integer> mapBuilder =
-				ImmutableMap.builder();
 			for (final UserMonsterCurrentHealthProto nextMonsterUnit : umchpList) {
-				mapBuilder.put(
+				details.put(
 					nextMonsterUnit.getUserMonsterUuid(),
+					MonsterForUserOp.SET_HEALTH_ABSOLUTE,
 					Integer.valueOf(
 						nextMonsterUnit.getCurrentHealth()
 					)
 				);
 			}
-			idToHealthMap = mapBuilder.build();
 
-			if (CollectionUtils.lacksSubstance(idToHealthMap)) {
-				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder
-						.build());
-			} else {
-				responseBuilder.setStatus(UpdateMonsterHealthStatus.SUCCESS);
-			}
+			responseBuilder.setStatus(UpdateMonsterHealthStatus.SUCCESS);
 		}
 
 		if (responseBuilder.getStatus() == UpdateMonsterHealthStatus.SUCCESS) {
 			try {
-				monsterService.updateUserMonsterHealth(userIdString,
-						idToHealthMap);
+				monsterService.modifyMonstersForUser(userIdString, details);
 				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder
 						.build());
 			} catch (Exception e) {

@@ -46,6 +46,8 @@ abstract public class BaseDynamoRepository<T> {
 	
 	protected Class<T> clss;
 	
+	// @Autowired
+	// private Lvl6TxManager ourTxManager;
 	
 	ProvisionedThroughput provisionedThroughput= new ProvisionedThroughput()
     .withReadCapacityUnits(1l)
@@ -60,7 +62,26 @@ abstract public class BaseDynamoRepository<T> {
 
 	
 	public void save(T obj) {
-		mapper.save(obj);
+		//Transaction t1 = null; //ourTxManager.getActiveTransaction();
+		//if (t1 != null) {
+		if (false) {
+			// TODO: Do transactional putItem
+		} else {
+			mapper.save(obj);
+		}
+	}
+	
+	public void saveAll(Iterable<T> objs) {
+		//Transaction t1 = null; //ourTxManager.getActiveTransaction();
+		//if (t1 != null) {
+		if (false) {
+			// DynamoDB transaction library has no bulk operations...
+			for (final T nextObj : objs ) {
+				// TODO: Do transactional putItem
+			}
+		} else {
+			mapper.batchSave(objs);
+		}
 	}
 	
 	public T load(String id) {
