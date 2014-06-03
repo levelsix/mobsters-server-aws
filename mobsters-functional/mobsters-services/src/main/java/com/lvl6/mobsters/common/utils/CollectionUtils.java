@@ -15,17 +15,16 @@ public final class CollectionUtils {
 	}
 
     public static boolean lacksSubstance(final Collection<?> col) {
-    	boolean retVal;
+    	boolean retVal = false;
     	if ((col != null) && (! col.isEmpty())) {
-    		retVal = true;
     		for (final Object nextItem : col) {
     			if (nextItem == null) {
-    				retVal = false;
+    				retVal = true;
     				break;
     			}
     		}
     	} else {
-    		retVal = false;
+    		retVal = true;
     	}
     	
     	return retVal;
