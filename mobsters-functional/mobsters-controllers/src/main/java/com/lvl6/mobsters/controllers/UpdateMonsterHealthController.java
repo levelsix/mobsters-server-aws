@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthRequestProto;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto;
@@ -24,6 +22,8 @@ import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterCurrentHe
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.monster.MonsterService;
+import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpec;
+import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpecBuilder;
 import com.lvl6.mobsters.services.monster.MonsterService.MonsterForUserOp;
 
 
@@ -67,17 +67,15 @@ public class UpdateMonsterHealthController extends EventController {
 		// syntax checks out ok
 		final List<UserMonsterCurrentHealthProto> umchpList = reqProto
 				.getUmchpList();
-		Table<String, MonsterForUserOp, Object> details = HashBasedTable.create();
+		// final Table<String, MonsterForUserOp, Object> details = HashBasedTable.create();
+		final ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
 		if (StringUtils.hasText(userIdString)
 				&& !CollectionUtils.lacksSubstance(umchpList)) {
 			// extract the ids so it's easier to get userMonsters from db
 			for (final UserMonsterCurrentHealthProto nextMonsterUnit : umchpList) {
-				details.put(
+				modBuilder.setHealthAbsolute(
 					nextMonsterUnit.getUserMonsterUuid(),
-					MonsterForUserOp.SET_HEALTH_ABSOLUTE,
-					Integer.valueOf(
-						nextMonsterUnit.getCurrentHealth()
-					)
+					nextMonsterUnit.getCurrentHealth()
 				);
 			}
 
