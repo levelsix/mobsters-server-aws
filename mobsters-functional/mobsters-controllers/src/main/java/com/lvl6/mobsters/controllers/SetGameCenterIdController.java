@@ -4,147 +4,127 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
-import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto.SetGameCenterIdStatus;
-import com.lvl6.mobsters.eventproto.utils.CreateEventProtoUtil;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.SetGameCenterIdRequestEvent;
 import com.lvl6.mobsters.events.response.SetGameCenterIdResponseEvent;
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
-import com.lvl6.mobsters.services.user.UserDataRarelyAccessedService;
+import com.lvl6.mobsters.services.user.UserService;
+import com.lvl6.mobsters.services.user.UserService.ModifyUserDataRarelyAccessedSpec;
+import com.lvl6.mobsters.services.user.UserService.ModifyUserDataRarelyAccessedSpecBuilder;
 
 @Component
 public class SetGameCenterIdController extends EventController {
 
-	private static Logger log = LoggerFactory.getLogger(new Object() {
-	}.getClass().getEnclosingClass());
+    private static Logger LOG = LoggerFactory.getLogger(SetGameCenterIdController.class);
 
-	@Autowired
-	protected UserDataRarelyAccessedService userDataRarelyAccessedService;
+    @Autowired
+    protected UserService userService;
 
-/*	@Autowired
-	protected EventWriter eventWriter;*/
+    /*
+     * @Autowired protected EventWriter eventWriter;
+     */
 
-	public SetGameCenterIdController() {
-	}
+    public SetGameCenterIdController() {}
 
-	@Override
-	public RequestEvent createRequestEvent() {
-		return new SetGameCenterIdRequestEvent();
-	}
+    @Override
+    public RequestEvent createRequestEvent() {
+        return new SetGameCenterIdRequestEvent();
+    }
 
-	@Override
-	public EventProtocolRequest getEventType() {
-		return EventProtocolRequest.C_SET_GAME_CENTER_ID_EVENT;
-	}
+    @Override
+    public EventProtocolRequest getEventType() {
+        return EventProtocolRequest.C_SET_GAME_CENTER_ID_EVENT;
+    }
 
-	@Override
-	protected void processRequestEvent(RequestEvent event, EventsToDispatch eventWriter) throws Exception {
-		SetGameCenterIdRequestProto reqProto = ((SetGameCenterIdRequestEvent) event).getSetGameCenterIdRequestProto();
+    @Override
+    protected void processRequestEvent( RequestEvent event, EventsToDispatch eventWriter ) throws Exception
+    {
+        final SetGameCenterIdRequestProto reqProto =
+            ((SetGameCenterIdRequestEvent) event).getSetGameCenterIdRequestProto();
+        final MinimumUserProto senderProto = reqProto.getSender();
+        final String userIdString = senderProto.getUserUuid();
+        final String gameCenterId = reqProto.getGameCenterId();
 
-		MinimumUserProto senderProto = reqProto.getSender();
-		String userId = senderProto.getUserUuid();
-		String gameCenterId = reqProto.getGameCenterId();
-		if (gameCenterId != null && gameCenterId.isEmpty()) {
-			gameCenterId = null;
-		}
+        // prepare to send response back to client
+        SetGameCenterIdResponseProto.Builder responseBuilder =
+            SetGameCenterIdResponseProto.newBuilder();
+        responseBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
+        responseBuilder.setSender(senderProto);
+        if (null != gameCenterId) {
+            responseBuilder.setGameCenterId(gameCenterId);
+        }
+        SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userIdString);
+        resEvent.setTag(event.getTag());
 
-		SetGameCenterIdResponseProto.Builder resBuilder = SetGameCenterIdResponseProto.newBuilder();
-		resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
-		resBuilder.setSender(senderProto);
-		if (null != gameCenterId) {
-			resBuilder.setGameCenterId(gameCenterId);
-		}
+        // Check values client sent for syntax errors. Call service only if
+        // syntax checks out ok; prepare arguments for service
+        final ModifyUserDataRarelyAccessedSpecBuilder modBuilder =
+            ModifyUserDataRarelyAccessedSpec.builder(userIdString);
+        if (StringUtils.hasText(gameCenterId) && StringUtils.hasText(userIdString)) {
+            modBuilder.setGameCenterIdNotNull(gameCenterId);
 
-		try {
-			UserDataRarelyAccessed user = getUserDataRarelyAccessedService()
-					.getUserDataRarelyAccessedByUserId(userId);
+            responseBuilder.setStatus(SetGameCenterIdStatus.SUCCESS);
+        }
 
-			boolean legit = writeChangesToDb(user, gameCenterId);
+        // call service if syntax is ok
+        if (responseBuilder.getStatus() == SetGameCenterIdStatus.SUCCESS) {
+            try {
+                userService.modifyUserDataRarelyAccessed(modBuilder.build());
+            } catch (Exception e) {
+                LOG.error(
+                    "exception in SetGameCenterIdController processEvent when calling userService",
+                    e);
+                responseBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
+            }
+        }
 
-			if (legit) {
-				resBuilder.setStatus(SetGameCenterIdStatus.SUCCESS);
-			}
+        resEvent.setSetGameCenterIdResponseProto(responseBuilder.build());
 
-			SetGameCenterIdResponseProto resProto = resBuilder.build();
-			SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(senderProto.getUserUuid());
-			resEvent.setSetGameCenterIdResponseProto(resProto);
-			eventWriter.writeEvent(resEvent);
+        // write to client
+        LOG.info("Writing event: " + resEvent);
+        try {
+            eventWriter.writeEvent(resEvent);
+        } catch (Exception e) {
+            LOG.error("fatal exception in SetGameCenterIdController processRequestEvent", e);
+        }
 
-			if (legit) {
-				// game center id might have changed
-				// null PvpLeagueFromUser means will pull from a cache instead
+        // TODO: FIGURE OUT IF THIS IS STILL NEEDED
+        // game center id might have changed
+        // null PvpLeagueFromUser means will pull from a cache instead
+        // UpdateClientUserResponseEvent resEventUpdate =
+        // CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
+        // resEventUpdate.setTag(event.getTag());
+        // eventWriter.writeEvent(resEventUpdate);
+    }
 
-				UpdateClientUserResponseEvent resEventUpdate =  CreateEventProtoUtil
-						.createUpdateClientUserResponseEvent(null, null, user,
-								null, null);
-				resEventUpdate.setTag(event.getTag());
-				eventWriter.writeEvent(resEventUpdate);
+    // private void failureCase(
+    // RequestEvent event,
+    // EventsToDispatch eventWriter,
+    // String userId,
+    // SetGameCenterIdResponseProto.Builder resBuilder )
+    // {
+    // eventWriter.clearResponses();
+    // resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
+    // SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
+    // resEvent.setTag(event.getTag());
+    // resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
+    // eventWriter.writeEvent(resEvent);
+    // }
 
-			}
+    public UserService getUserService() {
+        return userService;
+    }
 
-		} catch(ConditionalCheckFailedException e) {
-			//TODO: version was probably out of date... meaning some other thread updated this item after you loaded it but before you save it
-			//handle this case
-			//need to reread and do some more logic, basically call this method again...
-			log.error("optimistic lock exception in SetGameCenterIdController processEvent", e);
-			// don't let the client hang
-			try {
-				failureCase(event, eventWriter, userId, resBuilder);
-			} catch (Exception e2) {
-				log.error("optimistic lock exception2  in SetGameCenterIdController processEvent", e);
-			}	
-		}
-		catch (Exception e) {
-			log.error("exception in SetGameCenterIdController processEvent", e);
-			// don't let the client hang
-			try {
-				failureCase(event, eventWriter, userId, resBuilder);
-			} catch (Exception e2) {
-				log.error("exception2 in SetGameCenterIdController processEvent", e);
-			}
-		}
-	}
-
-	private void failureCase(RequestEvent event, EventsToDispatch eventWriter, String userId,
-		SetGameCenterIdResponseProto.Builder resBuilder) {
-		eventWriter.clearResponses();
-		resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
-		SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
-		resEvent.setTag(event.getTag());
-		resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
-		eventWriter.writeEvent(resEvent);
-	}
-
-	private boolean writeChangesToDb(UserDataRarelyAccessed user,
-			String gameCenterId) {
-		try {
-			getUserDataRarelyAccessedService()
-			.updateGameCenterId(user, gameCenterId);
-			return true;
-		} catch (Exception e) {
-			log.error("problem with updating user game center id. user=" + user +
-					"\t gameCenterId=" + gameCenterId);
-		}
-		return false;
-	}
-
-
-	public UserDataRarelyAccessedService getUserDataRarelyAccessedService() {
-		return userDataRarelyAccessedService;
-	}
-
-	public void setUserDataRarelyAccessedService(
-			UserDataRarelyAccessedService userDataRarelyAccessedService) {
-		this.userDataRarelyAccessedService = userDataRarelyAccessedService;
-	}
+    public void setUserService( UserService userService ) {
+        this.userService = userService;
+    }
 
 }

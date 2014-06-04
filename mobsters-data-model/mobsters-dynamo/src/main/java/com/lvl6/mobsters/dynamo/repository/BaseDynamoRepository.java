@@ -25,201 +25,207 @@ import com.amazonaws.services.dynamodbv2.model.UpdateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
 
 abstract public class BaseDynamoRepository<T> {
-	
-	
-	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepository.class);
-	
-	protected boolean isActive = false;
-	
-	@Autowired
-	protected AmazonDynamoDBClient client;
-	
-	@Autowired
-	protected DynamoProvisioning provisioning = new DynamoProvisioning();
-	
-	
-	@Autowired
-	protected DynamoDBMapper mapper;
-	
-	@Autowired
-	protected DynamoDBMapperConfig mapperConfig;
-	
-	protected Class<T> clss;
-	
-	// @Autowired
-	// private Lvl6TxManager ourTxManager;
-	
-	ProvisionedThroughput provisionedThroughput= new ProvisionedThroughput()
-    .withReadCapacityUnits(1l)
-    .withWriteCapacityUnits(1l);
-	
-	
-	
-	public BaseDynamoRepository(Class<T> clss) {
-		super();
-		this.clss = clss;
-	}
 
-	
-	public void save(T obj) {
-		//Transaction t1 = null; //ourTxManager.getActiveTransaction();
-		//if (t1 != null) {
-		if (false) {
-			// TODO: Do transactional putItem
-		} else {
-			mapper.save(obj);
-		}
-	}
-	
-	public void saveAll(Iterable<T> objs) {
-		//Transaction t1 = null; //ourTxManager.getActiveTransaction();
-		//if (t1 != null) {
-		if (false) {
-			// DynamoDB transaction library has no bulk operations...
-			for (final T nextObj : objs ) {
-				// TODO: Do transactional putItem
-			}
-		} else {
-			mapper.batchSave(objs);
-		}
-	}
-	
-	public T load(String id) {
-		return mapper.load(clss, id);
-	}
-	
-	
-	
-	protected void createTable() {
-		try {
-		log.info("Creating Dynamo table {}", getTableName());
-		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName("id").withAttributeType("S"));
-		        
-		ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
-		ks.add(new KeySchemaElement().withAttributeName("id").withKeyType(KeyType.HASH));
-		  
-		ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
-		    .withReadCapacityUnits(provisioning.getReads())
-		    .withWriteCapacityUnits(provisioning.getWrites());
-		        
-		CreateTableRequest request = new CreateTableRequest()
-		    .withTableName(getTableName())
-		    .withAttributeDefinitions(attributeDefinitions)
-		    .withKeySchema(ks)
-		    .withProvisionedThroughput(provisionedThroughput);
-			if(getGlobalIndexes() != null && !getGlobalIndexes().isEmpty()) {
-				request.withGlobalSecondaryIndexes(getGlobalIndexes());
-			}
-			if(getLocalIndexes() != null && !getLocalIndexes().isEmpty()) {
-				request.withLocalSecondaryIndexes(getLocalIndexes());
-			}
-		    
-		CreateTableResult result = client.createTable(request);
-		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", getTableName(), e);
-			throw e;
-		}
-	}
-	
-	protected void updateTable() {
-		try {
-	        ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
-	        .withReadCapacityUnits(provisioning.getReads())
-	        .withWriteCapacityUnits(provisioning.getWrites());
+    private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepository.class);
 
-	        UpdateTableRequest updateTableRequest = new UpdateTableRequest()
-	            .withTableName(getTableName())
-	            .withProvisionedThroughput(provisionedThroughput);
-	        
-	        UpdateTableResult result = client.updateTable(updateTableRequest);
-			
-		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", getTableName(), e);
-			throw e;
-		}
-	}
-	
-	public void checkTable() {
-		if(!isActive){
-			return;
-		}
-		try {
-		DescribeTableResult result = client.describeTable(getTableName());
-		if(result != null && result.getTable().getCreationDateTime() != null) {
-			log.info("Dynamo table {} status: {}", getTableName(), result.getTable().getTableStatus());
-			ProvisionedThroughputDescription prov = result.getTable().getProvisionedThroughput();
-			if(prov.getReadCapacityUnits().equals(provisioning.getReads())&&prov.getWriteCapacityUnits().equals(provisioning.getWrites())) {
-				log.info("Dynamo table {}", getTableName());
-			}else {
-				updateTable();
-			}
-		}else {
-			createTable();
-		}
-		}catch(ResourceNotFoundException re) {
-			createTable();
-		}catch(Throwable e) {
-			log.error("Error checking Dynamo table {}", getTableName(), e);
-			throw e;
-		}
-	}
-	
-	protected String getBoolean(boolean bool) {
-		return bool ? "1" : "0";
-	}
-	
-	
-	protected String getTableName() {
-		return mapperConfig.getTableNameOverride().getTableNamePrefix()+clss.getSimpleName();
-	}
-	
-	
-	public List<GlobalSecondaryIndex> getGlobalIndexes(){
-		return new ArrayList<>();
-	}
-	
-	public List<LocalSecondaryIndex> getLocalIndexes(){
-		return new ArrayList<>();
-	}
-	
-	public AmazonDynamoDBClient getClient() {
-		return client;
-	}
+    protected boolean isActive = false;
 
-	public void setClient(AmazonDynamoDBClient client) {
-		this.client = client;
-	}
+    @Autowired
+    protected AmazonDynamoDBClient client;
 
-	public DynamoProvisioning getProvisioning() {
-		return provisioning;
-	}
+    @Autowired
+    protected DynamoProvisioning provisioning = new DynamoProvisioning();
 
-	public void setProvisioning(DynamoProvisioning provisioning) {
-		this.provisioning = provisioning;
-		 provisionedThroughput = new ProvisionedThroughput()
-		    .withReadCapacityUnits(provisioning.getReads())
-		    .withWriteCapacityUnits(provisioning.getWrites());
-	}
+    @Autowired
+    protected DynamoDBMapper mapper;
 
+    @Autowired
+    protected DynamoDBMapperConfig mapperConfig;
 
-	public DynamoDBMapper getMapper() {
-		return mapper;
-	}
+    protected Class<T> clss;
 
+    // @Autowired
+    // private Lvl6TxManager ourTxManager;
 
-	public void setMapper(DynamoDBMapper mapper) {
-		this.mapper = mapper;
-	}
+    ProvisionedThroughput provisionedThroughput =
+        new ProvisionedThroughput().withReadCapacityUnits(1l).withWriteCapacityUnits(1l);
 
+    public BaseDynamoRepository( Class<T> clss ) {
+        super();
+        this.clss = clss;
+    }
 
-	public DynamoDBMapperConfig getMapperConfig() {
-		return mapperConfig;
-	}
+    public void save( T obj ) {
+        // Transaction t1 = null; //ourTxManager.getActiveTransaction();
+        // if (t1 != null) {
+        if (false) {
+            // TODO: Do transactional putItem
+        } else {
+            mapper.save(obj);
+        }
+    }
 
+    public void saveAll( Iterable<T> objs ) {
+        // Transaction t1 = null; //ourTxManager.getActiveTransaction();
+        // if (t1 != null) {
+        if (false) {
+            // DynamoDB transaction library has no bulk operations...
+            for (final T nextObj : objs) {
+                // TODO: Do transactional putItem
+            }
+        } else {
+            mapper.batchSave(objs);
+        }
+    }
 
-	public void setMapperConfig(DynamoDBMapperConfig mapperConfig) {
-		this.mapperConfig = mapperConfig;
-	}
+    public T load( String id ) {
+        return mapper.load(clss, id);
+    }
+
+    // public Map<String, List<Object>> loadAll( List<KeyPair> hashAndRangeKeyPairs ) {
+    // Map<Class<T>, List<KeyPair>> clazzToHashAndRangeKeyPairs =
+    // new HashMap<Class<T>, List<KeyPair>>();
+    // clazzToHashAndRangeKeyPairs.put(clss, hashAndRangeKeyPairs);
+    // // mapper.batchLoad(clazzToHashAndRangeKeyPairs); // doesn't compile
+    //
+    // Map<Class<?>, List<KeyPair>> foo = new HashMap<Class<?>, List<KeyPair>>();
+    // foo.putAll(clazzToHashAndRangeKeyPairs);
+    //
+    // // caller will do conversion to T manually
+    // return mapper.batchLoad(foo); // compiles
+    // }
+
+    protected void createTable() {
+        try {
+            log.info("Creating Dynamo table {}", getTableName());
+            ArrayList<AttributeDefinition> attributeDefinitions =
+                new ArrayList<AttributeDefinition>();
+            attributeDefinitions.add(new AttributeDefinition().withAttributeName("id").withAttributeType(
+                "S"));
+
+            ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
+            ks.add(new KeySchemaElement().withAttributeName("id").withKeyType(KeyType.HASH));
+
+            ProvisionedThroughput provisionedThroughput =
+                new ProvisionedThroughput().withReadCapacityUnits(provisioning.getReads()).withWriteCapacityUnits(
+                    provisioning.getWrites());
+
+            CreateTableRequest request =
+                new CreateTableRequest().withTableName(getTableName()).withAttributeDefinitions(
+                    attributeDefinitions).withKeySchema(ks).withProvisionedThroughput(
+                    provisionedThroughput);
+            if (getGlobalIndexes() != null && !getGlobalIndexes().isEmpty()) {
+                request.withGlobalSecondaryIndexes(getGlobalIndexes());
+            }
+            if (getLocalIndexes() != null && !getLocalIndexes().isEmpty()) {
+                request.withLocalSecondaryIndexes(getLocalIndexes());
+            }
+
+            CreateTableResult result = client.createTable(request);
+        } catch (Throwable e) {
+            log.error("Error creating Dynamo table {}", getTableName(), e);
+            throw e;
+        }
+    }
+
+    protected void updateTable() {
+        try {
+            ProvisionedThroughput provisionedThroughput =
+                new ProvisionedThroughput().withReadCapacityUnits(provisioning.getReads()).withWriteCapacityUnits(
+                    provisioning.getWrites());
+
+            UpdateTableRequest updateTableRequest =
+                new UpdateTableRequest().withTableName(getTableName()).withProvisionedThroughput(
+                    provisionedThroughput);
+
+            UpdateTableResult result = client.updateTable(updateTableRequest);
+
+        } catch (Throwable e) {
+            log.error("Error creating Dynamo table {}", getTableName(), e);
+            throw e;
+        }
+    }
+
+    public void checkTable() {
+        if (!isActive) {
+            return;
+        }
+        try {
+            DescribeTableResult result = client.describeTable(getTableName());
+            if (result != null && result.getTable().getCreationDateTime() != null) {
+                log.info(
+                    "Dynamo table {} status: {}",
+                    getTableName(),
+                    result.getTable().getTableStatus());
+                ProvisionedThroughputDescription prov =
+                    result.getTable().getProvisionedThroughput();
+                if (prov.getReadCapacityUnits().equals(provisioning.getReads())
+                    && prov.getWriteCapacityUnits().equals(provisioning.getWrites()))
+                {
+                    log.info("Dynamo table {}", getTableName());
+                } else {
+                    updateTable();
+                }
+            } else {
+                createTable();
+            }
+        } catch (ResourceNotFoundException re) {
+            createTable();
+        } catch (Throwable e) {
+            log.error("Error checking Dynamo table {}", getTableName(), e);
+            throw e;
+        }
+    }
+
+    protected String getBoolean( boolean bool ) {
+        return bool ? "1" : "0";
+    }
+
+    protected String getTableName() {
+        return mapperConfig.getTableNameOverride().getTableNamePrefix() + clss.getSimpleName();
+    }
+
+    public List<GlobalSecondaryIndex> getGlobalIndexes() {
+        return new ArrayList<>();
+    }
+
+    public List<LocalSecondaryIndex> getLocalIndexes() {
+        return new ArrayList<>();
+    }
+
+    public AmazonDynamoDBClient getClient() {
+        return client;
+    }
+
+    public void setClient( AmazonDynamoDBClient client ) {
+        this.client = client;
+    }
+
+    public DynamoProvisioning getProvisioning() {
+        return provisioning;
+    }
+
+    public void setProvisioning( DynamoProvisioning provisioning ) {
+        this.provisioning = provisioning;
+        provisionedThroughput =
+            new ProvisionedThroughput().withReadCapacityUnits(provisioning.getReads()).withWriteCapacityUnits(
+                provisioning.getWrites());
+    }
+
+    public DynamoDBMapper getMapper() {
+        return mapper;
+    }
+
+    public void setMapper( DynamoDBMapper mapper ) {
+        this.mapper = mapper;
+    }
+
+    public DynamoDBMapperConfig getMapperConfig() {
+        return mapperConfig;
+    }
+
+    public void setMapperConfig( DynamoDBMapperConfig mapperConfig ) {
+        this.mapperConfig = mapperConfig;
+    }
 
 }

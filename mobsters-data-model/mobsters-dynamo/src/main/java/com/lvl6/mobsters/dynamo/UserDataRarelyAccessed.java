@@ -1,156 +1,176 @@
 package com.lvl6.mobsters.dynamo;
 
-
 import java.util.Date;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 
-@DynamoDBTable(tableName="UserCredential")
+@DynamoDBTable(tableName = "UserDataRarelyAccessed")
 public class UserDataRarelyAccessed {
 
+    private String userId;
 
+    private Long version;
 
-	private String userId;
-	private Long version;
+    private String udidForHistory;
 
-	
+    private Date lastLogin;
 
-	private String udidForHistory;
-	private Date lastLogin;
-	private Date lastLogout;
-	private String deviceToken;
-	private Date createTime;
-	private boolean fbIdSetOnUserCreate;
-	private String gameCenterId;
-	private Date lastObstacleSpawnTime;
-	private Date lastMiniJobGeneratedTime;
-	
-	public UserDataRarelyAccessed(){}
-	
-	public UserDataRarelyAccessed(String userId, String udidForHistory,
-			Date lastLogin, Date lastLogout, String deviceToken,
-			Date createTime, boolean fbIdSetOnUserCreate, String gameCenterId,
-			Date lastObstacleSpawnTime, Date lastMiniJobGeneratedTime) {
-		super();
-		this.userId = userId;
-		this.udidForHistory = udidForHistory;
-		this.lastLogin = lastLogin;
-		this.lastLogout = lastLogout;
-		this.deviceToken = deviceToken;
-		this.createTime = createTime;
-		this.fbIdSetOnUserCreate = fbIdSetOnUserCreate;
-		this.gameCenterId = gameCenterId;
-		this.lastObstacleSpawnTime = lastObstacleSpawnTime;
-		this.lastMiniJobGeneratedTime = lastMiniJobGeneratedTime;
-	}
+    private Date lastLogout;
 
+    private String deviceToken;
 
-	@DynamoDBHashKey(attributeName = "userId")
-	public String getUserId() {return userId;}
-	public void setUserId(String userId) {this.userId = userId;}
+    private Date createTime;
 
-	@DynamoDBVersionAttribute
-	public Long getVersion(){return version;}
-	public void setVersion(Long version){this.version = version;}
+    private boolean fbIdSetOnUserCreate;
 
+    private String gameCenterId;
 
-	public String getUdidForHistory() {
-		return udidForHistory;
-	}
+    private Date lastObstacleSpawnTime; // TODO: consider moving to User
 
-	public void setUdidForHistory(String udidForHistory) {
-		this.udidForHistory = udidForHistory;
-	}
+    private Date lastMiniJobGeneratedTime; // TODO: consider moving to User
 
-	public Date getLastLogin() {
-		return lastLogin;
-	}
+    public UserDataRarelyAccessed() {}
 
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
-	}
+    public UserDataRarelyAccessed(
+        String userId,
+        String udidForHistory,
+        Date lastLogin,
+        Date lastLogout,
+        String deviceToken,
+        Date createTime,
+        boolean fbIdSetOnUserCreate,
+        String gameCenterId,
+        Date lastObstacleSpawnTime,
+        Date lastMiniJobGeneratedTime )
+    {
+        super();
+        this.userId = userId;
+        this.udidForHistory = udidForHistory;
+        this.lastLogin = lastLogin;
+        this.lastLogout = lastLogout;
+        this.deviceToken = deviceToken;
+        this.createTime = createTime;
+        this.fbIdSetOnUserCreate = fbIdSetOnUserCreate;
+        this.gameCenterId = gameCenterId;
+        this.lastObstacleSpawnTime = lastObstacleSpawnTime;
+        this.lastMiniJobGeneratedTime = lastMiniJobGeneratedTime;
+    }
 
-	public Date getLastLogout() {
-		return lastLogout;
-	}
+    @DynamoDBHashKey(attributeName = "userId")
+    public String getUserId() {
+        return userId;
+    }
 
-	public void setLastLogout(Date lastLogout) {
-		this.lastLogout = lastLogout;
-	}
+    public void setUserId( String userId ) {
+        this.userId = userId;
+    }
 
-	public String getDeviceToken() {
-		return deviceToken;
-	}
+    @DynamoDBVersionAttribute
+    public Long getVersion() {
+        return version;
+    }
 
-	public void setDeviceToken(String deviceToken) {
-		this.deviceToken = deviceToken;
-	}
+    public void setVersion( Long version ) {
+        this.version = version;
+    }
 
-	public Date getCreateTime() {
-		return createTime;
-	}
+    public String getUdidForHistory() {
+        return udidForHistory;
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public void setUdidForHistory( String udidForHistory ) {
+        this.udidForHistory = udidForHistory;
+    }
 
-	public boolean isFbIdSetOnUserCreate() {
-		return fbIdSetOnUserCreate;
-	}
+    public Date getLastLogin() {
+        return lastLogin;
+    }
 
-	public void setFbIdSetOnUserCreate(boolean fbIdSetOnUserCreate) {
-		this.fbIdSetOnUserCreate = fbIdSetOnUserCreate;
-	}
+    public void setLastLogin( Date lastLogin ) {
+        this.lastLogin = lastLogin;
+    }
 
-	public String getGameCenterId() {
-		return gameCenterId;
-	}
+    public Date getLastLogout() {
+        return lastLogout;
+    }
 
-	public void setGameCenterId(String gameCenterId) {
-		this.gameCenterId = gameCenterId;
-	}
+    public void setLastLogout( Date lastLogout ) {
+        this.lastLogout = lastLogout;
+    }
 
-	public Date getLastObstacleSpawnTime() {
-		return lastObstacleSpawnTime;
-	}
+    public String getDeviceToken() {
+        return deviceToken;
+    }
 
-	public void setLastObstacleSpawnTime(Date lastObstacleSpawnTime) {
-		this.lastObstacleSpawnTime = lastObstacleSpawnTime;
-	}
+    public void setDeviceToken( String deviceToken ) {
+        this.deviceToken = deviceToken;
+    }
 
-	public Date getLastMiniJobGeneratedTime() {
-		return lastMiniJobGeneratedTime;
-	}
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setLastMiniJobGeneratedTime(Date lastMiniJobGeneratedTime) {
-		this.lastMiniJobGeneratedTime = lastMiniJobGeneratedTime;
-	}
+    public void setCreateTime( Date createTime ) {
+        this.createTime = createTime;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		return result;
-	}
+    public boolean isFbIdSetOnUserCreate() {
+        return fbIdSetOnUserCreate;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserDataRarelyAccessed other = (UserDataRarelyAccessed) obj;
-		if (userId == null) {
-			if (other.userId != null)
-				return false;
-		} else if (!userId.equals(other.userId))
-			return false;
-		return true;
-	}
+    public void setFbIdSetOnUserCreate( boolean fbIdSetOnUserCreate ) {
+        this.fbIdSetOnUserCreate = fbIdSetOnUserCreate;
+    }
+
+    public String getGameCenterId() {
+        return gameCenterId;
+    }
+
+    public void setGameCenterId( String gameCenterId ) {
+        this.gameCenterId = gameCenterId;
+    }
+
+    public Date getLastObstacleSpawnTime() {
+        return lastObstacleSpawnTime;
+    }
+
+    public void setLastObstacleSpawnTime( Date lastObstacleSpawnTime ) {
+        this.lastObstacleSpawnTime = lastObstacleSpawnTime;
+    }
+
+    public Date getLastMiniJobGeneratedTime() {
+        return lastMiniJobGeneratedTime;
+    }
+
+    public void setLastMiniJobGeneratedTime( Date lastMiniJobGeneratedTime ) {
+        this.lastMiniJobGeneratedTime = lastMiniJobGeneratedTime;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals( Object obj ) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UserDataRarelyAccessed other = (UserDataRarelyAccessed) obj;
+        if (userId == null) {
+            if (other.userId != null)
+                return false;
+        } else if (!userId.equals(other.userId))
+            return false;
+        return true;
+    }
 
 }
