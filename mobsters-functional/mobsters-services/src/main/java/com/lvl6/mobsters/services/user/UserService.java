@@ -147,7 +147,9 @@ public interface UserService {
 
     /**************************************************************************/
 
-    public abstract void modifyUserDataRarelyAccessed( ModifyUserDataRarelyAccessedSpec modifySpec );
+    public abstract void modifyUserDataRarelyAccessed(
+        String userId,
+        ModifyUserDataRarelyAccessedSpec modifySpec );
 
     /*
      * public interface ModifyUserDataRarelyAccessedSpecBuilder { // specify the modifications (to the
@@ -180,29 +182,20 @@ public interface UserService {
         // only one key (userId), should only be one key since one UserDataRarelyAccessed row will only
         // be accessed by one user
 
-        final private String userId;
-
         final private Set<UserDataRarelyAccessedFunc> usersDraModificationsSet;
 
-        ModifyUserDataRarelyAccessedSpec(
-            String userId,
-            Set<UserDataRarelyAccessedFunc> usersDraModificationsSet )
+        ModifyUserDataRarelyAccessedSpec( Set<UserDataRarelyAccessedFunc> usersDraModificationsSet )
         {
-            this.userId = userId;
             this.usersDraModificationsSet = usersDraModificationsSet;
-        }
-
-        String getUserId() {
-            return userId;
         }
 
         Set<UserDataRarelyAccessedFunc> getUsersDraModificationsSet() {
             return usersDraModificationsSet;
         }
 
-        public static ModifyUserDataRarelyAccessedSpecBuilder builder( String userId ) {
+        public static ModifyUserDataRarelyAccessedSpecBuilder builder() {
             ModifyUserDataRarelyAccessedSpecBuilder builder =
-                new ModifyUserDataRarelyAccessedSpecBuilderImpl(userId);
+                new ModifyUserDataRarelyAccessedSpecBuilderImpl();
             return builder;
         }
     }

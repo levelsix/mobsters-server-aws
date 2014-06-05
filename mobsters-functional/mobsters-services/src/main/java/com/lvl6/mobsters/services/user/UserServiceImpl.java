@@ -140,9 +140,11 @@ public class UserServiceImpl implements UserService {
     /**************************************************************************/
 
     @Override
-    public void modifyUserDataRarelyAccessed( ModifyUserDataRarelyAccessedSpec modifySpec ) {
+    public void modifyUserDataRarelyAccessed(
+        String userId,
+        ModifyUserDataRarelyAccessedSpec modifySpec )
+    {
         // get whatever we need from the database
-        String userId = modifySpec.getUserId();
         final Set<UserDataRarelyAccessedFunc> userOps = modifySpec.getUsersDraModificationsSet();
 
         UserDataRarelyAccessed udra = userDraRepo.load(userId);
@@ -164,18 +166,15 @@ public class UserServiceImpl implements UserService {
         implements
             ModifyUserDataRarelyAccessedSpecBuilder
     {
-        final String userId;
-
         final Set<UserDataRarelyAccessedFunc> usersDraModificationsSet;
 
-        ModifyUserDataRarelyAccessedSpecBuilderImpl( String userId ) {
-            this.userId = userId;
+        ModifyUserDataRarelyAccessedSpecBuilderImpl() {
             usersDraModificationsSet = new HashSet<UserDataRarelyAccessedFunc>();
         }
 
         @Override
         public ModifyUserDataRarelyAccessedSpec build() {
-            return new ModifyUserDataRarelyAccessedSpec(userId, usersDraModificationsSet);
+            return new ModifyUserDataRarelyAccessedSpec(usersDraModificationsSet);
         }
 
         @Override

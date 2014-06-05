@@ -67,7 +67,7 @@ public class SetGameCenterIdController extends EventController {
         // Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
         final ModifyUserDataRarelyAccessedSpecBuilder modBuilder =
-            ModifyUserDataRarelyAccessedSpec.builder(userIdString);
+            ModifyUserDataRarelyAccessedSpec.builder();
         if (StringUtils.hasText(gameCenterId) && StringUtils.hasText(userIdString)) {
             modBuilder.setGameCenterIdNotNull(gameCenterId);
 
@@ -77,7 +77,7 @@ public class SetGameCenterIdController extends EventController {
         // call service if syntax is ok
         if (responseBuilder.getStatus() == SetGameCenterIdStatus.SUCCESS) {
             try {
-                userService.modifyUserDataRarelyAccessed(modBuilder.build());
+                userService.modifyUserDataRarelyAccessed(userIdString, modBuilder.build());
             } catch (Exception e) {
                 LOG.error(
                     "exception in SetGameCenterIdController processEvent when calling userService",
