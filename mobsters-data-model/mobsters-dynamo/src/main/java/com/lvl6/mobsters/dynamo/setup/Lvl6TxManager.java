@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.ConsistentReads;
 import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.transactions.ThreadLocalDynamoDBFacade;
 import com.amazonaws.services.dynamodbv2.transactions.Transaction;
@@ -48,9 +47,9 @@ import com.amazonaws.services.dynamodbv2.transactions.TransactionManagerDynamoDB
  *
  */
 public class Lvl6TxManager extends TransactionManager
-    implements
-        DataServiceTxManager,
-        DataRepositoryTxManager
+implements
+DataServiceTxManager,
+DataRepositoryTxManager
 {
     private static final Logger LOG = LoggerFactory.getLogger(Lvl6TxManager.class);
 
@@ -105,70 +104,6 @@ public class Lvl6TxManager extends TransactionManager
     }
 
     /**
-     * @param isolationLevel
-     *        The isolation level to use; this has the same meaning as for
-     *        {@link TransactionManager#getItem(GetItemRequest, IsolationLevel)} .
-     * @return An instance of the item class with all attributes populated from the table, or null if the
-     *         item does not exist.
-     */
-    @Override
-    public <T> T load(
-        final T item,
-        final boolean isStronglyConsistent,
-        final IsolationLevel isolationLevel )
-    {
-        final DynamoDBMapperConfig config = new DynamoDBMapperConfig(
-            isStronglyConsistent ? ConsistentReads.CONSISTENT : ConsistentReads.EVENTUAL);
-        try {
-            getFacadeProxy().setBackend(
-                new TransactionManagerDynamoDBFacade(
-                    this,
-                    isolationLevel));
-            return getClientMapper().load(
-                item,
-                config);
-        } finally {
-            getFacadeProxy().setBackend(
-                null);
-        }
-    }
-
-    /**
-     * Loads an object with the hash key given and a configuration override. This configuration overrides
-     * the default provided at object construction.
-     *
-     * @param isolationLevel
-     *        The isolation level to use; this has the same meaning as for
-     *        {@link TransactionManager#getItem(GetItemRequest, IsolationLevel)}
-     * @return An instance of the item class with all attributes populated from the table, or null if the
-     *         item does not exist.
-     * @see DynamoDBMapper#load(Class, Object, DynamoDBMapperConfig)
-     */
-    @Override
-    public <T extends Object> T load(
-        final Class<T> clazz,
-        final Object hashKey,
-        final boolean isStronglyConsistent,
-        final IsolationLevel isolationLevel )
-    {
-        final DynamoDBMapperConfig config = new DynamoDBMapperConfig(
-            isStronglyConsistent ? ConsistentReads.CONSISTENT : ConsistentReads.EVENTUAL);
-        try {
-            getFacadeProxy().setBackend(
-                new TransactionManagerDynamoDBFacade(
-                    this,
-                    isolationLevel));
-            return getClientMapper().load(
-                clazz,
-                hashKey,
-                config);
-        } finally {
-            getFacadeProxy().setBackend(
-                null);
-        }
-    }
-
-    /**
      * Loads an object with the hash key given outside a transaction, using the default configuration.
      *
      * @param isolationLevel
@@ -192,42 +127,6 @@ public class Lvl6TxManager extends TransactionManager
             return getClientMapper().load(
                 clazz,
                 hashKey);
-        } finally {
-            getFacadeProxy().setBackend(
-                null);
-        }
-    }
-
-    /**
-     * Loads an object with a hash and range key outside a transaction, using the default configuration.
-     *
-     * @param isolationLevel
-     *        The isolation level to use; this has the same meaning as for
-     *        {@link TransactionManager#getItem(GetItemRequest, IsolationLevel)}
-     * @return An instance of the item class with all attributes populated from the table, or null if the
-     *         item does not exist.
-     * @see DynamoDBMapper#load(Class, Object, Object, DynamoDBMapperConfig)
-     */
-    @Override
-    public <T extends Object> T load(
-        final Class<T> clazz,
-        final Object hashKey,
-        final Object rangeKey,
-        final boolean isStronglyConsistent,
-        final IsolationLevel isolationLevel )
-    {
-        final DynamoDBMapperConfig config = new DynamoDBMapperConfig(
-            isStronglyConsistent ? ConsistentReads.CONSISTENT : ConsistentReads.EVENTUAL);
-        try {
-            getFacadeProxy().setBackend(
-                new TransactionManagerDynamoDBFacade(
-                    this,
-                    isolationLevel));
-            return getClientMapper().load(
-                clazz,
-                hashKey,
-                rangeKey,
-                config);
         } finally {
             getFacadeProxy().setBackend(
                 null);
@@ -286,7 +185,7 @@ public class Lvl6TxManager extends TransactionManager
     {
         final Lvl6Transaction transaction = new Lvl6Transaction(
             UUID.randomUUID()
-            .toString(),
+                .toString(),
             this,
             true);
         Lvl6TxManager.LOG.info("Started transaction " + transaction.getId());
