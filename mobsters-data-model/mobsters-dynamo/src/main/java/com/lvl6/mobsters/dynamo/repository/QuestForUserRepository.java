@@ -34,12 +34,12 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
 	}
 
 	public List<QuestForUser> getQuestsForUser(String userId,
-			boolean isComplete, Collection<String> questIds) {
+			boolean isComplete, Collection<Integer> questIds) {
 		List<AttributeValue> questIdz = new ArrayList<>();
 		QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
-		for (String quest : questIds) {
-			questIdz.add(new AttributeValue().withS(quest));
+		for (Integer quest : questIds) {
+			questIdz.add(new AttributeValue().withN(quest.toString()));
 		}
 
 		DynamoDBQueryExpression<QuestForUser> query = new DynamoDBQueryExpression<QuestForUser>()

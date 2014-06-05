@@ -44,14 +44,14 @@ public class TestQuestForUsers {
 	
 	
 	public static String userId = UUID.randomUUID().toString();
-	public static List<String> questIds = Arrays.asList(UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString());
+	public static List<Integer> questIds = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
 	public static List<String> questForUserIds = new ArrayList<>();
 	
 	
 	
 	//@BeforeClass
 	public void createTestData() {
-		for(String quest : questIds) {
+		for(Integer quest : questIds) {
 			QuestForUser qu = new QuestForUser(userId, quest, false, true);
 			log.info("Saving: {}", qu);
 			qfuRepo.save(qu);
