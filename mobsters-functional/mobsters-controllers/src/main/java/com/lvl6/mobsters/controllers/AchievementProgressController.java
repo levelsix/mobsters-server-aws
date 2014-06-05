@@ -78,6 +78,10 @@ public class AchievementProgressController extends EventController {
 
                 modBuilder.setProgressAbsolute(achievementId, uap.getProgress());
 
+                //NOTE: Client can clobber existing data 
+                //e.g. if AchievementForUser is already complete, but client sends
+                //new progress and sets isComplete to false, the AchievementForUser
+                //goes from complete to incomplete, which should not happen.
                 boolean isComplete = uap.getIsComplete();
                 if (isComplete) {
                     modBuilder.setIsComplete(achievementId);
