@@ -30,7 +30,7 @@
 		<constructor-arg index="0" value="${aws.dynamo.table.name.prefix}" />
 	</bean>
 	
-	<bean id="dynamoMapperConfig" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig" >
+	<bean id="dynamoMapperConfig" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig" depends-on="setupDynamoDb">
 		<constructor-arg index="0" ref="dynamoMapperConfigTableNamePrefix" />
 	</bean>
 	
@@ -39,10 +39,14 @@
 		<constructor-arg index="1" ref="dynamoMapperConfig" />
 	</bean>
 	
-	
-	
 	<bean id="setupDynamoDB" class="com.lvl6.mobsters.dynamo.setup.SetupDynamoDB">
 		<property name="checkTables" value="${aws.dynamo.checkTables}" />
+		<property name="dynamoClient" ref="dynamoClient" />
+	</bean>
+	
+	<bean id="dynamoTxManager" class="com.lvl6.mobsters.dynamo.setup.Lvl6TxManager">
+		<constructor-arg index="0" ref="dynamoClient"/>
+		<constructor-arg index="1" ref="dynamoMapperConfig"/>
 	</bean>
 
 </beans>
