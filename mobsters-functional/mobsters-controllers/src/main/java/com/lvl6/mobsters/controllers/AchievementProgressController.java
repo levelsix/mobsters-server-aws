@@ -45,7 +45,7 @@ public class AchievementProgressController extends EventController {
 
     @Override
     public EventProtocolRequest getEventType() {
-        return EventProtocolRequest.C_SET_GAME_CENTER_ID_EVENT;
+        return EventProtocolRequest.C_ACHIEVEMENT_PROGRESS_EVENT;
     }
 
     @Override

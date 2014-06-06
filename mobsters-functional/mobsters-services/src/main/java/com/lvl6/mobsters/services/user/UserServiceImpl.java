@@ -199,4 +199,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //for the dependency injection
+    public UserDataRarelyAccessedRepository getUserDraRepo()
+    {
+        return userDraRepo;
+    }
+
+    public void setUserDraRepo( UserDataRarelyAccessedRepository userDraRepo )
+    {
+        this.userDraRepo = userDraRepo;
+    }
+
 }

@@ -34,6 +34,8 @@ public class AchievementServiceImpl implements AchievementService {
             achievementForUserRepository.findByUserIdAndId(userId, achievementIds);
         
         // Mutate the objects
+        
+        //set the userId on all the achievements to be stored to the db
         for (AchievementForUser afu : achievementIdToAfu.values()) {
             //TODO: Check if the achievementId refers to a valid achievement
             afu.setUserId(userId);
@@ -174,6 +176,18 @@ public class AchievementServiceImpl implements AchievementService {
             t.setTimeCompleted(timeCompleted);
         }
         
+    }
+
+    //for the dependency injection
+    public AchievementForUserRepository getAchievementForUserRepository()
+    {
+        return achievementForUserRepository;
+    }
+
+    public void setAchievementForUserRepository(
+        AchievementForUserRepository achievementForUserRepository )
+    {
+        this.achievementForUserRepository = achievementForUserRepository;
     }
 
 }
