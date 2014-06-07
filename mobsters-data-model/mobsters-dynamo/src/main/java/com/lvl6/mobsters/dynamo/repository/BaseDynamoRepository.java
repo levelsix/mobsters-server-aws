@@ -212,22 +212,24 @@ abstract public class BaseDynamoRepository<T>
 	{
 		final String tableName = getTableName();
 		try {
-		log.info("Creating Dynamo table {}", getTableName());
-		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName("id").withAttributeType("S"));
-		        
-		ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
-		ks.add(new KeySchemaElement().withAttributeName("id").withKeyType(KeyType.HASH));
-		  
-		ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
-		    .withReadCapacityUnits(provisioning.getReads())
-		    .withWriteCapacityUnits(provisioning.getWrites());
-		        
-		CreateTableRequest request = new CreateTableRequest()
-		    .withTableName(getTableName())
-		    .withAttributeDefinitions(attributeDefinitions)
-		    .withKeySchema(ks)
-		    .withProvisionedThroughput(provisionedThroughput);
+			BaseDynamoRepository.log.info(
+				"Creating Dynamo table {}",
+				tableName);
+			final ArrayList<AttributeDefinition> ads = new ArrayList<AttributeDefinition>();
+			final ArrayList<KeySchemaElement> kse = new ArrayList<KeySchemaElement>();
+			getAttributeDefinitions(
+				ads,
+				kse);
+			final ProvisionedThroughput provisionedThroughput =
+				new ProvisionedThroughput().withReadCapacityUnits(
+					provisioning.getReads()).withWriteCapacityUnits(
+					provisioning.getWrites());
+			final CreateTableRequest request = new CreateTableRequest().withTableName(
+				tableName).withAttributeDefinitions(
+				ads).withKeySchema(
+				kse).withProvisionedThroughput(
+				provisionedThroughput);
+			if ((getGlobalIndexes() != null) && !getGlobalIndexes().isEmpty()) {
 				request.withGlobalSecondaryIndexes(getGlobalIndexes());
 			}
 			if ((getLocalIndexes() != null) && !getLocalIndexes().isEmpty()) {
@@ -309,12 +311,23 @@ abstract public class BaseDynamoRepository<T>
 	protected String getBoolean(boolean bool) {
 		return bool ? "1" : "0";
 	}
-	
-	
-	protected String getTableName() {
-		return mapperConfig.getTableNameOverride().getTableNamePrefix()+clss.getSimpleName();
-	}
-	
+
+	public final String getTableName()
+	{
+		String tableName;
+		final DynamoDBTable tableAnnotation = clss.getAnnotation(DynamoDBTable.class);
+		if ((tableAnnotation != null) && StringUtils.hasText(tableAnnotation.tableName())) {
+			tableName = tableAnnotation.tableName();
+		} else {
+			tableName = clss.getSimpleName();
+		}
+
+		final TableNameOverride nameOverride = mapperConfig.getTableNameOverride();
+		if ((nameOverride != null) && StringUtils.hasText(nameOverride.getTableNamePrefix())) {
+			tableName = nameOverride.getTableNamePrefix() + tableName;
+		}
+
+		return tableName;
 	}
 
 	public List<GlobalSecondaryIndex> getGlobalIndexes()
@@ -360,4 +373,138 @@ abstract public class BaseDynamoRepository<T>
 		this.mapperConfig = mapperConfig;
 	}
 
+	private static final ImmutableMap<Class<?>, String> CLASS_TO_ATTR_TYPE;
+	static {
+		try {
+			CLASS_TO_ATTR_TYPE = ImmutableMap.<Class<?>, String> builder().put(
+				String.class,
+				"S").put(
+				Date.class,
+				"S").put(
+				Calendar.class,
+				"S").put(
+				Boolean.class,
+				"N").put(
+				Boolean.TYPE,
+				"N").put(
+				Integer.class,
+				"N").put(
+				Integer.class.getMethod(
+					"intValue").getReturnType(),
+				"N").put(
+				Long.class,
+				"N").put(
+				Integer.class.getMethod(
+					"longValue").getReturnType(),
+				"N").put(
+				Double.class,
+				"N").put(
+				Integer.class.getMethod(
+					"doubleValue").getReturnType(),
+				"N").put(
+				Float.class,
+				"N").put(
+				Integer.class.getMethod(
+					"floatValue").getReturnType(),
+				"N").put(
+				BigDecimal.class,
+				"N").put(
+				BigInteger.class,
+				"N").put(
+				Byte.class,
+				"B").put(
+				Integer.class.getMethod(
+					"byteValue").getReturnType(),
+				"B").put(
+				ByteBuffer.class,
+				"B").build();
+		} catch (
+			NoSuchMethodException |
+			SecurityException e) {
+			throw new RuntimeException(
+				e);
+		}
+	}
+
+	private void getAttributeDefinitions(
+		final List<AttributeDefinition> ads,
+		final List<KeySchemaElement> kse )
+	{
+		for (final Field nextField : clss.getDeclaredFields()) {
+			if ((nextField.isAnnotationPresent(DynamoDBAttribute.class) ||
+				nextField.isAnnotationPresent(DynamoDBHashKey.class) ||
+				nextField.isAnnotationPresent(DynamoDBRangeKey.class) ||
+				// nextField.isAnnotationPresent(DynamoDBVersionAttribute.class) ||
+				nextField.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextField.isAnnotationPresent(DynamoDBIndexRangeKey.class)) &&
+				(((!nextField.getGenericType().equals(
+					Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType())) || ((nextField.getGenericType().equals(Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType().getTypeParameters()[0])))) {
+				ads.add(new AttributeDefinition(
+					nextField.getName(),
+					getAttrType(nextField.getType())));
+				if (nextField.isAnnotationPresent(DynamoDBHashKey.class)) {
+					kse.add(new KeySchemaElement(
+						nextField.getName(),
+						KeyType.HASH));
+				}
+				if (nextField.isAnnotationPresent(DynamoDBRangeKey.class)) {
+					kse.add(new KeySchemaElement(
+						nextField.getName(),
+						KeyType.RANGE));
+				}
+			}
+		}
+
+		for (final Method nextMethod : clss.getMethods()) {
+			String attrName = nextMethod.getName();
+			if ((attrName.startsWith("get") || attrName.startsWith("is") || attrName.startsWith("has")) &&
+				(nextMethod.getParameterTypes().length == 0) &&
+				(nextMethod.isAnnotationPresent(DynamoDBAttribute.class) ||
+					nextMethod.isAnnotationPresent(DynamoDBHashKey.class) ||
+					nextMethod.isAnnotationPresent(DynamoDBRangeKey.class) ||
+					// nextMethod.isAnnotationPresent(DynamoDBVersionAttribute.class) ||
+					nextMethod.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextMethod.isAnnotationPresent(DynamoDBIndexRangeKey.class)) &&
+				(((!nextMethod.getGenericReturnType().equals(
+					Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType())) || (nextMethod.getGenericReturnType().equals(
+					Set.class) &&
+					(nextMethod.getReturnType().getTypeParameters().length > 0) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType().getTypeParameters()[0])))) {
+				if (attrName.startsWith("is")) {
+					attrName = attrName.substring(2);
+				} else {
+					attrName = attrName.substring(3);
+				}
+				attrName = attrName.substring(
+					0,
+					1).toLowerCase() + attrName.substring(1);
+				ads.add(new AttributeDefinition(
+					attrName,
+					getAttrType(nextMethod.getReturnType())));
+				if (nextMethod.isAnnotationPresent(DynamoDBHashKey.class)) {
+					kse.add(new KeySchemaElement(
+						attrName,
+						KeyType.HASH));
+				}
+				if (nextMethod.isAnnotationPresent(DynamoDBRangeKey.class)) {
+					kse.add(new KeySchemaElement(
+						attrName,
+						KeyType.RANGE));
+				}
+			}
+		}
+	}
+
+	private String getAttrType( final Class<?> attrClass )
+	{
+		final TypeVariable<?>[] typeParameters = attrClass.getTypeParameters();
+		final String retVal;
+
+		// The only parameterized type that can reach this code is Set<?>. All others are unparameterized
+		// types used as keys in CLASS_TO_ATTR_TYPE.
+		if (typeParameters.length == 0) {
+			retVal = BaseDynamoRepository.CLASS_TO_ATTR_TYPE.get(attrClass);
+		} else {
+			retVal = "S" + BaseDynamoRepository.CLASS_TO_ATTR_TYPE.get(typeParameters[0]);
+		}
+
+		return retVal;
+	}
 }

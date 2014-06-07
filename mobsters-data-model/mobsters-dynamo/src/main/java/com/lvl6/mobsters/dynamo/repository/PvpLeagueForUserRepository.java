@@ -1,5 +1,5 @@
 package com.lvl6.mobsters.dynamo.repository;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -7,16 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.CreateTableResult;
-import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
-import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
 
 @Component
@@ -66,40 +59,4 @@ public class PvpLeagueForUserRepository extends BaseDynamoRepository<PvpLeagueFo
 		return leagues;
 	}
 
-	
-	@Override
-	protected void createTable() {
-		try {
-		log.info("Creating Dynamo table {}", getTableName());
-		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName("userId").withAttributeType("S"));
-		//attributeDefinitions.add(new AttributeDefinition().withAttributeName("pvpLeagueId").withAttributeType("S"));
-		
-		ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
-		ks.add(new KeySchemaElement().withAttributeName("userId").withKeyType(KeyType.HASH));
-		//ks.add(new KeySchemaElement().withAttributeName("pvpLeagueId").withKeyType(KeyType.RANGE));
-		
-		  
-		CreateTableRequest request = new CreateTableRequest()
-		    .withTableName(getTableName())
-		    .withAttributeDefinitions(attributeDefinitions)
-		    .withKeySchema(ks)
-		    .withProvisionedThroughput(provisionedThroughput);
-			List<GlobalSecondaryIndex> globalIndexes = getGlobalIndexes();
-			if(globalIndexes != null && !globalIndexes.isEmpty()) {
-				request.withGlobalSecondaryIndexes(globalIndexes);
-			}
-			List<LocalSecondaryIndex> localIndexes = getLocalIndexes();
-			if(localIndexes != null && !localIndexes.isEmpty()) {
-				request.withLocalSecondaryIndexes(localIndexes);
-			}
-		    log.info("Creating table: {}", request);
-		CreateTableResult result = client.createTable(request);
-		log.info("Create table result: {}", result);
-		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", getTableName(), e);
-			throw e;
-		}
-	}
-	
 }

@@ -13,11 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.CreateTableResult;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 
@@ -63,75 +59,30 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
 		return questsForUser;
 	}
 
-	
 	@Override
-	protected void createTable() {
-		try {
-		log.info("Creating Dynamo table {}", getTableName());
-		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName("userId").withAttributeType("S"));
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName("questId").withAttributeType("S"));
-		//attributeDefinitions.add(new AttributeDefinition().withAttributeName("questId").withAttributeType("S"));
-		
-		ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
-		ks.add(new KeySchemaElement().withAttributeName("userId").withKeyType(KeyType.HASH));
-		ks.add(new KeySchemaElement().withAttributeName("questId").withKeyType(KeyType.RANGE));
-		
-		  
-		CreateTableRequest request = new CreateTableRequest()
-		    .withTableName(getTableName())
-		    .withAttributeDefinitions(attributeDefinitions)
-		    .withKeySchema(ks)
-		    .withProvisionedThroughput(provisionedThroughput);
-			List<GlobalSecondaryIndex> globalIndexes = getGlobalIndexes();
-			if(globalIndexes != null && !globalIndexes.isEmpty()) {
-				request.withGlobalSecondaryIndexes(globalIndexes);
-			}
-			List<LocalSecondaryIndex> localIndexes = getLocalIndexes();
-			if(localIndexes != null && !localIndexes.isEmpty()) {
-				request.withLocalSecondaryIndexes(localIndexes);
-			}
-		    log.info("Creating table: {}", request);
-		CreateTableResult result = client.createTable(request);
-		log.info("Create table result: {}", result);
-		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", getTableName(), e);
-			throw e;
-		}
-	}
-	
-	@Override
-	public List<LocalSecondaryIndex> getLocalIndexes(){
-		/*List<LocalSecondaryIndex> indexes = new ArrayList<>();
-		//isCompleteIndex
-		ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
-		indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH));
-		indexKeySchema.add(new KeySchemaElement("questId", KeyType.RANGE));
-		indexes.add(new LocalSecondaryIndex()
-			.withIndexName("questIdIndex")
-			.withKeySchema(indexKeySchema)
-			.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
-		//isRedeemedIndex
-		indexKeySchema = new ArrayList<KeySchemaElement>();
-		indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH));
-		indexKeySchema.add(new KeySchemaElement("isRedeemed", KeyType.RANGE));
-		indexes.add(new LocalSecondaryIndex()
-			.withIndexName("isRedeemedIndex")
-			.withKeySchema(indexKeySchema)
-			.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
-		//isCompleteIndex
-				indexKeySchema = new ArrayList<KeySchemaElement>();
-				indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH));
-				indexKeySchema.add(new KeySchemaElement("isComplete", KeyType.RANGE));
-				indexes.add(new LocalSecondaryIndex()
-					.withIndexName("isRedeemedIndex")
-					.withKeySchema(indexKeySchema)
-					.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));*/
+	public List<LocalSecondaryIndex> getLocalIndexes()
+	{
+		/*
+		 * List<LocalSecondaryIndex> indexes = new ArrayList<>(); //isCompleteIndex
+		 * ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
+		 * indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH)); indexKeySchema.add(new
+		 * KeySchemaElement("questId", KeyType.RANGE)); indexes.add(new LocalSecondaryIndex()
+		 * .withIndexName("questIdIndex") .withKeySchema(indexKeySchema) .withProjection(new
+		 * Projection().withProjectionType(ProjectionType.ALL))); //isRedeemedIndex indexKeySchema = new
+		 * ArrayList<KeySchemaElement>(); indexKeySchema.add(new KeySchemaElement("userId",
+		 * KeyType.HASH)); indexKeySchema.add(new KeySchemaElement("isRedeemed", KeyType.RANGE));
+		 * indexes.add(new LocalSecondaryIndex() .withIndexName("isRedeemedIndex")
+		 * .withKeySchema(indexKeySchema) .withProjection(new
+		 * Projection().withProjectionType(ProjectionType.ALL))); //isCompleteIndex indexKeySchema = new
+		 * ArrayList<KeySchemaElement>(); indexKeySchema.add(new KeySchemaElement("userId",
+		 * KeyType.HASH)); indexKeySchema.add(new KeySchemaElement("isComplete", KeyType.RANGE));
+		 * indexes.add(new LocalSecondaryIndex() .withIndexName("isRedeemedIndex")
+		 * .withKeySchema(indexKeySchema) .withProjection(new
+		 * Projection().withProjectionType(ProjectionType.ALL)));
+		 */
 		return null;
 	}
-	
-	
-	
+
 	@Override
 	public List<GlobalSecondaryIndex> getGlobalIndexes(){
 /*		List<GlobalSecondaryIndex> indexes = new ArrayList<>();
@@ -155,6 +106,5 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
 		*/
 		return null;
 	}
-	
-	
+
 }
