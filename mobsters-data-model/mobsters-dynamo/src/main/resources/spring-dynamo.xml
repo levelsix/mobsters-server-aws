@@ -39,9 +39,6 @@
 			</list>
 		</property>
 	</bean>
-	
-	<bean id="dynamoMapperConfig" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig" depends-on="setupDynamoDb">
-		<constructor-arg index="0" ref="dynamoMapperConfigTableNamePrefix" />
 
 	<bean id="dynamoMapperConfigTableNamePrefix"
 		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride"
@@ -49,6 +46,11 @@
 		<constructor-arg index="0"
 			value="${aws.dynamo.table.name.prefix}" />
 	</bean>
+
+	<bean id="dynamoMapperConfig"
+		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig">
+		<constructor-arg index="0"
+			ref="dynamoMapperConfigTableNamePrefix" />
 	</bean>
 
 	<bean id="dynamoMapper"
