@@ -13,10 +13,12 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 public class MiniJobForUser {
 
     // private String id;
+
+    @DynamoDBHashKey(attributeName = "userId")
     private String userId;
 
     private Long version;
-    
+
     private String miniJobForUserId;
 
     private int miniJobId;
@@ -29,7 +31,7 @@ public class MiniJobForUser {
 
     //same as userMonsterIdStr below
     private Set<String> userMonsterIds;
-    
+
     //same as userMonsterIds above
 //    private String userMonsterIdStr;
 
@@ -38,15 +40,15 @@ public class MiniJobForUser {
     public MiniJobForUser() {
         super();
     }
-    
+
     public MiniJobForUser(
-        String userId,
-        int miniJobId,
-        int baseDmgReceived,
-        int durationMinutes,
-        Date timeStarted,
-        Set<String> userMonsterIds,
-        Date timeCompleted )
+        final String userId,
+        final int miniJobId,
+        final int baseDmgReceived,
+        final int durationMinutes,
+        final Date timeStarted,
+        final Set<String> userMonsterIds,
+        final Date timeCompleted )
     {
         super();
         this.userId = userId;
@@ -66,12 +68,11 @@ public class MiniJobForUser {
      * id;}
      */
 
-    @DynamoDBHashKey(attributeName = "userId")
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId( String userId ) {
+    public void setUserId( final String userId ) {
         this.userId = userId;
     }
 
@@ -80,7 +81,7 @@ public class MiniJobForUser {
         return version;
     }
 
-    public void setVersion( Long version ) {
+    public void setVersion( final Long version ) {
         this.version = version;
     }
 
@@ -91,7 +92,7 @@ public class MiniJobForUser {
         return miniJobForUserId;
     }
 
-    public void setMiniJobForUserId( String miniJobForUserId )
+    public void setMiniJobForUserId( final String miniJobForUserId )
     {
         this.miniJobForUserId = miniJobForUserId;
     }
@@ -101,7 +102,7 @@ public class MiniJobForUser {
         return miniJobId;
     }
 
-    public void setMiniJobId( int miniJobId )
+    public void setMiniJobId( final int miniJobId )
     {
         this.miniJobId = miniJobId;
     }
@@ -111,7 +112,7 @@ public class MiniJobForUser {
         return baseDmgReceived;
     }
 
-    public void setBaseDmgReceived( int baseDmgReceived )
+    public void setBaseDmgReceived( final int baseDmgReceived )
     {
         this.baseDmgReceived = baseDmgReceived;
     }
@@ -121,7 +122,7 @@ public class MiniJobForUser {
         return durationMinutes;
     }
 
-    public void setDurationMinutes( int durationMinutes )
+    public void setDurationMinutes( final int durationMinutes )
     {
         this.durationMinutes = durationMinutes;
     }
@@ -131,7 +132,7 @@ public class MiniJobForUser {
         return timeStarted;
     }
 
-    public void setTimeStarted( Date timeStarted )
+    public void setTimeStarted( final Date timeStarted )
     {
         this.timeStarted = timeStarted;
     }
@@ -141,7 +142,7 @@ public class MiniJobForUser {
         return userMonsterIds;
     }
 
-    public void setUserMonsterIds( Set<String> userMonsterIds )
+    public void setUserMonsterIds( final Set<String> userMonsterIds )
     {
         this.userMonsterIds = userMonsterIds;
     }
@@ -151,7 +152,7 @@ public class MiniJobForUser {
         return timeCompleted;
     }
 
-    public void setTimeCompleted( Date timeCompleted )
+    public void setTimeCompleted( final Date timeCompleted )
     {
         this.timeCompleted = timeCompleted;
     }
@@ -162,31 +163,38 @@ public class MiniJobForUser {
         final int prime = 31;
         int result = 1;
         result =
-            prime * result + ((miniJobForUserId == null) ? 0 : miniJobForUserId.hashCode());
-        result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+            (prime * result) + ((miniJobForUserId == null) ? 0 : miniJobForUserId.hashCode());
+        result = (prime * result) + ((userId == null) ? 0 : userId.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals( final Object obj )
     {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MiniJobForUser other = (MiniJobForUser) obj;
+        if (this == obj) {
+			return true;
+		}
+        if (obj == null) {
+			return false;
+		}
+        if (getClass() != obj.getClass()) {
+			return false;
+		}
+        final MiniJobForUser other = (MiniJobForUser) obj;
         if (miniJobForUserId == null) {
-            if (other.miniJobForUserId != null)
-                return false;
-        } else if (!miniJobForUserId.equals(other.miniJobForUserId))
-            return false;
+            if (other.miniJobForUserId != null) {
+				return false;
+			}
+        } else if (!miniJobForUserId.equals(other.miniJobForUserId)) {
+			return false;
+		}
         if (userId == null) {
-            if (other.userId != null)
-                return false;
-        } else if (!userId.equals(other.userId))
-            return false;
+            if (other.userId != null) {
+				return false;
+			}
+        } else if (!userId.equals(other.userId)) {
+			return false;
+		}
         return true;
     }
 
