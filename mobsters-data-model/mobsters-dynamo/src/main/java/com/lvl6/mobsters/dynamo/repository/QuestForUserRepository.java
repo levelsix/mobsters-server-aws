@@ -16,13 +16,12 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-
+	
 @Component
-public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
-{
-
-	private static final Logger log = LoggerFactory.getLogger(QuestForUserRepository.class);
-
+public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
+	
+	private static final Logger log = LoggerFactory
+			.getLogger(QuestForUserRepository.class);
 	public QuestForUserRepository()
 	{
 		super(
@@ -38,25 +37,25 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
 		final List<AttributeValue> questIdz = new ArrayList<>();
 		final QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
-		for (final String quest : questIds) {
-			questIdz.add(new AttributeValue().withS(quest));
+		for (Integer quest : questIds) {
+			questIdz.add(new AttributeValue().withN(quest.toString()));
 		}
-
+		
 		final DynamoDBQueryExpression<QuestForUser> query =
 			new DynamoDBQueryExpression<QuestForUser>()
-			// .withIndexName("userIdGlobalIndex")
-			.withHashKeyValues(
-				hashKey).withQueryFilterEntry(
-				"isComplete",
-				new Condition().withComparisonOperator(
-					ComparisonOperator.NE).withAttributeValueList(
-					new AttributeValue().withN(getBoolean(isComplete)))).withQueryFilterEntry(
-				"questId",
-				new Condition().withComparisonOperator(
-					ComparisonOperator.IN).withAttributeValueList(
-					questIdz)).withConsistentRead(
-				true);
-
+				//.withIndexName("userIdGlobalIndex")
+				.withHashKeyValues(hashKey)
+				.withQueryFilterEntry(
+						"isComplete",
+						new Condition().withComparisonOperator(
+								ComparisonOperator.NE).withAttributeValueList(
+								new AttributeValue()
+										.withN(getBoolean(isComplete))))
+				.withQueryFilterEntry(
+						"questId",
+						new Condition().withComparisonOperator(
+								ComparisonOperator.IN).withAttributeValueList(
+								questIdz)).withConsistentRead(true);
 		QuestForUserRepository.log.info(
 			"Query: {}",
 			query);
@@ -64,31 +63,39 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
 		questsForUser.loadAllResults();
 		return questsForUser;
 	}
-
+	
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes()
 	{
 		/*
-		 * List<LocalSecondaryIndex> indexes = new ArrayList<>(); //isCompleteIndex
-		 * ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
-		 * indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH)); indexKeySchema.add(new
-		 * KeySchemaElement("questId", KeyType.RANGE)); indexes.add(new LocalSecondaryIndex()
-		 * .withIndexName("questIdIndex") .withKeySchema(indexKeySchema) .withProjection(new
-		 * Projection().withProjectionType(ProjectionType.ALL))); //isRedeemedIndex indexKeySchema = new
-		 * ArrayList<KeySchemaElement>(); indexKeySchema.add(new KeySchemaElement("userId",
-		 * KeyType.HASH)); indexKeySchema.add(new KeySchemaElement("isRedeemed", KeyType.RANGE));
-		 * indexes.add(new LocalSecondaryIndex() .withIndexName("isRedeemedIndex")
-		 * .withKeySchema(indexKeySchema) .withProjection(new
-		 * Projection().withProjectionType(ProjectionType.ALL))); //isCompleteIndex indexKeySchema = new
-		 * ArrayList<KeySchemaElement>(); indexKeySchema.add(new KeySchemaElement("userId",
-		 * KeyType.HASH)); indexKeySchema.add(new KeySchemaElement("isComplete", KeyType.RANGE));
-		 * indexes.add(new LocalSecondaryIndex() .withIndexName("isRedeemedIndex")
-		 * .withKeySchema(indexKeySchema) .withProjection(new
-		 * Projection().withProjectionType(ProjectionType.ALL)));
+		//isCompleteIndex
+		ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
+		indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH));
+		indexKeySchema.add(new KeySchemaElement("questId", KeyType.RANGE));
+		indexes.add(new LocalSecondaryIndex()
+			.withIndexName("questIdIndex")
+			.withKeySchema(indexKeySchema)
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
+		//isRedeemedIndex
+		indexKeySchema = new ArrayList<KeySchemaElement>();
+		indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH));
+		indexKeySchema.add(new KeySchemaElement("isRedeemed", KeyType.RANGE));
+		indexes.add(new LocalSecondaryIndex()
+			.withIndexName("isRedeemedIndex")
+			.withKeySchema(indexKeySchema)
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
+		//isCompleteIndex
+				indexKeySchema = new ArrayList<KeySchemaElement>();
+				indexKeySchema.add(new KeySchemaElement("userId", KeyType.HASH));
+				indexKeySchema.add(new KeySchemaElement("isComplete", KeyType.RANGE));
+				indexes.add(new LocalSecondaryIndex()
+					.withIndexName("isRedeemedIndex")
+					.withKeySchema(indexKeySchema)
+					.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));*/
 		 */
 		return null;
 	}
-
+	
 	@Override
 	public List<GlobalSecondaryIndex> getGlobalIndexes(){
 /*		List<GlobalSecondaryIndex> indexes = new ArrayList<>();
@@ -112,5 +119,5 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
 		*/
 		return null;
 	}
-
+	
 }

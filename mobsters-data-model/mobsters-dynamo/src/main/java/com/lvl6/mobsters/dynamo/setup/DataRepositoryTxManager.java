@@ -12,12 +12,12 @@ public interface DataRepositoryTxManager
      */
     AmazonDynamoDB getClient();
 
-    /**
-     * Returns the current thread's active DynamoDB transaction, if one exists, otherwise returns null.
-     *
+	/**
+	 * Returns the current thread's active DynamoDB transaction, if one exists, otherwise returns null.
+	 * 
      * @return Returns the current thread's active DynamoDB transaction, if one exists, otherwise returns
      *         null.
-     */
+	 */
     Lvl6Transaction getActiveTransaction();
 
     <T> T load( T item, IsolationLevel isolationLevel );

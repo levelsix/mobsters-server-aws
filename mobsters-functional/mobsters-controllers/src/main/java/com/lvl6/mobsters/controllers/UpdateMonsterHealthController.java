@@ -26,15 +26,14 @@ import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpec;
 import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpecBuilder;
 
 @Component
-// @Lvl6Controller(reqProto=EventProtocolRequest.C_UPDATE_MONSTER_HEALTH_EVENT,
-// respProto=EventProtocolResponse.S_UPDATE_MONSTER_HEALTH_EVENT)
+//@Lvl6Controller(reqProto=EventProtocolRequest.C_UPDATE_MONSTER_HEALTH_EVENT, respProto=EventProtocolResponse.S_UPDATE_MONSTER_HEALTH_EVENT)
 public class UpdateMonsterHealthController extends EventController
 {
 	private static final Logger LOG =
 		LoggerFactory.getLogger(UpdateMonsterHealthController.class);
-
-	@Autowired
-	protected MonsterService monsterService;
+	
+    @Autowired
+    protected MonsterService monsterService;
 
 	public UpdateMonsterHealthController()
 	{
@@ -59,7 +58,7 @@ public class UpdateMonsterHealthController extends EventController
 		final EventsToDispatch eventWriter )
 	{
 		// identify client request.
-		final UpdateMonsterHealthRequestProto reqProto =
+		final UpdateMonsterHealthRequestProto reqProto = 
 			((UpdateMonsterHealthRequestEvent) event).getUpdateMonsterHealthRequestProto();
 		final MinimumUserProto sender = reqProto.getSender();
 		final String userIdString = sender.getUserUuid();
@@ -67,21 +66,20 @@ public class UpdateMonsterHealthController extends EventController
 		// prepare to send response back to client
 		final Builder responseBuilder = UpdateMonsterHealthResponseProto.newBuilder();
 		responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
-		final UpdateMonsterHealthResponseEvent resEvent = new UpdateMonsterHealthResponseEvent(
-			userIdString,
-			event.getTag());
+        UpdateMonsterHealthResponseEvent resEvent =
+            new UpdateMonsterHealthResponseEvent(userIdString, event.getTag());
 
 		// Check values client sent for syntax errors. Call service only if
 		// syntax checks out ok
-		final List<UserMonsterCurrentHealthProto> umchpList = reqProto.getUmchpList();
+        final List<UserMonsterCurrentHealthProto> umchpList = reqProto.getUmchpList();
 		// final Table<String, MonsterForUserOp, Object> details = HashBasedTable.create();
 		final ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
-		if (StringUtils.hasText(userIdString) && !CollectionUtils.lacksSubstance(umchpList)) {
+        if (StringUtils.hasText(userIdString) && !CollectionUtils.lacksSubstance(umchpList)) {
 			// extract the ids so it's easier to get userMonsters from db
 			for (final UserMonsterCurrentHealthProto nextMonsterUnit : umchpList) {
 				modBuilder.setHealthAbsolute(
 					nextMonsterUnit.getUserMonsterUuid(),
-					nextMonsterUnit.getCurrentHealth());
+                    nextMonsterUnit.getCurrentHealth());
 			}
 
 			responseBuilder.setStatus(UpdateMonsterHealthStatus.SUCCESS);
@@ -89,27 +87,23 @@ public class UpdateMonsterHealthController extends EventController
 
 		if (responseBuilder.getStatus() == UpdateMonsterHealthStatus.SUCCESS) {
 			try {
-				monsterService.modifyMonstersForUser(
-					userIdString,
-					modBuilder.build());
-				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
-			} catch (final Exception e) {
-				UpdateMonsterHealthController.LOG.error(
-					"exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService",
-					e);
+                monsterService.modifyMonstersForUser(userIdString, modBuilder.build());
+                resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
+            } catch (Exception e) {
+                LOG.error(
+                    "exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService",
+                    e);
 				responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
-				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
+                resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
 			}
 		}
 
 		// write to client
-		UpdateMonsterHealthController.LOG.info("Writing event: " + resEvent);
+		LOG.info("Writing event: " + resEvent);
 		try {
 			eventWriter.writeEvent(resEvent);
-		} catch (final Exception exp) {
-			UpdateMonsterHealthController.LOG.error(
-				"fatal exception in UpdateMonsterHealthController processRequestEvent",
-				exp);
+		} catch (Exception exp) {
+			LOG.error("fatal exception in UpdateMonsterHealthController processRequestEvent", exp);
 		}
 	}
 

@@ -109,6 +109,7 @@ message StartupResponseProto {
 	optional MinimumUserTaskProto curTask = 36;
 	repeated TaskStageProto curTaskStages = 37;
 	
+	//all the user achievements
 	repeated UserAchievementProto userAchievements = 38;
 	repeated UserMiniJobProto userMiniJobProtos = 39;
 	

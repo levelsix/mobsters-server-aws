@@ -20,44 +20,44 @@ import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
-import com.lvl6.mobsters.dynamo.AchievementForUser;
+import com.lvl6.mobsters.dynamo.MiniJobForUser;
 
 @Component
-public class AchievementForUserRepository extends
-		BaseDynamoRepository<AchievementForUser> {
+public class MiniJobForUserRepository extends
+		BaseDynamoRepository<MiniJobForUser> {
 
 	private static final Logger log = LoggerFactory
-			.getLogger(AchievementForUserRepository.class);
+			.getLogger(MiniJobForUserRepository.class);
 
-	public AchievementForUserRepository() {
-		super(AchievementForUser.class);
+	public MiniJobForUserRepository() {
+		super(MiniJobForUser.class);
 		isActive = true;// for unit test
 	}
 	
-	public List<AchievementForUser> findByUserIdAndId(String userId,
-	    Collection<Integer> achievementIds) {
-	    List<AttributeValue> achievementIdz = new ArrayList<>();
-	    AchievementForUser hashKey = new AchievementForUser();
-	    hashKey.setUserId(userId);
-	    for (Integer achievementId : achievementIds) {
-	        achievementIdz.add(new AttributeValue().withN(achievementId.toString()));
-	    }
+	public List<MiniJobForUser> findByUserIdAndId(String userId,
+        Collection<String> userMiniJobIds) {
+        List<AttributeValue> userMiniJobIdz = new ArrayList<>();
+        MiniJobForUser hashKey = new MiniJobForUser();
+        hashKey.setUserId(userId);
+        for (String userMiniJobId : userMiniJobIds) {
+            userMiniJobIdz.add(new AttributeValue().withS(userMiniJobId.toString()));
+        }
 
-	    DynamoDBQueryExpression<AchievementForUser> query = new DynamoDBQueryExpression<AchievementForUser>()
-	        // .withIndexName("userIdGlobalIndex")
-	        .withHashKeyValues(hashKey)
-	        .withQueryFilterEntry(
-	            "achievementId",
-	            new Condition().withComparisonOperator(
-	                ComparisonOperator.IN).withAttributeValueList(
-	                    achievementIdz)).withConsistentRead(true);
+        DynamoDBQueryExpression<MiniJobForUser> query = new DynamoDBQueryExpression<MiniJobForUser>()
+            // .withIndexName("userIdGlobalIndex")
+            .withHashKeyValues(hashKey)
+            .withQueryFilterEntry(
+                "miniJobForUserId",
+                new Condition().withComparisonOperator(
+                    ComparisonOperator.IN).withAttributeValueList(
+                        userMiniJobIdz)).withConsistentRead(true);
 
-	    log.info("Query: {}", query);
-	    PaginatedQueryList<AchievementForUser> achievementsForUser = mapper.query(
-	        AchievementForUser.class, query);
-	    achievementsForUser.loadAllResults();
-	    return achievementsForUser;
-	}
+        log.info("Query: {}", query);
+        PaginatedQueryList<MiniJobForUser> miniJobsForUser = mapper.query(
+            MiniJobForUser.class, query);
+        miniJobsForUser.loadAllResults();
+        return miniJobsForUser;
+    }
 
 	@Override
 	protected void createTable() {
@@ -67,12 +67,12 @@ public class AchievementForUserRepository extends
 			attributeDefinitions.add(new AttributeDefinition()
 					.withAttributeName("userId").withAttributeType("S"));
 			attributeDefinitions.add(new AttributeDefinition()
-					.withAttributeName("achievementId").withAttributeType("N"));
+					.withAttributeName("miniJobForUserId").withAttributeType("S"));
 
 			ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
 			ks.add(new KeySchemaElement().withAttributeName("userId")
 					.withKeyType(KeyType.HASH));
-			ks.add(new KeySchemaElement().withAttributeName("achievementId")
+			ks.add(new KeySchemaElement().withAttributeName("miniJobForUserId")
 					.withKeyType(KeyType.RANGE));
 
 			CreateTableRequest request = new CreateTableRequest()

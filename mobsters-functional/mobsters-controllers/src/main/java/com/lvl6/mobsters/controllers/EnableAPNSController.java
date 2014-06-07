@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdRequestProto;
-import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto;
-import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdResponseProto.SetGameCenterIdStatus;
+import com.lvl6.mobsters.eventproto.EventApnsProto.EnableAPNSRequestProto;
+import com.lvl6.mobsters.eventproto.EventApnsProto.EnableAPNSResponseProto;
+import com.lvl6.mobsters.eventproto.EventApnsProto.EnableAPNSResponseProto.EnableAPNSStatus;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.SetGameCenterIdRequestEvent;
-import com.lvl6.mobsters.events.response.SetGameCenterIdResponseEvent;
+import com.lvl6.mobsters.events.request.EnableAPNSRequestEvent;
+import com.lvl6.mobsters.events.response.EnableAPNSResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
@@ -21,9 +21,9 @@ import com.lvl6.mobsters.services.user.UserService.ModifyUserDataRarelyAccessedS
 import com.lvl6.mobsters.services.user.UserService.ModifyUserDataRarelyAccessedSpecBuilder;
 
 @Component
-public class SetGameCenterIdController extends EventController {
+public class EnableAPNSController extends EventController {
 
-    private static Logger LOG = LoggerFactory.getLogger(SetGameCenterIdController.class);
+    private static Logger LOG = LoggerFactory.getLogger(EnableAPNSController.class);
 
     @Autowired
     protected UserService userService;
@@ -32,68 +32,64 @@ public class SetGameCenterIdController extends EventController {
      * @Autowired protected EventWriter eventWriter;
      */
 
-    public SetGameCenterIdController() {}
+    public EnableAPNSController() {}
 
     @Override
     public RequestEvent createRequestEvent() {
-        return new SetGameCenterIdRequestEvent();
+        return new EnableAPNSRequestEvent();
     }
 
     @Override
     public EventProtocolRequest getEventType() {
-        return EventProtocolRequest.C_SET_GAME_CENTER_ID_EVENT;
+        return EventProtocolRequest.C_ENABLE_APNS_EVENT;
     }
 
     @Override
     protected void processRequestEvent( RequestEvent event, EventsToDispatch eventWriter ) throws Exception
     {
-        final SetGameCenterIdRequestProto reqProto =
-            ((SetGameCenterIdRequestEvent) event).getSetGameCenterIdRequestProto();
+        final EnableAPNSRequestProto reqProto =
+            ((EnableAPNSRequestEvent) event).getEnableAPNSRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        final String gameCenterId = reqProto.getGameCenterId();
+        final String deviceToken = reqProto.getDeviceToken();
 
         // prepare to send response back to client
-        SetGameCenterIdResponseProto.Builder responseBuilder =
-            SetGameCenterIdResponseProto.newBuilder();
-        responseBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
+        EnableAPNSResponseProto.Builder responseBuilder =
+            EnableAPNSResponseProto.newBuilder();
+        responseBuilder.setStatus(EnableAPNSStatus.NOT_ENABLED);
         responseBuilder.setSender(senderProto);
-        if (null != gameCenterId) {
-            responseBuilder.setGameCenterId(gameCenterId);
-        }
-        SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userIdString);
+        EnableAPNSResponseEvent resEvent = new EnableAPNSResponseEvent(userIdString);
         resEvent.setTag(event.getTag());
 
         // Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
         final ModifyUserDataRarelyAccessedSpecBuilder modBuilder =
             ModifyUserDataRarelyAccessedSpec.builder();
-        if (StringUtils.hasText(gameCenterId) && StringUtils.hasText(userIdString)) {
-            modBuilder.setGameCenterIdNotNull(gameCenterId);
+        if (StringUtils.hasText(deviceToken) && StringUtils.hasText(userIdString)) {
+            modBuilder.setDeviceToken(deviceToken);
 
-            responseBuilder.setStatus(SetGameCenterIdStatus.SUCCESS);
-        }
-
-        // call service if syntax is ok
-        if (responseBuilder.getStatus() == SetGameCenterIdStatus.SUCCESS) {
-            try {
-                userService.modifyUserDataRarelyAccessed(userIdString, modBuilder.build());
-            } catch (Exception e) {
-                LOG.error(
-                    "exception in SetGameCenterIdController processEvent when calling userService",
-                    e);
-                responseBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
+            if (null != deviceToken) {
+                responseBuilder.setStatus(EnableAPNSStatus.SUCCESS);
             }
         }
 
-        resEvent.setSetGameCenterIdResponseProto(responseBuilder.build());
+        try {
+            userService.modifyUserDataRarelyAccessed(userIdString, modBuilder.build());
+        } catch (Exception e) {
+            LOG.error(
+                "exception in EnableAPNSController processEvent when calling userService",
+                e);
+            responseBuilder.setStatus(EnableAPNSStatus.NOT_ENABLED);
+        }
+
+        resEvent.setEnableAPNSResponseProto(responseBuilder.build());
 
         // write to client
         LOG.info("Writing event: " + resEvent);
         try {
             eventWriter.writeEvent(resEvent);
         } catch (Exception e) {
-            LOG.error("fatal exception in SetGameCenterIdController processRequestEvent", e);
+            LOG.error("fatal exception in EnableAPNSController processRequestEvent", e);
         }
 
         // TODO: FIGURE OUT IF THIS IS STILL NEEDED
@@ -109,13 +105,13 @@ public class SetGameCenterIdController extends EventController {
     // RequestEvent event,
     // EventsToDispatch eventWriter,
     // String userId,
-    // SetGameCenterIdResponseProto.Builder resBuilder )
+    // EnableAPNSResponseProto.Builder resBuilder )
     // {
     // eventWriter.clearResponses();
-    // resBuilder.setStatus(SetGameCenterIdStatus.FAIL_OTHER);
-    // SetGameCenterIdResponseEvent resEvent = new SetGameCenterIdResponseEvent(userId);
+    // resBuilder.setStatus(EnableAPNSStatus.FAIL_OTHER);
+    // EnableAPNSResponseEvent resEvent = new EnableAPNSResponseEvent(userId);
     // resEvent.setTag(event.getTag());
-    // resEvent.setSetGameCenterIdResponseProto(resBuilder.build());
+    // resEvent.setEnableAPNSResponseProto(resBuilder.build());
     // eventWriter.writeEvent(resEvent);
     // }
 
