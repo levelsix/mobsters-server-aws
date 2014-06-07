@@ -5,10 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ClanRaid extends BasePersistentObject{
+public class ClanRaid extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 3611542670148402997L;
+	private static final long serialVersionUID = -5818226556007217032L;
 	@Column(name = "clan_raid_name")
 	private String clanRaidName;
 	@Column(name = "active_title_img_name")
@@ -26,7 +26,7 @@ public class ClanRaid extends BasePersistentObject{
 	@Column(name = "spotlight_monster_img_name")
 	private String spotlightMonsterImgName;	
 	public ClanRaid(){}
-	public ClanRaid(String id, String clanRaidName, String activeTitleImgName,
+	public ClanRaid(int id, String clanRaidName, String activeTitleImgName,
 			String activeBackgroundImgName, String activeDescription,
 			String inactiveMonsterImgName, String inactiveDescription,
 			String dialogueText, String spotlightMonsterImgName) {

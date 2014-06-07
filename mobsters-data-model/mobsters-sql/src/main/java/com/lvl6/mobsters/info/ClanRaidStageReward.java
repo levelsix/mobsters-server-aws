@@ -7,10 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ClanRaidStageReward extends BasePersistentObject{	
+public class ClanRaidStageReward extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = 5751587703340719676L;
+	private static final long serialVersionUID = -2525273287809556883L;
 	@Column(name = "clan_raid_stage_id")
 	private int clanRaidStageId;
 	@Column(name = "min_oil_reward")
@@ -30,7 +30,7 @@ public class ClanRaidStageReward extends BasePersistentObject{
 	@Column(name = "rand")
 	private Random rand;	
 	public ClanRaidStageReward(){}
-	public ClanRaidStageReward(String id, int clanRaidStageId, int minOilReward,
+	public ClanRaidStageReward(int id, int clanRaidStageId, int minOilReward,
 			int maxOilReward, int minCashReward, int maxCashReward, int monsterId,
 			int expectedMonsterRewardQuantity) {
 		super(id);

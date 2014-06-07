@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class BoosterDisplayItem extends BasePersistentObject{	
+public class BoosterDisplayItem extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = 7777555839471300259L;	
+	private static final long serialVersionUID = 5409974253563638721L;	
 
 	@Column(name = "booster_pack_id")
 	private int boosterPackId;
@@ -22,7 +22,7 @@ public class BoosterDisplayItem extends BasePersistentObject{
 	@Column(name = "quantity")
 	private int quantity;  
 	public BoosterDisplayItem(){}
-	public BoosterDisplayItem(String id, int boosterPackId, boolean isMonster,
+	public BoosterDisplayItem(int id, int boosterPackId, boolean isMonster,
 			boolean isComplete, String monsterQuality, int gemReward,
 			int quantity) {
 		super(id);

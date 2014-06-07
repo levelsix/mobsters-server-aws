@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class BoosterPack extends BasePersistentObject{	
+public class BoosterPack extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = -5200606492974418991L;
+	private static final long serialVersionUID = -3541561961941269992L;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "gem_price")
@@ -23,7 +23,7 @@ public class BoosterPack extends BasePersistentObject{
 	@Column(name = "machine_img_name")
 	private String machineImgName;  
 	public BoosterPack(){}
-	public BoosterPack(String id, String name, int gemPrice,
+	public BoosterPack(int id, String name, int gemPrice,
 			String listBackgroundImgName, String listDescription,
 			String navBarImgName, String navTitleImgName, String machineImgName) {
 		super(id);

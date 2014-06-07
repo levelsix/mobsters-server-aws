@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class StructureResidence extends BasePersistentObject{
+public class StructureResidence extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 5657322728558293593L;
+	private static final long serialVersionUID = 4051797541566106042L;
 	@Column(name = "struct_id")
 	private int structId;	//how many monster slots this residence gives the user (absolute number)
 	//does not depend on previous lower level structures

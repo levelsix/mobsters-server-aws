@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ClanEventPersistent extends BasePersistentObject{	
+public class ClanEventPersistent extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = -3881447951245558541L;
+	private static final long serialVersionUID = -8558251291751929671L;
 	@Column(name = "day_of_week")
 	private String dayOfWeek;
 	@Column(name = "start_hour")
@@ -17,7 +17,7 @@ public class ClanEventPersistent extends BasePersistentObject{
 	@Column(name = "clan_raid_id")
 	private int clanRaidId;	
 	public ClanEventPersistent(){}
-	public ClanEventPersistent(String id, String dayOfWeek, int startHour,
+	public ClanEventPersistent(int id, String dayOfWeek, int startHour,
 			int eventDurationMinutes, int clanRaidId) {
 		super(id);
 		this.dayOfWeek = dayOfWeek;

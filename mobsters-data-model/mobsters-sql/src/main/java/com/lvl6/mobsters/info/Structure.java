@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class Structure extends BasePersistentObject{
+public class Structure extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = -7838827750756218900L;	
+	private static final long serialVersionUID = 7037261155175136307L;	
 
 	@Column(name = "name")
 	private String name;
@@ -50,7 +50,7 @@ public class Structure extends BasePersistentObject{
 	@Column(name = "shadow_scale")
 	private float shadowScale;	
 	public Structure(){}
-	public Structure(String id, String name, int level, String structType,
+	public Structure(int id, String name, int level, String structType,
 			String buildResourceType, int buildCost, int minutesToBuild,
 			int requiredTownHallLvl, int width, int height,
 			int predecessorStructId, int successorStructId, String imgName,

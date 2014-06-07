@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class StructureLab extends BasePersistentObject{
+public class StructureLab extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 5038262297256522280L;
+	private static final long serialVersionUID = -1240983293629757080L;
 	@Column(name = "struct_id")
 	private int structId;
 	@Column(name = "queue_size")

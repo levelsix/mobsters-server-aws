@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="task")
-public class Task extends BasePersistentObject{
+public class Task extends BaseIntPersistentObject{
 
 	private static final long serialVersionUID = -520057120226567292L;
 
@@ -44,7 +44,7 @@ public class Task extends BasePersistentObject{
 	}
 
 
-	public Task(final String id, final String goodName, final String description, final City city,
+	public Task(final int id, final String goodName, final String description, final City city,
 			final int assetNumberWithinCity, final Task prerequisiteTask, final Quest prerequisiteQuest) {
 		super(id);
 		this.goodName = goodName;

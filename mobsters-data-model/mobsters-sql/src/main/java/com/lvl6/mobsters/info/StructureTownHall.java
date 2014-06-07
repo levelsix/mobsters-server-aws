@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class StructureTownHall extends BasePersistentObject{
+public class StructureTownHall extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 3098858652882579526L;
+	private static final long serialVersionUID = 1342783029881923550L;
 	@Column(name = "struct_id")
 	private int structId;
 	@Column(name = "num_resource_one_generators")

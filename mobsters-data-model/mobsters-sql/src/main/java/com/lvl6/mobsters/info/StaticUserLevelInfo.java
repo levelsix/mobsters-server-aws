@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class StaticUserLevelInfo extends BasePersistentObject{	
+public class StaticUserLevelInfo extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = -258608581176466155L;
+	private static final long serialVersionUID = 3045058936351773319L;
 	@Column(name = "lvl")
 	private int lvl;
 	@Column(name = "required_exp")

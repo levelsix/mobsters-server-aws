@@ -4,16 +4,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class TaskStage extends BasePersistentObject{
+public class TaskStage extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = -4429232440756191289L;
+	private static final long serialVersionUID = 5297741233536637684L;
 	@Column(name = "task_id")
 	private int taskId;
 	@Column(name = "stage_num")
 	private int stageNum;	
 	public TaskStage(){}
-	public TaskStage(String id, int taskId, int stageNum) {
+	public TaskStage(int id, int taskId, int stageNum) {
 		super(id);
 		this.taskId = taskId;
 		this.stageNum = stageNum;

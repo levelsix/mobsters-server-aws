@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class Obstacle extends BasePersistentObject{
+public class Obstacle extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4770303583975177808L;	
+	private static final long serialVersionUID = 8336381805181667798L;	
 
 	@Column(name = "name")
 	private String name;
@@ -33,7 +33,7 @@ public class Obstacle extends BasePersistentObject{
   float shadowHorizontalOffset;
   
 	public Obstacle(){}
-	public Obstacle(String id, String name, String removalCostType, int cost,
+	public Obstacle(int id, String name, String removalCostType, int cost,
 			int secondsToRemove, int width, int height, String imgName,
 			float imgVerticalPixelOffset, String description, float chanceToAppear,
 			String shadowImgName, float shadowVerticalOffset,

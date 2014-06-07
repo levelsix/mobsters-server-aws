@@ -6,9 +6,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="monster")
-public class Monster extends BasePersistentObject{	
+public class Monster extends BaseIntPersistentObject{	
 
-	private static final long serialVersionUID = -7228847551326085808L;
+	private static final long serialVersionUID = -3176206778781138581L;
 
 	@Column(name = "name")
 	private String name;
@@ -63,7 +63,7 @@ public class Monster extends BasePersistentObject{
 	@Column(name = "shorter_name")
 	private String shorterName;	
 	public Monster() { }
-	public Monster(String id, String name, String monsterGroup, String quality,
+	public Monster(int id, String name, String monsterGroup, String quality,
 			int evolutionLevel, String displayName, String element,
 			String imagePrefix, int numPuzzlePieces,
 			int minutesToCombinePieces, int maxLevel, int evolutionMonsterId,

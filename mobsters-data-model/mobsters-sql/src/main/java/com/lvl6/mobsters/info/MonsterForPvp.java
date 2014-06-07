@@ -6,10 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class MonsterForPvp extends BasePersistentObject{
+public class MonsterForPvp extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4013127890023301706L;	
+	private static final long serialVersionUID = 4471110536112855370L;	
 
 	@Column(name = "monster_id")
 	private int monsterId;
@@ -31,7 +31,7 @@ public class MonsterForPvp extends BasePersistentObject{
 	@Column(name = "rand")
 	private Random rand;	
 	public MonsterForPvp(){}
-	public MonsterForPvp(String id, int monsterId, int monsterLvl, int elo,
+	public MonsterForPvp(int id, int monsterId, int monsterLvl, int elo,
 			int minCashReward, int maxCashReward, int minOilReward, int maxOilReward) {
 		super(id);
 		this.monsterId = monsterId;

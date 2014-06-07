@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class Item extends BasePersistentObject{
+public class Item extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4660675777685331403L;	
+	private static final long serialVersionUID = 4722159188008091441L;	
 
 	@Column(name = "name")
 	private String name;
@@ -22,7 +22,7 @@ public class Item extends BasePersistentObject{
 	@Column(name = "red")
 	private int red;	
 	public Item(){}
-	public Item(String id, String name, String imgName, String borderImgName,
+	public Item(int id, String name, String imgName, String borderImgName,
 			int blue, int green, int red) {
 		super(id);
 		this.name = name;

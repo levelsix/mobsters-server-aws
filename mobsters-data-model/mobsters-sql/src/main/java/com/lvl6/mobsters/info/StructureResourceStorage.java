@@ -4,13 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class StructureResourceStorage extends BasePersistentObject{
+public class StructureResourceStorage extends BaseIntPersistentObject{
 /**
 	 * 
 	 */
 
 	
-	private static final long serialVersionUID = 5021640371198924904L;
+	private static final long serialVersionUID = -1614890686257355530L;
 	//
 //	private static final long serialVersionUID = 5021640371198924904L;
 	@Column(name = "struct_id")

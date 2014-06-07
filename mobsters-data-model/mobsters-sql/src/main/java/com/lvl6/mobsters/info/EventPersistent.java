@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class EventPersistent extends BasePersistentObject{	
+public class EventPersistent extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = 1511718617355339151L;
+	private static final long serialVersionUID = 515573356447727757L;
 	@Column(name = "day_of_week")
 	private String dayOfWeek;
 	@Column(name = "start_hour")
@@ -23,7 +23,7 @@ public class EventPersistent extends BasePersistentObject{
 	@Column(name = "monster_element")
 	private String monsterElement;	
 	public EventPersistent(){}
-	public EventPersistent(String id, String dayOfWeek, int startHour,
+	public EventPersistent(int id, String dayOfWeek, int startHour,
 			int eventDurationMinutes, int taskId, int cooldownMinutes,
 			String eventType, String monsterElement) {
 		super(id);

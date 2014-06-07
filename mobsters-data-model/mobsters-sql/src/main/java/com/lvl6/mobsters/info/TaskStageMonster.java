@@ -6,10 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class TaskStageMonster extends BasePersistentObject{
+public class TaskStageMonster extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 6294339139996875888L;	
+	private static final long serialVersionUID = 9192496432635630281L;	
 
 	@Column(name = "stage_id")
 	private int stageId;
@@ -37,7 +37,7 @@ public class TaskStageMonster extends BasePersistentObject{
 	@Column(name = "rand")
 	private Random rand;
 	public TaskStageMonster(){}
-	public TaskStageMonster(String id, int stageId, int monsterId, String monsterType,
+	public TaskStageMonster(int id, int stageId, int monsterId, String monsterType,
 		int expReward, int minCashDrop, int maxCashDrop, int minOilDrop,
 		int maxOilDrop, float puzzlePieceDropRate, int level,
 		float chanceToAppear) {

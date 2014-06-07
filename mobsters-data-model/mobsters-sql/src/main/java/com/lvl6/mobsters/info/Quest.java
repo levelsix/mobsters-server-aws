@@ -10,10 +10,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="quest")
-public class Quest extends BasePersistentObject{
+public class Quest extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 943974595064267438L;	
+	private static final long serialVersionUID = -7293560537221688587L;	
 
 	//@Column(name = "city_id")
 	//	private int cityId;
@@ -61,7 +61,7 @@ public class Quest extends BasePersistentObject{
 	@Column(name = "monster_element")
 	private String monsterElement;	
 	public Quest(){}
-	public Quest(String id, String questName, String description, String doneResponse,
+	public Quest(int id, String questName, String description, String doneResponse,
 			Dialogue acceptDialogue, int cashReward, int oilReward, int gemReward,
 			int expReward, int monsterIdReward, boolean isCompleteMonster,
 			List<Quest> questsRequiredForThis, String questGiverName,

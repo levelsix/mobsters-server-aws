@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class QuestJob extends BasePersistentObject{
+public class QuestJob extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4809910755711898087L;	
+	private static final long serialVersionUID = 8512045755153249399L;	
 
 	@Column(name = "quest_id")
 	private int questId;
@@ -33,7 +33,7 @@ public class QuestJob extends BasePersistentObject{
 	@Column(name = "city_asset_num")
 	private int cityAssetNum;	
 	public QuestJob(){}
-	public QuestJob(String id, int questId, String questJobType,
+	public QuestJob(int id, int questId, String questJobType,
 			String description, int staticDataId, int quantity, int priority,
 			int cityId, int cityAssetNum) {
 		super(id);

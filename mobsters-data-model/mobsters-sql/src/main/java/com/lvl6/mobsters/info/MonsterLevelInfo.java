@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class MonsterLevelInfo extends BasePersistentObject{
+public class MonsterLevelInfo extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 5516157948001134283L;	
+	private static final long serialVersionUID = -2871557654511408447L;	
 
 	@Column(name = "monster_id")
 	private int monsterId;

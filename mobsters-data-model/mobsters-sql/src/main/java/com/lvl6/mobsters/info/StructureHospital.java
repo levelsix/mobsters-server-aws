@@ -4,13 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class StructureHospital extends BasePersistentObject{
+public class StructureHospital extends BaseIntPersistentObject{
 /**
 	 * 
 	 */
 
 	
-	private static final long serialVersionUID = -3569030137246330339L;
+	private static final long serialVersionUID = 2595468911342522178L;
 	//
 	//	private static final long serialVersionUID = -3569030137246330339L;
 	@Column(name = "struct_id")

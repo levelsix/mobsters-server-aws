@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class MonsterBattleDialogue extends BasePersistentObject{
+public class MonsterBattleDialogue extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = -5528835530547990738L;
+	private static final long serialVersionUID = 375017930527401926L;
 	@Column(name = "monster_id")
 	private int monsterId;
 	@Column(name = "dialogue_type")
@@ -17,7 +17,7 @@ public class MonsterBattleDialogue extends BasePersistentObject{
 	@Column(name = "probability_uttered")
 	private float probabilityUttered;	
 	public MonsterBattleDialogue(){}
-	public MonsterBattleDialogue(String id, int monsterId, String dialogueType,
+	public MonsterBattleDialogue(int id, int monsterId, String dialogueType,
 			String dialogue, float probabilityUttered) {
 		super(id);
 		this.monsterId = monsterId;

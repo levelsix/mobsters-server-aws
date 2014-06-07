@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class City extends BasePersistentObject{
+public class City extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 8092805006560290613L;
+	private static final long serialVersionUID = -5075724047972364845L;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "map_img_name")
@@ -23,7 +23,7 @@ public class City extends BasePersistentObject{
 	@Column(name = "attack_map_label_img_name")
 	private String attackMapLabelImgName;	
 	public City(){}
-	public City(String id, String name, String mapImgName, CoordinatePair center,
+	public City(int id, String name, String mapImgName, CoordinatePair center,
 			String roadImgName, String mapTmxName, CoordinatePair roadImgCoords,
 			String attackMapLabelImgName) {
 		super(id);

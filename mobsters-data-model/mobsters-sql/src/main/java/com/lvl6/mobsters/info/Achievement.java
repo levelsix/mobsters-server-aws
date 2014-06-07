@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class Achievement extends BasePersistentObject{
+public class Achievement extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4581761456535076556L;	
+	private static final long serialVersionUID = 5024365951273441363L;	
 
 	@Column(name = "achievement_name")
 	private String achievementName;
@@ -36,12 +36,12 @@ public class Achievement extends BasePersistentObject{
 	@Column(name = "successor_id")
 	private int successorId;	
 	public Achievement(){}
-	public Achievement(String achievementName, String description,
+	public Achievement(int id, String achievementName, String description,
 			int gemReward, int lvl, String achievementType,
 			String resourceType, String monsterElement, String monsterQuality,
 			int staticDataId, int quantity, int priority, int prerequisiteId,
 			int successorId) {
-		super();
+		super(id);
 		this.achievementName = achievementName;
 		this.description = description;
 		this.gemReward = gemReward;

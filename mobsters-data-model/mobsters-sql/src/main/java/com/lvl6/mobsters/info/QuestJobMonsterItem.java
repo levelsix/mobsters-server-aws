@@ -6,10 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class QuestJobMonsterItem extends BasePersistentObject{
+public class QuestJobMonsterItem extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 9159046998370704510L;	
+	private static final long serialVersionUID = 8726386331515698573L;	
 
 	@Column(name = "quest_job_id")
 	private int questJobId;

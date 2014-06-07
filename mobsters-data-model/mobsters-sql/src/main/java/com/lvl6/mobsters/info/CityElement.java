@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class CityElement extends BasePersistentObject{	
+public class CityElement extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = 4626120437231136146L;	
+	private static final long serialVersionUID = 7765035902773534766L;	
 
 	@Column(name = "city_id")
 	private int cityId;

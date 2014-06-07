@@ -4,9 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ClanIcon extends BasePersistentObject{
+public class ClanIcon extends BaseIntPersistentObject{
 	
-	private static final long serialVersionUID = -3648830914482901288L;	
+	private static final long serialVersionUID = -5510816987235168564L;	
 
 	@Column(name = "img_name")
 	private String imgName;
@@ -18,7 +18,7 @@ public class ClanIcon extends BasePersistentObject{
 		super();
 	}
 
-	public ClanIcon(final String id, final String imgName, final boolean isAvailable) {
+	public ClanIcon(final int id, final String imgName, final boolean isAvailable) {
 		super(id);
 		this.imgName = imgName;
 		this.isAvailable = isAvailable;

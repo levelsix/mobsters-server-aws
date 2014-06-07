@@ -4,10 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class PvpLeague extends BasePersistentObject{
+public class PvpLeague extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4071892938955324752L;	
+	private static final long serialVersionUID = -6279541522498753204L;	
 
 	@Column(name = "league_name")
 	private String leagueName;
@@ -22,7 +22,7 @@ public class PvpLeague extends BasePersistentObject{
 	@Column(name = "max_elo")
 	private int maxElo;	
 	public PvpLeague(){}
-	public PvpLeague(String id, String leagueName, String imgPrefix, int numRanks,
+	public PvpLeague(int id, String leagueName, String imgPrefix, int numRanks,
 			String description, int minElo, int maxElo) {
 		super(id);
 		this.leagueName = leagueName;

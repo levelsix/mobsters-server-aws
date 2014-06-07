@@ -5,10 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ClanRaidStage extends BasePersistentObject{
+public class ClanRaidStage extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4353447583250770652L;
+	private static final long serialVersionUID = -3094380326249461454L;
 	@Column(name = "clan_raid_id")
 	private int clanRaidId;
 	@Column(name = "duration_minutes")
@@ -23,7 +23,7 @@ public class ClanRaidStage extends BasePersistentObject{
 	@Column(name = "stage_health")
 	private int stageHealth;	
 	public ClanRaidStage(){}
-	public ClanRaidStage(String id, int clanRaidId, int durationMinutes,
+	public ClanRaidStage(int id, int clanRaidId, int durationMinutes,
 			int stageNum, String name) {
 		super(id);
 		this.clanRaidId = clanRaidId;
