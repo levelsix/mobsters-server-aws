@@ -21,9 +21,23 @@
 
 	<bean id="dynamoClient" class="com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient">
 		<constructor-arg index="0" ref="awsCredentials" />
-		<property name="endpoint" value="${aws.dynamo.endpoint}" />
 	</bean>
 
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="dynamoClient" />
+		</property>
+		<property name="targetMethod">
+			<value>setEndpoint</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${aws.dynamo.endpoint}</value>
+				<value>dynamodb</value>
+				<value>${aws.dynamo.regionId}</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="dynamoMapperConfig" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig" depends-on="setupDynamoDb">
