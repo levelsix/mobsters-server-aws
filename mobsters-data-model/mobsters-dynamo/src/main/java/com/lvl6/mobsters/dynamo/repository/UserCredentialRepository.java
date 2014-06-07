@@ -1,4 +1,5 @@
 package com.lvl6.mobsters.dynamo.repository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +32,13 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 	{
 		final UserCredential key = new UserCredential();
 		key.setFacebookId(facebookId);
-		DynamoDBQueryExpression<UserCredential> query = new DynamoDBQueryExpression<UserCredential>()
-				.withIndexName("facebookIdGlobalIndex")
-				.withHashKeyValues(key)
-				.withConsistentRead(false);
-		//log.info("Query: {}", query);
-		PaginatedQueryList<UserCredential> users = mapper.query(UserCredential.class, query);
+		final DynamoDBQueryExpression<UserCredential> query =
+			new DynamoDBQueryExpression<UserCredential>().withIndexName(
+				"facebookIdGlobalIndex").withHashKeyValues(
+				key).withConsistentRead(
+				false);
+		// log.info("Query: {}", query);
+		final PaginatedQueryList<UserCredential> users = query(query);
 		users.loadAllResults();
 		return users;
 	}
@@ -45,12 +47,13 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 	{
 		final UserCredential key = new UserCredential();
 		key.setUdid(udid);
-		DynamoDBQueryExpression<UserCredential> query = new DynamoDBQueryExpression<UserCredential>()
-				.withIndexName("udidGlobalIndex")
-				.withHashKeyValues(key)
-				.withConsistentRead(false);
-		//log.info("Query: {}", query);
-		PaginatedQueryList<UserCredential> users = mapper.query(UserCredential.class, query);
+		final DynamoDBQueryExpression<UserCredential> query =
+			new DynamoDBQueryExpression<UserCredential>().withIndexName(
+				"udidGlobalIndex").withHashKeyValues(
+				key).withConsistentRead(
+				false);
+		// log.info("Query: {}", query);
+		final PaginatedQueryList<UserCredential> users = query(query);
 		users.loadAllResults();
 		return users;
 	}

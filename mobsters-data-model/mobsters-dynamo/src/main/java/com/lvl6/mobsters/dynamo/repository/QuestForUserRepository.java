@@ -1,4 +1,5 @@
 package com.lvl6.mobsters.dynamo.repository;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
@@ -42,19 +42,25 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
 			questIdz.add(new AttributeValue().withS(quest));
 		}
 
-				//.withIndexName("userIdGlobalIndex")
-				.withHashKeyValues(hashKey)
-				.withQueryFilterEntry("isComplete", new Condition()
-					.withComparisonOperator(ComparisonOperator.NE)
-					.withAttributeValueList(new AttributeValue().withN(getBoolean(isComplete))))
-				.withQueryFilterEntry("questId", new Condition()
-					.withComparisonOperator(ComparisonOperator.IN)
-					.withAttributeValueList(questIdz))
-				.withConsistentRead(true);
-				
-				
-		log.info("Query: {}", query);
-		PaginatedQueryList<QuestForUser> questsForUser = mapper.query(QuestForUser.class, query);
+		final DynamoDBQueryExpression<QuestForUser> query =
+			new DynamoDBQueryExpression<QuestForUser>()
+			// .withIndexName("userIdGlobalIndex")
+			.withHashKeyValues(
+				hashKey).withQueryFilterEntry(
+				"isComplete",
+				new Condition().withComparisonOperator(
+					ComparisonOperator.NE).withAttributeValueList(
+					new AttributeValue().withN(getBoolean(isComplete)))).withQueryFilterEntry(
+				"questId",
+				new Condition().withComparisonOperator(
+					ComparisonOperator.IN).withAttributeValueList(
+					questIdz)).withConsistentRead(
+				true);
+
+		QuestForUserRepository.log.info(
+			"Query: {}",
+			query);
+		final PaginatedQueryList<QuestForUser> questsForUser = query(query);
 		questsForUser.loadAllResults();
 		return questsForUser;
 	}
