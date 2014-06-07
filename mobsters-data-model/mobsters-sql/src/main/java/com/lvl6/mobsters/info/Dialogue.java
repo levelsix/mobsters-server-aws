@@ -1,5 +1,6 @@
 package com.lvl6.mobsters.info;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,28 +9,28 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="dialogue")
-public class Dialogue extends BasePersistentObject{
+//@Entity
+//@Table(name="dialogue")
+public class Dialogue implements Serializable { //extends BasePersistentObject{
 
 	
 	private static final long serialVersionUID = -8118069262824842364L;  
 	
 	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@Column(name = "is_left_sides")
+//	@ElementCollection(fetch=FetchType.EAGER)
+//	@Column(name = "is_left_sides")
 	List<Boolean> isLeftSides;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@Column(name = "speakers")
+//	@ElementCollection(fetch=FetchType.EAGER)
+//	@Column(name = "speakers")
 	List<String> speakers;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@Column(name = "speaker_images")
+//	@ElementCollection(fetch=FetchType.EAGER)
+//	@Column(name = "speaker_images")
 	List<String> speakerImages;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@Column(name = "speaker_texts")
+//	@ElementCollection(fetch=FetchType.EAGER)
+//	@Column(name = "speaker_texts")
 	List<String> speakerTexts;
 
 	public Dialogue(){}

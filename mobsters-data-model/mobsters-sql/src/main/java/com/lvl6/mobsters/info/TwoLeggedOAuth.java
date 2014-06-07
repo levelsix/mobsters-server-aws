@@ -1,10 +1,10 @@
 package com.lvl6.mobsters.info;
 
-import javax.persistence.Entity;
+//import javax.persistence.Entity;
 
-@Entity
+//@Entity
 //@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class TwoLeggedOAuth extends BasePersistentObject {//extends DefaultApi10a {
+public class TwoLeggedOAuth {//extends BasePersistentObject {//extends DefaultApi10a {
 /*    @Override
     public String getAccessTokenEndpoint ()       { return ""; };
     @Override

@@ -1,16 +1,15 @@
 package com.lvl6.mobsters.info;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
 
-@Entity
-public class Location extends BasePersistentObject{
+//@Entity
+public class Location { //extends BasePersistentObject{
 
 	
-	private static final long serialVersionUID = 5728974802271132910L;
-	@Column(name = "latitude")
+//	@Column(name = "latitude")
 	private double latitude;
-	@Column(name = "longitude")
+//	@Column(name = "longitude")
 	private double longitude;
 	public Location(){}
 	public Location(double latitude, double longitude) {

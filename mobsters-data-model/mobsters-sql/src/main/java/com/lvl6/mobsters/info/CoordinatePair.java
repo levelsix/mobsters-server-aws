@@ -1,15 +1,15 @@
 package com.lvl6.mobsters.info;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
 
-@Entity
-public class CoordinatePair extends BasePersistentObject{
+//@Entity
+public class CoordinatePair {//extends BasePersistentObject{
 	
-	private static final long serialVersionUID = -5164418632501012001L;
-	@Column(name = "x")
+//	private static final long serialVersionUID = -5164418632501012001L;
+//	@Column(name = "x")
 	private float x;
-	@Column(name = "y")
+//	@Column(name = "y")
 	private float y;
 	public CoordinatePair(){}
 	public CoordinatePair(float x, float y) {
