@@ -1,10 +1,18 @@
 package com.lvl6.mobsters.dynamo.setup;
 
 import com.amazonaws.services.dynamodbv2.transactions.Transaction;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.transactions.Transaction.IsolationLevel;
 
 public interface DataRepositoryTxManager
 {
+    /**
+     * Returns the encapsulated Amazon DynamoDBClient, which is of use when
+     *
+     * @return
+     */
+    AmazonDynamoDB getClient();
+
     /**
      * Returns the current thread's active DynamoDB transaction, if one exists, otherwise returns null.
      *
