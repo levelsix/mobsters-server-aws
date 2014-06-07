@@ -185,11 +185,31 @@ abstract public class BaseDynamoRepository<T>
 			getTableName());
 		createTable();
 	}
+
+	/**
+	 * Run the argument scan. Beware this is not a transaction protected read--it has no isolation
+	 * guarantees and can potentially return results that will later get rolled back and is susceptible
+	 * both non-repeatable and phantom reads.
+	 *
+	 * @param scan
+	 * @return
+	 */
+	protected final List<T> scan( final DynamoDBScanExpression scan )
+	{
+		return mapper.scan(
+			clss,
+			scan);
 	}
-	
-	
-	
-	protected void createTable() {
+
+	protected final PaginatedQueryList<T> query( final DynamoDBQueryExpression<T> query )
+	{
+		return mapper.query(
+			clss,
+			query);
+	}
+
+	public final void createTable()
+	{
 		try {
 		log.info("Creating Dynamo table {}", getTableName());
 		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
@@ -221,8 +241,9 @@ abstract public class BaseDynamoRepository<T>
 			throw e;
 		}
 	}
-	
-	protected void updateTable() {
+
+	public final void updateTable()
+	{
 		try {
 	        ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
 	        .withReadCapacityUnits(provisioning.getReads())
@@ -240,11 +261,10 @@ abstract public class BaseDynamoRepository<T>
 			throw e;
 		}
 	}
-	
-	public void checkTable() {
-		if(!isActive){
-			return;
-		}
+
+	public final void checkTable()
+	{
+		if (!isActive) { return; }
 		try {
 			final DescribeTableResult result = repoTxManager.getClient().describeTable(
 				tableName);
