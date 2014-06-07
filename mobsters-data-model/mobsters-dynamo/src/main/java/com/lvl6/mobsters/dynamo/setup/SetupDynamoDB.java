@@ -1,4 +1,3 @@
-ul
 package com.lvl6.mobsters.dynamo.setup;
 
 import java.util.Map;
