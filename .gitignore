@@ -1,27 +1,22 @@
 #project specific
 
-#java specific
-*.class
-
 #eclipse
 .project
 .classpath
 .settings/
 
-target/
-*/target/
-
 #generated files
 bin/
 gen/
 
-*/target/*
+# Build output
 target/
+test-output/
 
 ## generic files to ignore
 *~
 *.lock
-*.DS_Store
+.DS_Store
 *.swp
 *.out
 *.p12
