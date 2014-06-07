@@ -307,8 +307,9 @@ abstract public class BaseDynamoRepository<T>
 			throw e;
 		}
 	}
-	
-	protected String getBoolean(boolean bool) {
+
+	protected final String getBoolean( final boolean bool )
+	{
 		return bool ? "1" : "0";
 	}
 
