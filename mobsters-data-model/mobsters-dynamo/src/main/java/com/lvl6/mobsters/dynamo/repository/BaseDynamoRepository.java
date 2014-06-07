@@ -64,48 +64,127 @@ abstract public class BaseDynamoRepository<T>
 
 	@Autowired
 	private DataRepositoryTxManager repoTxManager;
+
 	protected Class<T> clss;
-	
-	// @Autowired
-	// private Lvl6TxManager ourTxManager;
-	
-	ProvisionedThroughput provisionedThroughput= new ProvisionedThroughput()
-    .withReadCapacityUnits(1l)
-    .withWriteCapacityUnits(1l);
-	
-	
-	
-	public BaseDynamoRepository(Class<T> clss) {
+
+	ProvisionedThroughput provisionedThroughput =
+		new ProvisionedThroughput().withReadCapacityUnits(
+			1l).withWriteCapacityUnits(
+			1l);
+
+	public BaseDynamoRepository( final Class<T> clss )
+	{
 		super();
 		this.clss = clss;
 	}
 
-	
-	public void save(T obj) {
-		//Transaction t1 = null; //ourTxManager.getActiveTransaction();
-		//if (t1 != null) {
-		if (false) {
-			// TODO: Do transactional putItem
+	public final void save( final T obj )
+	{
+		final Transaction t1 = repoTxManager.getActiveTransaction();
+		if (t1 != null) {
+			t1.save(obj);
 		} else {
 			mapper.save(obj);
 		}
 	}
-	
-	public void saveAll(Iterable<T> objs) {
-		//Transaction t1 = null; //ourTxManager.getActiveTransaction();
-		//if (t1 != null) {
-		if (false) {
+
+	public final void save( final Iterable<T> objs )
+	{
+		final Transaction t1 = repoTxManager.getActiveTransaction();
+		if (t1 != null) {
 			// DynamoDB transaction library has no bulk operations...
-			for (final T nextObj : objs ) {
-				// TODO: Do transactional putItem
+			for (final T nextObj : objs) {
+				t1.save(nextObj);
 			}
 		} else {
-			mapper.batchSave(objs);
+			// batchSave() and batchDelete() are problematic insofar as they do not even check optimistic
+			// lock versions!
+			// mapper.batchSave(objs);
+			for (final T nextObj : objs) {
+				mapper.save(nextObj);
+			}
 		}
 	}
-	
-	public T load(String id) {
-		return mapper.load(clss, id);
+
+	public final T load( final String hashKey )
+	{
+		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
+		final T retVal;
+		if (t1 != null) {
+			retVal = t1.load(
+				clss,
+				hashKey);
+		} else {
+			retVal = repoTxManager.load(
+				clss,
+				hashKey,
+				IsolationLevel.COMMITTED);
+		}
+
+		return retVal;
+	}
+
+	public final T load( final String hashKey, final String rangeKey )
+	{
+		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
+		final T retVal;
+		if (t1 != null) {
+			retVal = t1.load(
+				clss,
+				hashKey,
+				rangeKey);
+		} else {
+			retVal = repoTxManager.load(
+				clss,
+				hashKey,
+				rangeKey,
+				IsolationLevel.COMMITTED);
+		}
+
+		return retVal;
+	}
+
+	public void delete( final T item )
+	{
+		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
+		if (t1 != null) {
+			t1.delete(item);
+		} else {
+			mapper.delete(item);
+		}
+	}
+
+	public final void delete( final Iterable<T> objs )
+	{
+		final Transaction t1 = repoTxManager.getActiveTransaction();
+		if (t1 != null) {
+			// DynamoDB transaction library has no bulk operations...
+			for (final T nextObj : objs) {
+				t1.delete(nextObj);
+			}
+		} else {
+			// batchSave() and batchDelete() are problematic insofar as they do not even check optimistic
+			// lock versions!
+			// mapper.batchSave(objs);
+			for (final T nextObj : objs) {
+				mapper.delete(nextObj);
+			}
+		}
+	}
+
+	/**
+	 * Destroys all table content and re-creates it as an empty table.
+	 *
+	 * This method is sufficiently dangerous that it is not automatically public. To expose it, a
+	 * concrete subclass must override it with a public modifier or call it from some other public API
+	 * method.
+	 */
+	protected void deleteAll()
+	{
+		repoTxManager.getClient().deleteTable(
+			getTableName());
+		createTable();
+	}
 	}
 	
 	
