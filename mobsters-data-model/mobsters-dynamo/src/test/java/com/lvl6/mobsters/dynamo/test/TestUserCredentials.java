@@ -19,42 +19,54 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
-
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring-dynamo.xml")
-public class TestUserCredentials {
+public class TestUserCredentials
+{
 
-	
-	
 	private static final Logger log = LoggerFactory.getLogger(TestUserCredentials.class);
-	
-	
+
 	@Autowired
 	public SetupDynamoDB setup;
-	
+
 	@Autowired
 	public AmazonDynamoDBClient dynamoClient;
-	
-	
+
 	@Autowired
 	public UserCredentialRepository userRepo;
-	
-	
-	
-	public static List<String> userIds = Arrays.asList(UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString(),UUID.randomUUID().toString());
+
+	public static List<String> userIds = Arrays.asList(
+		UUID.randomUUID().toString(),
+		UUID.randomUUID().toString(),
+		UUID.randomUUID().toString(),
+		UUID.randomUUID().toString(),
+		UUID.randomUUID().toString(),
+		UUID.randomUUID().toString(),
+		UUID.randomUUID().toString());
+
 	public static List<String> questForUserIds = new ArrayList<>();
 	
 	
 	
 	//@BeforeClass
-	public void createTestData() {
-		for(String user: userIds) {
-			UserCredential us = new UserCredential(user, user, user);
-			log.info("Saving: {}", us);
+
+	public void createTestData()
+	{
+		for (final String user : TestUserCredentials.userIds) {
+			final UserCredential us = new UserCredential(
+				user,
+				user,
+				user);
+			TestUserCredentials.log.info(
+				"Saving: {}",
+				us);
 			userRepo.save(us);
-			UserCredential qul = userRepo.getMapper().load(UserCredential.class, user);
-			log.info("Loaded: {}", qul);
+			final UserCredential qul = userRepo.getMapper().load(
+				UserCredential.class,
+				user);
+			TestUserCredentials.log.info(
+				"Loaded: {}",
+				qul);
 		}
 	}
 	

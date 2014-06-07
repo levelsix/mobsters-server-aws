@@ -6,10 +6,15 @@ import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 @Component
-public class MonsterForUserRepositoryImpl extends BaseDynamoRepository<MonsterForUser> implements MonsterForUserRepository {
-	public MonsterForUserRepositoryImpl(){
-		super(MonsterForUser.class);
-	}
+public class MonsterForUserRepositoryImpl extends BaseDynamoRepository<MonsterForUser>
+    implements
+        MonsterForUserRepository
+{
+    public MonsterForUserRepositoryImpl()
+    {
+        super(
+            MonsterForUser.class);
+    }
 
 	@Override
 	public List<MonsterForUser> findByUserIdAndId(

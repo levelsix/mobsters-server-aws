@@ -47,9 +47,9 @@ import com.amazonaws.services.dynamodbv2.transactions.TransactionManagerDynamoDB
  *
  */
 public class Lvl6TxManager extends TransactionManager
-implements
-DataServiceTxManager,
-DataRepositoryTxManager
+    implements
+        DataServiceTxManager,
+        DataRepositoryTxManager
 {
     private static final Logger LOG = LoggerFactory.getLogger(Lvl6TxManager.class);
 
@@ -177,7 +177,7 @@ DataRepositoryTxManager
 
     //
     // Overridden method from base DynamoDbTxManager class to ensure load() enhancements are also
-    // avaiable within a Transaction
+    // available within a Transaction
     //
 
     @Override
@@ -185,7 +185,7 @@ DataRepositoryTxManager
     {
         final Lvl6Transaction transaction = new Lvl6Transaction(
             UUID.randomUUID()
-                .toString(),
+            .toString(),
             this,
             true);
         Lvl6TxManager.LOG.info("Started transaction " + transaction.getId());

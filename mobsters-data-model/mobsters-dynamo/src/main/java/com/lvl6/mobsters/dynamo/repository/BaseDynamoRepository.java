@@ -210,6 +210,7 @@ abstract public class BaseDynamoRepository<T>
 
 	public final void createTable()
 	{
+		final String tableName = getTableName();
 		try {
 		log.info("Creating Dynamo table {}", getTableName());
 		ArrayList<AttributeDefinition> attributeDefinitions= new ArrayList<AttributeDefinition>();
@@ -227,17 +228,18 @@ abstract public class BaseDynamoRepository<T>
 		    .withAttributeDefinitions(attributeDefinitions)
 		    .withKeySchema(ks)
 		    .withProvisionedThroughput(provisionedThroughput);
-			if(getGlobalIndexes() != null && !getGlobalIndexes().isEmpty()) {
 				request.withGlobalSecondaryIndexes(getGlobalIndexes());
 			}
-			if(getLocalIndexes() != null && !getLocalIndexes().isEmpty()) {
+			if ((getLocalIndexes() != null) && !getLocalIndexes().isEmpty()) {
 				request.withLocalSecondaryIndexes(getLocalIndexes());
 			}
-		    
-		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", getTableName(), e);
 			repoTxManager.getClient().createTable(
 				request);
+		} catch (final Throwable e) {
+			BaseDynamoRepository.log.error(
+				"Error creating Dynamo table {}",
+				tableName,
+				e);
 			throw e;
 		}
 	}
@@ -245,19 +247,23 @@ abstract public class BaseDynamoRepository<T>
 	public final void updateTable()
 	{
 		try {
-	        ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
-	        .withReadCapacityUnits(provisioning.getReads())
-	        .withWriteCapacityUnits(provisioning.getWrites());
+			final ProvisionedThroughput provisionedThroughput =
+				new ProvisionedThroughput().withReadCapacityUnits(
+					provisioning.getReads()).withWriteCapacityUnits(
+					provisioning.getWrites());
 
-	        UpdateTableRequest updateTableRequest = new UpdateTableRequest()
-	            .withTableName(getTableName())
-	            .withProvisionedThroughput(provisionedThroughput);
-	        
-			
-		}catch(Throwable e) {
-			log.error("Error creating Dynamo table {}", getTableName(), e);
+			final UpdateTableRequest updateTableRequest =
+				new UpdateTableRequest().withTableName(
+					getTableName()).withProvisionedThroughput(
+					provisionedThroughput);
+
 			repoTxManager.getClient().updateTable(
 				updateTableRequest);
+		} catch (final Throwable e) {
+			BaseDynamoRepository.log.error(
+				"Error creating Dynamo table {}",
+				getTableName(),
+				e);
 			throw e;
 		}
 	}
@@ -265,6 +271,8 @@ abstract public class BaseDynamoRepository<T>
 	public final void checkTable()
 	{
 		if (!isActive) { return; }
+
+		final String tableName = getTableName();
 		try {
 			final DescribeTableResult result = repoTxManager.getClient().describeTable(
 				tableName);
@@ -283,14 +291,17 @@ abstract public class BaseDynamoRepository<T>
 						tableName);
 				} else {
 					updateTable();
+				}
+			} else {
+				createTable();
 			}
-		}else {
+		} catch (final ResourceNotFoundException re) {
 			createTable();
-		}
-		}catch(ResourceNotFoundException re) {
-			createTable();
-		}catch(Throwable e) {
-			log.error("Error checking Dynamo table {}", getTableName(), e);
+		} catch (final Throwable e) {
+			BaseDynamoRepository.log.error(
+				"Error checking Dynamo table {}",
+				tableName,
+				e);
 			throw e;
 		}
 	}
@@ -304,45 +315,48 @@ abstract public class BaseDynamoRepository<T>
 		return mapperConfig.getTableNameOverride().getTableNamePrefix()+clss.getSimpleName();
 	}
 	
-	
-	public List<GlobalSecondaryIndex> getGlobalIndexes(){
-		return new ArrayList<>();
 	}
-	
-	public List<LocalSecondaryIndex> getLocalIndexes(){
+
+	public List<GlobalSecondaryIndex> getGlobalIndexes()
+	{
 		return new ArrayList<>();
 	}
 
+	public List<LocalSecondaryIndex> getLocalIndexes()
+	{
+		return new ArrayList<>();
 	}
 
-	public DynamoProvisioning getProvisioning() {
+	public DynamoProvisioning getProvisioning()
+	{
 		return provisioning;
 	}
 
-	public void setProvisioning(DynamoProvisioning provisioning) {
+	public void setProvisioning( final DynamoProvisioning provisioning )
+	{
 		this.provisioning = provisioning;
-		 provisionedThroughput = new ProvisionedThroughput()
-		    .withReadCapacityUnits(provisioning.getReads())
-		    .withWriteCapacityUnits(provisioning.getWrites());
+		provisionedThroughput = new ProvisionedThroughput().withReadCapacityUnits(
+			provisioning.getReads()).withWriteCapacityUnits(
+			provisioning.getWrites());
 	}
 
-
-	public DynamoDBMapper getMapper() {
+	public DynamoDBMapper getMapper()
+	{
 		return mapper;
 	}
 
-
-	public void setMapper(DynamoDBMapper mapper) {
+	public void setMapper( final DynamoDBMapper mapper )
+	{
 		this.mapper = mapper;
 	}
 
-
-	public DynamoDBMapperConfig getMapperConfig() {
+	public DynamoDBMapperConfig getMapperConfig()
+	{
 		return mapperConfig;
 	}
 
-
-	public void setMapperConfig(DynamoDBMapperConfig mapperConfig) {
+	public void setMapperConfig( final DynamoDBMapperConfig mapperConfig )
+	{
 		this.mapperConfig = mapperConfig;
 	}
 

@@ -18,17 +18,22 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.Projection;
 import com.amazonaws.services.dynamodbv2.model.ProjectionType;
 import com.lvl6.mobsters.dynamo.UserCredential;
-@Component public class UserCredentialRepository extends BaseDynamoRepository<UserCredential>{
-	public UserCredentialRepository(){
-		super(UserCredential.class);
-		isActive = true;//for unit test
+
+@Component
+public class UserCredentialRepository extends BaseDynamoRepository<UserCredential>
+{
+	public UserCredentialRepository()
+	{
+		super(
+			UserCredential.class);
+		isActive = true;// for unit test
 	}
-	
+
 	private static final Logger log = LoggerFactory.getLogger(UserCredentialRepository.class);
-	
-	
-	public List<UserCredential> getUserCredentialByFacebook(String facebookId){
-		UserCredential key = new UserCredential();
+
+	public List<UserCredential> getUserCredentialByFacebook( final String facebookId )
+	{
+		final UserCredential key = new UserCredential();
 		key.setFacebookId(facebookId);
 		DynamoDBQueryExpression<UserCredential> query = new DynamoDBQueryExpression<UserCredential>()
 				.withIndexName("facebookIdGlobalIndex")
@@ -39,10 +44,10 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 		users.loadAllResults();
 		return users;
 	}
-	
-	
-	public List<UserCredential> getUserCredentialByUdid(String udid){
-		UserCredential key = new UserCredential();
+
+	public List<UserCredential> getUserCredentialByUdid( final String udid )
+	{
+		final UserCredential key = new UserCredential();
 		key.setUdid(udid);
 		DynamoDBQueryExpression<UserCredential> query = new DynamoDBQueryExpression<UserCredential>()
 				.withIndexName("udidGlobalIndex")
@@ -53,10 +58,7 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 		users.loadAllResults();
 		return users;
 	}
-	
-	
-	
-	
+
 	@Override
 	protected void createTable() {
 		try {
@@ -91,30 +93,33 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 			throw e;
 		}
 	}
-	
-	
-	
+
 	@Override
-	public List<GlobalSecondaryIndex> getGlobalIndexes(){
-		List<GlobalSecondaryIndex> indexes = new ArrayList<>();
-		//udid
+	public List<GlobalSecondaryIndex> getGlobalIndexes()
+	{
+		final List<GlobalSecondaryIndex> indexes = new ArrayList<>();
+		// udid
 		ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
-		indexKeySchema.add(new KeySchemaElement("udid", KeyType.HASH));
-		indexes.add(new GlobalSecondaryIndex()
-			.withIndexName("udidGlobalIndex")
-			.withKeySchema(indexKeySchema)
-			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
-			.withProvisionedThroughput(provisionedThroughput));
-		
-		//facebooktId
+		indexKeySchema.add(new KeySchemaElement(
+			"udid",
+			KeyType.HASH));
+		indexes.add(new GlobalSecondaryIndex().withIndexName(
+			"udidGlobalIndex").withKeySchema(
+			indexKeySchema).withProjection(
+			new Projection().withProjectionType(ProjectionType.ALL)).withProvisionedThroughput(
+			provisionedThroughput));
+
+		// facebooktId
 		indexKeySchema = new ArrayList<KeySchemaElement>();
-		indexKeySchema.add(new KeySchemaElement("facebookId", KeyType.HASH));
-		indexes.add(new GlobalSecondaryIndex()
-			.withIndexName("facebookIdGlobalIndex")
-			.withKeySchema(indexKeySchema)
-			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
-			.withProvisionedThroughput(provisionedThroughput));
-		
+		indexKeySchema.add(new KeySchemaElement(
+			"facebookId",
+			KeyType.HASH));
+		indexes.add(new GlobalSecondaryIndex().withIndexName(
+			"facebookIdGlobalIndex").withKeySchema(
+			indexKeySchema).withProjection(
+			new Projection().withProjectionType(ProjectionType.ALL)).withProvisionedThroughput(
+			provisionedThroughput));
+
 		return indexes;
 	}
 }

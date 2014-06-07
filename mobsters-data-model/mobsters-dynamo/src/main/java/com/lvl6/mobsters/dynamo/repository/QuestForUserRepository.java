@@ -20,29 +20,32 @@ import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-@Component public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>{
-	
-	
+
+@Component
+public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
+{
+
 	private static final Logger log = LoggerFactory.getLogger(QuestForUserRepository.class);
-	
-	
-	public QuestForUserRepository(){
-		super(QuestForUser.class);
+
+	public QuestForUserRepository()
+	{
+		super(
+			QuestForUser.class);
 		isActive = true;
 	}
 
-	
-	
-	public List<QuestForUser> getQuestsForUser(String userId, boolean isComplete, Collection<String> questIds){
-		List<AttributeValue> questIdz = new ArrayList<>();
-		QuestForUser hashKey = new QuestForUser();
+	public List<QuestForUser> getQuestsForUser(
+		final String userId,
+		final boolean isComplete,
+		final Collection<String> questIds )
+	{
+		final List<AttributeValue> questIdz = new ArrayList<>();
+		final QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
-		for(String quest : questIds) {
+		for (final String quest : questIds) {
 			questIdz.add(new AttributeValue().withS(quest));
 		}
-		
 
-		DynamoDBQueryExpression<QuestForUser> query = new DynamoDBQueryExpression<QuestForUser>()
 				//.withIndexName("userIdGlobalIndex")
 				.withHashKeyValues(hashKey)
 				.withQueryFilterEntry("isComplete", new Condition()
@@ -59,10 +62,7 @@ import com.lvl6.mobsters.dynamo.QuestForUser;
 		questsForUser.loadAllResults();
 		return questsForUser;
 	}
-	
-	
 
-	
 	
 	@Override
 	protected void createTable() {

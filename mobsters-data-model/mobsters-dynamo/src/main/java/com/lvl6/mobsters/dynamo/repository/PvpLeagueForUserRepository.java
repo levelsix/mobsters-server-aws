@@ -18,47 +18,54 @@ import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
-@Component public class PvpLeagueForUserRepository extends BaseDynamoRepository<PvpLeagueForUser>{
-	public PvpLeagueForUserRepository(){
-		super(PvpLeagueForUser.class);
+
+@Component
+public class PvpLeagueForUserRepository extends BaseDynamoRepository<PvpLeagueForUser>
+{
+	public PvpLeagueForUserRepository()
+	{
+		super(
+			PvpLeagueForUser.class);
 		isActive = true;
 	}
-	
-	
-	
+
 	private static final Logger log = LoggerFactory.getLogger(PvpLeagueForUserRepository.class);
-	
-	//select * from pvp_league_for_user where elo betweent (min, max) and shield_end_time < "timeOne" and battle_end_time < "timeOne"
+
+	// select * from pvp_league_for_user where elo betweent (min, max) and shield_end_time < "timeOne"
+	// and battle_end_time < "timeOne"
 	public List<PvpLeagueForUser> getLeaguesByEloAndShieldEndTimeLessThanAndBattleEndTimeLessThan(
-			Integer minElo, 
-			Integer maxElo, 
-			Long maxShieldEndTime, 
-			Long maxBattleEndTime,
-			Integer limit){
-		Object[] args = {minElo, maxElo, maxShieldEndTime, maxBattleEndTime, limit};
-		log.info("Searching for pvpLeaguForUser minElo: {} maxElo: {} maxShieldEndTime: {} maxBattleEndTime: {} limit: {}", args);
-		DynamoDBScanExpression scan = new DynamoDBScanExpression();
-		scan.addFilterCondition("elo", new Condition()
-			.withComparisonOperator(ComparisonOperator.BETWEEN)
-			.withAttributeValueList(
-					new AttributeValue().withN(minElo.toString()),
-					new AttributeValue().withN(maxElo.toString())));
-		scan.addFilterCondition("shieldEndTime", new Condition()
-			.withComparisonOperator(ComparisonOperator.LT)
-			.withAttributeValueList(
-					new AttributeValue().withN(maxShieldEndTime.toString())));
-		scan.addFilterCondition("inBattleShieldEndTime", new Condition()
-			.withComparisonOperator(ComparisonOperator.LT)
-			.withAttributeValueList(
-					new AttributeValue().withN(maxBattleEndTime.toString())));
+		final Integer minElo,
+		final Integer maxElo,
+		final Long maxShieldEndTime,
+		final Long maxBattleEndTime,
+		final Integer limit )
+	{
+		final Object[] args = { minElo, maxElo, maxShieldEndTime, maxBattleEndTime, limit };
+		PvpLeagueForUserRepository.log.info(
+			"Searching for pvpLeaguForUser minElo: {} maxElo: {} maxShieldEndTime: {} maxBattleEndTime: {} limit: {}",
+			args);
+		final DynamoDBScanExpression scan = new DynamoDBScanExpression();
+		scan.addFilterCondition(
+			"elo",
+			new Condition().withComparisonOperator(
+				ComparisonOperator.BETWEEN).withAttributeValueList(
+				new AttributeValue().withN(minElo.toString()),
+				new AttributeValue().withN(maxElo.toString())));
+		scan.addFilterCondition(
+			"shieldEndTime",
+			new Condition().withComparisonOperator(
+				ComparisonOperator.LT).withAttributeValueList(
+				new AttributeValue().withN(maxShieldEndTime.toString())));
+		scan.addFilterCondition(
+			"inBattleShieldEndTime",
+			new Condition().withComparisonOperator(
+				ComparisonOperator.LT).withAttributeValueList(
+				new AttributeValue().withN(maxBattleEndTime.toString())));
 		scan.setLimit(limit);
-		List<PvpLeagueForUser> leagues  = getMapper().scan(PvpLeagueForUser.class, scan);
+		final List<PvpLeagueForUser> leagues = scan(scan);
 		return leagues;
 	}
-	
-	
-	
-	
+
 	
 	@Override
 	protected void createTable() {
