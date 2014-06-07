@@ -93,7 +93,7 @@ public abstract class BaseDynamoRepository<T>
 		}
 	}
 
-	public final void save( final Iterable<T> objs )
+	public final void saveAll( final Iterable<T> objs )
 	{
 		final Transaction t1 = repoTxManager
 			.getActiveTransaction();
@@ -176,7 +176,7 @@ public abstract class BaseDynamoRepository<T>
 		}
 	}
 
-	public final void delete( final Iterable<T> objs )
+	public final void deleteAll( final Iterable<T> objs )
 	{
 		final Transaction t1 = repoTxManager
 			.getActiveTransaction();
@@ -195,22 +195,6 @@ public abstract class BaseDynamoRepository<T>
 				.delete(nextObj);
 			}
 		}
-	}
-
-	/**
-	 * Destroys all table content and re-creates it as an empty table.
-	 *
-	 * This method is sufficiently dangerous that it is not automatically public. To expose it, a
-	 * concrete subclass must override it with a public modifier or call it from some other public API
-	 * method.
-	 */
-	protected void deleteAll()
-	{
-		repoTxManager
-		.getClient()
-		.deleteTable(
-			getTableName());
-		createTable();
 	}
 
 	/**
@@ -360,6 +344,34 @@ public abstract class BaseDynamoRepository<T>
 				"Error checking Dynamo table {}", tableName, e);
 			throw e;
 		}
+	}
+
+	/**
+	 * Destroys all table content and re-creates it as an empty table.
+	 *
+	 * This method is sufficiently dangerous that it is not automatically public. To expose it, a
+	 * concrete subclass must override it with a public modifier or call it from some other public API
+	 * method.
+	 */
+	protected void emptyTable()
+	{
+		dropTable();
+		createTable();
+	}
+
+	/**
+	 * Deletes table without recreating it.
+	 *
+	 * This method is sufficiently dangerous that it is not automatically public. To expose it, a
+	 * concrete subclass must override it with a public modifier or call it from some other public API
+	 * method.
+	 */
+	protected void dropTable()
+	{
+		repoTxManager
+		.getClient()
+		.deleteTable(
+			getTableName());
 	}
 
 	protected final String getBoolean( final boolean bool )

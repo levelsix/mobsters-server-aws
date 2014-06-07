@@ -73,7 +73,7 @@ public class TestUserCredentials
 	@After
 	public void destroyTestData()
 	{
-		userRepo.deleteAll();
+		userRepo.emptyTable();
 		/*
 		 * for (final String userId : TestUserCredentials.userIds) { final List<UserCredential> users =
 		 * userRepo.getUserCredentialByUdid(userId); userRepo.delete(users); }

@@ -60,9 +60,9 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 	}
 
 	@Override
-	public void deleteAll()
+	public void emptyTable()
 	{
-		super.deleteAll();
+		super.emptyTable();
 	}
 
 	@Override
