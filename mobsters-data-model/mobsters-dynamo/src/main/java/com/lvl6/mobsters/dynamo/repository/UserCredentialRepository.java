@@ -26,7 +26,8 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 		isActive = true;// for unit test
 	}
 
-	private static final Logger log = LoggerFactory.getLogger(UserCredentialRepository.class);
+	@SuppressWarnings("unused")
+	private static final Logger LOG = LoggerFactory.getLogger(UserCredentialRepository.class);
 
 	public List<UserCredential> getUserCredentialByFacebook( final String facebookId )
 	{
