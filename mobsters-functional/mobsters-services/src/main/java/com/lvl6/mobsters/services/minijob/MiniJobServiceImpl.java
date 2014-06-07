@@ -1,12 +1,16 @@
 package com.lvl6.mobsters.services.minijob;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +20,68 @@ import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
+import com.lvl6.mobsters.info.MiniJob;
 
 @Component
 public class MiniJobServiceImpl implements MiniJobService {
+    
+    private static Logger LOG = LoggerFactory.getLogger(MiniJobServiceImpl.class);
+
     @Autowired
     private MiniJobForUserRepository miniJobForUserRepository;
+
+    //NON CRUD LOGIC******************************************************************
+    @Override
+    public List<MiniJob> spawnMiniJobs(int numToSpawn, int structId) {
+        Map<Integer, MiniJob> miniJobIdToMiniJob = null;// someClass..getMiniJobForStructId(structId);
+
+        List<MiniJob> spawnedMiniJobs = new ArrayList<MiniJob>();
+
+        if (0 == numToSpawn) {
+            LOG.info("client just reseting the last spawn time");
+            return spawnedMiniJobs;
+        }
+
+        float probabilitySum = 0;// someClass.getMiniJobProbabilitySumForStructId(structId);
+        Random rand = new Random();
+        LOG.info("probabilitySum=" + probabilitySum);
+        LOG.info("miniJobIdToMiniJob=" + miniJobIdToMiniJob);
+
+        int numToSpawnCopy = numToSpawn;
+        while (numToSpawnCopy > 0) {
+            float randFloat = rand.nextFloat();
+            LOG.info("randFloat=" + randFloat);
+
+            float probabilitySoFar = 0;
+            for (MiniJob mj : miniJobIdToMiniJob.values()) {
+                float chanceToAppear = mj.getChanceToAppear();
+
+                probabilitySoFar += chanceToAppear;
+                float normalizedProb = probabilitySoFar / probabilitySum;
+
+                LOG.info("probabilitySoFar=" + probabilitySoFar);
+                LOG.info("normalizedProb=" + normalizedProb);
+                if (randFloat > normalizedProb) {
+                    continue;
+                }
+
+                LOG.info("selected MiniJob!: " + mj);
+                //we have a winner
+                spawnedMiniJobs.add(mj);
+                break;
+            }
+            //regardless of whether or not we find one,
+            //prevent it from infinite looping
+            numToSpawnCopy--;
+        }
+        if (spawnedMiniJobs.size() != numToSpawn) {
+            LOG.error("Could not spawn " + numToSpawn +
+                " mini jobs. spawned: " + spawnedMiniJobs);
+        }
+        return spawnedMiniJobs;
+    }
+    
+    //CRUD LOGIC******************************************************************
 
     @Override
     public void modifyMiniJobsForUser( String userId, ModifyUserMiniJobsSpec modifySpec ) {
@@ -163,6 +224,22 @@ public class MiniJobServiceImpl implements MiniJobService {
         }
         
     }
+
+    /**************************************************************************/
+
+    @Override
+    public void createMiniJobsForUser( String userId, CreateUserMiniJobsSpec createSpec ) {
+        // txManager.startTransaction();
+        
+        // get whatever we need from the database, which is nothing
+        final Map<String, MiniJobForUser> userMiniJobIdToMjfu = createSpec.getUserMiniJobIdToMjfu();
+        
+        for ( MiniJobForUser mjfu : userMiniJobIdToMjfu.values()) {
+            mjfu.setUserId(userId);
+        }
+        
+        miniJobForUserRepository.saveAll(userMiniJobIdToMjfu.values());
+    }
     
     // motivation for two separate Builders is because service will only be modifying
     // existing objects or creating new ones
@@ -184,6 +261,39 @@ public class MiniJobServiceImpl implements MiniJobService {
             return afu;
         }
 
+        @Override
+        public CreateUserMiniJobsSpecBuilder setMiniJobId(
+            String userMiniJobId,
+            int miniJobId)
+        {
+            MiniJobForUser afu = getTarget(userMiniJobId);
+            afu.setMiniJobId(miniJobId);
+            
+            return this;
+        }
+
+        @Override
+        public CreateUserMiniJobsSpecBuilder setBaseDmgReceived(
+            String userMiniJobId,
+            int baseDmgReceived)
+        {
+            MiniJobForUser afu = getTarget(userMiniJobId);
+            afu.setMiniJobId(baseDmgReceived);
+            
+            return this;
+        }
+
+        @Override
+        public CreateUserMiniJobsSpecBuilder setDurationMinutes(
+            String userMiniJobId,
+            int durationMinutes)
+        {
+            MiniJobForUser afu = getTarget(userMiniJobId);
+            afu.setMiniJobId(durationMinutes);
+            
+            return this;
+        }
+        
         @Override
         public CreateUserMiniJobsSpecBuilder setUserMonsterIds(
             String userMiniJobId,
