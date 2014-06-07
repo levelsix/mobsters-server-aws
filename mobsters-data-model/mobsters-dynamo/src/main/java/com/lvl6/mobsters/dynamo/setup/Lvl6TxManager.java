@@ -61,13 +61,14 @@ public class Lvl6TxManager extends TransactionManager
 
     private static final long DELETE_WINDOW = 0;
 
-    private final ThreadLocal<Transaction> threadActiveTx = new ThreadLocal<Transaction>() {
-        @Override
-        protected Transaction initialValue()
-        {
-            return null;
-        }
-    };
+    private final ThreadLocal<Lvl6Transaction> threadActiveTx =
+        new ThreadLocal<Lvl6Transaction>() {
+            @Override
+            protected Lvl6Transaction initialValue()
+            {
+                return null;
+            }
+        };
 
     public Lvl6TxManager(
         final AmazonDynamoDBClient client,
@@ -170,7 +171,7 @@ public class Lvl6TxManager extends TransactionManager
     //
 
     @Override
-    public Transaction getActiveTransaction()
+    public Lvl6Transaction getActiveTransaction()
     {
         return threadActiveTx.get();
     }
@@ -181,7 +182,7 @@ public class Lvl6TxManager extends TransactionManager
     //
 
     @Override
-    public Transaction newTransaction()
+    public Lvl6Transaction newTransaction()
     {
         final Lvl6Transaction transaction = new Lvl6Transaction(
             UUID.randomUUID()
@@ -201,7 +202,7 @@ public class Lvl6TxManager extends TransactionManager
     {
         if (threadActiveTx.get() != null) { throw new IllegalStateException(); }
 
-        final Transaction newTx;
+        final Lvl6Transaction newTx;
         try {
             newTx = newTransaction();
         } catch (final Throwable t) {
