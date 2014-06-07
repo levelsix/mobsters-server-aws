@@ -46,141 +46,153 @@ import com.google.common.collect.ImmutableMap;
 import com.lvl6.mobsters.dynamo.setup.DataRepositoryTxManager;
 import com.lvl6.mobsters.dynamo.setup.Lvl6Transaction;
 
-abstract public class BaseDynamoRepository<T>
+public abstract class BaseDynamoRepository<T>
 {
-	
-	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepository.class);
-	
+
+	private static final Logger log = LoggerFactory
+		.getLogger(BaseDynamoRepository.class);
+
 	protected boolean isActive = true;
-	
+
 	@Autowired
 	private DynamoProvisioning provisioning = new DynamoProvisioning();
-	
+
 	@Autowired
 	private DynamoDBMapper mapper;
 
 	@Autowired
 	private DynamoDBMapperConfig mapperConfig;
-	
+
 	@Autowired
 	private DataRepositoryTxManager repoTxManager;
-	
-	protected Class<T> clss;
-	
-	ProvisionedThroughput provisionedThroughput =
-		new ProvisionedThroughput().withReadCapacityUnits(
-			1l).withWriteCapacityUnits(
-			1l);
-	
-    ProvisionedThroughput provisionedThroughput =
-        new ProvisionedThroughput().withReadCapacityUnits(1l).withWriteCapacityUnits(1l);
 
+	protected Class<T> clss;
+
+	ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
+	.withReadCapacityUnits(
+		1l)
+		.withWriteCapacityUnits(
+			1l);
+
+	protected BaseDynamoRepository( final Class<T> clss )
+	{
 		super();
 		this.clss = clss;
 	}
 
 	public final void save( final T obj )
 	{
-		final Transaction t1 = repoTxManager.getActiveTransaction();
+		final Transaction t1 = repoTxManager
+			.getActiveTransaction();
 		if (t1 != null) {
-			t1.save(obj);
+			t1
+			.save(obj);
 		} else {
-			mapper.save(obj);
+			mapper
+			.save(obj);
 		}
 	}
-	
+
 	public final void save( final Iterable<T> objs )
 	{
-		final Transaction t1 = repoTxManager.getActiveTransaction();
+		final Transaction t1 = repoTxManager
+			.getActiveTransaction();
 		if (t1 != null) {
 			// DynamoDB transaction library has no bulk operations...
-			for (final T nextObj : objs ) {
-				t1.save(nextObj);
+			for (final T nextObj : objs) {
+				t1
+				.save(nextObj);
 			}
 		} else {
 			// batchSave() and batchDelete() are problematic insofar as they do not even check optimistic
 			// lock versions!
 			// mapper.batchSave(objs);
 			for (final T nextObj : objs) {
-				mapper.save(nextObj);
+				mapper
+				.save(nextObj);
 			}
 		}
-		}
+	}
 
 	public final T load( final String hashKey )
 	{
-		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
+		final Lvl6Transaction t1 = repoTxManager
+			.getActiveTransaction();
 		final T retVal;
 		if (t1 != null) {
-			retVal = t1.load(
-				clss,
-				hashKey);
+			retVal = t1
+				.load(
+					clss, hashKey);
 		} else {
-			retVal = repoTxManager.load(
-				clss,
-				hashKey,
-				IsolationLevel.COMMITTED);
-	}
-	
-		return retVal;
-	}
-	
-    // public Map<String, List<Object>> loadAll( List<KeyPair> hashAndRangeKeyPairs ) {
-    // Map<Class<T>, List<KeyPair>> clazzToHashAndRangeKeyPairs =
-    // new HashMap<Class<T>, List<KeyPair>>();
-    // clazzToHashAndRangeKeyPairs.put(clss, hashAndRangeKeyPairs);
-    // // mapper.batchLoad(clazzToHashAndRangeKeyPairs); // doesn't compile
-    //
-    // Map<Class<?>, List<KeyPair>> foo = new HashMap<Class<?>, List<KeyPair>>();
-    // foo.putAll(clazzToHashAndRangeKeyPairs);
-    //
-    // // caller will do conversion to T manually
-    // return mapper.batchLoad(foo); // compiles
-    // }
-	public final T load( final String hashKey, final String rangeKey )
-	{
-		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
-		final T retVal;
-		if (t1 != null) {
-			retVal = t1.load(
-				clss,
-				hashKey,
-				rangeKey);
-		} else {
-			retVal = repoTxManager.load(
-				clss,
-				hashKey,
-				rangeKey,
-				IsolationLevel.COMMITTED);
+			retVal = repoTxManager
+				.load(
+					clss, hashKey, IsolationLevel.COMMITTED);
 		}
 
 		return retVal;
 	}
-	
+
+	// public Map<String, List<Object>> loadAll( List<KeyPair> hashAndRangeKeyPairs ) {
+	// Map<Class<T>, List<KeyPair>> clazzToHashAndRangeKeyPairs =
+	// new HashMap<Class<T>, List<KeyPair>>();
+	// clazzToHashAndRangeKeyPairs.put(clss, hashAndRangeKeyPairs);
+	// // mapper.batchLoad(clazzToHashAndRangeKeyPairs); // doesn't compile
+	//
+	// Map<Class<?>, List<KeyPair>> foo = new HashMap<Class<?>, List<KeyPair>>();
+	// foo.putAll(clazzToHashAndRangeKeyPairs);
+	//
+	// // caller will do conversion to T manually
+	// return mapper.batchLoad(foo); // compiles
+	// }
+
+	public final T load( final String hashKey, final String rangeKey )
+	{
+		final Lvl6Transaction t1 = repoTxManager
+			.getActiveTransaction();
+		final T retVal;
+		if (t1 != null) {
+			retVal = t1
+				.load(
+					clss, hashKey, rangeKey);
+		} else {
+			retVal = repoTxManager
+				.load(
+					clss, hashKey, rangeKey, IsolationLevel.COMMITTED);
+		}
+
+		return retVal;
+	}
+
 	public void delete( final T item )
 	{
-		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
+		final Lvl6Transaction t1 = repoTxManager
+			.getActiveTransaction();
 		if (t1 != null) {
-			t1.delete(item);
+			t1
+			.delete(item);
 		} else {
-			mapper.delete(item);
+			mapper
+			.delete(item);
 		}
 	}
 
 	public final void delete( final Iterable<T> objs )
 	{
-		final Transaction t1 = repoTxManager.getActiveTransaction();
+		final Transaction t1 = repoTxManager
+			.getActiveTransaction();
 		if (t1 != null) {
 			// DynamoDB transaction library has no bulk operations...
 			for (final T nextObj : objs) {
-				t1.delete(nextObj);
+				t1
+				.delete(nextObj);
 			}
 		} else {
 			// batchSave() and batchDelete() are problematic insofar as they do not even check optimistic
 			// lock versions!
 			// mapper.batchSave(objs);
 			for (final T nextObj : objs) {
-				mapper.delete(nextObj);
+				mapper
+				.delete(nextObj);
 			}
 		}
 	}
@@ -194,11 +206,13 @@ abstract public class BaseDynamoRepository<T>
 	 */
 	protected void deleteAll()
 	{
-		repoTxManager.getClient().deleteTable(
+		repoTxManager
+		.getClient()
+		.deleteTable(
 			getTableName());
 		createTable();
 	}
-		        
+
 	/**
 	 * Run the argument scan. Beware this is not a transaction protected read--it has no isolation
 	 * guarantees and can potentially return results that will later get rolled back and is susceptible
@@ -209,148 +223,187 @@ abstract public class BaseDynamoRepository<T>
 	 */
 	protected final List<T> scan( final DynamoDBScanExpression scan )
 	{
-		return mapper.scan(
-			clss,
-			scan);
+		return mapper
+			.scan(
+				clss, scan);
 	}
-		  
+
 	protected final PaginatedQueryList<T> query( final DynamoDBQueryExpression<T> query )
 	{
-		return mapper.query(
-			clss,
-			query);
+		return mapper
+			.query(
+				clss, query);
 	}
-		        
+
 	public final void createTable()
 	{
 		final String tableName = getTableName();
 		try {
-			BaseDynamoRepository.log.info(
-				"Creating Dynamo table {}",
-				tableName);
+			log
+			.info(
+				"Creating Dynamo table {}", tableName);
 			final ArrayList<AttributeDefinition> ads = new ArrayList<AttributeDefinition>();
 			final ArrayList<KeySchemaElement> kse = new ArrayList<KeySchemaElement>();
 			getAttributeDefinitions(
-				ads,
-				kse);
-			final ProvisionedThroughput provisionedThroughput =
-				new ProvisionedThroughput().withReadCapacityUnits(
-					provisioning.getReads()).withWriteCapacityUnits(
-					provisioning.getWrites());
-			final CreateTableRequest request = new CreateTableRequest().withTableName(
-				tableName).withAttributeDefinitions(
-				ads).withKeySchema(
-				kse).withProvisionedThroughput(
-                    provisionedThroughput);
-			if ((getGlobalIndexes() != null) && !getGlobalIndexes().isEmpty()) {
-				request.withGlobalSecondaryIndexes(getGlobalIndexes());
+				ads, kse);
+			final ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
+			.withReadCapacityUnits(
+				provisioning
+				.getReads())
+				.withWriteCapacityUnits(
+					provisioning
+					.getWrites());
+			final CreateTableRequest request = new CreateTableRequest()
+			.withTableName(
+				tableName)
+				.withAttributeDefinitions(
+					ads)
+					.withKeySchema(
+						kse)
+						.withProvisionedThroughput(
+							provisionedThroughput);
+			if ((getGlobalIndexes() != null) && !getGlobalIndexes()
+				.isEmpty()) {
+				request
+				.withGlobalSecondaryIndexes(getGlobalIndexes());
 			}
-			if ((getLocalIndexes() != null) && !getLocalIndexes().isEmpty()) {
-				request.withLocalSecondaryIndexes(getLocalIndexes());
+			if ((getLocalIndexes() != null) && !getLocalIndexes()
+				.isEmpty()) {
+				request
+				.withLocalSecondaryIndexes(getLocalIndexes());
 			}
-			repoTxManager.getClient().createTable(
+			repoTxManager
+			.getClient()
+			.createTable(
 				request);
 		} catch (final Throwable e) {
-			BaseDynamoRepository.log.error(
-				"Error creating Dynamo table {}",
-				tableName,
-				e);
+			log
+			.error(
+				"Error creating Dynamo table {}", tableName, e);
 			throw e;
 		}
 	}
-	
+
 	public final void updateTable()
 	{
 		try {
-			final ProvisionedThroughput provisionedThroughput =
-				new ProvisionedThroughput().withReadCapacityUnits(
-					provisioning.getReads()).withWriteCapacityUnits(
-                    provisioning.getWrites());
+			final ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput()
+			.withReadCapacityUnits(
+				provisioning
+				.getReads())
+				.withWriteCapacityUnits(
+					provisioning
+					.getWrites());
 
-			final UpdateTableRequest updateTableRequest =
-				new UpdateTableRequest().withTableName(
-					getTableName()).withProvisionedThroughput(
-                    provisionedThroughput);
-	        
-			repoTxManager.getClient().updateTable(
+			final UpdateTableRequest updateTableRequest = new UpdateTableRequest()
+			.withTableName(
+				getTableName())
+				.withProvisionedThroughput(
+					provisionedThroughput);
+
+			repoTxManager
+			.getClient()
+			.updateTable(
 				updateTableRequest);
 		} catch (final Throwable e) {
-			BaseDynamoRepository.log.error(
-				"Error creating Dynamo table {}",
-				getTableName(),
-				e);
+			log
+			.error(
+				"Error creating Dynamo table {}", getTableName(), e);
 			throw e;
 		}
 	}
-	
+
 	public final void checkTable()
 	{
 		if (!isActive) { return; }
 
 		final String tableName = getTableName();
 		try {
-			final DescribeTableResult result = repoTxManager.getClient().describeTable(
-				tableName);
-			if ((result != null) && (result.getTable().getCreationDateTime() != null)) {
-				BaseDynamoRepository.log.info(
-                    "Dynamo table {} status: {}",
-					tableName,
-                    result.getTable().getTableStatus());
-				final ProvisionedThroughputDescription prov =
-                    result.getTable().getProvisionedThroughput();
-                if (prov.getReadCapacityUnits().equals(provisioning.getReads())
-                    && prov.getWriteCapacityUnits().equals(provisioning.getWrites()))
-                {
-                    log.info("Dynamo table {}", getTableName());
-			}else {
-				updateTable();
+			final DescribeTableResult result = repoTxManager
+				.getClient()
+				.describeTable(
+					tableName);
+			if ((result != null) && (result
+				.getTable()
+				.getCreationDateTime() != null)) {
+				log
+				.info(
+					"Dynamo table {} status: {}", tableName, result
+					.getTable()
+					.getTableStatus());
+				final ProvisionedThroughputDescription prov = result
+					.getTable()
+					.getProvisionedThroughput();
+				if (prov
+					.getReadCapacityUnits()
+					.equals(
+						provisioning
+						.getReads()) && prov
+						.getWriteCapacityUnits()
+						.equals(
+							provisioning
+							.getWrites())) {
+					log
+					.info(
+						"Dynamo table {}", getTableName());
+				} else {
+					updateTable();
+				}
+			} else {
+				createTable();
 			}
-		}else {
-			createTable();
-		}
 		} catch (final ResourceNotFoundException re) {
 			createTable();
 		} catch (final Throwable e) {
-			BaseDynamoRepository.log.error(
-				"Error checking Dynamo table {}",
-				tableName,
-				e);
+			log
+			.error(
+				"Error checking Dynamo table {}", tableName, e);
 			throw e;
 		}
 	}
-	
+
 	protected final String getBoolean( final boolean bool )
 	{
 		return bool ? "1" : "0";
 	}
-	
+
 	public final String getTableName()
 	{
 		String tableName;
-		final DynamoDBTable tableAnnotation = clss.getAnnotation(DynamoDBTable.class);
-		if ((tableAnnotation != null) && StringUtils.hasText(tableAnnotation.tableName())) {
-			tableName = tableAnnotation.tableName();
+		final DynamoDBTable tableAnnotation = clss
+			.getAnnotation(DynamoDBTable.class);
+		if ((tableAnnotation != null) && StringUtils
+			.hasText(tableAnnotation
+				.tableName())) {
+			tableName = tableAnnotation
+				.tableName();
 		} else {
-			tableName = clss.getSimpleName();
-	}
-	
-		final TableNameOverride nameOverride = mapperConfig.getTableNameOverride();
-		if ((nameOverride != null) && StringUtils.hasText(nameOverride.getTableNamePrefix())) {
-			tableName = nameOverride.getTableNamePrefix() + tableName;
+			tableName = clss
+				.getSimpleName();
+		}
+
+		final TableNameOverride nameOverride = mapperConfig
+			.getTableNameOverride();
+		if ((nameOverride != null) && StringUtils
+			.hasText(nameOverride
+				.getTableNamePrefix())) {
+			tableName = nameOverride
+				.getTableNamePrefix() + tableName;
 		}
 
 		return tableName;
 	}
+
 	public List<GlobalSecondaryIndex> getGlobalIndexes()
 	{
 		return new ArrayList<>();
 	}
-	
+
 	public List<LocalSecondaryIndex> getLocalIndexes()
 	{
 		return new ArrayList<>();
 	}
-	
+
 	public DynamoProvisioning getProvisioning()
 	{
 		return provisioning;
@@ -359,9 +412,13 @@ abstract public class BaseDynamoRepository<T>
 	public void setProvisioning( final DynamoProvisioning provisioning )
 	{
 		this.provisioning = provisioning;
-		provisionedThroughput = new ProvisionedThroughput().withReadCapacityUnits(
-			provisioning.getReads()).withWriteCapacityUnits(
-			provisioning.getWrites());
+		provisionedThroughput = new ProvisionedThroughput()
+		.withReadCapacityUnits(
+			provisioning
+			.getReads())
+			.withWriteCapacityUnits(
+				provisioning
+				.getWrites());
 	}
 
 	public DynamoDBMapper getMapper()
@@ -369,16 +426,6 @@ abstract public class BaseDynamoRepository<T>
 		return mapper;
 	}
 
-	public void setProvisioning(DynamoProvisioning provisioning) {
-		this.provisioning = provisioning;
-		 provisionedThroughput = new ProvisionedThroughput()
-		    .withReadCapacityUnits(provisioning.getReads())
-		    .withWriteCapacityUnits(provisioning.getWrites());
-    public void setProvisioning( DynamoProvisioning provisioning ) {
-        this.provisioning = provisioning;
-        provisionedThroughput =
-            new ProvisionedThroughput().withReadCapacityUnits(provisioning.getReads()).withWriteCapacityUnits(
-                provisioning.getWrites());
 	public void setMapper( final DynamoDBMapper mapper )
 	{
 		this.mapper = mapper;
@@ -386,64 +433,42 @@ abstract public class BaseDynamoRepository<T>
 
 	public DynamoDBMapperConfig getMapperConfig()
 	{
-    }
-
-    public void setMapper( DynamoDBMapper mapper ) {
-        this.mapper = mapper;
-    }
-
-    public DynamoDBMapperConfig getMapperConfig() {
 		return mapperConfig;
 	}
 
 	public void setMapperConfig( final DynamoDBMapperConfig mapperConfig )
 	{
 		this.mapperConfig = mapperConfig;
+	}
+
 	private static final ImmutableMap<Class<?>, String> CLASS_TO_ATTR_TYPE;
 	static {
 		try {
-			CLASS_TO_ATTR_TYPE = ImmutableMap.<Class<?>, String> builder().put(
-				String.class,
-				"S").put(
-				Date.class,
-				"S").put(
-				Calendar.class,
-				"S").put(
-				Boolean.class,
-				"N").put(
-				Boolean.TYPE,
-				"N").put(
-				Integer.class,
-				"N").put(
-				Integer.class.getMethod(
-					"intValue").getReturnType(),
-				"N").put(
-				Long.class,
-				"N").put(
-				Integer.class.getMethod(
-					"longValue").getReturnType(),
-				"N").put(
-				Double.class,
-				"N").put(
-				Integer.class.getMethod(
-					"doubleValue").getReturnType(),
-				"N").put(
-				Float.class,
-				"N").put(
-				Integer.class.getMethod(
-					"floatValue").getReturnType(),
-				"N").put(
-				BigDecimal.class,
-				"N").put(
-				BigInteger.class,
-				"N").put(
-				Byte.class,
-				"B").put(
-				Integer.class.getMethod(
-					"byteValue").getReturnType(),
-				"B").put(
-				ByteBuffer.class,
-				"B").build();
+			CLASS_TO_ATTR_TYPE = ImmutableMap
+				.<Class<?>, String> builder()
+				.put(String.class, "S")
+				.put(Date.class, "S")
+				.put(Calendar.class, "S")
+				.put(Boolean.class, "N")
+				.put(Boolean.TYPE, "N")
+				.put(Integer.class, "N")
+				.put(
+					Integer.class.getMethod(
+						"intValue"
+					).getReturnType(),
+					"N"
+				).put(Long.class, "N")
+				.put(Integer.class.getMethod( "longValue").getReturnType(), "N")
+				.put(Double.class, "N")
+				.put(Integer.class.getMethod( "doubleValue").getReturnType(), "N")
+				.put(Float.class, "N")
+				.put(Integer.class.getMethod( "floatValue").getReturnType(), "N")
+				.put(BigDecimal.class, "N")
+				.put(BigInteger.class, "N")
+				.put(Byte.class, "B")
+				.put(Integer.class.getMethod( "byteValue").getReturnType(), "B")
+				.put(ByteBuffer.class, "B")
+				.build();
 		} catch (
 			NoSuchMethodException |
 			SecurityException e) {
@@ -456,63 +481,105 @@ abstract public class BaseDynamoRepository<T>
 		final List<AttributeDefinition> ads,
 		final List<KeySchemaElement> kse )
 	{
-		for (final Field nextField : clss.getDeclaredFields()) {
-			if ((nextField.isAnnotationPresent(DynamoDBAttribute.class) ||
-				nextField.isAnnotationPresent(DynamoDBHashKey.class) ||
-				nextField.isAnnotationPresent(DynamoDBRangeKey.class) ||
+		for (final Field nextField : clss
+			.getDeclaredFields()) {
+			if ((nextField
+				.isAnnotationPresent(DynamoDBAttribute.class) || nextField
+				.isAnnotationPresent(DynamoDBHashKey.class) || nextField
+				.isAnnotationPresent(DynamoDBRangeKey.class) ||
 				// nextField.isAnnotationPresent(DynamoDBVersionAttribute.class) ||
-				nextField.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextField.isAnnotationPresent(DynamoDBIndexRangeKey.class)) &&
-				(((!nextField.getGenericType().equals(
-					Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType())) || ((nextField.getGenericType().equals(Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType().getTypeParameters()[0])))) {
-				ads.add(new AttributeDefinition(
-					nextField.getName(),
-					getAttrType(nextField.getType())));
-				if (nextField.isAnnotationPresent(DynamoDBHashKey.class)) {
-					kse.add(new KeySchemaElement(
-						nextField.getName(),
-						KeyType.HASH));
+				nextField
+				.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextField
+				.isAnnotationPresent(DynamoDBIndexRangeKey.class)) && (((!nextField
+					.getGenericType()
+					.equals(
+						Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE
+						.containsKey(nextField
+							.getType())) || ((nextField
+								.getGenericType()
+								.equals(Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE
+								.containsKey(nextField
+									.getType()
+									.getTypeParameters()[0])))) {
+				ads
+				.add(new AttributeDefinition(
+					nextField
+					.getName(), getAttrType(nextField
+						.getType())));
+				if (nextField
+					.isAnnotationPresent(DynamoDBHashKey.class)) {
+					kse
+					.add(new KeySchemaElement(
+						nextField
+						.getName(), KeyType.HASH));
 				}
-				if (nextField.isAnnotationPresent(DynamoDBRangeKey.class)) {
-					kse.add(new KeySchemaElement(
-						nextField.getName(),
-						KeyType.RANGE));
+				if (nextField
+					.isAnnotationPresent(DynamoDBRangeKey.class)) {
+					kse
+					.add(new KeySchemaElement(
+						nextField
+						.getName(), KeyType.RANGE));
 				}
 			}
 		}
 
-		for (final Method nextMethod : clss.getMethods()) {
-			String attrName = nextMethod.getName();
-			if ((attrName.startsWith("get") || attrName.startsWith("is") || attrName.startsWith("has")) &&
-				(nextMethod.getParameterTypes().length == 0) &&
-				(nextMethod.isAnnotationPresent(DynamoDBAttribute.class) ||
-					nextMethod.isAnnotationPresent(DynamoDBHashKey.class) ||
-					nextMethod.isAnnotationPresent(DynamoDBRangeKey.class) ||
-					// nextMethod.isAnnotationPresent(DynamoDBVersionAttribute.class) ||
-					nextMethod.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextMethod.isAnnotationPresent(DynamoDBIndexRangeKey.class)) &&
-				(((!nextMethod.getGenericReturnType().equals(
-					Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType())) || (nextMethod.getGenericReturnType().equals(
-					Set.class) &&
-					(nextMethod.getReturnType().getTypeParameters().length > 0) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType().getTypeParameters()[0])))) {
-				if (attrName.startsWith("is")) {
-					attrName = attrName.substring(2);
+		for (final Method nextMethod : clss
+			.getMethods()) {
+			String attrName = nextMethod
+				.getName();
+			if ((attrName
+				.startsWith("get") || attrName
+				.startsWith("is") || attrName
+				.startsWith("has")) && (nextMethod
+					.getParameterTypes().length == 0) && (nextMethod
+						.isAnnotationPresent(DynamoDBAttribute.class) || nextMethod
+						.isAnnotationPresent(DynamoDBHashKey.class) || nextMethod
+						.isAnnotationPresent(DynamoDBRangeKey.class) ||
+						// nextMethod.isAnnotationPresent(DynamoDBVersionAttribute.class) ||
+						nextMethod
+						.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextMethod
+						.isAnnotationPresent(DynamoDBIndexRangeKey.class)) && (((!nextMethod
+							.getGenericReturnType()
+							.equals(
+								Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE
+								.containsKey(nextMethod
+									.getReturnType())) || (nextMethod
+										.getGenericReturnType()
+										.equals(
+											Set.class) && (nextMethod
+												.getReturnType()
+												.getTypeParameters().length > 0) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE
+												.containsKey(nextMethod
+													.getReturnType()
+													.getTypeParameters()[0])))) {
+				if (attrName
+					.startsWith("is")) {
+					attrName = attrName
+						.substring(2);
 				} else {
-					attrName = attrName.substring(3);
+					attrName = attrName
+						.substring(3);
 				}
-				attrName = attrName.substring(
-					0,
-					1).toLowerCase() + attrName.substring(1);
-				ads.add(new AttributeDefinition(
-					attrName,
-					getAttrType(nextMethod.getReturnType())));
-				if (nextMethod.isAnnotationPresent(DynamoDBHashKey.class)) {
-					kse.add(new KeySchemaElement(
-						attrName,
-						KeyType.HASH));
+				attrName = attrName
+					.substring(
+						0, 1)
+						.toLowerCase() + attrName
+						.substring(1);
+				ads
+				.add(new AttributeDefinition(
+					attrName, getAttrType(nextMethod
+						.getReturnType())));
+				if (nextMethod
+					.isAnnotationPresent(DynamoDBHashKey.class)) {
+					kse
+					.add(new KeySchemaElement(
+						attrName, KeyType.HASH));
 				}
-				if (nextMethod.isAnnotationPresent(DynamoDBRangeKey.class)) {
-					kse.add(new KeySchemaElement(
-						attrName,
-						KeyType.RANGE));
+				if (nextMethod
+					.isAnnotationPresent(DynamoDBRangeKey.class)) {
+					kse
+					.add(new KeySchemaElement(
+						attrName, KeyType.RANGE));
 				}
 			}
 		}
@@ -520,16 +587,19 @@ abstract public class BaseDynamoRepository<T>
 
 	private String getAttrType( final Class<?> attrClass )
 	{
-		final TypeVariable<?>[] typeParameters = attrClass.getTypeParameters();
+		final TypeVariable<?>[] typeParameters = attrClass
+			.getTypeParameters();
 		final String retVal;
 
 		// The only parameterized type that can reach this code is Set<?>. All others are unparameterized
 		// types used as keys in CLASS_TO_ATTR_TYPE.
 		if (typeParameters.length == 0) {
-			retVal = BaseDynamoRepository.CLASS_TO_ATTR_TYPE.get(attrClass);
+			retVal = BaseDynamoRepository.CLASS_TO_ATTR_TYPE
+				.get(attrClass);
 		} else {
-			retVal = "S" + BaseDynamoRepository.CLASS_TO_ATTR_TYPE.get(typeParameters[0]);
-	}
+			retVal = "S" + BaseDynamoRepository.CLASS_TO_ATTR_TYPE
+				.get(typeParameters[0]);
+		}
 
 		return retVal;
 	}
