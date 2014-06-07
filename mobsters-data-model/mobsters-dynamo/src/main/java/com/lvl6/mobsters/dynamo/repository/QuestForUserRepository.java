@@ -16,10 +16,10 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-	
+
 @Component
 public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
-	
+
 	private static final Logger log = LoggerFactory
 			.getLogger(QuestForUserRepository.class);
 	public QuestForUserRepository()
@@ -32,15 +32,15 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
 	public List<QuestForUser> getQuestsForUser(
 		final String userId,
 		final boolean isComplete,
-		final Collection<String> questIds )
+		final Collection<Integer> questIds )
 	{
 		final List<AttributeValue> questIdz = new ArrayList<>();
 		final QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
-		for (Integer quest : questIds) {
+		for (final Integer quest : questIds) {
 			questIdz.add(new AttributeValue().withN(quest.toString()));
 		}
-		
+
 		final DynamoDBQueryExpression<QuestForUser> query =
 			new DynamoDBQueryExpression<QuestForUser>()
 				//.withIndexName("userIdGlobalIndex")
@@ -63,7 +63,7 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
 		questsForUser.loadAllResults();
 		return questsForUser;
 	}
-	
+
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes()
 	{
@@ -91,11 +91,11 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
 				indexes.add(new LocalSecondaryIndex()
 					.withIndexName("isRedeemedIndex")
 					.withKeySchema(indexKeySchema)
-					.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));*/
+					.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
 		 */
 		return null;
 	}
-	
+
 	@Override
 	public List<GlobalSecondaryIndex> getGlobalIndexes(){
 /*		List<GlobalSecondaryIndex> indexes = new ArrayList<>();
@@ -107,7 +107,7 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
 			.withKeySchema(indexKeySchema)
 			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
 			.withProvisionedThroughput(provisionedThroughput));*/
-		
+
 		//questId
 /*		indexKeySchema = new ArrayList<KeySchemaElement>();
 		indexKeySchema.add(new KeySchemaElement("questId", KeyType.HASH));
@@ -119,5 +119,5 @@ public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
 		*/
 		return null;
 	}
-	
+
 }
