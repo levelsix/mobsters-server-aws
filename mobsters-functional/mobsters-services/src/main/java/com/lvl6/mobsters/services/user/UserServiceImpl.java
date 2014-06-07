@@ -184,6 +184,14 @@ public class UserServiceImpl implements UserService {
             usersDraModificationsSet.add(new SetGameCenterIdNotNull(nonNullGameCenterId));
             return this;
         }
+        
+        @Override
+        public ModifyUserDataRarelyAccessedSpecBuilder setDeviceToken(
+            String deviceToken )
+        {
+            usersDraModificationsSet.add(new SetDeviceToken(deviceToken));
+            return this;
+        }
     }
 
     static class SetGameCenterIdNotNull implements UserDataRarelyAccessedFunc {
@@ -196,6 +204,19 @@ public class UserServiceImpl implements UserService {
         @Override
         public void apply( UserDataRarelyAccessed udra ) {
             udra.setGameCenterId(gameCenterId);
+        }
+    }
+    
+    static class SetDeviceToken implements UserDataRarelyAccessedFunc {
+        private String deviceToken;
+
+        SetDeviceToken( String deviceToken ) {
+            this.deviceToken = deviceToken;
+        }
+
+        @Override
+        public void apply( UserDataRarelyAccessed udra ) {
+            udra.setDeviceToken(deviceToken);
         }
     }
 
