@@ -1,18 +1,36 @@
 package com.lvl6.mobsters.dynamo.repository;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.TypeVariable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.CreateTableResult;
 import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
@@ -22,28 +40,30 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughputDescription;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 import com.amazonaws.services.dynamodbv2.model.UpdateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.UpdateTableResult;
+import com.amazonaws.services.dynamodbv2.transactions.Transaction;
+import com.amazonaws.services.dynamodbv2.transactions.Transaction.IsolationLevel;
+import com.google.common.collect.ImmutableMap;
+import com.lvl6.mobsters.dynamo.setup.DataRepositoryTxManager;
+import com.lvl6.mobsters.dynamo.setup.Lvl6Transaction;
 
-abstract public class BaseDynamoRepository<T> {
-	
-	
+abstract public class BaseDynamoRepository<T>
+{
+
 	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepository.class);
-	
-	protected boolean isActive = false;
-	
+
+	protected boolean isActive = true;
+
 	@Autowired
-	protected AmazonDynamoDBClient client;
-	
+	private DynamoProvisioning provisioning = new DynamoProvisioning();
+
 	@Autowired
-	protected DynamoProvisioning provisioning = new DynamoProvisioning();
-	
-	
+	private DynamoDBMapper mapper;
+
 	@Autowired
-	protected DynamoDBMapper mapper;
-	
+	private DynamoDBMapperConfig mapperConfig;
+
 	@Autowired
-	protected DynamoDBMapperConfig mapperConfig;
-	
+	private DataRepositoryTxManager repoTxManager;
 	protected Class<T> clss;
 	
 	// @Autowired
@@ -115,9 +135,10 @@ abstract public class BaseDynamoRepository<T> {
 				request.withLocalSecondaryIndexes(getLocalIndexes());
 			}
 		    
-		CreateTableResult result = client.createTable(request);
 		}catch(Throwable e) {
 			log.error("Error creating Dynamo table {}", getTableName(), e);
+			repoTxManager.getClient().createTable(
+				request);
 			throw e;
 		}
 	}
@@ -132,10 +153,11 @@ abstract public class BaseDynamoRepository<T> {
 	            .withTableName(getTableName())
 	            .withProvisionedThroughput(provisionedThroughput);
 	        
-	        UpdateTableResult result = client.updateTable(updateTableRequest);
 			
 		}catch(Throwable e) {
 			log.error("Error creating Dynamo table {}", getTableName(), e);
+			repoTxManager.getClient().updateTable(
+				updateTableRequest);
 			throw e;
 		}
 	}
@@ -145,14 +167,23 @@ abstract public class BaseDynamoRepository<T> {
 			return;
 		}
 		try {
-		DescribeTableResult result = client.describeTable(getTableName());
-		if(result != null && result.getTable().getCreationDateTime() != null) {
-			log.info("Dynamo table {} status: {}", getTableName(), result.getTable().getTableStatus());
-			ProvisionedThroughputDescription prov = result.getTable().getProvisionedThroughput();
-			if(prov.getReadCapacityUnits().equals(provisioning.getReads())&&prov.getWriteCapacityUnits().equals(provisioning.getWrites())) {
-				log.info("Dynamo table {}", getTableName());
-			}else {
-				updateTable();
+			final DescribeTableResult result = repoTxManager.getClient().describeTable(
+				tableName);
+			if ((result != null) && (result.getTable().getCreationDateTime() != null)) {
+				BaseDynamoRepository.log.info(
+					"Dynamo table {} status: {}",
+					tableName,
+					result.getTable().getTableStatus());
+				final ProvisionedThroughputDescription prov =
+					result.getTable().getProvisionedThroughput();
+				if (prov.getReadCapacityUnits().equals(
+					provisioning.getReads()) && prov.getWriteCapacityUnits().equals(
+					provisioning.getWrites())) {
+					BaseDynamoRepository.log.info(
+						"Dynamo table {}",
+						tableName);
+				} else {
+					updateTable();
 			}
 		}else {
 			createTable();
@@ -182,13 +213,7 @@ abstract public class BaseDynamoRepository<T> {
 	public List<LocalSecondaryIndex> getLocalIndexes(){
 		return new ArrayList<>();
 	}
-	
-	public AmazonDynamoDBClient getClient() {
-		return client;
-	}
 
-	public void setClient(AmazonDynamoDBClient client) {
-		this.client = client;
 	}
 
 	public DynamoProvisioning getProvisioning() {
