@@ -15,41 +15,44 @@ public abstract class BaseIntPersistentObject implements Serializable{
 
     
     @Id 
-	protected Integer id;
+	protected int id;
 
 	protected BaseIntPersistentObject() { }
 	
-	protected BaseIntPersistentObject(final Integer id) {
+	protected BaseIntPersistentObject(final int id) {
 		this.id = id;
 	}
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id != null) ? id.hashCode() : 0);
-		return result;
-	}
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BaseIntPersistentObject other = (BaseIntPersistentObject) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals( Object obj )
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BaseIntPersistentObject other = (BaseIntPersistentObject) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
+
 }

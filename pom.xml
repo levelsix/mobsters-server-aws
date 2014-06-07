@@ -48,6 +48,7 @@
 
 		<!-- DynamoDB -->
 		<aws.dynamo.endpoint>http://localhost:8000</aws.dynamo.endpoint>
+		<aws.dynamo.regionId>local</aws.dynamo.regionId>
 		<aws.dynamo.checkTables>true</aws.dynamo.checkTables>
 		<aws.dynamo.table.name.prefix>DEV_</aws.dynamo.table.name.prefix>
 

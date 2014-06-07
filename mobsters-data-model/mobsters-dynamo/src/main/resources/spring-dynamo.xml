@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
@@ -13,36 +12,61 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
 		">
-	<context:component-scan base-package="com.lvl6"/>
-	
+	<context:component-scan base-package="com.lvl6.mobsters.dynamo" />
+
 	<bean id="awsCredentials" class="com.amazonaws.auth.BasicAWSCredentials">
 		<constructor-arg index="0" value="${aws.accessKey}" />
 		<constructor-arg index="1" value="${aws.secretKey}" />
 	</bean>
-	
-	<bean id="dynamoClient" class="com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient" >
+
+	<bean id="dynamoClient" class="com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient">
 		<constructor-arg index="0" ref="awsCredentials" />
-		<property name="endpoint" value="${aws.dynamo.endpoint}" />
 	</bean>
 
-	
-	<bean id="dynamoMapperConfigTableNamePrefix" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride" factory-method="withTableNamePrefix">
-		<constructor-arg index="0" value="${aws.dynamo.table.name.prefix}" />
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<ref local="dynamoClient" />
+		</property>
+		<property name="targetMethod">
+			<value>setEndpoint</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>${aws.dynamo.endpoint}</value>
+				<value>dynamodb</value>
+				<value>${aws.dynamo.regionId}</value>
+			</list>
+		</property>
 	</bean>
-	
-	<bean id="dynamoMapperConfig" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig" >
-		<constructor-arg index="0" ref="dynamoMapperConfigTableNamePrefix" />
+
+	<bean id="dynamoMapperConfigTableNamePrefix"
+		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride"
+		factory-method="withTableNamePrefix">
+		<constructor-arg index="0"
+			value="${aws.dynamo.table.name.prefix}" />
 	</bean>
-	
-	<bean id="dynamoMapper" class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper" >
+
+	<bean id="dynamoMapperConfig"
+		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig">
+		<constructor-arg index="0"
+			ref="dynamoMapperConfigTableNamePrefix" />
+	</bean>
+
+	<bean id="dynamoMapper"
+		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper">
 		<constructor-arg index="0" ref="dynamoClient" />
 		<constructor-arg index="1" ref="dynamoMapperConfig" />
 	</bean>
-	
-	
-	
+
 	<bean id="setupDynamoDB" class="com.lvl6.mobsters.dynamo.setup.SetupDynamoDB">
 		<property name="checkTables" value="${aws.dynamo.checkTables}" />
+		<property name="dynamoClient" ref="dynamoClient" />
+	</bean>
+
+	<bean id="dynamoTxManager" class="com.lvl6.mobsters.dynamo.setup.Lvl6TxManager">
+		<constructor-arg index="0" ref="dynamoClient" />
+		<constructor-arg index="1" ref="dynamoMapperConfig" />
 	</bean>
 
 </beans>

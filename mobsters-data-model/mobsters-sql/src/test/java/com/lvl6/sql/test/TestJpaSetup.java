@@ -38,13 +38,13 @@ public class TestJpaSetup {
 	public void test() {
 		Collection<Achievement> achs = achRepo.findByAchievementNameStartingWith("test");
 		achRepo.delete(achs);
-		Achievement ach = new Achievement("test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, 0, 0);
+		Achievement ach = new Achievement(1, "test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, 0, 0);
 		achRepo.save(ach);
-		ach = new Achievement("test1", "test1", 1, 1, "test1", "test1", "test1", "test1", 1, 1, 1, 1, 1);
+		ach = new Achievement(2, "test1", "test1", 1, 1, "test1", "test1", "test1", "test1", 1, 1, 1, 1, 1);
 		achRepo.save(ach);
-		ach = new Achievement("test2", "test2", 2, 2, "test2", "test2", "test2", "test2", 2, 2, 2, 2, 2);
+		ach = new Achievement(3, "test2", "test2", 2, 2, "test2", "test2", "test2", "test2", 2, 2, 2, 2, 2);
 		achRepo.save(ach);
-		ach = new Achievement("test3", "test3", 3, 3, "test3", "test3", "test3", "test3", 3, 3,3, 3, 3);
+		ach = new Achievement(4, "test3", "test3", 3, 3, "test3", "test3", "test3", "test3", 3, 3,3, 3, 3);
 		achRepo.save(ach);
 		int size = achRepo.findByQuantityGreaterThan(0).size();
 		assertTrue("Quantity expected: 3. actual:" + size, size == 3);

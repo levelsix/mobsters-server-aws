@@ -10,15 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.CreateTableResult;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.AchievementForUser;
 
@@ -33,17 +28,17 @@ public class AchievementForUserRepository extends
 		super(AchievementForUser.class);
 		isActive = true;// for unit test
 	}
-	
-	public List<AchievementForUser> findByUserIdAndId(String userId,
-	    Collection<Integer> achievementIds) {
-	    List<AttributeValue> achievementIdz = new ArrayList<>();
-	    AchievementForUser hashKey = new AchievementForUser();
+
+	public List<AchievementForUser> findByUserIdAndId(final String userId,
+	    final Collection<Integer> achievementIds) {
+	    final List<AttributeValue> achievementIdz = new ArrayList<>();
+	    final AchievementForUser hashKey = new AchievementForUser();
 	    hashKey.setUserId(userId);
-	    for (Integer achievementId : achievementIds) {
+	    for (final Integer achievementId : achievementIds) {
 	        achievementIdz.add(new AttributeValue().withN(achievementId.toString()));
 	    }
 
-	    DynamoDBQueryExpression<AchievementForUser> query = new DynamoDBQueryExpression<AchievementForUser>()
+	    final DynamoDBQueryExpression<AchievementForUser> query = new DynamoDBQueryExpression<AchievementForUser>()
 	        // .withIndexName("userIdGlobalIndex")
 	        .withHashKeyValues(hashKey)
 	        .withQueryFilterEntry(
@@ -52,13 +47,13 @@ public class AchievementForUserRepository extends
 	                ComparisonOperator.IN).withAttributeValueList(
 	                    achievementIdz)).withConsistentRead(true);
 
-	    log.info("Query: {}", query);
-	    PaginatedQueryList<AchievementForUser> achievementsForUser = mapper.query(
-	        AchievementForUser.class, query);
+	    AchievementForUserRepository.log.info("Query: {}", query);
+	    final PaginatedQueryList<AchievementForUser> achievementsForUser = query(query);
 	    achievementsForUser.loadAllResults();
 	    return achievementsForUser;
 	}
 
+	/*
 	@Override
 	protected void createTable() {
 		try {
@@ -96,6 +91,7 @@ public class AchievementForUserRepository extends
 			throw e;
 		}
 	}
+	*/
 
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes() {

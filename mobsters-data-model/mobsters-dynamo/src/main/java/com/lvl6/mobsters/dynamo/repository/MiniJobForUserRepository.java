@@ -10,15 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.CreateTableResult;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 
@@ -33,17 +28,17 @@ public class MiniJobForUserRepository extends
 		super(MiniJobForUser.class);
 		isActive = true;// for unit test
 	}
-	
-	public List<MiniJobForUser> findByUserIdAndId(String userId,
-        Collection<String> userMiniJobIds) {
-        List<AttributeValue> userMiniJobIdz = new ArrayList<>();
-        MiniJobForUser hashKey = new MiniJobForUser();
+
+	public List<MiniJobForUser> findByUserIdAndId(final String userId,
+        final Collection<String> userMiniJobIds) {
+        final List<AttributeValue> userMiniJobIdz = new ArrayList<>();
+        final MiniJobForUser hashKey = new MiniJobForUser();
         hashKey.setUserId(userId);
-        for (String userMiniJobId : userMiniJobIds) {
+        for (final String userMiniJobId : userMiniJobIds) {
             userMiniJobIdz.add(new AttributeValue().withS(userMiniJobId.toString()));
         }
 
-        DynamoDBQueryExpression<MiniJobForUser> query = new DynamoDBQueryExpression<MiniJobForUser>()
+        final DynamoDBQueryExpression<MiniJobForUser> query = new DynamoDBQueryExpression<MiniJobForUser>()
             // .withIndexName("userIdGlobalIndex")
             .withHashKeyValues(hashKey)
             .withQueryFilterEntry(
@@ -52,13 +47,13 @@ public class MiniJobForUserRepository extends
                     ComparisonOperator.IN).withAttributeValueList(
                         userMiniJobIdz)).withConsistentRead(true);
 
-        log.info("Query: {}", query);
-        PaginatedQueryList<MiniJobForUser> miniJobsForUser = mapper.query(
-            MiniJobForUser.class, query);
+        MiniJobForUserRepository.log.info("Query: {}", query);
+        final PaginatedQueryList<MiniJobForUser> miniJobsForUser = query(query);
         miniJobsForUser.loadAllResults();
         return miniJobsForUser;
     }
 
+	/*
 	@Override
 	protected void createTable() {
 		try {
@@ -96,6 +91,7 @@ public class MiniJobForUserRepository extends
 			throw e;
 		}
 	}
+	*/
 
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes() {
