@@ -2,6 +2,7 @@ package com.lvl6.mobsters.cache;
 
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import com.lvl6.mobsters.info.repository.ClanIconRepository;
 import com.lvl6.mobsters.info.repository.ClanRepository;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+// @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring-db.xml", "classpath:spring-redis.xml"})
 public class TestHibCache {
 
@@ -45,6 +46,7 @@ public class TestHibCache {
 	@Before
 	public void initialize() {
 		iconOne = new ClanIcon();
+		iconOne.setId(6);
 		iconOne.setImgName("imageNameOne.jpg");
 		iconOne.setAvailable(true);
 		clanIconRepo.save(iconOne);
@@ -54,7 +56,7 @@ public class TestHibCache {
 		clanOne.setDescription("Description of Clan One");
 		clanOne.setTag("ClanTag");
 		clanOne.setRequestToJoinRequired(true);
-		clanOne.setClanIcon(iconOne);
+		// clanOne.setClanIcon(iconOne);
 		clanRepo.save(clanOne);
 
 //		assertTrue("Quantity is 3", achRepo.findByQuantityGreaterThan(0).size() == 3);
@@ -63,24 +65,27 @@ public class TestHibCache {
 	
 	@After
 	public void destroy() {
-		clanRepo.delete(clanOne);
-		clanIconRepo.delete(iconOne);
+		// clanRepo.delete();
+		// clanIconRepo.delete(iconOne);
 	}
 	
-	private static final int REPEAT_RUNS = 10000;
+	private static final int REPETITIONS = 150;
 	
-	@Test
+	// @Test
 	public void testLotsaFetch() {
 		// NOTE: At the moment, this doesn't actually do anything to prove that repeat queries for the same
 		//       object actually come from cache instead of extra queries.  It does however provide a 
 		//       rudimentary set of circumstances for observing whether the cache is being utilized in a
 		//       simplest-case scenario, which is all time permits at present.
 		long start_t = System.currentTimeMillis();
-		for (int ii=0; ii<REPEAT_RUNS; ii++) {
-			final Clan clanRead = clanRepo.findByName("Clan One");
-			assertNotNull(clanRead);
+		final Clan initialRead = clanRepo.findByName("Clan One");
+		assertNotNull(initialRead);
+		for (int ii=0; ii<REPETITIONS; ii++) {
+			final Clan nextRead = clanRepo.findByName("Clan One");
+			assertNotNull(nextRead);
+			assertSame("Hibernate L2 cache is not working if same repository is accessed with two different sessions and the same java object is not returned for the same input query.", initialRead, nextRead);
 		}
 		long delta_t = System.currentTimeMillis() - start_t;
-	    System.out.println("Time for <" + REPEAT_RUNS + ">: " + delta_t);	
+	    System.out.println("Time for <" + REPETITIONS + ">: " + delta_t);	
 	}
 }
