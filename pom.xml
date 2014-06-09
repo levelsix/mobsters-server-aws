@@ -73,8 +73,8 @@
 			profile to avoid spending time in an update phase on Hibernate-dependenent 
 			tests unless their changes are schema-impacting. -->
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
-		<!-- Developers may toggle these flags on in their local profile to get more verbose
-		     output from Hibernate about session boundaries and queries evaluated. -->
+		<!-- Developers may toggle these flags on in their local profile to get 
+			more verbose output from Hibernate about session boundaries and queries evaluated. -->
 		<hibernate.generate_statistics>false</hibernate.generate_statistics>
 		<hibernate.show_sql>false</hibernate.show_sql>
 
@@ -83,6 +83,10 @@
 		<lvl6.jedis.auth>L3v3lS!x_K!ngd0m$</lvl6.jedis.auth>
 		<lvl6.jedis.database>1</lvl6.jedis.database>
 
+
+		<!-- Maven Plugin Versions -->
+		<maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
+		<maven-surefire.plugin-version>2.15</maven-surefire.plugin-version>
 
 		<!-- Dependencies -->
 		<apns.version>0.1.6</apns.version>
@@ -120,6 +124,34 @@
 
 		<tomcat.version>7.0.27</tomcat.version>
 	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler.plugin-version}</version>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire.plugin-version}</version>
+					<configuration>
+						<includes>
+							<include>**/test/*.java</include>
+							<include>**/Test*.java</include>
+							<include>**/E2ETest*.java</include>
+						</includes>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<dependencyManagement>
 		<dependencies>
@@ -355,10 +387,10 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<dependencies>
-		<!-- Testing frameworks and tools should be available without
-		     explicit declaration -->
+		<!-- Testing frameworks and tools should be available without explicit 
+			declaration -->
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
