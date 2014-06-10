@@ -39,7 +39,7 @@ message InAppPurchaseResponseProto {
 }
 
 //------------------------------------------------------------------------------------------
-
+/*
 message EarnFreeDiamondsRequestProto {
 	optional MinimumUserProto sender = 1;
 	optional EarnFreeDiamondsType freeDiamondsType = 2 [default = FB_CONNECT];
@@ -59,7 +59,7 @@ message EarnFreeDiamondsResponseProto {
 		OTHER_FAIL = 4;
 	}
 }
-
+*/
 //------------------------------------------------------------------------------------------
 
 message ExchangeGemsForResourcesRequestProto {
