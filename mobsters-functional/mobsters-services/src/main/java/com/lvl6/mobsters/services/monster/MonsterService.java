@@ -1,5 +1,8 @@
 package com.lvl6.mobsters.services.monster;
 
+import java.util.Collection;
+import java.util.Set;
+
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
@@ -7,27 +10,38 @@ import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecB
 
 public interface MonsterService
 {
+    
+    public abstract void modifyMonstersForUserTeamSlot (
+        String userId,
+        Set<String> monsterForUserIds,
+        int teamSlotNum);
+    
 	/**
      * Apply an arbitary number of property changes to an arbitrary number of monsters all owned by a
-     * single user. In the details table, a row corresponds to the identifier for a specific user
-     * monster, a column corresponds to a specific type of property change operation, and a value is the
-     * argument required to perform the column-specified operation.
+     * single user. In the details object which encapsulates a map, a key corresponds to the identifier for a specific user
+     * monster, the values correspond to a specific type of property change operation. If
+     * the existingUserMonsters object argument is set, then the db won't be accessed.
 	 * 
 	 * @param details
 	 * @see MonsterForUserOp
 	 */
-    public abstract void modifyMonstersForUser( String userId, ModifyMonstersSpec details );
+    public abstract void modifyMonstersForUser(
+        String userId,
+        ModifyMonstersSpec details,
+        Collection<MonsterForUser> existingUserMonsters);
 
     public interface ModifyMonstersSpecBuilder
     {
-		ModifyMonstersSpecBuilder setHealthAbsolute(String monsterId, int value);
+		ModifyMonstersSpecBuilder setHealthAbsolute(String userMonsterId, int value);
 
-		ModifyMonstersSpecBuilder setHealthRelative(String monsterId, int delta);
+		ModifyMonstersSpecBuilder setHealthRelative(String userMonsterId, int delta);
 
-        ModifyMonstersSpecBuilder setExperienceAbsolute( String monsterId, int value );
+        ModifyMonstersSpecBuilder setExperienceAbsolute( String userMonsterId, int value );
 
-        ModifyMonstersSpecBuilder setExperienceRelative( String monsterId, int delta );
+        ModifyMonstersSpecBuilder setExperienceRelative( String userMonsterId, int delta );
 
+        ModifyMonstersSpecBuilder setTeamSlotNum( String userMonsterId, int newTeamSlotNum);
+        
 		ModifyMonstersSpec build();
 	}
 

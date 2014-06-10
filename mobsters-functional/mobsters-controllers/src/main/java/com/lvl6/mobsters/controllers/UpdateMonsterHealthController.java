@@ -88,7 +88,7 @@ public class UpdateMonsterHealthController extends EventController
 
 		if (responseBuilder.getStatus() == UpdateMonsterHealthStatus.SUCCESS) {
 			try {
-				monsterService.modifyMonstersForUser(userIdString, modBuilder.build());
+				monsterService.modifyMonstersForUser(userIdString, modBuilder.build(), null);
 				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
 			} catch (final Exception e) {
 				LOG.error(

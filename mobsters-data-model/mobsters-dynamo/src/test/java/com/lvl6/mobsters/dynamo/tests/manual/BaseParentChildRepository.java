@@ -440,6 +440,7 @@ public abstract class BaseParentChildRepository<P, C>
 			}
 			nextFieldClass = nextFieldClass.getSuperclass();
 		}
+		// TODO: Why is this here
 		while (nextFieldClass != null) {
 			;
 		}
