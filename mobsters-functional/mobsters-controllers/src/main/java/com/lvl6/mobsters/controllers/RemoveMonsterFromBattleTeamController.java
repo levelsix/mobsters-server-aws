@@ -1,30 +1,29 @@
 package com.lvl6.mobsters.controllers;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.lvl6.mobsters.eventproto.EventMonsterProto.AddMonsterToBattleTeamRequestProto;
-import com.lvl6.mobsters.eventproto.EventMonsterProto.AddMonsterToBattleTeamResponseProto;
-import com.lvl6.mobsters.eventproto.EventMonsterProto.AddMonsterToBattleTeamResponseProto.AddMonsterToBattleTeamStatus;
+import com.lvl6.mobsters.eventproto.EventMonsterProto.RemoveMonsterFromBattleTeamRequestProto;
+import com.lvl6.mobsters.eventproto.EventMonsterProto.RemoveMonsterFromBattleTeamResponseProto;
+import com.lvl6.mobsters.eventproto.EventMonsterProto.RemoveMonsterFromBattleTeamResponseProto.RemoveMonsterFromBattleTeamStatus;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.AddMonsterToBattleTeamRequestEvent;
-import com.lvl6.mobsters.events.response.AddMonsterToBattleTeamResponseEvent;
+import com.lvl6.mobsters.events.request.RemoveMonsterFromBattleTeamRequestEvent;
+import com.lvl6.mobsters.events.response.RemoveMonsterFromBattleTeamResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.monster.MonsterService;
+import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpec;
+import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpecBuilder;
 
 @Component
-public class AddMonsterToBattleTeamController extends EventController {
+public class RemoveMonsterFromBattleTeamController extends EventController {
 
-    private static Logger LOG = LoggerFactory.getLogger(AddMonsterToBattleTeamController.class);
+    private static Logger LOG = LoggerFactory.getLogger(RemoveMonsterFromBattleTeamController.class);
 
     @Autowired
     protected MonsterService monsterService;
@@ -33,67 +32,64 @@ public class AddMonsterToBattleTeamController extends EventController {
      * @Autowired protected EventWriter eventWriter;
      */
 
-    public AddMonsterToBattleTeamController() {}
+    public RemoveMonsterFromBattleTeamController() {}
 
     @Override
     public RequestEvent createRequestEvent() {
-        return new AddMonsterToBattleTeamRequestEvent();
+        return new RemoveMonsterFromBattleTeamRequestEvent();
     }
 
     @Override
     public EventProtocolRequest getEventType() {
-        return EventProtocolRequest.C_ADD_MONSTER_TO_BATTLE_TEAM_EVENT;
+        return EventProtocolRequest.C_REMOVE_MONSTER_FROM_BATTLE_TEAM_EVENT;
     }
 
     @Override
     protected void processRequestEvent( RequestEvent event, EventsToDispatch eventWriter ) throws Exception
     {
-        final AddMonsterToBattleTeamRequestProto reqProto =
-            ((AddMonsterToBattleTeamRequestEvent) event).getAddMonsterToBattleTeamRequestProto();
+        final RemoveMonsterFromBattleTeamRequestProto reqProto =
+            ((RemoveMonsterFromBattleTeamRequestEvent) event).getRemoveMonsterFromBattleTeamRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        final int teamSlotNum = reqProto.getTeamSlotNum();
         final String userMonsterId = reqProto.getUserMonsterUuid();
 
         // prepare to send response back to client
-        AddMonsterToBattleTeamResponseProto.Builder responseBuilder =
-            AddMonsterToBattleTeamResponseProto.newBuilder();
-        responseBuilder.setStatus(AddMonsterToBattleTeamStatus.FAIL_OTHER);
+        RemoveMonsterFromBattleTeamResponseProto.Builder responseBuilder =
+            RemoveMonsterFromBattleTeamResponseProto.newBuilder();
+        responseBuilder.setStatus(RemoveMonsterFromBattleTeamStatus.FAIL_OTHER);
         responseBuilder.setSender(senderProto);
-        AddMonsterToBattleTeamResponseEvent resEvent =
-            new AddMonsterToBattleTeamResponseEvent(userIdString);
+        RemoveMonsterFromBattleTeamResponseEvent resEvent =
+            new RemoveMonsterFromBattleTeamResponseEvent(userIdString);
         resEvent.setTag(event.getTag());
         
-        
-        Set<String> userMonsterIds = null;
+        final ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
         if (StringUtils.hasText(userMonsterId)) {
             // Check values client sent for syntax errors. Call service only if
             // syntax checks out ok; prepare arguments for service
-            userMonsterIds = Collections.singleton(userMonsterId);
+            modBuilder.setTeamSlotNum(userMonsterId, 0);
             
-            responseBuilder.setStatus(AddMonsterToBattleTeamStatus.SUCCESS);
+            responseBuilder.setStatus(RemoveMonsterFromBattleTeamStatus.SUCCESS);
         }
-
         // call service if syntax is ok
-        if (responseBuilder.getStatus() == AddMonsterToBattleTeamStatus.SUCCESS) {
+        if (responseBuilder.getStatus() == RemoveMonsterFromBattleTeamStatus.SUCCESS) {
             try {
-                monsterService.modifyMonstersForUserTeamSlot(userIdString, userMonsterIds, teamSlotNum);
+                monsterService.modifyMonstersForUser(userIdString, modBuilder.build(), null);
             } catch (Exception e) {
                 LOG.error(
-                    "exception in AddMonsterToBattleTeamController processEvent when calling userService",
+                    "exception in RemoveMonsterFromBattleTeamController processEvent when calling userService",
                     e);
-                responseBuilder.setStatus(AddMonsterToBattleTeamStatus.FAIL_OTHER);
+                responseBuilder.setStatus(RemoveMonsterFromBattleTeamStatus.FAIL_OTHER);
             }
         }
 
-        resEvent.setAddMonsterToBattleTeamResponseProto(responseBuilder.build());
+        resEvent.setRemoveMonsterFromBattleTeamResponseProto(responseBuilder.build());
 
         // write to client
         LOG.info("Writing event: " + resEvent);
         try {
             eventWriter.writeEvent(resEvent);
         } catch (Exception e) {
-            LOG.error("fatal exception in AddMonsterToBattleTeamController processRequestEvent", e);
+            LOG.error("fatal exception in RemoveMonsterFromBattleTeamController processRequestEvent", e);
         }
 
         // TODO: FIGURE OUT IF THIS IS STILL NEEDED
@@ -109,13 +105,13 @@ public class AddMonsterToBattleTeamController extends EventController {
     // RequestEvent event,
     // EventsToDispatch eventWriter,
     // String userId,
-    // AddMonsterToBattleTeamResponseProto.Builder resBuilder )
+    // RemoveMonsterFromBattleTeamResponseProto.Builder resBuilder )
     // {
     // eventWriter.clearResponses();
-    // resBuilder.setStatus(AddMonsterToBattleTeamStatus.FAIL_OTHER);
-    // AddMonsterToBattleTeamResponseEvent resEvent = new AddMonsterToBattleTeamResponseEvent(userId);
+    // resBuilder.setStatus(RemoveMonsterFromBattleTeamStatus.FAIL_OTHER);
+    // RemoveMonsterFromBattleTeamResponseEvent resEvent = new RemoveMonsterFromBattleTeamResponseEvent(userId);
     // resEvent.setTag(event.getTag());
-    // resEvent.setAddMonsterToBattleTeamResponseProto(resBuilder.build());
+    // resEvent.setRemoveMonsterFromBattleTeamResponseProto(resBuilder.build());
     // eventWriter.writeEvent(resEvent);
     // }
 
