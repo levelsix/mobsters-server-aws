@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +45,49 @@ import com.lvl6.mobsters.dynamo.tests.manual.PartitionedHashKeyStrategy.ParentTw
 @Qualifier("VariantTwo")
 public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, ChildTwo>
 {
+	@Autowired
+	PartitionedHashStrategy pcRepo;
+
+	private String currentParentHashKey = null;
+	private ParentTwo currentParent = null;
+	private final ArrayList<ChildTwo> currentChildren = new ArrayList<ChildTwo>(0);
+
+	@Override
+	public String getNextParent( final int expectedChildCount )
+	{
+		currentChildren.clear();
+		currentChildren.ensureCapacity(expectedChildCount);
+
+		currentParent = new ParentTwo();
+		currentParent.setName("Eddie");
+		pcRepo.saveParent(currentParent);
+
+		currentParentHashKey = currentParent.getId();
+		return currentParentHashKey;
+	}
+
+	@Override
+	public BaseParentChildRepository<ParentTwo, ChildTwo> getRepository()
+	{
+		return pcRepo;
+	}
+
+	@Override
+	public ChildDataAttrs addNextChild()
+	{
+		final ChildTwo retVal = new ChildTwo();
+		currentChildren.add(retVal);
+		return retVal;
+	}
+
+	@Override
+	public void saveChildren()
+	{
+		pcRepo.saveChildren(currentParentHashKey, currentChildren);
+		currentParentHashKey = null;
+		currentChildren.clear();
+	}
+
 	@DynamoDBTable(tableName = "ParentTwo")
 	public static class ParentTwo
 	{
@@ -170,7 +218,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "name")
 		public String getName()
 		{
 			return super.getName();
@@ -183,7 +231,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "monsterId")
 		public int getMonsterId()
 		{
 			return super.getMonsterId();
@@ -196,7 +244,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "currentExp")
 		public int getCurrentExp()
 		{
 			return super.getCurrentExp();
@@ -209,7 +257,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "currentLvl")
 		public int getCurrentLvl()
 		{
 			return super.getCurrentLvl();
@@ -222,7 +270,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "currentHealth")
 		public int getCurrentHealth()
 		{
 			return super.getCurrentHealth();
@@ -235,7 +283,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "numPieces")
 		public int getNumPieces()
 		{
 			return super.getNumPieces();
@@ -248,7 +296,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "complete")
 		public boolean isComplete()
 		{
 			return super.isComplete();
@@ -261,7 +309,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "combineStartTime")
 		public Date getCombineStartTime()
 		{
 			return super.getCombineStartTime();
@@ -274,7 +322,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "teamSlotNum")
 		public int getTeamSlotNum()
 		{
 			return super.getTeamSlotNum();
@@ -287,7 +335,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
+		@DynamoDBAttribute(attributeName = "sourceOfPieces")
 		public String getSourceOfPieces()
 		{
 			return super.getSourceOfPieces();
@@ -300,16 +348,16 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 
 		@Override
-		@DynamoDBAttribute
-		public double getTradeValue()
+		@DynamoDBAttribute(attributeName = "tradeInValue")
+		public double getTradeInValue()
 		{
-			return super.getTradeValue();
+			return super.getTradeInValue();
 		}
 
 		@Override
-		public void setTradeValue( final double tradeValue )
+		public void setTradeInValue( final double tradeInValue )
 		{
-			super.setTradeValue(tradeValue);
+			super.setTradeInValue(tradeInValue);
 		}
 
 		@Override
@@ -355,16 +403,15 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		}
 	}
 
-	@Autowired
-	PartitionedHashStrategy repoTwo;
-
 	@Qualifier("VariantTwo")
 	@Component
 	public static class PartitionedHashStrategy extends
 	    BaseParentChildRepository<ParentTwo, ChildTwo>
 	{
+		@SuppressWarnings("unused")
 		private static Logger LOG = LoggerFactory.getLogger(PartitionedHashStrategy.class);
 		private final int numParts;
+		private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
 		public PartitionedHashStrategy()
 		{
@@ -419,7 +466,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		@Override
 		public void saveChild( final String parentHashKey, final ChildTwo obj )
 		{
-			setPartitionedHashKey(parentHashKey, obj);
+			setPartitionedKey(parentHashKey, obj);
 			final Transaction t1 = repoTxManager.getActiveTransaction();
 			if (t1 != null) {
 				t1.save(obj);
@@ -434,39 +481,15 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 			final Transaction t1 = repoTxManager.getActiveTransaction();
 			if (t1 != null) {
 				for (final ChildTwo obj : children) {
-					setPartitionedHashKey(parentHashKey, obj);
+					setPartitionedKey(parentHashKey, obj);
 					t1.save(obj);
 				}
 			} else {
 				for (final ChildTwo obj : children) {
-					setPartitionedHashKey(parentHashKey, obj);
+					setPartitionedKey(parentHashKey, obj);
 					mapper.save(obj);
 				}
 			}
-		}
-
-		private void setPartitionedHashKey( final String parentHashKey, final ChildTwo obj )
-		{
-			String id = obj.getId();
-			if (id == null) {
-				id = UUID.randomUUID()
-				    .toString();
-			}
-			final int bucket = id.hashCode()
-			    % numParts;
-			obj.setUserId(parentHashKey
-			    + ':'
-			    + bucket);
-		}
-
-		private String getPartitionedHashKey( final String parentHashKey,
-		    final String childRangeKey )
-		{
-			final int bucket = childRangeKey.hashCode()
-			    % numParts;
-			return parentHashKey
-			    + ':'
-			    + bucket;
 		}
 
 		@Override
@@ -475,7 +498,7 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 			final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
 			final String partitionedHashKey =
 			    getPartitionedHashKey(parentHashKey, childRangeKey);
-			ChildTwo retVal;
+			final ChildTwo retVal;
 			if (t1 != null) {
 				retVal = t1.load(cClass, partitionedHashKey, childRangeKey);
 			} else {
@@ -501,7 +524,9 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 				}
 			} else {
 				for (final String childRangeKey : childRangeKeys) {
-					retVal.add(repoTxManager.load(cClass, parentHashKey, childRangeKey,
+					final String partitionedHashKey =
+					    getPartitionedHashKey(parentHashKey, childRangeKey);
+					retVal.add(repoTxManager.load(cClass, partitionedHashKey, childRangeKey,
 					    IsolationLevel.COMMITTED));
 				}
 			}
@@ -521,24 +546,59 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 		@Override
 		public List<ChildTwo> loadAllChildren( final String parentHashKey )
 		{
-			final ArrayList<PaginatedQueryList<ChildTwo>> retValSource = new ArrayList<>();
+			final ArrayList<Future<PaginatedQueryList<ChildTwo>>> retValSource =
+			    new ArrayList<>();
 			for (int ii = 0; ii < numParts; ii++) {
-				final ChildTwo hashKey = new ChildTwo();
-				hashKey.setUserId(parentHashKey
+				// Construct the hash key outside the task so we have ii
+				// embedded into a final field.
+				final String partitionedHashKey = parentHashKey
 				    + ':'
-				    + ii);
-				final DynamoDBQueryExpression<ChildTwo> query =
-				    new DynamoDBQueryExpression<ChildTwo>().withHashKeyValues(hashKey)
-				        .withRangeKeyCondition("id",
-				            new Condition().withComparisonOperator(ComparisonOperator.GT)
-				                .withAttributeValueList(new AttributeValue("")))
-				        .withConsistentRead(true);
-				LOG.info("Query: {}", query);
-				final PaginatedQueryList<ChildTwo> retVal = childQuery(query);
-				retVal.loadAllResults();
-				retValSource.add(retVal);
+				    + ii;
+
+				// Use the thread pool so all N work units are concurrent.
+				retValSource.add(threadPool.submit(new Callable<PaginatedQueryList<ChildTwo>>() {
+					@Override
+					public PaginatedQueryList<ChildTwo> call()
+					{
+						final ChildTwo hashKey = new ChildTwo();
+						hashKey.setUserId(partitionedHashKey);
+						final DynamoDBQueryExpression<ChildTwo> query =
+						    new DynamoDBQueryExpression<ChildTwo>().withHashKeyValues(hashKey)
+						        .withRangeKeyCondition(
+						            "id",
+						            new Condition().withComparisonOperator(
+						                ComparisonOperator.LT)
+						                .withAttributeValueList(new AttributeValue("z")))
+						        .withConsistentRead(true);
+						// LOG.info("Query: {}", query.toString());
+						final PaginatedQueryList<ChildTwo> retVal = childQuery(query);
+						retVal.loadAllResults();
+						return retVal;
+					}
+				}));
 			}
-			return FluentIterable.from(Iterables.concat(retValSource))
+
+			// WAit until all Futures have resolved.
+			return FluentIterable.from(
+			    Iterables.concat(FluentIterable.from(retValSource)
+			        .transform(
+			            new Function<Future<PaginatedQueryList<ChildTwo>>, PaginatedQueryList<ChildTwo>>() {
+				            @Override
+				            public PaginatedQueryList<ChildTwo> apply(
+				                final Future<PaginatedQueryList<ChildTwo>> source )
+				            {
+					            PaginatedQueryList<ChildTwo> retVal;
+					            try {
+						            retVal = source.get();
+					            } catch (final InterruptedException e) {
+						            throw new RuntimeException(e);
+					            } catch (final ExecutionException e) {
+						            throw new RuntimeException(e);
+					            }
+					            retVal.loadAllResults();
+					            return retVal;
+				            }
+			            })))
 			    .toImmutableList();
 		}
 
@@ -646,6 +706,32 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 			return convertToIds(deleteAllChildren(parentHashKey));
 		}
 
+		private String getPartitionedHashKey( final String parentHashKey,
+		    final String childRangeKey )
+		{
+			final int bucket = childRangeKey.hashCode()
+			    % numParts;
+			return parentHashKey
+			    + ':'
+			    + bucket;
+		}
+
+		private void setPartitionedKey( final String parentHashKey, final ChildTwo obj )
+		{
+			String childRangeKey = obj.getId();
+			if (childRangeKey == null) {
+				childRangeKey = UUID.randomUUID()
+				    .toString();
+				obj.setId(childRangeKey);
+			}
+
+			final int bucket = childRangeKey.hashCode()
+			    % numParts;
+			obj.setUserId(parentHashKey
+			    + ':'
+			    + bucket);
+		}
+
 		private List<String> convertToIds( final Iterable<ChildTwo> objIter )
 		{
 			final ArrayList<String> retVal = new ArrayList<String>();
@@ -653,46 +739,5 @@ public class PartitionedHashKeyStrategy implements VariantStrategy<ParentTwo, Ch
 			    .transform(CHILD_TO_ID_FUNCTION));
 			return retVal;
 		}
-	}
-
-	private String currentParentHashKey = null;
-	private ParentTwo currentParent = null;
-	private final ArrayList<ChildTwo> currentChildren = new ArrayList<ChildTwo>(0);
-
-	@Override
-	public String getNextParent( final int expectedChildCount )
-	{
-		currentChildren.clear();
-		currentChildren.ensureCapacity(expectedChildCount);
-
-		currentParent = new ParentTwo();
-		currentParent.setName("Eddie");
-		repoTwo.saveParent(currentParent);
-
-		currentParentHashKey = currentParent.getId();
-		return currentParentHashKey;
-	}
-
-	@Override
-	public BaseParentChildRepository<ParentTwo, ChildTwo> getRepository()
-	{
-		return repoTwo;
-	}
-
-	@Override
-	public ChildDataAttrs addNextChild()
-	{
-		final ChildTwo retVal = new ChildTwo();
-		currentChildren.add(retVal);
-		return retVal;
-	}
-
-	@Override
-	public void saveChildren()
-	{
-		repoTwo.saveChildren(currentParentHashKey, currentChildren);
-
-		currentParentHashKey = null;
-		currentChildren.clear();
 	}
 }

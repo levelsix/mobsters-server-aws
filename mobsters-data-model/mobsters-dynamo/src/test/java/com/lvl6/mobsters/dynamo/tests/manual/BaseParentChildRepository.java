@@ -117,7 +117,7 @@ import com.lvl6.mobsters.dynamo.setup.Lvl6TxManager;
  */
 public abstract class BaseParentChildRepository<P, C>
 {
-	private static final Logger log = LoggerFactory.getLogger(BaseParentChildRepository.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseParentChildRepository.class);
 
 	@Autowired
 	protected Lvl6TxManager repoTxManager;
@@ -226,7 +226,7 @@ public abstract class BaseParentChildRepository<P, C>
 	{
 		final String tableName = getTableName(clss);
 		try {
-			log.info("Creating Dynamo table {}", tableName);
+			LOG.info("Creating Dynamo table {}", tableName);
 			final ArrayList<AttributeDefinition> ads = new ArrayList<AttributeDefinition>();
 			final ArrayList<KeySchemaElement> kse = new ArrayList<KeySchemaElement>();
 			getAttributeDefinitions(clss, ads, kse);
@@ -249,7 +249,7 @@ public abstract class BaseParentChildRepository<P, C>
 			this.repoTxManager.getClient()
 			    .createTable(request);
 		} catch (final Throwable e) {
-			log.error("Error creating Dynamo table {}", tableName, e);
+			LOG.error("Error creating Dynamo table {}", tableName, e);
 			throw e;
 		}
 	}
@@ -271,7 +271,7 @@ public abstract class BaseParentChildRepository<P, C>
 			this.repoTxManager.getClient()
 			    .updateTable(updateTableRequest);
 		} catch (final Throwable e) {
-			log.error("Error creating Dynamo table {}", tableName, e);
+			LOG.error("Error creating Dynamo table {}", tableName, e);
 			throw e;
 		}
 	}
@@ -291,7 +291,7 @@ public abstract class BaseParentChildRepository<P, C>
 			if ((result != null)
 			    && (result.getTable()
 			        .getCreationDateTime() != null)) {
-				log.info("Dynamo table {} status: {}", tableName, result.getTable()
+				LOG.info("Dynamo table {} status: {}", tableName, result.getTable()
 				    .getTableStatus());
 				final ProvisionedThroughputDescription prov = result.getTable()
 				    .getProvisionedThroughput();
@@ -299,7 +299,7 @@ public abstract class BaseParentChildRepository<P, C>
 				    .equals(this.provisionedThroughput.getReadCapacityUnits())
 				    && prov.getWriteCapacityUnits()
 				        .equals(this.provisionedThroughput.getWriteCapacityUnits())) {
-					log.info("Dynamo table {}", tableName);
+					LOG.info("Dynamo table {}", tableName);
 				} else {
 					updateTable(clss);
 				}
@@ -309,7 +309,7 @@ public abstract class BaseParentChildRepository<P, C>
 		} catch (final ResourceNotFoundException re) {
 			createTable(clss);
 		} catch (final Throwable e) {
-			log.error("Error checking Dynamo table {}", tableName, e);
+			LOG.error("Error checking Dynamo table {}", tableName, e);
 			throw e;
 		}
 	}
@@ -421,8 +421,7 @@ public abstract class BaseParentChildRepository<P, C>
 		Class<?> nextFieldClass = clss;
 		while (nextFieldClass != null) {
 			for (final Field nextField : nextFieldClass.getDeclaredFields()) {
-				if ((nextField.isAnnotationPresent(DynamoDBAttribute.class)
-				    || nextField.isAnnotationPresent(DynamoDBHashKey.class)
+				if ((nextField.isAnnotationPresent(DynamoDBHashKey.class)
 				    || nextField.isAnnotationPresent(DynamoDBRangeKey.class)
 				    || nextField.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextField.isAnnotationPresent(DynamoDBIndexRangeKey.class))
 				    && (((!nextField.getGenericType()
@@ -448,10 +447,9 @@ public abstract class BaseParentChildRepository<P, C>
 		for (final Method nextMethod : clss.getMethods()) {
 			String attrName = nextMethod.getName();
 			if ((attrName.startsWith("get")
-			    || attrName.startsWith("is") || attrName.startsWith("has"))
+			    || attrName.startsWith("is") || nextMethod.isAnnotationPresent(DynamoDBAttribute.class))
 			    && (nextMethod.getParameterTypes().length == 0)
-			    && (nextMethod.isAnnotationPresent(DynamoDBAttribute.class)
-			        || nextMethod.isAnnotationPresent(DynamoDBHashKey.class)
+			    && (nextMethod.isAnnotationPresent(DynamoDBHashKey.class)
 			        || nextMethod.isAnnotationPresent(DynamoDBRangeKey.class)
 			        || nextMethod.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextMethod.isAnnotationPresent(DynamoDBIndexRangeKey.class))
 			    && (((!nextMethod.getGenericReturnType()
@@ -483,11 +481,6 @@ public abstract class BaseParentChildRepository<P, C>
 
 		// Make sure hash keys attributes precede range key attributes!
 		kse.addAll(rkse);
-
-		System.out.println(ads.toString());
-		System.out.println(ads.size());
-		System.out.println(kse.toString());
-		System.out.println(kse.size());
 	}
 
 	private String getAttrType( final Class<?> attrClass )

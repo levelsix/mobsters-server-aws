@@ -131,7 +131,7 @@ public abstract class ChildDataAttrs
 		return sourceOfPieces;
 	}
 
-	public double getTradeValue()
+	public double getTradeInValue()
 	{
 		return tradeValue;
 	}
@@ -186,7 +186,7 @@ public abstract class ChildDataAttrs
 		this.sourceOfPieces = sourceOfPieces;
 	}
 
-	public void setTradeValue( final double tradeValue )
+	public void setTradeInValue( final double tradeValue )
 	{
 		this.tradeValue = tradeValue;
 	}

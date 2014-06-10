@@ -18,6 +18,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
+import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.transactions.Transaction;
 import com.amazonaws.services.dynamodbv2.transactions.Transaction.IsolationLevel;
 import com.google.common.base.Function;
@@ -36,6 +39,49 @@ import com.lvl6.mobsters.dynamo.tests.manual.SingleHashKeyStrategy.ParentOne;
 @Qualifier("VariantOne")
 public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOne>
 {
+	@Autowired
+	UnpartitionedStrategy pcRepo;
+
+	private String currentParentHashKey = null;
+	private ParentOne currentParent = null;
+	private final ArrayList<ChildOne> currentChildren = new ArrayList<ChildOne>(0);
+
+	@Override
+	public String getNextParent( final int expectedChildCount )
+	{
+		currentChildren.clear();
+		currentChildren.ensureCapacity(expectedChildCount);
+
+		currentParent = new ParentOne();
+		pcRepo.saveParent(currentParent);
+
+		currentParentHashKey = currentParent.getId();
+		return currentParentHashKey;
+	}
+
+	@Override
+	public BaseParentChildRepository<ParentOne, ChildOne> getRepository()
+	{
+		return pcRepo;
+	}
+
+	@Override
+	public ChildDataAttrs addNextChild()
+	{
+		final ChildOne retVal = new ChildOne();
+		// retVal.setUserId(currentParentHashKey);
+		currentChildren.add(retVal);
+		return retVal;
+	}
+
+	@Override
+	public void saveChildren()
+	{
+		pcRepo.saveChildren(currentParentHashKey, currentChildren);
+		currentParentHashKey = null;
+		currentChildren.clear();
+	}
+
 	@DynamoDBTable(tableName = "ParentOne")
 	public static class ParentOne
 	{
@@ -73,7 +119,7 @@ public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOn
 		 * 
 		 * The semantics of this operation, especially in terms of the large
 		 * universe of "other" objects, is not terribly well defined. There may
-		 * be entity types that are highly intollerant of their Id changing
+		 * be entity types that are highly intolerant of their Id changing
 		 * during the course of their existence, as Id storage is the means of
 		 * creating links between a visible object and any other object that
 		 * depends on it by reference.
@@ -297,15 +343,15 @@ public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOn
 
 		@Override
 		@DynamoDBAttribute
-		public double getTradeValue()
+		public double getTradeInValue()
 		{
-			return super.getTradeValue();
+			return super.getTradeInValue();
 		}
 
 		@Override
-		public void setTradeValue( final double tradeValue )
+		public void setTradeInValue( final double tradeValue )
 		{
-			super.setTradeValue(tradeValue);
+			super.setTradeInValue(tradeValue);
 		}
 
 		@Override
@@ -351,15 +397,13 @@ public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOn
 		}
 	}
 
-	@Autowired
-	UnpartitionedStrategy repoOne;
-
 	@Qualifier("VariantOne")
 	@Component
 	public static class UnpartitionedStrategy extends
 	    BaseParentChildRepository<ParentOne, ChildOne>
 	{
-		private static Logger LOG = LoggerFactory.getLogger(UnpartitionedStrategy.class);
+		@SuppressWarnings("unused")
+        private static Logger LOG = LoggerFactory.getLogger(UnpartitionedStrategy.class);
 
 		public UnpartitionedStrategy()
 		{
@@ -482,11 +526,11 @@ public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOn
 
 			final DynamoDBQueryExpression<ChildOne> query =
 			    new DynamoDBQueryExpression<ChildOne>().withHashKeyValues(hashKey)
-			        // .withRangeKeyCondition("id", new
-			        // Condition().withComparisonOperator(ComparisonOperator.NE)
-			        // .withAttributeValueList(new AttributeValue("X")))
+			        .withRangeKeyCondition("id",
+			            new Condition().withComparisonOperator(ComparisonOperator.LT)
+			                .withAttributeValueList(new AttributeValue("z")))
 			        .withConsistentRead(true);
-			LOG.info("Query: {}", query);
+			// LOG.info("Query: {}", query.toString());
 			final PaginatedQueryList<ChildOne> retVal = childQuery(query);
 			retVal.loadAllResults();
 			return retVal;
@@ -603,46 +647,5 @@ public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOn
 			    .transform(CHILD_TO_ID_FUNCTION));
 			return retVal;
 		}
-	}
-
-	private String currentParentHashKey = null;
-	private ParentOne currentParent = null;
-	private final ArrayList<ChildOne> currentChildren = new ArrayList<ChildOne>(0);
-
-	@Override
-	public String getNextParent( final int expectedChildCount )
-	{
-		currentChildren.clear();
-		currentChildren.ensureCapacity(expectedChildCount);
-
-		currentParent = new ParentOne();
-		repoOne.saveParent(currentParent);
-
-		currentParentHashKey = currentParent.getId();
-		return currentParentHashKey;
-	}
-
-	@Override
-	public BaseParentChildRepository<ParentOne, ChildOne> getRepository()
-	{
-		return repoOne;
-	}
-
-	@Override
-	public ChildDataAttrs addNextChild()
-	{
-		final ChildOne retVal = new ChildOne();
-		retVal.setUserId(currentParentHashKey);
-		currentChildren.add(retVal);
-		return retVal;
-	}
-
-	@Override
-	public void saveChildren()
-	{
-		repoOne.saveChildren(currentParentHashKey, currentChildren);
-
-		currentParentHashKey = null;
-		currentChildren.clear();
 	}
 }
