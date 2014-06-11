@@ -17,16 +17,16 @@ import com.amazonaws.services.dynamodbv2.model.ProjectionType;
 import com.lvl6.mobsters.dynamo.UserCredential;
 
 @Component
-public class UserCredentialRepository extends BaseDynamoRepository<UserCredential>
+public class UserCredentialImplRepository extends BaseDynamoRepository<UserCredential>
 {
-	public UserCredentialRepository()
+	public UserCredentialImplRepository()
 	{
 		super(UserCredential.class);
 		isActive = true;// for unit test
 	}
 
 	@SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory.getLogger(UserCredentialRepository.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserCredentialImplRepository.class);
 
 	public List<UserCredential> getUserCredentialByFacebook( final String facebookId )
 	{
