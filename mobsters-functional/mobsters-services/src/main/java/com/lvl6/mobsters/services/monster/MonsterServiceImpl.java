@@ -30,7 +30,7 @@ public class MonsterServiceImpl implements MonsterService {
         int teamSlotNum)
     {
         Map<String, MonsterForUser> userMonsterIdToUserMonster =
-            monsterForUserRepository.findByUserIdAndIdOrTeamSlotNum(userId, monsterForUserIds, teamSlotNum);
+            monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId, monsterForUserIds, teamSlotNum);
         
         
         ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
