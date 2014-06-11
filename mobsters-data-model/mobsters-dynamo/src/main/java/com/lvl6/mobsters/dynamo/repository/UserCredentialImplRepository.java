@@ -26,7 +26,8 @@ public class UserCredentialImplRepository extends BaseDynamoRepository<UserCrede
 	}
 
 	@SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory.getLogger(UserCredentialImplRepository.class);
+	private static final Logger LOG =
+		LoggerFactory.getLogger(UserCredentialImplRepository.class);
 
 	public List<UserCredential> getUserCredentialByFacebook( final String facebookId )
 	{
