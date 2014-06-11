@@ -21,8 +21,7 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 {
 	public UserCredentialRepository()
 	{
-		super(
-			UserCredential.class);
+		super(UserCredential.class);
 		isActive = true;// for unit test
 	}
 
@@ -34,10 +33,9 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 		final UserCredential key = new UserCredential();
 		key.setFacebookId(facebookId);
 		final DynamoDBQueryExpression<UserCredential> query =
-			new DynamoDBQueryExpression<UserCredential>().withIndexName(
-				"facebookIdGlobalIndex").withHashKeyValues(
-				key).withConsistentRead(
-				false);
+			new DynamoDBQueryExpression<UserCredential>().withIndexName("facebookIdGlobalIndex")
+				.withHashKeyValues(key)
+				.withConsistentRead(false);
 		// log.info("Query: {}", query);
 		final PaginatedQueryList<UserCredential> users = query(query);
 		users.loadAllResults();
@@ -49,10 +47,9 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 		final UserCredential key = new UserCredential();
 		key.setUdid(udid);
 		final DynamoDBQueryExpression<UserCredential> query =
-			new DynamoDBQueryExpression<UserCredential>().withIndexName(
-				"udidGlobalIndex").withHashKeyValues(
-				key).withConsistentRead(
-				false);
+			new DynamoDBQueryExpression<UserCredential>().withIndexName("udidGlobalIndex")
+				.withHashKeyValues(key)
+				.withConsistentRead(false);
 		// log.info("Query: {}", query);
 		final PaginatedQueryList<UserCredential> users = query(query);
 		users.loadAllResults();
@@ -71,25 +68,19 @@ public class UserCredentialRepository extends BaseDynamoRepository<UserCredentia
 		final List<GlobalSecondaryIndex> indexes = new ArrayList<>();
 		// udid
 		ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
-		indexKeySchema.add(new KeySchemaElement(
-			"udid",
-			KeyType.HASH));
-		indexes.add(new GlobalSecondaryIndex().withIndexName(
-			"udidGlobalIndex").withKeySchema(
-			indexKeySchema).withProjection(
-			new Projection().withProjectionType(ProjectionType.ALL)).withProvisionedThroughput(
-			provisionedThroughput));
+		indexKeySchema.add(new KeySchemaElement("udid", KeyType.HASH));
+		indexes.add(new GlobalSecondaryIndex().withIndexName("udidGlobalIndex")
+			.withKeySchema(indexKeySchema)
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
+			.withProvisionedThroughput(provisionedThroughput));
 
 		// facebooktId
 		indexKeySchema = new ArrayList<KeySchemaElement>();
-		indexKeySchema.add(new KeySchemaElement(
-			"facebookId",
-			KeyType.HASH));
-		indexes.add(new GlobalSecondaryIndex().withIndexName(
-			"facebookIdGlobalIndex").withKeySchema(
-			indexKeySchema).withProjection(
-			new Projection().withProjectionType(ProjectionType.ALL)).withProvisionedThroughput(
-			provisionedThroughput));
+		indexKeySchema.add(new KeySchemaElement("facebookId", KeyType.HASH));
+		indexes.add(new GlobalSecondaryIndex().withIndexName("facebookIdGlobalIndex")
+			.withKeySchema(indexKeySchema)
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
+			.withProvisionedThroughput(provisionedThroughput));
 
 		return indexes;
 	}
