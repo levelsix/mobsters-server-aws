@@ -18,6 +18,8 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 
 @Component
 public class UserCredentialImplRepository extends BaseDynamoRepository<UserCredential>
+	implements
+		UserCredentialRepository
 {
 	public UserCredentialImplRepository()
 	{
@@ -29,6 +31,7 @@ public class UserCredentialImplRepository extends BaseDynamoRepository<UserCrede
 	private static final Logger LOG =
 		LoggerFactory.getLogger(UserCredentialImplRepository.class);
 
+	@Override
 	public List<UserCredential> getUserCredentialByFacebook( final String facebookId )
 	{
 		final UserCredential key = new UserCredential();
@@ -43,6 +46,7 @@ public class UserCredentialImplRepository extends BaseDynamoRepository<UserCrede
 		return users;
 	}
 
+	@Override
 	public List<UserCredential> getUserCredentialByUdid( final String udid )
 	{
 		final UserCredential key = new UserCredential();
