@@ -23,7 +23,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepository<MonsterFo
 	implements MonsterForUserRepository
 {
 
-	private static final Logger log =
+	private static final Logger LOG =
 		LoggerFactory.getLogger(MonsterForUserRepositoryImpl.class);
 
 	protected MonsterForUserRepositoryImpl()
@@ -53,14 +53,14 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepository<MonsterFo
 						.withAttributeValueList(monsterForUserIdz))
 				.withConsistentRead(true);
 
-		log.info("Query: {}", query);
+		LOG.info("Query: {}", query);
 		final PaginatedQueryList<MonsterForUser> monsterForUsersForUser = query(query);
 		monsterForUsersForUser.loadAllResults();
 		return monsterForUsersForUser;
 	}
 
 	@Override
-	public Map<String, MonsterForUser> findByUserIdAndIdOrTeamSlotNum(
+	public Map<String, MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
 		final String userId,
 		final Collection<String> monsterForUserIds,
 		final Integer teamSlotNum )
@@ -88,7 +88,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepository<MonsterFo
 							new AttributeValue().withN(teamSlotNum.toString())))
 				.withConsistentRead(true);
 
-		MonsterForUserRepository.log.info("Query: {}", query);
+		LOG.info("Query: {}", query);
 		final PaginatedQueryList<MonsterForUser> monstersForUser = query(query);
 		monstersForUser.loadAllResults();
 

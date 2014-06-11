@@ -13,7 +13,7 @@ public interface MonsterForUserRepository
 {
 	List<MonsterForUser> findByUserIdAndId( String userId, Collection<String> monsterForUserIds );
 
-	Map<String, MonsterForUser> findByUserIdAndIdOrTeamSlotNum(
+	Map<String, MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
 		String userId,
 		Collection<String> monsterForUserIds,
 		Integer teamSlotNum );
