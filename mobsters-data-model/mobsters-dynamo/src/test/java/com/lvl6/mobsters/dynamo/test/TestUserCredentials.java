@@ -53,18 +53,11 @@ public class TestUserCredentials
 	public void createTestData()
 	{
 		for (final String user : TestUserCredentials.userIds) {
-			final UserCredential us = new UserCredential(
-				user,
-				user,
-				user);
-			TestUserCredentials.log.info(
-				"Saving: {}",
-				us);
+			final UserCredential us = new UserCredential(user, user, user);
+			TestUserCredentials.log.info("Saving: {}", us);
 			userRepo.save(us);
-			final UserCredential qul = userRepo.getMapper().load(
-				UserCredential.class,
-				user);
 			final UserCredential qul = userRepo.load(user);
+			TestUserCredentials.log.info("Loaded: {}", qul);
 		}
 	}
 
@@ -85,18 +78,10 @@ public class TestUserCredentials
 			userRepo.getUserCredentialByFacebook(TestUserCredentials.userIds.get(0));
 		final List<UserCredential> userz =
 			userRepo.getUserCredentialByUdid(TestUserCredentials.userIds.get(0));
-		Assert.assertEquals(
-			"Found one user by facebook",
-			users.size(),
-			1);
-		Assert.assertEquals(
-			"Found one user by udid",
-			userz.size(),
-			1);
-		Assert.assertEquals(
-			"Found same",
-			users.get(0),
-			userz.get(0));
+		Assert.assertEquals("Found one user by facebook", users.size(), 1);
+		Assert.assertEquals("Found one user by udid", userz.size(), 1);
+		Assert.assertEquals("Found same", users.get(0), userz.get(0));
+	}
 	}
 
 	public SetupDynamoDB getSetup()
