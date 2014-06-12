@@ -10,25 +10,39 @@ import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecB
 
 public interface MonsterService
 {
-    
-    public abstract void modifyMonstersForUserTeamSlot (
+	/**
+	 * The monsterForUserId will have its teamSlotNum property set to the given teamSlotNum.
+     * All monstersForUser currently in the teamSlot (at most 1) will have their property set to 0. 
+     *  
+	 * @param userId
+	 * @param monsterForUserId
+	 * @param teamSlotNum - should not be 0
+	 */
+    public abstract void addMonsterForUserToTeamSlot (
         String userId,
-        Set<String> monsterForUserIds,
+        String monsterForUserId,
         int teamSlotNum);
+    
+    /**
+     * 
+     * @param userId
+     * @param monsterForUserIds
+     */
+    public abstract void clearMonstersForUserTeamSlot (
+        String userId,
+        Set<String> monsterForUserIds);
     
 	/**
      * Apply an arbitary number of property changes to an arbitrary number of monsters all owned by a
      * single user. In the details object which encapsulates a map, a key corresponds to the identifier for a specific user
-     * monster, the values correspond to a specific type of property change operation. If
-     * the existingUserMonsters object argument is set, then the db won't be accessed.
+     * monster, the values correspond to a specific type of property change operation.
 	 * 
 	 * @param details
 	 * @see MonsterForUserOp
 	 */
     public abstract void modifyMonstersForUser(
         String userId,
-        ModifyMonstersSpec details,
-        Collection<MonsterForUser> existingUserMonsters);
+        ModifyMonstersSpec details);
 
     public interface ModifyMonstersSpecBuilder
     {

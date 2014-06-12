@@ -1,5 +1,8 @@
 package com.lvl6.mobsters.controllers;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +20,6 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.monster.MonsterService;
-import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpec;
-import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpecBuilder;
 
 @Component
 public class RemoveMonsterFromBattleTeamController extends EventController {
@@ -62,18 +63,16 @@ public class RemoveMonsterFromBattleTeamController extends EventController {
             new RemoveMonsterFromBattleTeamResponseEvent(userIdString);
         resEvent.setTag(event.getTag());
         
-        final ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
+        Set<String> monsterForUserIds = new HashSet<String>();
         if (StringUtils.hasText(userMonsterId)) {
             // Check values client sent for syntax errors. Call service only if
             // syntax checks out ok; prepare arguments for service
-            modBuilder.setTeamSlotNum(userMonsterId, 0);
-            
             responseBuilder.setStatus(RemoveMonsterFromBattleTeamStatus.SUCCESS);
         }
         // call service if syntax is ok
         if (responseBuilder.getStatus() == RemoveMonsterFromBattleTeamStatus.SUCCESS) {
             try {
-                monsterService.modifyMonstersForUser(userIdString, modBuilder.build(), null);
+                monsterService.clearMonstersForUserTeamSlot(userIdString, monsterForUserIds);
             } catch (Exception e) {
                 LOG.error(
                     "exception in RemoveMonsterFromBattleTeamController processEvent when calling userService",

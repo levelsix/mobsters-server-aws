@@ -65,11 +65,9 @@ public class AddMonsterToBattleTeamController extends EventController {
         resEvent.setTag(event.getTag());
         
         
-        Set<String> userMonsterIds = null;
         if (StringUtils.hasText(userMonsterId)) {
             // Check values client sent for syntax errors. Call service only if
             // syntax checks out ok; prepare arguments for service
-            userMonsterIds = Collections.singleton(userMonsterId);
             
             responseBuilder.setStatus(AddMonsterToBattleTeamStatus.SUCCESS);
         }
@@ -77,7 +75,7 @@ public class AddMonsterToBattleTeamController extends EventController {
         // call service if syntax is ok
         if (responseBuilder.getStatus() == AddMonsterToBattleTeamStatus.SUCCESS) {
             try {
-                monsterService.modifyMonstersForUserTeamSlot(userIdString, userMonsterIds, teamSlotNum);
+                monsterService.addMonsterForUserToTeamSlot(userIdString, userMonsterId, teamSlotNum);
             } catch (Exception e) {
                 LOG.error(
                     "exception in AddMonsterToBattleTeamController processEvent when calling userService",
