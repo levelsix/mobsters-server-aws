@@ -46,7 +46,7 @@ public class SpawnMiniJobController extends EventController {
 
     @Override
     public EventProtocolRequest getEventType() {
-        return EventProtocolRequest.C_BEGIN_MINI_JOB_EVENT;
+        return EventProtocolRequest.C_SPAWN_MINI_JOB_EVENT;
     }
 
     @Override
@@ -90,6 +90,8 @@ public class SpawnMiniJobController extends EventController {
         // call service if syntax is ok
         if (responseBuilder.getStatus() == SpawnMiniJobStatus.SUCCESS) {
             try {
+                // TODO: Ensure that the user's lastMiniJobGenerated time is updated to now,
+                //er, clientTime
                 miniJobService.createMiniJobsForUser(userIdString, modBuilder.build());
             } catch (Exception e) {
                 LOG.error(
