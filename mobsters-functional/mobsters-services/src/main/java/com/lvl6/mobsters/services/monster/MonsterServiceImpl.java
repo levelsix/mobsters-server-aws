@@ -18,186 +18,204 @@ import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 
 @Component
-public class MonsterServiceImpl implements MonsterService {
-    @Autowired
-    private MonsterForUserRepository monsterForUserRepository;
+public class MonsterServiceImpl implements MonsterService
+{
+	@Autowired
+	private MonsterForUserRepository monsterForUserRepository;
 
-    
-    @Override
-    public void addMonsterForUserToTeamSlot (
-        String userId,
-        String monsterForUserId,
-        int teamSlotNum)
-    {
-        Set<String> monsterForUserIds = Collections.singleton(monsterForUserId);
-        
-        List<MonsterForUser> monstersForUser =
-        	monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId, monsterForUserIds, teamSlotNum);
-        
-        final Map<String, MonsterForUser> userMonsterIdToMfu =
+	@Override
+	public void addMonsterForUserToTeamSlot(
+		String userId,
+		String monsterForUserId,
+		int teamSlotNum )
+	{
+		Set<String> monsterForUserIds = Collections.singleton(monsterForUserId);
+
+		List<MonsterForUser> monstersForUser =
+			monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId,
+				monsterForUserIds, teamSlotNum);
+
+		final Map<String, MonsterForUser> userMonsterIdToMfu =
 			new HashMap<String, MonsterForUser>();
 
 		for (final MonsterForUser mfu : monstersForUser) {
 			userMonsterIdToMfu.put(mfu.getMonsterForUserId(), mfu);
 		}
-        
-        
-        for( MonsterForUser mfu : userMonsterIdToMfu.values() ) {
-        	if( monsterForUserIds.contains(mfu.getMonsterForUserId())) {
-        		mfu.setTeamSlotNum(teamSlotNum);
-        		
-        	} else if (mfu.getTeamSlotNum() == teamSlotNum) {
-        		mfu.setTeamSlotNum(0);
-        	}
-        }
-    }
-    
-    @Override
-    public void clearMonstersForUserTeamSlot (
-        String userId,
-        Set<String> monsterForUserIds)
-    {        
-        List<MonsterForUser> monsterList = monsterForUserRepository.findAll(userId, monsterForUserIds);
-        
-        for( MonsterForUser mfu : monsterList ) {
-        	mfu.setTeamSlotNum(0);
-        }
-        
-        monsterForUserRepository.saveAll(monsterList);
-        
-    }
 
-    /*
-     * @Override
-     * @Transactional(dontRollbackOn = {}, value=TxType.REQUIRED) public void
-     * updateUserMonsterHealth(String userId, Map<String,Integer> monsterIdToHealthMap) { //get whatever
-     * we need from the database Collection<MonsterForUser> existingUserMonsters =
-     * monsterForUserRepository.findByUserIdAndId(userId, monsterIdToHealthMap.keySet()); if
-     * (CollectionUtils.lacksSubstance(existingUserMonsters) || (monsterIdToHealthMap.size() !=
-     * existingUserMonsters.size())) { throw new IllegalArgumentException(); } // Mutate the objects
-     * for(final MonsterForUser nextMonster : existingUserMonsters) { nextMonster.setCurrentHealth(
-     * monsterIdToHealthMap.get( nextMonster.getId() ) ); } // Write back to the database, then close the
-     * transaction by returning monsterForUserRepository.save(existingUserMonsters); }
-     */
+		for (MonsterForUser mfu : userMonsterIdToMfu.values()) {
+			if (monsterForUserIds.contains(mfu.getMonsterForUserId())) {
+				mfu.setTeamSlotNum(teamSlotNum);
 
-    @Override
-    public void modifyMonstersForUser(
-        String userId,
-        ModifyMonstersSpec modifySpec)
-    {
-        // txManager.startTransaction();
+			} else if (mfu.getTeamSlotNum() == teamSlotNum) {
+				mfu.setTeamSlotNum(0);
+			}
+		}
+	}
 
-        // get whatever we need from the database
-        final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
-        final Set<String> userMonsterIds = specMap.keySet();
+	@Override
+	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
+	{
+		List<MonsterForUser> monsterList =
+			monsterForUserRepository.findAll(userId, monsterForUserIds);
 
-        List<MonsterForUser> existingUserMonsters =
-                monsterForUserRepository.findByUserIdAndId(userId, userMonsterIds);
-        if (CollectionUtils.lacksSubstance(existingUserMonsters)
-            || (userMonsterIds.size() != existingUserMonsters.size()))
-        {
-            // txManager.rollback();
-            throw new IllegalArgumentException("No monsters for userId " +
-                userId + " and userMonsterIds: " + userMonsterIds);
-        }
+		for (MonsterForUser mfu : monsterList) {
+			mfu.setTeamSlotNum(0);
+		}
 
-        // Mutate the objects
+		monsterForUserRepository.saveAll(monsterList);
 
-        // txManager.startTransaction();
-        for (final MonsterForUser nextMonster : existingUserMonsters) {
-            Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserId());
-            for (MonsterFunc nextMonsterOp : monsterOps) {
-                nextMonsterOp.apply(nextMonster);
-            }
-        }
+	}
 
-        // Write back to the database, then close the transaction by returning
-        // TBD: Need to restore a workable save interface.
-        // monsterForUserRepository.save(existingUserMonsters);
-        // txManager.endTransaction();
-    }
+	/*
+	 * @Override
+	 * @Transactional(dontRollbackOn = {}, value=TxType.REQUIRED) public void
+	 * updateUserMonsterHealth(String userId, Map<String,Integer> monsterIdToHealthMap) { //get whatever
+	 * we need from the database Collection<MonsterForUser> existingUserMonsters =
+	 * monsterForUserRepository.findByUserIdAndId(userId, monsterIdToHealthMap.keySet()); if
+	 * (CollectionUtils.lacksSubstance(existingUserMonsters) || (monsterIdToHealthMap.size() !=
+	 * existingUserMonsters.size())) { throw new IllegalArgumentException(); } // Mutate the objects
+	 * for(final MonsterForUser nextMonster : existingUserMonsters) { nextMonster.setCurrentHealth(
+	 * monsterIdToHealthMap.get( nextMonster.getId() ) ); } // Write back to the database, then close the
+	 * transaction by returning monsterForUserRepository.save(existingUserMonsters); }
+	 */
 
-    static class ModifyMonstersSpecBuilderImpl implements ModifyMonstersSpecBuilder {
-        Multimap<String, MonsterFunc> opMap;
+	@Override
+	public void modifyMonstersForUser( String userId, ModifyMonstersSpec modifySpec )
+	{
+		// txManager.startTransaction();
 
-        ModifyMonstersSpecBuilderImpl() {
-            opMap = ArrayListMultimap.create();
-        }
+		// get whatever we need from the database
+		final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
+		final Set<String> userMonsterIds = specMap.keySet();
 
-        @Override
-        public ModifyMonstersSpecBuilder setHealthAbsolute( String userMonsterId, int value ) {
-            opMap.put(userMonsterId, new SetCurrentHealthAbsoluteFunction(value));
-            return this;
-        }
+		List<MonsterForUser> existingUserMonsters =
+			monsterForUserRepository.findByUserIdAndId(userId, userMonsterIds);
+		if (CollectionUtils.lacksSubstance(existingUserMonsters)
+			|| (userMonsterIds.size() != existingUserMonsters.size())) {
+			// txManager.rollback();
+			throw new IllegalArgumentException("No monsters for userId "
+				+ userId
+				+ " and userMonsterIds: "
+				+ userMonsterIds);
+		}
 
-        @Override
-        public ModifyMonstersSpecBuilder setHealthRelative( String userMonsterId, int delta ) {
-            opMap.put(userMonsterId, new SetCurrentHealthRelativeFunction(delta));
-            return this;
-        }
+		// Mutate the objects
 
-        @Override
-        public ModifyMonstersSpecBuilder setExperienceAbsolute( String userMonsterId, int value ) {
-            // TODO Auto-generated method stub
-            return null;
-        }
+		// txManager.startTransaction();
+		for (final MonsterForUser nextMonster : existingUserMonsters) {
+			Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserId());
+			for (MonsterFunc nextMonsterOp : monsterOps) {
+				nextMonsterOp.apply(nextMonster);
+			}
+		}
 
-        @Override
-        public ModifyMonstersSpecBuilder setExperienceRelative( String userMonsterId, int delta ) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        
-        @Override
-        public ModifyMonstersSpecBuilder setTeamSlotNum( String userMonsterId, int newTeamSlotNum) {
-            opMap.put(userMonsterId, new SetTeamSlotNum(newTeamSlotNum));
-            return this;
-        }
+		// Write back to the database, then close the transaction by returning
+		// TBD: Need to restore a workable save interface.
+		// monsterForUserRepository.save(existingUserMonsters);
+		// txManager.endTransaction();
+	}
 
-        @Override
-        public ModifyMonstersSpec build() {
-            final ModifyMonstersSpec retVal = new ModifyMonstersSpec(opMap);
+	static class ModifyMonstersSpecBuilderImpl implements ModifyMonstersSpecBuilder
+	{
+		Multimap<String, MonsterFunc> opMap;
 
-            return retVal;
-        }
-    }
+		ModifyMonstersSpecBuilderImpl()
+		{
+			opMap = ArrayListMultimap.create();
+		}
 
-    static class SetCurrentHealthRelativeFunction implements MonsterFunc {
-        final int health;
+		@Override
+		public ModifyMonstersSpecBuilder setHealthAbsolute( String userMonsterId, int value )
+		{
+			opMap.put(userMonsterId, new SetCurrentHealthAbsoluteFunction(value));
+			return this;
+		}
 
-        SetCurrentHealthRelativeFunction( int health ) {
-            this.health = health;
-        }
+		@Override
+		public ModifyMonstersSpecBuilder setHealthRelative( String userMonsterId, int delta )
+		{
+			opMap.put(userMonsterId, new SetCurrentHealthRelativeFunction(delta));
+			return this;
+		}
 
-        @Override
-        public void apply( MonsterForUser m ) {
-            m.setCurrentHealth(m.getCurrentHealth() + health);
-        }
-    };
+		@Override
+		public ModifyMonstersSpecBuilder setExperienceAbsolute( String userMonsterId, int value )
+		{
+			// TODO Auto-generated method stub
+			return null;
+		}
 
-    static class SetCurrentHealthAbsoluteFunction implements MonsterFunc {
-        final int health;
+		@Override
+		public ModifyMonstersSpecBuilder setExperienceRelative( String userMonsterId, int delta )
+		{
+			// TODO Auto-generated method stub
+			return null;
+		}
 
-        SetCurrentHealthAbsoluteFunction( int health ) {
-            this.health = health;
-        }
+		@Override
+		public ModifyMonstersSpecBuilder setTeamSlotNum(
+			String userMonsterId,
+			int newTeamSlotNum )
+		{
+			opMap.put(userMonsterId, new SetTeamSlotNum(newTeamSlotNum));
+			return this;
+		}
 
-        @Override
-        public void apply( MonsterForUser m ) {
-            m.setCurrentHealth(health);
-        }
-    };
+		@Override
+		public ModifyMonstersSpec build()
+		{
+			final ModifyMonstersSpec retVal = new ModifyMonstersSpec(opMap);
 
-    static class SetTeamSlotNum implements MonsterFunc {
-        final int teamSlotNum;
+			return retVal;
+		}
+	}
 
-        SetTeamSlotNum( int teamSlotNum ) {
-            this.teamSlotNum = teamSlotNum;
-        }
+	static class SetCurrentHealthRelativeFunction implements MonsterFunc
+	{
+		final int health;
 
-        @Override
-        public void apply( MonsterForUser m ) {
-            m.setCurrentHealth(teamSlotNum);
-        }
-    };
+		SetCurrentHealthRelativeFunction( int health )
+		{
+			this.health = health;
+		}
+
+		@Override
+		public void apply( MonsterForUser m )
+		{
+			m.setCurrentHealth(m.getCurrentHealth()
+				+ health);
+		}
+	};
+
+	static class SetCurrentHealthAbsoluteFunction implements MonsterFunc
+	{
+		final int health;
+
+		SetCurrentHealthAbsoluteFunction( int health )
+		{
+			this.health = health;
+		}
+
+		@Override
+		public void apply( MonsterForUser m )
+		{
+			m.setCurrentHealth(health);
+		}
+	};
+
+	static class SetTeamSlotNum implements MonsterFunc
+	{
+		final int teamSlotNum;
+
+		SetTeamSlotNum( int teamSlotNum )
+		{
+			this.teamSlotNum = teamSlotNum;
+		}
+
+		@Override
+		public void apply( MonsterForUser m )
+		{
+			m.setCurrentHealth(teamSlotNum);
+		}
+	};
 }
