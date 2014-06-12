@@ -45,7 +45,7 @@ import com.google.common.collect.ImmutableMap;
 import com.lvl6.mobsters.dynamo.setup.DataRepositoryTxManager;
 import com.lvl6.mobsters.dynamo.setup.Lvl6Transaction;
 
-public abstract class BaseDynamoRepositoryImpl<T>
+public abstract class BaseDynamoRepositoryImpl<T> implements BaseDynamoRepository<T>
 {
 
 	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepositoryImpl.class);
@@ -76,6 +76,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		this.clss = clss;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#save(T)
+	 */
+	@Override
 	public final void save( final T obj )
 	{
 		final Transaction t1 = repoTxManager.getActiveTransaction();
@@ -86,6 +90,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#saveAll(java.lang.Iterable)
+	 */
+	@Override
 	public final void saveAll( final Iterable<T> objs )
 	{
 		final Transaction t1 = repoTxManager.getActiveTransaction();
@@ -105,6 +113,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#load(java.lang.String)
+	 */
+	@Override
 	public final T load( final String hashKey )
 	{
 		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
@@ -133,6 +145,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 	// return mapper.batchLoad(foo); // compiles
 	// }
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#load(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public final T load( final String hashKey, final String rangeKey )
 	{
 		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
@@ -146,6 +162,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		return retVal;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#delete(T)
+	 */
+	@Override
 	public void delete( final T item )
 	{
 		final Lvl6Transaction t1 = repoTxManager.getActiveTransaction();
@@ -156,6 +176,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#deleteAll(java.lang.Iterable)
+	 */
+	@Override
 	public final void deleteAll( final Iterable<T> objs )
 	{
 		final Transaction t1 = repoTxManager.getActiveTransaction();
@@ -194,6 +218,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		return mapper.query(clss, query);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#createTable()
+	 */
+	@Override
 	public final void createTable()
 	{
 		final String tableName = getTableName();
@@ -227,6 +255,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#updateTable()
+	 */
+	@Override
 	public final void updateTable()
 	{
 		try {
@@ -246,6 +278,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#checkTable()
+	 */
+	@Override
 	public final void checkTable()
 	{
 		if (!isActive) {
@@ -313,6 +349,10 @@ public abstract class BaseDynamoRepositoryImpl<T>
 		return bool ? "1" : "0";
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository#getTableName()
+	 */
+	@Override
 	public final String getTableName()
 	{
 		String tableName;
