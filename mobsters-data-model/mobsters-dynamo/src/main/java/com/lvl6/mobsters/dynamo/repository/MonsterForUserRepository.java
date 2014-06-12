@@ -2,7 +2,6 @@ package com.lvl6.mobsters.dynamo.repository;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,7 @@ public interface MonsterForUserRepository extends BaseDynamoRepository<MonsterFo
 {
 	List<MonsterForUser> findByUserIdAndId( String userId, Collection<String> monsterForUserIds );
 
-	Map<String, MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
+	List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
 		String userId,
 		Collection<String> monsterForUserIds,
 		Integer teamSlotNum );

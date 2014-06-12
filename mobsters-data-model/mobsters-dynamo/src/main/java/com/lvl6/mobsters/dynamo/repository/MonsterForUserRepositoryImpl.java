@@ -60,7 +60,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Monst
 	}
 
 	@Override
-	public Map<String, MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
+	public List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
 		final String userId,
 		final Collection<String> monsterForUserIds,
 		final Integer teamSlotNum )
@@ -91,14 +91,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Monst
 		LOG.info("Query: {}", query);
 		final PaginatedQueryList<MonsterForUser> monstersForUser = query(query);
 		monstersForUser.loadAllResults();
-
-		final Map<String, MonsterForUser> userMonsterIdToMfu =
-			new HashMap<String, MonsterForUser>();
-
-		for (final MonsterForUser mfu : monstersForUser) {
-			userMonsterIdToMfu.put(mfu.getMonsterForUserId(), mfu);
-		}
-		return userMonsterIdToMfu;
+		return monstersForUser;
 	}
 
 }

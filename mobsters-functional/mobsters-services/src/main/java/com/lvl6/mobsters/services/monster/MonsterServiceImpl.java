@@ -1,6 +1,9 @@
 package com.lvl6.mobsters.services.monster;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,33 +21,49 @@ import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 public class MonsterServiceImpl implements MonsterService {
     @Autowired
     private MonsterForUserRepository monsterForUserRepository;
+
     
-    /*
-     * All monsterForUserIds will have their teamSlotNum properties set to the given teamSlotNum
-     * All monstersForUser currently in the teamSlot will have their property set to 0. 
-     */
     @Override
-    public void modifyMonstersForUserTeamSlot (
+    public void addMonsterForUserToTeamSlot (
         String userId,
-        Set<String> monsterForUserIds,
+        String monsterForUserId,
         int teamSlotNum)
     {
-        Map<String, MonsterForUser> userMonsterIdToUserMonster =
-            monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId, monsterForUserIds, teamSlotNum);
+        Set<String> monsterForUserIds = Collections.singleton(monsterForUserId);
+        
+        List<MonsterForUser> monstersForUser =
+        	monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId, monsterForUserIds, teamSlotNum);
+        
+        final Map<String, MonsterForUser> userMonsterIdToMfu =
+			new HashMap<String, MonsterForUser>();
+
+		for (final MonsterForUser mfu : monstersForUser) {
+			userMonsterIdToMfu.put(mfu.getMonsterForUserId(), mfu);
+		}
         
         
-        ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
-        for (String mfuId : monsterForUserIds) {
-            modBuilder.setTeamSlotNum(mfuId, teamSlotNum);
+        for( MonsterForUser mfu : userMonsterIdToMfu.values() ) {
+        	if( monsterForUserIds.contains(mfu.getMonsterForUserId())) {
+        		mfu.setTeamSlotNum(teamSlotNum);
+        		
+        	} else if (mfu.getTeamSlotNum() == teamSlotNum) {
+        		mfu.setTeamSlotNum(0);
+        	}
+        }
+    }
+    
+    @Override
+    public void clearMonstersForUserTeamSlot (
+        String userId,
+        Set<String> monsterForUserIds)
+    {        
+        List<MonsterForUser> monsterList = monsterForUserRepository.findAll(userId, monsterForUserIds);
+        
+        for( MonsterForUser mfu : monsterList ) {
+        	mfu.setTeamSlotNum(0);
         }
         
-        Set<String> disjointMonsterForUserIds = Sets.difference(
-            userMonsterIdToUserMonster.keySet(), monsterForUserIds);
-        for (String mfuId : disjointMonsterForUserIds) {
-            modBuilder.setTeamSlotNum(mfuId, 0);
-        }
-        
-        modifyMonstersForUser(userId, modBuilder.build(), userMonsterIdToUserMonster.values());
+        monsterForUserRepository.saveAll(monsterList);
         
     }
 
@@ -64,8 +83,7 @@ public class MonsterServiceImpl implements MonsterService {
     @Override
     public void modifyMonstersForUser(
         String userId,
-        ModifyMonstersSpec modifySpec,
-        Collection<MonsterForUser> existingUserMonsters)
+        ModifyMonstersSpec modifySpec)
     {
         // txManager.startTransaction();
 
@@ -73,11 +91,8 @@ public class MonsterServiceImpl implements MonsterService {
         final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
         final Set<String> userMonsterIds = specMap.keySet();
 
-        //access db if necessary
-        if (CollectionUtils.lacksSubstance(existingUserMonsters)) {
-            existingUserMonsters =
+        List<MonsterForUser> existingUserMonsters =
                 monsterForUserRepository.findByUserIdAndId(userId, userMonsterIds);
-        }
         if (CollectionUtils.lacksSubstance(existingUserMonsters)
             || (userMonsterIds.size() != existingUserMonsters.size()))
         {
