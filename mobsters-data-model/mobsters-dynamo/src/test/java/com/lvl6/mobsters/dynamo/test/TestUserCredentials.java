@@ -64,9 +64,7 @@ public class TestUserCredentials
 			final UserCredential qul = userRepo.getMapper().load(
 				UserCredential.class,
 				user);
-			TestUserCredentials.log.info(
-				"Loaded: {}",
-				qul);
+			final UserCredential qul = userRepo.load(user);
 		}
 	}
 
