@@ -19,7 +19,7 @@ import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 
 @Component
-public class MonsterForUserRepositoryImpl extends BaseDynamoRepository<MonsterForUser>
+public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<MonsterForUser>
 	implements MonsterForUserRepository
 {
 

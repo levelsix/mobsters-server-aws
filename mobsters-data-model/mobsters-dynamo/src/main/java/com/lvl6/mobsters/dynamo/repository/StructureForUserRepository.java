@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.dynamo.StructureForUser;
 
 @Component
-public class StructureForUserRepository extends BaseDynamoRepository<StructureForUser>
+public class StructureForUserRepository extends BaseDynamoRepositoryImpl<StructureForUser>
 {
 	public StructureForUserRepository()
 	{

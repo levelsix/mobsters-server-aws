@@ -19,7 +19,7 @@ import com.lvl6.mobsters.dynamo.AchievementForUser;
 
 @Component
 public class AchievementForUserRepository extends
-		BaseDynamoRepository<AchievementForUser> {
+		BaseDynamoRepositoryImpl<AchievementForUser> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(AchievementForUserRepository.class);

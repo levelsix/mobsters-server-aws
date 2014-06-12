@@ -19,7 +19,7 @@ import com.lvl6.mobsters.dynamo.MiniJobForUser;
 
 @Component
 public class MiniJobForUserRepository extends
-		BaseDynamoRepository<MiniJobForUser> {
+		BaseDynamoRepositoryImpl<MiniJobForUser> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(MiniJobForUserRepository.class);

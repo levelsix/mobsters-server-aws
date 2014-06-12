@@ -45,10 +45,10 @@ import com.google.common.collect.ImmutableMap;
 import com.lvl6.mobsters.dynamo.setup.DataRepositoryTxManager;
 import com.lvl6.mobsters.dynamo.setup.Lvl6Transaction;
 
-public abstract class BaseDynamoRepository<T>
+public abstract class BaseDynamoRepositoryImpl<T>
 {
 
-	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepository.class);
+	private static final Logger log = LoggerFactory.getLogger(BaseDynamoRepositoryImpl.class);
 
 	protected boolean isActive = true;
 
@@ -70,7 +70,7 @@ public abstract class BaseDynamoRepository<T>
 	    new ProvisionedThroughput().withReadCapacityUnits(1l)
 	        .withWriteCapacityUnits(1l);
 
-	protected BaseDynamoRepository( final Class<T> clss )
+	protected BaseDynamoRepositoryImpl( final Class<T> clss )
 	{
 		super();
 		this.clss = clss;
@@ -419,7 +419,7 @@ public abstract class BaseDynamoRepository<T>
 			    || nextField.isAnnotationPresent(DynamoDBRangeKey.class)
 			    || nextField.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextField.isAnnotationPresent(DynamoDBIndexRangeKey.class))
 			    && (((!nextField.getGenericType()
-			        .equals(Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType())) || ((nextField.getGenericType().equals(Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType()
+			        .equals(Set.class)) && BaseDynamoRepositoryImpl.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType())) || ((nextField.getGenericType().equals(Set.class)) && BaseDynamoRepositoryImpl.CLASS_TO_ATTR_TYPE.containsKey(nextField.getType()
 			        .getTypeParameters()[0])))) {
 				ads.add(new AttributeDefinition(nextField.getName(),
 				    getAttrType(nextField.getType())));
@@ -441,10 +441,10 @@ public abstract class BaseDynamoRepository<T>
 			        || nextMethod.isAnnotationPresent(DynamoDBRangeKey.class)
 			        || nextMethod.isAnnotationPresent(DynamoDBIndexHashKey.class) || nextMethod.isAnnotationPresent(DynamoDBIndexRangeKey.class))
 			    && (((!nextMethod.getGenericReturnType()
-			        .equals(Set.class)) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType())) || (nextMethod.getGenericReturnType()
+			        .equals(Set.class)) && BaseDynamoRepositoryImpl.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType())) || (nextMethod.getGenericReturnType()
 			        .equals(Set.class)
 			        && (nextMethod.getReturnType()
-			            .getTypeParameters().length > 0) && BaseDynamoRepository.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType()
+			            .getTypeParameters().length > 0) && BaseDynamoRepositoryImpl.CLASS_TO_ATTR_TYPE.containsKey(nextMethod.getReturnType()
 			        .getTypeParameters()[0])))) {
 				if (attrName.startsWith("is")) {
 					attrName = attrName.substring(2);
@@ -480,10 +480,10 @@ public abstract class BaseDynamoRepository<T>
 		// others are unparameterized
 		// types used as keys in CLASS_TO_ATTR_TYPE.
 		if (typeParameters.length == 0) {
-			retVal = BaseDynamoRepository.CLASS_TO_ATTR_TYPE.get(attrClass);
+			retVal = BaseDynamoRepositoryImpl.CLASS_TO_ATTR_TYPE.get(attrClass);
 		} else {
 			retVal = "S"
-			    + BaseDynamoRepository.CLASS_TO_ATTR_TYPE.get(typeParameters[0]);
+			    + BaseDynamoRepositoryImpl.CLASS_TO_ATTR_TYPE.get(typeParameters[0]);
 		}
 
 		return retVal;

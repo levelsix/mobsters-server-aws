@@ -13,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
 
 @Component
-public class PvpLeagueForUserRepository extends BaseDynamoRepository<PvpLeagueForUser>
+public class PvpLeagueForUserRepository extends BaseDynamoRepositoryImpl<PvpLeagueForUser>
 {
 	public PvpLeagueForUserRepository()
 	{

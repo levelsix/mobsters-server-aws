@@ -18,7 +18,7 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 
 @Component
-public class QuestForUserRepository extends BaseDynamoRepository<QuestForUser> {
+public class QuestForUserRepository extends BaseDynamoRepositoryImpl<QuestForUser> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(QuestForUserRepository.class);

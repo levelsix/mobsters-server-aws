@@ -13,7 +13,7 @@ import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 
 @Component
 public class UserDataRarelyAccessedRepository
-	extends BaseDynamoRepository<UserDataRarelyAccessed>
+	extends BaseDynamoRepositoryImpl<UserDataRarelyAccessed>
 {
 
 	@SuppressWarnings("unused")

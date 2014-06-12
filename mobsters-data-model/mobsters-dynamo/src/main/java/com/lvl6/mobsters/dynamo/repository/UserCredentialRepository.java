@@ -17,7 +17,7 @@ import com.amazonaws.services.dynamodbv2.model.ProjectionType;
 import com.lvl6.mobsters.dynamo.UserCredential;
 
 @Component
-public class UserCredentialRepository extends BaseDynamoRepository<UserCredential>
+public class UserCredentialRepository extends BaseDynamoRepositoryImpl<UserCredential>
 {
 	public UserCredentialRepository()
 	{
