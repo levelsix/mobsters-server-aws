@@ -31,7 +31,7 @@ import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpecBuild
 public class UpdateMonsterHealthController extends EventController
 {
 	private static final Logger LOG =
-	    LoggerFactory.getLogger(UpdateMonsterHealthController.class);
+		LoggerFactory.getLogger(UpdateMonsterHealthController.class);
 
 	@Autowired
 	protected MonsterService monsterService;
@@ -54,12 +54,13 @@ public class UpdateMonsterHealthController extends EventController
 	}
 
 	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter )
+	protected void processRequestEvent(
+		final RequestEvent event,
+		final EventsToDispatch eventWriter )
 	{
 		// identify client request.
 		final UpdateMonsterHealthRequestProto reqProto =
-		    ((UpdateMonsterHealthRequestEvent) event).getUpdateMonsterHealthRequestProto();
+			((UpdateMonsterHealthRequestEvent) event).getUpdateMonsterHealthRequestProto();
 		final MinimumUserProto sender = reqProto.getSender();
 		final String userIdString = sender.getUserUuid();
 
@@ -67,7 +68,7 @@ public class UpdateMonsterHealthController extends EventController
 		final Builder responseBuilder = UpdateMonsterHealthResponseProto.newBuilder();
 		responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
 		final UpdateMonsterHealthResponseEvent resEvent =
-		    new UpdateMonsterHealthResponseEvent(userIdString, event.getTag());
+			new UpdateMonsterHealthResponseEvent(userIdString, event.getTag());
 
 		// Check values client sent for syntax errors. Call service only if
 		// syntax checks out ok
@@ -76,11 +77,11 @@ public class UpdateMonsterHealthController extends EventController
 		// HashBasedTable.create();
 		final ModifyMonstersSpecBuilder modBuilder = ModifyMonstersSpec.builder();
 		if (StringUtils.hasText(userIdString)
-		    && !CollectionUtils.lacksSubstance(umchpList)) {
+			&& !CollectionUtils.lacksSubstance(umchpList)) {
 			// extract the ids so it's easier to get userMonsters from db
 			for (final UserMonsterCurrentHealthProto nextMonsterUnit : umchpList) {
 				modBuilder.setHealthAbsolute(nextMonsterUnit.getUserMonsterUuid(),
-				    nextMonsterUnit.getCurrentHealth());
+					nextMonsterUnit.getCurrentHealth());
 			}
 
 			responseBuilder.setStatus(UpdateMonsterHealthStatus.SUCCESS);
@@ -92,8 +93,8 @@ public class UpdateMonsterHealthController extends EventController
 				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
 			} catch (final Exception e) {
 				LOG.error(
-				    "exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService",
-				    e);
+					"exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService",
+					e);
 				responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
 				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
 			}
@@ -101,12 +102,12 @@ public class UpdateMonsterHealthController extends EventController
 
 		// write to client
 		LOG.info("Writing event: "
-		    + resEvent);
+			+ resEvent);
 		try {
 			eventWriter.writeEvent(resEvent);
 		} catch (final Exception exp) {
 			LOG.error("fatal exception in UpdateMonsterHealthController processRequestEvent",
-			    exp);
+				exp);
 		}
 	}
 
