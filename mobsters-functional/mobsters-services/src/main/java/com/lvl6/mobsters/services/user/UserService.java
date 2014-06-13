@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
+import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 import com.lvl6.mobsters.info.User;
 import com.lvl6.mobsters.services.user.UserServiceImpl.ModifyUserDataRarelyAccessedSpecBuilderImpl;
@@ -221,4 +222,9 @@ public interface UserService
 		}
 	}
 
+	/**
+	 * @throws Exception ************************************************************************/
+
+	public abstract UserCredential createUserCredential( String facebookId, String udid ) throws Exception;
+	
 }

@@ -120,6 +120,26 @@ public class StructureForUser
 		this.lastRetrieved = lastRetrieved;
 	}
 
+	public float getxCoord()
+	{
+		return xCoord;
+	}
+
+	public void setxCoord( float xCoord )
+	{
+		this.xCoord = xCoord;
+	}
+
+	public float getyCoord()
+	{
+		return yCoord;
+	}
+
+	public void setyCoord( float yCoord )
+	{
+		this.yCoord = yCoord;
+	}
+
 	public Date getPurchaseTime()
 	{
 		return purchaseTime;

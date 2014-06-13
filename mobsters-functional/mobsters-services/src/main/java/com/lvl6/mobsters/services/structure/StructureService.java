@@ -1,9 +1,12 @@
 package com.lvl6.mobsters.services.structure;
 
+import java.util.Date;
 import java.util.Map;
 
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
+import com.lvl6.mobsters.dynamo.StructureForUser;
 import com.lvl6.mobsters.services.structure.StructureServiceImpl.CreateUserObstaclesSpecBuilderImpl;
+import com.lvl6.mobsters.services.structure.StructureServiceImpl.CreateUserStructuresSpecBuilderImpl;
 public interface StructureService {
     
     //NON CRUD LOGIC******************************************************************
@@ -44,4 +47,51 @@ public interface StructureService {
             return new CreateUserObstaclesSpecBuilderImpl();
         }
     }
+    
+    /**************************************************************************/
+
+    public abstract void createStructuresForUser( String userId, CreateUserStructuresSpec createSpec );
+
+    public interface CreateUserStructuresSpecBuilder {
+    	public CreateUserStructuresSpec build();
+
+    	public CreateUserStructuresSpecBuilder setStructureId( String userStructureId, int obstacleId);
+
+    	public CreateUserStructuresSpecBuilder setXCoord( String userStructureId, float xCoord);
+
+    	public CreateUserStructuresSpecBuilder setYCoord( String userStructureId, float yCoord);
+
+    	public CreateUserStructuresSpecBuilder setLastRetrievedTime( String userStructureId, Date lastRetrieved );
+
+		public CreateUserStructuresSpecBuilder setPurchaseTime(
+			String userStructureId,
+			Date purchaseTime );
+
+		public CreateUserStructuresSpecBuilder setComplete(
+			String userStructureId,
+			boolean isComplete );
+
+		public CreateUserStructuresSpecBuilder setFbInviteStructLvl(
+			String userStructureId,
+			int fbInviteStructLvl );
+
+    }
+
+    public class CreateUserStructuresSpec {
+    	// the end state: objects to be saved to db
+    	final private Map<String, StructureForUser> userStructureIdToOfu;
+
+    	CreateUserStructuresSpec( Map<String, StructureForUser> userStructureIdToOfu) {
+    		this.userStructureIdToOfu = userStructureIdToOfu;
+    	}
+
+    	Map<String, StructureForUser> getUserStructureIdToOfu() {
+    		return userStructureIdToOfu;
+    	}
+
+    	public static CreateUserStructuresSpecBuilder builder() {
+    		return new CreateUserStructuresSpecBuilderImpl();
+    	}
+    }
+    
 }

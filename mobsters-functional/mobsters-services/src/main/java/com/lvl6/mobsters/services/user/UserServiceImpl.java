@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.services.user;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
+import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.info.User;
 import com.lvl6.mobsters.info.repository.UserRepository;
@@ -24,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDataRarelyAccessedRepository userDraRepo;
+    
+    @Autowired
+    UserCredentialRepository userCredentialRepository;
 
     @Override
     @Transactional(
@@ -219,8 +227,48 @@ public class UserServiceImpl implements UserService {
             udra.setDeviceToken(deviceToken);
         }
     }
+    
+    /**************************************************************************/
+    
+    @Override
+    public UserCredential createUserCredential( String facebookId, String udid ) throws Exception {
+    	UserCredential uc = new UserCredential();
+    	
+    	//if facebook id is provided, use that to try creating account, else use udid
+    	if (StringUtils.hasText(facebookId)) {
+    		List<UserCredential> userCredentials = userCredentialRepository.getUserCredentialByFacebook(facebookId);
+
+    		if (!CollectionUtils.lacksSubstance(userCredentials)) {
+    			throw new Exception("User(s) already exist with facebookId=" + facebookId + " users=" + userCredentials); 
+    		}
+
+    		uc.setFacebookId(facebookId);
+
+    	} else {
+    		List<UserCredential> userCredentials = userCredentialRepository.getUserCredentialByUdid(udid);
+
+    		if (!CollectionUtils.lacksSubstance(userCredentials)) {
+    			throw new Exception("User(s) already exist with udid=" + udid + " users=" + userCredentials); 
+    		}
+
+    		uc.setUdid(udid);
+    	}
+    	
+    	userCredentialRepository.save(uc);
+    	return uc;
+    }
 
     //for the dependency injection
+    public UserRepository getUserRepo()
+    {
+    	return userRepo;
+    }
+    
+    public void setUserRepo( UserRepository userRepo )
+    {
+    	this.userRepo = userRepo;
+    }
+    
     public UserDataRarelyAccessedRepository getUserDraRepo()
     {
         return userDraRepo;
@@ -230,5 +278,15 @@ public class UserServiceImpl implements UserService {
     {
         this.userDraRepo = userDraRepo;
     }
+
+	public UserCredentialRepository getUserCredentialRepository()
+	{
+		return userCredentialRepository;
+	}
+
+	public void setUserCredentialRepository( UserCredentialRepository userCredentialRepository )
+	{
+		this.userCredentialRepository = userCredentialRepository;
+	}
 
 }
