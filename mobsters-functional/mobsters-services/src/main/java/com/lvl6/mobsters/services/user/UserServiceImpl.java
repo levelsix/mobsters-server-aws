@@ -23,261 +23,293 @@ import com.lvl6.mobsters.info.repository.UserRepository;
 
 @Component
 @Transactional
-public class UserServiceImpl implements UserService {
-    @Autowired
-    UserRepository userRepo;
+public class UserServiceImpl implements UserService
+{
+	@Autowired
+	UserRepository userRepo;
 
-    @Autowired
-    UserDataRarelyAccessedRepository userDraRepo;
-    
-    @Autowired
-    UserCredentialRepository userCredentialRepository;
+	@Autowired
+	UserDataRarelyAccessedRepository userDraRepo;
 
-    @Override
-    @Transactional(
-        propagation = Propagation.SUPPORTS,
-        isolation = Isolation.READ_COMMITTED,
-        readOnly = true)
-    public User findById( String id ) {
-        User retVal = userRepo.findOne(id);
-        return retVal;
-    }
+	@Autowired
+	UserCredentialRepository userCredentialRepository;
 
-    @Override
-    @Transactional(
-        propagation = Propagation.SUPPORTS,
-        isolation = Isolation.READ_COMMITTED,
-        readOnly = true)
-    public User findByIdWithClan( String id ) {
-        final User retVal = userRepo.findByIdWithClan(id);
+	@Override
+	@Transactional(
+		propagation = Propagation.SUPPORTS,
+		isolation = Isolation.READ_COMMITTED,
+		readOnly = true)
+	public User findById( String id )
+	{
+		User retVal = userRepo.findOne(id);
+		return retVal;
+	}
 
-        return retVal;
-    }
+	@Override
+	@Transactional(
+		propagation = Propagation.SUPPORTS,
+		isolation = Isolation.READ_COMMITTED,
+		readOnly = true)
+	public User findByIdWithClan( String id )
+	{
+		final User retVal = userRepo.findByIdWithClan(id);
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
-    public void updateUserResources(
-        String id,
-        int cashDelta,
-        int experienceDelta,
-        int gemsDelta,
-        int oilDelta )
-    {
-        // TODO: This can be done better using a @Modifying / @Query annotation pair on a
-        // single repository method, doing the update in-place without a fetch after all
+		return retVal;
+	}
 
-        final User retVal = userRepo.findOne(id);
-        if (cashDelta != 0) {
-            retVal.setCash(retVal.getCash() + cashDelta);
-        }
-        if (experienceDelta != 0) {
-            retVal.setExperience(retVal.getExperience() + experienceDelta);
-        }
-        if (gemsDelta != 0) {
-            retVal.setGems(retVal.getGems() + gemsDelta);
-        }
-        if (oilDelta != 0) {
-            retVal.setOil(retVal.getOil() + oilDelta);
-        }
+	@Override
+	@Transactional(
+		propagation = Propagation.REQUIRED,
+		isolation = Isolation.REPEATABLE_READ)
+	public void updateUserResources(
+		String id,
+		int cashDelta,
+		int experienceDelta,
+		int gemsDelta,
+		int oilDelta )
+	{
+		// TODO: This can be done better using a @Modifying / @Query annotation pair on a
+		// single repository method, doing the update in-place without a fetch after all
 
-        userRepo.save(retVal);
-    }
+		final User retVal = userRepo.findOne(id);
+		if (cashDelta != 0) {
+			retVal.setCash(retVal.getCash()
+				+ cashDelta);
+		}
+		if (experienceDelta != 0) {
+			retVal.setExperience(retVal.getExperience()
+				+ experienceDelta);
+		}
+		if (gemsDelta != 0) {
+			retVal.setGems(retVal.getGems()
+				+ gemsDelta);
+		}
+		if (oilDelta != 0) {
+			retVal.setOil(retVal.getOil()
+				+ oilDelta);
+		}
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
-    public void updateUsersResources( Iterable<ChangeUserResourcesRequest> actions ) {
-        for (final ChangeUserResourcesRequest action : actions) {
-            updateUserResources(
-                action.getId(),
-                action.getCashDelta(),
-                action.getExperienceDelta(),
-                action.getGemsDelta(),
-                action.getOilDelta());
-        }
+		userRepo.save(retVal);
+	}
 
-    }
+	@Override
+	@Transactional(
+		propagation = Propagation.REQUIRED,
+		isolation = Isolation.REPEATABLE_READ)
+	public void updateUsersResources( Iterable<ChangeUserResourcesRequest> actions )
+	{
+		for (final ChangeUserResourcesRequest action : actions) {
+			updateUserResources(action.getId(), action.getCashDelta(),
+				action.getExperienceDelta(), action.getGemsDelta(), action.getOilDelta());
+		}
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
-    public void saveUser( User modifiedUser ) {
-        userRepo.save(modifiedUser);
-    }
+	}
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
-    public void createUser( User newUser ) {
-        userRepo.save(newUser);
-    }
+	@Override
+	@Transactional(
+		propagation = Propagation.REQUIRED,
+		isolation = Isolation.REPEATABLE_READ)
+	public void saveUser( User modifiedUser )
+	{
+		userRepo.save(modifiedUser);
+	}
 
-    @Override
-    public ChangeUserResourcesRequest getChangeUserResourcesRequest(
-        String id,
-        int cashDelta,
-        int experienceDelta,
-        int gemsDelta,
-        int oilDelta )
-    {
-        final ChangeUserResourcesRequest retVal =
-            new ChangeUserResourcesRequest(id, cashDelta, experienceDelta, gemsDelta, oilDelta);
+	@Override
+	@Transactional(
+		propagation = Propagation.REQUIRED,
+		isolation = Isolation.REPEATABLE_READ)
+	public void createUser( User newUser )
+	{
+		userRepo.save(newUser);
+	}
 
-        return retVal;
-    }
+	@Override
+	public ChangeUserResourcesRequest getChangeUserResourcesRequest(
+		String id,
+		int cashDelta,
+		int experienceDelta,
+		int gemsDelta,
+		int oilDelta )
+	{
+		final ChangeUserResourcesRequest retVal =
+			new ChangeUserResourcesRequest(id, cashDelta, experienceDelta, gemsDelta, oilDelta);
 
-    // @Override
-    // public void modifyUser( ModifyUserSpec modifySpec ) {
-    // final Multimap<String, UserFunc> usersModificationsMap =
-    // modifySpec.getUsersModificationsMap();
-    //
-    // }
+		return retVal;
+	}
 
-    static class ModifyUserSpecBuilderImpl implements ModifyUserSpecBuilder {
-        // keys are userIds
-        final Multimap<String, UserFunc> usersModificationsMap;
+	// @Override
+	// public void modifyUser( ModifyUserSpec modifySpec ) {
+	// final Multimap<String, UserFunc> usersModificationsMap =
+	// modifySpec.getUsersModificationsMap();
+	//
+	// }
 
-        ModifyUserSpecBuilderImpl() {
-            usersModificationsMap = ArrayListMultimap.create();
-        }
+	static class ModifyUserSpecBuilderImpl implements ModifyUserSpecBuilder
+	{
+		// keys are userIds
+		final Multimap<String, UserFunc> usersModificationsMap;
 
-        @Override
-        public ModifyUserSpec build() {
-            return new ModifyUserSpec(usersModificationsMap);
-        }
+		ModifyUserSpecBuilderImpl()
+		{
+			usersModificationsMap = ArrayListMultimap.create();
+		}
 
-    }
+		@Override
+		public ModifyUserSpec build()
+		{
+			return new ModifyUserSpec(usersModificationsMap);
+		}
 
-    /**************************************************************************/
+	}
 
-    @Override
-    public void modifyUserDataRarelyAccessed(
-        String userId,
-        ModifyUserDataRarelyAccessedSpec modifySpec )
-    {
-        // get whatever we need from the database
-        final Set<UserDataRarelyAccessedFunc> userOps = modifySpec.getUsersDraModificationsSet();
+	/**************************************************************************/
 
-        UserDataRarelyAccessed udra = userDraRepo.load(userId);
+	@Override
+	public void modifyUserDataRarelyAccessed(
+		String userId,
+		ModifyUserDataRarelyAccessedSpec modifySpec )
+	{
+		// get whatever we need from the database
+		final Set<UserDataRarelyAccessedFunc> userOps =
+			modifySpec.getUsersDraModificationsSet();
 
-        if (null == udra) {
-            throw new IllegalArgumentException("no UserDataRarelyAccessed for userId=" + userId);
-        }
+		UserDataRarelyAccessed udra = userDraRepo.load(userId);
 
-        // Mutate the object
+		if (null == udra) { throw new IllegalArgumentException(
+			"no UserDataRarelyAccessed for userId="
+				+ userId); }
 
-        for (UserDataRarelyAccessedFunc userOp : userOps) {
-            userOp.apply(udra);
-        }
+		// Mutate the object
 
-        userDraRepo.save(udra);
-    }
+		for (UserDataRarelyAccessedFunc userOp : userOps) {
+			userOp.apply(udra);
+		}
 
-    static class ModifyUserDataRarelyAccessedSpecBuilderImpl
-        implements
-            ModifyUserDataRarelyAccessedSpecBuilder
-    {
-        final Set<UserDataRarelyAccessedFunc> usersDraModificationsSet;
+		userDraRepo.save(udra);
+	}
 
-        ModifyUserDataRarelyAccessedSpecBuilderImpl() {
-            usersDraModificationsSet = new HashSet<UserDataRarelyAccessedFunc>();
-        }
+	static class ModifyUserDataRarelyAccessedSpecBuilderImpl
+		implements
+			ModifyUserDataRarelyAccessedSpecBuilder
+	{
+		final Set<UserDataRarelyAccessedFunc> usersDraModificationsSet;
 
-        @Override
-        public ModifyUserDataRarelyAccessedSpec build() {
-            return new ModifyUserDataRarelyAccessedSpec(usersDraModificationsSet);
-        }
+		ModifyUserDataRarelyAccessedSpecBuilderImpl()
+		{
+			usersDraModificationsSet = new HashSet<UserDataRarelyAccessedFunc>();
+		}
 
-        @Override
-        public ModifyUserDataRarelyAccessedSpecBuilder setGameCenterIdNotNull(
-            String nonNullGameCenterId )
-        {
-            usersDraModificationsSet.add(new SetGameCenterIdNotNull(nonNullGameCenterId));
-            return this;
-        }
-        
-        @Override
-        public ModifyUserDataRarelyAccessedSpecBuilder setDeviceToken(
-            String deviceToken )
-        {
-            usersDraModificationsSet.add(new SetDeviceToken(deviceToken));
-            return this;
-        }
-    }
+		@Override
+		public ModifyUserDataRarelyAccessedSpec build()
+		{
+			return new ModifyUserDataRarelyAccessedSpec(usersDraModificationsSet);
+		}
 
-    static class SetGameCenterIdNotNull implements UserDataRarelyAccessedFunc {
-        private String gameCenterId;
+		@Override
+		public ModifyUserDataRarelyAccessedSpecBuilder setGameCenterIdNotNull(
+			String nonNullGameCenterId )
+		{
+			usersDraModificationsSet.add(new SetGameCenterIdNotNull(nonNullGameCenterId));
+			return this;
+		}
 
-        SetGameCenterIdNotNull( String gameCenterId ) {
-            this.gameCenterId = gameCenterId;
-        }
+		@Override
+		public ModifyUserDataRarelyAccessedSpecBuilder setDeviceToken( String deviceToken )
+		{
+			usersDraModificationsSet.add(new SetDeviceToken(deviceToken));
+			return this;
+		}
+	}
 
-        @Override
-        public void apply( UserDataRarelyAccessed udra ) {
-            udra.setGameCenterId(gameCenterId);
-        }
-    }
-    
-    static class SetDeviceToken implements UserDataRarelyAccessedFunc {
-        private String deviceToken;
+	static class SetGameCenterIdNotNull implements UserDataRarelyAccessedFunc
+	{
+		private String gameCenterId;
 
-        SetDeviceToken( String deviceToken ) {
-            this.deviceToken = deviceToken;
-        }
+		SetGameCenterIdNotNull( String gameCenterId )
+		{
+			this.gameCenterId = gameCenterId;
+		}
 
-        @Override
-        public void apply( UserDataRarelyAccessed udra ) {
-            udra.setDeviceToken(deviceToken);
-        }
-    }
-    
-    /**************************************************************************/
-    
-    @Override
-    public UserCredential createUserCredential( String facebookId, String udid ) throws Exception {
-    	UserCredential uc = new UserCredential();
-    	
-    	//if facebook id is provided, use that to try creating account, else use udid
-    	if (StringUtils.hasText(facebookId)) {
-    		List<UserCredential> userCredentials = userCredentialRepository.getUserCredentialByFacebook(facebookId);
+		@Override
+		public void apply( UserDataRarelyAccessed udra )
+		{
+			udra.setGameCenterId(gameCenterId);
+		}
+	}
 
-    		if (!CollectionUtils.lacksSubstance(userCredentials)) {
-    			throw new Exception("User(s) already exist with facebookId=" + facebookId + " users=" + userCredentials); 
-    		}
+	static class SetDeviceToken implements UserDataRarelyAccessedFunc
+	{
+		private String deviceToken;
 
-    		uc.setFacebookId(facebookId);
+		SetDeviceToken( String deviceToken )
+		{
+			this.deviceToken = deviceToken;
+		}
 
-    	} else {
-    		List<UserCredential> userCredentials = userCredentialRepository.getUserCredentialByUdid(udid);
+		@Override
+		public void apply( UserDataRarelyAccessed udra )
+		{
+			udra.setDeviceToken(deviceToken);
+		}
+	}
 
-    		if (!CollectionUtils.lacksSubstance(userCredentials)) {
-    			throw new Exception("User(s) already exist with udid=" + udid + " users=" + userCredentials); 
-    		}
+	/**************************************************************************/
 
-    		uc.setUdid(udid);
-    	}
-    	
-    	userCredentialRepository.save(uc);
-    	return uc;
-    }
+	@Override
+	public UserCredential createUserCredential( String facebookId, String udid ) throws Exception
+	{
+		UserCredential uc = new UserCredential();
 
-    //for the dependency injection
-    public UserRepository getUserRepo()
-    {
-    	return userRepo;
-    }
-    
-    public void setUserRepo( UserRepository userRepo )
-    {
-    	this.userRepo = userRepo;
-    }
-    
-    public UserDataRarelyAccessedRepository getUserDraRepo()
-    {
-        return userDraRepo;
-    }
+		// if facebook id is provided, use that to try creating account, else use udid
+		if (StringUtils.hasText(facebookId)) {
+			List<UserCredential> userCredentials =
+				userCredentialRepository.getUserCredentialByFacebook(facebookId);
 
-    public void setUserDraRepo( UserDataRarelyAccessedRepository userDraRepo )
-    {
-        this.userDraRepo = userDraRepo;
-    }
+			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
+				"User(s) already exist with facebookId="
+					+ facebookId
+					+ " users="
+					+ userCredentials); }
+
+			uc.setFacebookId(facebookId);
+
+		} else {
+			List<UserCredential> userCredentials =
+				userCredentialRepository.getUserCredentialByUdid(udid);
+
+			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
+				"User(s) already exist with udid="
+					+ udid
+					+ " users="
+					+ userCredentials); }
+
+			uc.setUdid(udid);
+		}
+
+		userCredentialRepository.save(uc);
+		return uc;
+	}
+
+	// for the dependency injection
+	public UserRepository getUserRepo()
+	{
+		return userRepo;
+	}
+
+	public void setUserRepo( UserRepository userRepo )
+	{
+		this.userRepo = userRepo;
+	}
+
+	public UserDataRarelyAccessedRepository getUserDraRepo()
+	{
+		return userDraRepo;
+	}
+
+	public void setUserDraRepo( UserDataRarelyAccessedRepository userDraRepo )
+	{
+		this.userDraRepo = userDraRepo;
+	}
 
 	public UserCredentialRepository getUserCredentialRepository()
 	{

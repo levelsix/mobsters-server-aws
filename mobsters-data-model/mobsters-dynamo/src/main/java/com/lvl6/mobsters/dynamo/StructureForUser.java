@@ -24,9 +24,9 @@ public class StructureForUser
 	private Date lastRetrieved;
 
 	private float xCoord;
-	
+
 	private float yCoord;
-	
+
 	// private CoordinatePair coordinates;
 
 	// private int level;
@@ -179,7 +179,6 @@ public class StructureForUser
 	{
 		this.fbInviteStructLvl = fbInviteStructLvl;
 	}
-
 
 	@Override
 	public String toString()

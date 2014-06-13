@@ -223,8 +223,9 @@ public interface UserService
 	}
 
 	/**
-	 * @throws Exception ************************************************************************/
+	 * @throws Exception
+	 ************************************************************************/
 
 	public abstract UserCredential createUserCredential( String facebookId, String udid ) throws Exception;
-	
+
 }

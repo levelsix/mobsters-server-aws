@@ -241,17 +241,18 @@ public class StructureServiceImpl implements StructureService {
         return obstacleForUserRepository;
     }
 
-    public void setObstacleForUserRepository( ObstacleForUserRepository miniJobForUserRepository )
-    {
-        this.obstacleForUserRepository = miniJobForUserRepository;
-    }
+	public void setObstacleForUserRepository( ObstacleForUserRepository miniJobForUserRepository )
+	{
+		this.obstacleForUserRepository = miniJobForUserRepository;
+	}
 
 	public StructureForUserRepository getStructureForUserRepository()
 	{
 		return structureForUserRepository;
 	}
 
-	public void setStructureForUserRepository( StructureForUserRepository structureForUserRepository )
+	public void setStructureForUserRepository(
+		StructureForUserRepository structureForUserRepository )
 	{
 		this.structureForUserRepository = structureForUserRepository;
 	}

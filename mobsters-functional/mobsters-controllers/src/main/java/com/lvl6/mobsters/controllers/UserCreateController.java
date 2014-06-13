@@ -43,7 +43,7 @@ public class UserCreateController extends EventController
 
 	@Autowired
 	protected UserService userService;
-	
+
 	@Autowired
 	protected StructureService structureService;
 
@@ -77,12 +77,12 @@ public class UserCreateController extends EventController
 		final String facebookId = reqProto.getFacebookId();
 		final Date createTime = new Date();
 		final List<TutorialStructProto> structsJustBuilt = reqProto.getStructsJustBuiltList();
-		
-		//in case user tries hacking, don't let the amount go over tutorial default values
+
+		// in case user tries hacking, don't let the amount go over tutorial default values
 		final int cash = Math.min(reqProto.getCash(), ControllerConstants.TUTORIAL__INIT_CASH);
 		final int oil = Math.min(reqProto.getOil(), ControllerConstants.TUTORIAL__INIT_OIL);
 		final int gems = Math.min(reqProto.getGems(), ControllerConstants.TUTORIAL__INIT_GEMS);
-		
+
 		// prepare to send response back to client
 		UserCreateResponseProto.Builder responseBuilder = UserCreateResponseProto.newBuilder();
 		responseBuilder.setStatus(UserCreateStatus.SUCCESS);
@@ -92,12 +92,12 @@ public class UserCreateController extends EventController
 		// Check values client sent for syntax errors. Call service only if
 		// syntax checks out ok; prepare arguments for service
 		// NOTE: since service also kind of relies on syntax checking
-		
+
 		UserCredential uc;
 		try {
 			uc = userService.createUserCredential(facebookId, udid);
 		} catch (Exception e) {
-			// TODO: Consider making a hierarchy of exceptions, one for each 
+			// TODO: Consider making a hierarchy of exceptions, one for each
 			// UserCreateStatus
 			LOG.error(
 				"exception in UserCreateController processEvent when calling userService", e);
@@ -115,10 +115,9 @@ public class UserCreateController extends EventController
 			LOG.error("fatal exception in UserCreateController processRequestEvent", e);
 		}
 
-		if (!responseBuilder.getStatus().equals(UserCreateStatus.SUCCESS)) {
-			return;
-		}
-		
+		if (!responseBuilder.getStatus()
+			.equals(UserCreateStatus.SUCCESS)) { return; }
+
 		// TODO: FIGURE OUT IF THIS IS STILL NEEDED
 		// game center id might have changed
 		// null PvpLeagueFromUser means will pull from a cache instead
@@ -128,7 +127,7 @@ public class UserCreateController extends EventController
 		// eventWriter.writeEvent(resEventUpdate);
 
 		String userId = uc.getUserId();
-		//TAKE INTO ACCOUNT THE PROPERTIES SENT IN BY CLIENT
+		// TAKE INTO ACCOUNT THE PROPERTIES SENT IN BY CLIENT
 		try {
 			writeStructs(userId, createTime, structsJustBuilt);
 			writeObstacles(userId);
@@ -137,79 +136,86 @@ public class UserCreateController extends EventController
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	private void writeStructs(final String userId, final Date purchaseTime,
-		final List<TutorialStructProto> structsJustBuilt) {
-		
-		final CreateUserStructuresSpecBuilder createBuilder = 
+
+	private void writeStructs(
+		final String userId,
+		final Date purchaseTime,
+		final List<TutorialStructProto> structsJustBuilt )
+	{
+
+		final CreateUserStructuresSpecBuilder createBuilder =
 			CreateUserStructuresSpec.builder();
-		
+
 		final Date lastRetrievedTime = TimeUtils.createDateAddDays(purchaseTime, -7);
 		int[] buildingIds = ControllerConstants.TUTORIAL__EXISTING_BUILDING_IDS;
-	  	float[] xPositions = ControllerConstants.TUTORIAL__EXISTING_BUILDING_X_POS;
-	  	float[] yPositions = ControllerConstants.TUTORIAL__EXISTING_BUILDING_Y_POS;
-	  	LOG.info("giving user buildings");
-	  	final int numBuildings = buildingIds.length;
-		
-	  	//upon creation, the user should be able to retrieve from these buildings
-	  	for (int index = 0 ; index < numBuildings; index++) {
-	  		// TODO: Perhaps find more efficient way to get an id.
-	  		String userStructureId = (new StructureForUser()).getId();
-	  		
-	  		createBuilder.setStructureId(userStructureId, buildingIds[index]);
+		float[] xPositions = ControllerConstants.TUTORIAL__EXISTING_BUILDING_X_POS;
+		float[] yPositions = ControllerConstants.TUTORIAL__EXISTING_BUILDING_Y_POS;
+		LOG.info("giving user buildings");
+		final int numBuildings = buildingIds.length;
+
+		// upon creation, the user should be able to retrieve from these buildings
+		for (int index = 0; index < numBuildings; index++ ) {
+			// TODO: Perhaps find more efficient way to get an id.
+			String userStructureId = (new StructureForUser()).getId();
+
+			createBuilder.setStructureId(userStructureId, buildingIds[index]);
 			createBuilder.setXCoord(userStructureId, xPositions[index]);
 			createBuilder.setYCoord(userStructureId, yPositions[index]);
 			createBuilder.setPurchaseTime(userStructureId, purchaseTime);
 			createBuilder.setLastRetrievedTime(userStructureId, lastRetrievedTime);
 			createBuilder.setComplete(userStructureId, true);
-	  	}
-	  	
-	  	//upon creation, the user should NOT be able to retrieve from these buildings
-		for (int index = 0; index < structsJustBuilt.size(); index++) {
-	  		// TODO: Perhaps find more efficient way to get an id.
-	  		String userStructureId = (new StructureForUser()).getId();
-	  		
+		}
+
+		// upon creation, the user should NOT be able to retrieve from these buildings
+		for (int index = 0; index < structsJustBuilt.size(); index++ ) {
+			// TODO: Perhaps find more efficient way to get an id.
+			String userStructureId = (new StructureForUser()).getId();
+
 			TutorialStructProto tsp = structsJustBuilt.get(index);
-			
+
 			createBuilder.setStructureId(userStructureId, tsp.getStructId());
-			createBuilder.setXCoord(userStructureId, tsp.getCoordinate().getX());
-			createBuilder.setYCoord(userStructureId, tsp.getCoordinate().getY());
+			createBuilder.setXCoord(userStructureId, tsp.getCoordinate()
+				.getX());
+			createBuilder.setYCoord(userStructureId, tsp.getCoordinate()
+				.getY());
 			createBuilder.setPurchaseTime(userStructureId, purchaseTime);
 			createBuilder.setLastRetrievedTime(userStructureId, purchaseTime);
 			createBuilder.setComplete(userStructureId, true);
 		}
-		
+
 		structureService.createStructuresForUser(userId, createBuilder.build());
 		LOG.info("gave user buildings");
 	}
-	
-	private void writeObstacles(final String userId) {
+
+	private void writeObstacles( final String userId )
+	{
 		LOG.info("giving user obstacles");
 		String orientation = StructOrientation.POSITION_1.name();
-		
+
 		final CreateUserObstaclesSpecBuilder createBuilder = CreateUserObstaclesSpec.builder();
-		for (int index = 0; index < ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID.length; index++) {
+		for (int index = 0; index < ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID.length; index++ ) {
 			// TODO: Perhaps find more efficient way to get an id.
 			final String obstacleForUserId = (new ObstacleForUser()).getObstacleForUserId();
 			final int obstacleId = ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID[index];
 			createBuilder.setObstacleId(obstacleForUserId, obstacleId);
-			
+
 			final int posX = ControllerConstants.TUTORIAL__INIT_OBSTACLE_X[index];
 			createBuilder.setXCoord(obstacleForUserId, posX);
-			
-	    	final int posY = ControllerConstants.TUTORIAL__INIT_OBSTACLE_Y[index];
-	    	createBuilder.setYCoord(obstacleForUserId, posY);
-	    	createBuilder.setOrientation(obstacleForUserId, orientation);
+
+			final int posY = ControllerConstants.TUTORIAL__INIT_OBSTACLE_Y[index];
+			createBuilder.setYCoord(obstacleForUserId, posY);
+			createBuilder.setOrientation(obstacleForUserId, orientation);
 		}
-		
+
 		structureService.createObstaclesForUser(userId, createBuilder.build());
 		LOG.info("gave user obstacles");
 	}
-	
-	private void writeTaskCompleted(String userId, Date createTime) {
-		
+
+	private void writeTaskCompleted( String userId, Date createTime )
+	{
+
 	}
 
 	// private void failureCase(
