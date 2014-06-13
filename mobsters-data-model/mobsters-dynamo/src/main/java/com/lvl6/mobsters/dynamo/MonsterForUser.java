@@ -33,7 +33,7 @@ public class MonsterForUser {
 
     private int teamSlotNum;
 
-    private String sourceOfPieces;
+//    private String sourceOfPieces;
 
     public MonsterForUser() {}
 
@@ -46,8 +46,8 @@ public class MonsterForUser {
         int numPieces,
         boolean isComplete,
         Date combineStartTime,
-        int teamSlotNum,
-        String sourceOfPieces )
+        int teamSlotNum )
+//        String sourceOfPieces )
     {
         super();
         this.userId = userId;
@@ -59,7 +59,7 @@ public class MonsterForUser {
         this.isComplete = isComplete;
         this.combineStartTime = combineStartTime;
         this.teamSlotNum = teamSlotNum;
-        this.sourceOfPieces = sourceOfPieces;
+//        this.sourceOfPieces = sourceOfPieces;
     }
 
     @DynamoDBHashKey(attributeName = "userId")
@@ -154,6 +154,7 @@ public class MonsterForUser {
         this.teamSlotNum = teamSlotNum;
     }
 
+    /*
     public String getSourceOfPieces() {
         return sourceOfPieces;
     }
@@ -161,14 +162,32 @@ public class MonsterForUser {
     public void setSourceOfPieces( String sourceOfPieces ) {
         this.sourceOfPieces = sourceOfPieces;
     }
-
+    */
+    
     @Override
-    public String toString() {
-        return "MonsterForUser [monsterForUserId=" + monsterForUserUuid + ", userId=" + userId
-            + ", monsterId=" + monsterId + ", currentExp=" + currentExp + ", currentLvl="
-            + currentLvl + ", currentHealth=" + currentHealth + ", numPieces=" + numPieces
-            + ", isComplete=" + isComplete + ", combineStartTime=" + combineStartTime
-            + ", teamSlotNum=" + teamSlotNum + ", sourceOfPieces=" + sourceOfPieces + "]";
+    public String toString()
+    {
+    	return "MonsterForUser [userId="
+    		+ userId
+    		+ ", monsterForUserUuid="
+    		+ monsterForUserUuid
+    		+ ", monsterId="
+    		+ monsterId
+    		+ ", currentExp="
+    		+ currentExp
+    		+ ", currentLvl="
+    		+ currentLvl
+    		+ ", currentHealth="
+    		+ currentHealth
+    		+ ", numPieces="
+    		+ numPieces
+    		+ ", isComplete="
+    		+ isComplete
+    		+ ", combineStartTime="
+    		+ combineStartTime
+    		+ ", teamSlotNum="
+    		+ teamSlotNum
+    		+ "]";
     }
 
     @Override
@@ -180,7 +199,7 @@ public class MonsterForUser {
         return result;
     }
 
-    @Override
+	@Override
     public boolean equals( Object obj ) {
         if (this == obj)
             return true;
