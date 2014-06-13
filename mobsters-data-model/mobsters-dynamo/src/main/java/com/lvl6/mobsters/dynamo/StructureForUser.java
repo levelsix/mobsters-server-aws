@@ -23,7 +23,11 @@ public class StructureForUser
 
 	private Date lastRetrieved;
 
-	private CoordinatePair coordinates;
+	private float xCoord;
+	
+	private float yCoord;
+	
+	// private CoordinatePair coordinates;
 
 	// private int level;
 	private Date purchaseTime;
@@ -38,22 +42,22 @@ public class StructureForUser
 	{}
 
 	public StructureForUser(
-		final String id,
-		final String userId,
-		final int structId,
-		final Date lastRetrieved,
-		final CoordinatePair coordinates,
-		final Date purchaseTime,
-		final boolean isComplete,
-		final String orientation,
-		final int fbInviteStructLvl )
+		String userId,
+		int structId,
+		Date lastRetrieved,
+		float xCoord,
+		float yCoord,
+		Date purchaseTime,
+		boolean isComplete,
+		String orientation,
+		int fbInviteStructLvl )
 	{
 		super();
-		this.id = id;
 		this.userId = userId;
 		this.structId = structId;
 		this.lastRetrieved = lastRetrieved;
-		this.coordinates = coordinates;
+		this.xCoord = xCoord;
+		this.yCoord = yCoord;
 		this.purchaseTime = purchaseTime;
 		this.isComplete = isComplete;
 		this.orientation = orientation;
@@ -116,16 +120,6 @@ public class StructureForUser
 		this.lastRetrieved = lastRetrieved;
 	}
 
-	public CoordinatePair getCoordinates()
-	{
-		return coordinates;
-	}
-
-	public void setCoordinates( final CoordinatePair coordinates )
-	{
-		this.coordinates = coordinates;
-	}
-
 	public Date getPurchaseTime()
 	{
 		return purchaseTime;
@@ -166,19 +160,24 @@ public class StructureForUser
 		this.fbInviteStructLvl = fbInviteStructLvl;
 	}
 
+
 	@Override
 	public String toString()
 	{
-		return "StructureForUser [id="
-			+ id
-			+ ", userId="
+		return "StructureForUser [userId="
 			+ userId
+			+ ", version="
+			+ version
+			+ ", id="
+			+ id
 			+ ", structId="
 			+ structId
 			+ ", lastRetrieved="
 			+ lastRetrieved
-			+ ", coordinates="
-			+ coordinates
+			+ ", xCoord="
+			+ xCoord
+			+ ", yCoord="
+			+ yCoord
 			+ ", purchaseTime="
 			+ purchaseTime
 			+ ", isComplete="
@@ -195,21 +194,35 @@ public class StructureForUser
 	{
 		final int prime = 31;
 		int result = 1;
-		result = (prime * result)
+		result = prime
+			* result
 			+ ((id == null) ? 0 : id.hashCode());
+		result = prime
+			* result
+			+ ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals( final Object obj )
+	public boolean equals( Object obj )
 	{
-		if (this == obj) { return true; }
-		if (obj == null) { return false; }
-		if (getClass() != obj.getClass()) { return false; }
-		final StructureForUser other = (StructureForUser) obj;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StructureForUser other = (StructureForUser) obj;
 		if (id == null) {
-			if (other.id != null) { return false; }
-		} else if (!id.equals(other.id)) { return false; }
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
 		return true;
 	}
 
