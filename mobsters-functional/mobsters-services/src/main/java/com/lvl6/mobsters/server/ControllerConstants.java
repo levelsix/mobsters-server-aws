@@ -43,22 +43,22 @@ public class ControllerConstants
 	// public static final int MONSTER_INVENTORY_SLOTS__MIN_INVITES_TO_INCREASE_SLOTS = 3;
 
 	// MFUSOP = monster_for_user_source_of_pieces
-	public static final String MFUSOP__BOOSTER_PACK = "boosterPackId";
+	public static final String MFUSOP__BOOSTER_PACK = "M boosterPackId";
 
-	public static final String MFUSOP__END_DUNGEON = "Task4UserId";
+	public static final String MFUSOP__END_DUNGEON = "M Task4UserId";
 
-	public static final String MFUSOP__MINI_JOB = "miniJobId";
+	public static final String MFUSOP__MINI_JOB = "M miniJobId";
 
-	public static final String MFUSOP__QUEST = "questId";
+	public static final String MFUSOP__QUEST = "M questId";
 
-	public static final String MFUSOP__USER_CREATE = "user create";
+	public static final String MFUSOP__USER_CREATE = "M user create";
 
 	// MFUDR = monster_for_user_delete_reasons
-	public static final String MFUDR__ENHANCING = "enhancing";
+	public static final String MFUDR__ENHANCING = "D enhancing";
 
-	public static final String MFUDR__QUEST = "quest";
+	public static final String MFUDR__QUEST = "D quest";
 
-	public static final String MFUDR__SELL = "sold for cash";
+	public static final String MFUDR__SELL = "D sold";
 
 	// MONSTER FOR USER
 	public static final int MONSTER_FOR_USER__MAX_TEAM_SIZE = 3;
