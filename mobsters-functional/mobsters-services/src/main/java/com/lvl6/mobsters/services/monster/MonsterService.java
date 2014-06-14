@@ -1,12 +1,13 @@
 package com.lvl6.mobsters.services.monster;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecBuilderImpl;
-
 public interface MonsterService
 {
 	/**
@@ -80,4 +81,58 @@ public interface MonsterService
 			return new ModifyMonstersSpecBuilderImpl();
 		}
 	}
+	
+	/**************************************************************************/
+	
+	/**
+	 * At the moment, only used in UserCreateController. 
+	 * @param userId 
+	 * @param monsterIds - monster ids that the user owns
+	 * @param combineStartTime
+	 */
+	
+	public abstract void createCompleteMonstersForUser( String userId, List<Integer> monsterIds, Date combineStartTime );
+
+	/*
+	public interface CreateMonstersSpecBuilder
+	{
+		CreateMonstersSpec build();
+		
+		CreateMonstersSpecBuilder setMonsterId( String userMonsterId, int monsterId);
+
+		CreateMonstersSpecBuilder setCurrentExp( String userMonsterId, int currentExp );
+
+		CreateMonstersSpecBuilder setCurrentLvl( String userMonsterId, int currentLvl );
+
+		CreateMonstersSpecBuilder setCurrentHealth( String userMonsterId, int currentHealth );
+
+		CreateMonstersSpecBuilder setNumPieces( String userMonsterId, int numPieces );
+		
+		CreateMonstersSpecBuilder setComplete( String userMonsterId );
+		
+		CreateMonstersSpecBuilder setCombineStateTime( String userMonsterId, Date combineStartTime );
+
+		CreateMonstersSpecBuilder setTeamSlotNum( String userMonsterId, int teamSlotNum );
+	}
+
+	public class CreateMonstersSpec
+	{
+		final private Map<String, MonsterForUser> userMonsterIdToMfu;
+
+		CreateMonstersSpec( final Map<String, MonsterForUser> userMonsterIdToMfu )
+		{
+			this.userMonsterIdToMfu = userMonsterIdToMfu;
+		}
+
+		public Map<String, MonsterForUser> getUserMonsterIdToMfu()
+		{
+			return userMonsterIdToMfu;
+		}
+
+		public static CreateMonstersSpecBuilder builder()
+		{
+			return new CreateMonstersSpecBuilderImpl();
+		}
+	}
+	*/
 }

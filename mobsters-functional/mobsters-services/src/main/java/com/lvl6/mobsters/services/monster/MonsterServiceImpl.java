@@ -1,7 +1,9 @@
 package com.lvl6.mobsters.services.monster;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +14,21 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
+import com.lvl6.mobsters.info.Monster;
+import com.lvl6.mobsters.info.MonsterLevelInfo;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
 {
 	@Autowired
 	private MonsterForUserRepository monsterForUserRepository;
+	
+	@Autowired
+	private MonsterForUserHistoryRepository monsterForUserHistoryRepository;
 
 	@Override
 	public void addMonsterForUserToTeamSlot(
@@ -218,4 +225,140 @@ public class MonsterServiceImpl implements MonsterService
 			m.setCurrentHealth(teamSlotNum);
 		}
 	};
+	
+	/**************************************************************************/
+	
+	@Override
+	public void createCompleteMonstersForUser( String userId, List<Integer> monsterIds, Date combineStartTime ) {
+		List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
+		
+		for (int i = 0; i < monsterIds.size(); i++) {
+	  		int monsterId = monsterIds.get(i);
+	  		int teamSlotNum = i + 1;
+	  		
+	  		Monster monzter = null;//MonsterRetrieveUtils.getMonsterForMonsterId(monsterId);
+	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
+	  		
+	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
+	  		Collections.sort(lvls);
+	  		int firstOne = lvls.get(0);
+	  		MonsterLevelInfo mli = info.get(firstOne);
+	  		
+	  		MonsterForUser mfu = new MonsterForUser();
+	  		mfu.setUserId(userId);
+	  		mfu.setMonsterId(monsterId);
+	  		mfu.setCurrentExp(0);
+	  		mfu.setCurrentLvl(mli.getLevel());
+	  		mfu.setCurrentHealth(mli.getHp());
+	  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
+	  		mfu.setComplete(true);
+	  		mfu.setCombineStartTime(combineStartTime);
+	  		mfu.setTeamSlotNum(teamSlotNum);
+	  		
+	  	}
+		
+		monsterForUserRepository.saveAll(mfuList);
+		// TODO: Record into monsterForUserHistory
+		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+	}
+	
+	/*
+	static class CreateMonstersSpecBuilderImpl implements CreateMonstersSpecBuilder
+	{
+		final private Map<String, MonsterForUser> userMonsterIdToMfu;
+
+		CreateMonstersSpecBuilderImpl()
+		{
+			userMonsterIdToMfu = new HashMap<String, MonsterForUser>();
+		}
+
+		private MonsterForUser getTarget( String monsterForUserId ) {
+            MonsterForUser mfu = userMonsterIdToMfu.get(monsterForUserId);
+            if (null == mfu) {
+                mfu = new MonsterForUser();
+                userMonsterIdToMfu.put(monsterForUserId, mfu);
+            }
+            return mfu;
+        }
+
+
+		@Override
+		public CreateMonstersSpec build()
+		{
+			final CreateMonstersSpec retVal = new CreateMonstersSpec(userMonsterIdToMfu);
+
+			return retVal;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setMonsterId( String userMonsterId, int monsterId )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setMonsterId(monsterId);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setCurrentExp( String userMonsterId, int currentExp )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setCurrentExp(currentExp);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setCurrentLvl( String userMonsterId, int currentLvl )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setCurrentLvl(currentLvl);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setCurrentHealth(
+			String userMonsterId,
+			int currentHealth )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setCurrentHealth(currentHealth);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setNumPieces( String userMonsterId, int numPieces )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setNumPieces(numPieces);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setComplete( String userMonsterId )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setComplete(true);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setCombineStateTime(
+			String userMonsterId,
+			Date combineStartTime )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setCombineStartTime(combineStartTime);
+			return this;
+		}
+
+		@Override
+		public CreateMonstersSpecBuilder setTeamSlotNum(
+			String userMonsterId,
+			int teamSlotNum )
+		{
+			MonsterForUser mfu = getTarget(userMonsterId);
+			mfu.setTeamSlotNum(teamSlotNum);
+			return this;
+		}
+	}
+	*/
 }

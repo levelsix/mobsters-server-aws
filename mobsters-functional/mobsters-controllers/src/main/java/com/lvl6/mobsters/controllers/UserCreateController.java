@@ -1,8 +1,10 @@
 package com.lvl6.mobsters.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +28,16 @@ import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProt
 import com.lvl6.mobsters.server.ControllerConstants;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.common.TimeUtils;
+import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.structure.StructureService;
 import com.lvl6.mobsters.services.structure.StructureService.CreateUserObstaclesSpec;
 import com.lvl6.mobsters.services.structure.StructureService.CreateUserObstaclesSpecBuilder;
 import com.lvl6.mobsters.services.structure.StructureService.CreateUserStructuresSpec;
 import com.lvl6.mobsters.services.structure.StructureService.CreateUserStructuresSpecBuilder;
+import com.lvl6.mobsters.services.task.TaskService;
+import com.lvl6.mobsters.services.task.TaskService.CreateUserTasksCompletedSpec;
+import com.lvl6.mobsters.services.task.TaskService.CreateUserTasksCompletedSpecBuilder;
 import com.lvl6.mobsters.services.user.UserService;
-import com.lvl6.mobsters.services.user.UserService.ModifyUserDataRarelyAccessedSpec;
-import com.lvl6.mobsters.services.user.UserService.ModifyUserDataRarelyAccessedSpecBuilder;
 
 @Component
 public class UserCreateController extends EventController
@@ -46,7 +50,13 @@ public class UserCreateController extends EventController
 
 	@Autowired
 	protected StructureService structureService;
+	
+	@Autowired
+	protected TaskService taskService;
 
+	@Autowired
+	protected MonsterService monsterService;
+	
 	/*
 	 * @Autowired protected EventWriter eventWriter;
 	 */
@@ -129,9 +139,12 @@ public class UserCreateController extends EventController
 		String userId = uc.getUserId();
 		// TAKE INTO ACCOUNT THE PROPERTIES SENT IN BY CLIENT
 		try {
+			// TODO: create an entry in user and user_data_rarely_accessed tables
 			writeStructs(userId, createTime, structsJustBuilt);
 			writeObstacles(userId);
 			writeTaskCompleted(userId, createTime);
+			writeMonsters(userId, createTime, facebookId);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -215,7 +228,39 @@ public class UserCreateController extends EventController
 
 	private void writeTaskCompleted( String userId, Date createTime )
 	{
-
+		LOG.info("giving user completed tasks");
+		CreateUserTasksCompletedSpecBuilder createBuilder = CreateUserTasksCompletedSpec.builder();
+		int cityId = ControllerConstants.TUTORIAL__CITY_ONE_ID;
+	  	int assetIdOne = ControllerConstants.TUTORIAL__CITY_ONE_ASSET_NUM_FOR_FIRST_DUNGEON;
+	  	// TODO: Create the configuration data class that returns the correct value
+	  	int taskIdOne = 0; //TaskRetrieveUtils.getTaskIdForCityElement(cityId, assetIdOne);
+	  	createBuilder.setTimeOfEntry(taskIdOne, createTime);
+	  	
+	  	int assetIdTwo = ControllerConstants.TUTORIAL__CITY_ONE_ASSET_NUM_FOR_SECOND_DUNGEON;
+	  	// TODO: Create the configuration data class that returns the correct value
+	  	int taskIdTwo = 0; //TaskRetrieveUtils.getTaskIdForCityElement(cityId, assetIdTwo);
+	  	createBuilder.setTimeOfEntry(taskIdTwo, createTime);
+	  	
+	  	taskService.createTasksForUserCompleted(userId, createBuilder.build());
+	  	LOG.info("gave user completed tasks");
+	  	
+	}
+	
+	private void writeMonsters(String userId, Date createDate, String fbId) {
+		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+		
+		//so the user will get monsters that are completed already, thus usable
+		Date combineStartDate = TimeUtils.createDateAddDays(createDate, -7);
+	  	
+		List<Integer> monsterIds = new ArrayList<Integer>();
+	  	monsterIds.add(ControllerConstants.TUTORIAL__STARTING_MONSTER_ID);
+	  	
+	  	if (StringUtils.hasText(fbId)) {
+	  		LOG.info("awarding facebook zucker mucker burger.");
+	  		monsterIds.add(ControllerConstants.TUTORIAL__MARK_Z_MONSTER_ID);
+	  	}
+	  	
+	  	monsterService.createCompleteMonstersForUser(userId, monsterIds, combineStartDate);
 	}
 
 	// private void failureCase(
@@ -250,6 +295,16 @@ public class UserCreateController extends EventController
 	public void setStructureService( StructureService structureService )
 	{
 		this.structureService = structureService;
+	}
+
+	public TaskService getTaskService()
+	{
+		return taskService;
+	}
+
+	public void setTaskService( TaskService taskService )
+	{
+		this.taskService = taskService;
 	}
 
 }
