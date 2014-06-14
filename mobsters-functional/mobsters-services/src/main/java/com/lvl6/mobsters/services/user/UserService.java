@@ -1,5 +1,6 @@
 package com.lvl6.mobsters.services.user;
 
+import java.util.Date;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
@@ -12,6 +13,7 @@ import com.lvl6.mobsters.services.user.UserServiceImpl.ModifyUserSpecBuilderImpl
 
 public interface UserService
 {
+	/*
 	public User findById( String id );
 
 	public User findByIdWithClan( String id );
@@ -28,14 +30,14 @@ public interface UserService
 	 * @param gemsDelta
 	 * @param oilDelta
 	 */
-	public void updateUserResources(
+	/*public void updateUserResources(
 		String id,
 		int cashDelta,
 		int experienceDelta,
 		int gemsDelta,
 		int oilDelta );
 
-	/**
+	/*
 	 * Perform a sequence of relative user resource modifications within a single transaction.
 	 * 
 	 * Call {@link #getChangeUserResourcesRequest(String, int, int, int, int)
@@ -47,7 +49,7 @@ public interface UserService
 	 * @param actions
 	 *        A list of relative user resource modification requests.
 	 */
-	public void updateUsersResources( Iterable<ChangeUserResourcesRequest> actions );
+	/*public void updateUsersResources( Iterable<ChangeUserResourcesRequest> actions );
 
 	/**
 	 * Saves a modified user record, provided no optimistic locking conflicts occur.
@@ -58,7 +60,7 @@ public interface UserService
 	 * 
 	 * @param modifiedUser
 	 */
-	public void saveUser( User modifiedUser );
+	/*public void saveUser( User modifiedUser );
 
 	public void createUser( User newUser );
 
@@ -121,7 +123,11 @@ public interface UserService
 			return oilDelta;
 		}
 	}
+	*/
 
+	public abstract void createUser( String userId, String name, int cash,
+		int oil, int gems );
+	
 	// public abstract void modifyUser( ModifyUserSpec modifySpec );
 
 	public interface ModifyUserSpecBuilder
@@ -160,6 +166,9 @@ public interface UserService
 	}
 
 	/**************************************************************************/
+	
+	public abstract void createUserDataRarelyAccessed( String userId, String udidForHistory,
+		Date createTime, String deviceToken, boolean fbIdSetOnUserCreate);
 
 	public abstract void modifyUserDataRarelyAccessed(
 		String userId,
@@ -224,7 +233,7 @@ public interface UserService
 
 	/**
 	 * @throws Exception
-	 ************************************************************************/
+	 */
 
 	public abstract UserCredential createUserCredential( String facebookId, String udid ) throws Exception;
 

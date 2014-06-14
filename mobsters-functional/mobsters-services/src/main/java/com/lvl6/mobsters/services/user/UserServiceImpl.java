@@ -1,25 +1,26 @@
 package com.lvl6.mobsters.services.user;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
-import com.lvl6.mobsters.info.User;
-import com.lvl6.mobsters.info.repository.UserRepository;
+import com.lvl6.mobsters.dynamo.repository.UserRepository;
+import com.lvl6.mobsters.server.ControllerConstants;
 
 @Component
 @Transactional
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService
 	@Autowired
 	UserCredentialRepository userCredentialRepository;
 
+	/*
 	@Override
 	@Transactional(
 		propagation = Propagation.SUPPORTS,
@@ -136,6 +138,7 @@ public class UserServiceImpl implements UserService
 
 		return retVal;
 	}
+	 */
 
 	// @Override
 	// public void modifyUser( ModifyUserSpec modifySpec ) {
@@ -143,6 +146,23 @@ public class UserServiceImpl implements UserService
 	// modifySpec.getUsersModificationsMap();
 	//
 	// }
+
+	public void createUser( String userId, String name, int cash,
+		int oil, int gems ) {
+		User u = new User();
+		u.setId(userId);
+		u.setName(name);
+		u.setAdmin(false);
+		u.setGems(gems);
+		u.setCash(cash);
+		u.setOil(oil);
+		
+		// TODO: Figure out correct amount
+		u.setExperience((new Random()).nextInt(10));
+		u.setLevel(ControllerConstants.USER_CREATE__START_LEVEL);
+		
+		userRepo.save(u);
+	}
 
 	static class ModifyUserSpecBuilderImpl implements ModifyUserSpecBuilder
 	{
@@ -164,6 +184,30 @@ public class UserServiceImpl implements UserService
 
 	/**************************************************************************/
 
+	/**
+	 * At the moment, only UserCreateController uses this. No checks are made before
+	 * saving this data to the db.
+	 */
+	@Override
+	public void createUserDataRarelyAccessed(
+		String userId,
+		String udidForHistory,
+		Date createTime,
+		String deviceToken,
+		boolean fbIdSetOnUserCreate )
+	{
+		UserDataRarelyAccessed udra = new UserDataRarelyAccessed();
+		udra.setUserId(userId);
+		udra.setUdidForHistory(udidForHistory);
+		udra.setLastLogin(createTime);
+		udra.setDeviceToken(deviceToken);
+		udra.setCreateTime(createTime);
+		udra.setFbIdSetOnUserCreate(fbIdSetOnUserCreate);
+		udra.setLastObstacleSpawnTime(createTime);
+		
+		userDraRepo.save(udra);
+	}
+	
 	@Override
 	public void modifyUserDataRarelyAccessed(
 		String userId,

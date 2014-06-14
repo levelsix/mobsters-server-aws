@@ -1,10 +1,8 @@
 package com.lvl6.mobsters.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,6 +138,7 @@ public class UserCreateController extends EventController
 		// TAKE INTO ACCOUNT THE PROPERTIES SENT IN BY CLIENT
 		try {
 			// TODO: create an entry in user and user_data_rarely_accessed tables
+			writeUser(name, cash, oil, gems, userId, udid, createTime, deviceToken, facebookId );
 			writeStructs(userId, createTime, structsJustBuilt);
 			writeObstacles(userId);
 			writeTaskCompleted(userId, createTime);
@@ -152,6 +151,25 @@ public class UserCreateController extends EventController
 
 	}
 
+	private void writeUser(
+		final String name,
+		final int cash,
+		final int oil,
+		final int gems,
+		String userId,
+		String udid,
+		Date createTime,
+		String deviceToken,
+		String fbId )
+	{
+		userService.createUser(userId, name, cash, oil, gems);
+		boolean fbIdSetOnUserCreate = true;
+		if (!StringUtils.hasText(fbId)) {
+			fbIdSetOnUserCreate = false;
+		}
+		userService.createUserDataRarelyAccessed(userId, udid, createTime, deviceToken, fbIdSetOnUserCreate);
+	}
+	
 	private void writeStructs(
 		final String userId,
 		final Date purchaseTime,
