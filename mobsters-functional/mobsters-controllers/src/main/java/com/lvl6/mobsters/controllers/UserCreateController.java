@@ -101,7 +101,7 @@ public class UserCreateController extends EventController
 		// syntax checks out ok; prepare arguments for service
 		// NOTE: since service also kind of relies on syntax checking
 
-		UserCredential uc;
+		UserCredential uc = null;
 		try {
 			uc = userService.createUserCredential(facebookId, udid);
 		} catch (Exception e) {
@@ -110,7 +110,7 @@ public class UserCreateController extends EventController
 			LOG.error(
 				"exception in UserCreateController processEvent when calling userService", e);
 			responseBuilder.setStatus(UserCreateStatus.FAIL_OTHER);
-			uc = new UserCredential();
+			//uc = new UserCredential();
 		}
 
 		resEvent.setUserCreateResponseProto(responseBuilder.build());
@@ -145,8 +145,8 @@ public class UserCreateController extends EventController
 			writeMonsters(userId, createTime, facebookId);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error(
+				"exception in UserCreateController processEvent when initializing user", e);
 		}
 
 	}
