@@ -1,16 +1,22 @@
 package com.lvl6.mobsters.services.user;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.esotericsoftware.minlog.Log;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
@@ -21,11 +27,15 @@ import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.server.ControllerConstants;
+import com.lvl6.proto.ChatProto.GroupChatMessageProto;
 
 @Component
 @Transactional
 public class UserServiceImpl implements UserService
 {
+	
+	private static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	@Autowired
 	UserRepository userRepo;
 
@@ -319,6 +329,57 @@ public class UserServiceImpl implements UserService
 	}
 
 	/**************************************************************************/
+
+	/**
+	 * At the moment, only UserCreateController uses this. No checks are made before
+	 * saving this data to the db.
+	 */
+	@Override
+	public UserCredential getUserCredentialByFacebookIdOrUdid(String facebookId, String udid) {
+		
+		List<UserCredential> ucList = userCredentialRepository.getUserCredentialByFacebook(facebookId);
+		
+		
+		if (ucList.size() > 1) {
+			ucList = new ArrayList<UserCredential>(ucList);
+			LOG.warn("multiple UserCredentials for facebookId=" + facebookId + ". list=" +
+				ucList + " choosing the one with the lowest userId.");
+			
+			// TODO: Figure out if sorting is necessary.
+			Collections.sort(ucList, new Comparator<UserCredential>() {
+				@Override
+				public int compare(UserCredential o1, UserCredential o2) {
+					return o1.getUserId().compareTo(o2.getUserId());
+				}
+			});
+			
+			return ucList.get(0);
+			
+		} else if (ucList.size() == 1) {
+			return ucList.get(0);
+		}
+		
+		ucList = userCredentialRepository.getUserCredentialByUdid(udid);
+		
+		if (ucList.size() > 1) {
+			LOG.warn("wtf, multiple UserCredentials for udid=" + udid + ". list=" +
+				ucList + ", consider making client generate another udid.");
+
+			// TODO: Figure out if sorting is necessary.
+			Collections.sort(ucList, new Comparator<UserCredential>() {
+				@Override
+				public int compare(UserCredential o1, UserCredential o2) {
+					return o1.getUserId().compareTo(o2.getUserId());
+				}
+			});
+
+			return ucList.get(0);
+		} else if (ucList.size() == 1) {
+			return ucList.get(0);
+		}
+		
+		return null;
+	}
 
 	@Override
 	public UserCredential createUserCredential( String facebookId, String udid ) throws Exception

@@ -125,7 +125,7 @@ public interface UserService
 	}
 	*/
 
-	public abstract void createUser( String userId, String name, int cash,
+	public void createUser( String userId, String name, int cash,
 		int oil, int gems );
 	
 	// public abstract void modifyUser( ModifyUserSpec modifySpec );
@@ -167,10 +167,10 @@ public interface UserService
 
 	/**************************************************************************/
 	
-	public abstract void createUserDataRarelyAccessed( String userId, String udidForHistory,
+	public void createUserDataRarelyAccessed( String userId, String udidForHistory,
 		Date createTime, String deviceToken, boolean fbIdSetOnUserCreate);
 
-	public abstract void modifyUserDataRarelyAccessed(
+	public void modifyUserDataRarelyAccessed(
 		String userId,
 		ModifyUserDataRarelyAccessedSpec modifySpec );
 
@@ -233,10 +233,13 @@ public interface UserService
 		}
 	}
 
+	
+	public UserCredential getUserCredentialByFacebookIdOrUdid( String facebookId, String udid );
 	/**
 	 * @throws Exception
 	 */
 
-	public abstract UserCredential createUserCredential( String facebookId, String udid ) throws Exception;
+	public UserCredential createUserCredential( String facebookId, String udid ) throws Exception;
+
 
 }
