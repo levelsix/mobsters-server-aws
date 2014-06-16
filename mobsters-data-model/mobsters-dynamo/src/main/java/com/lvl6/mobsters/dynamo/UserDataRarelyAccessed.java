@@ -30,6 +30,8 @@ public class UserDataRarelyAccessed {
     private Date lastObstacleSpawnTime; // TODO: consider moving to User
 
     private Date lastMiniJobGeneratedTime; // TODO: consider moving to User
+    
+    private int avatarMonsterId; //hash/primary key in monster table 
 
     public UserDataRarelyAccessed() {}
 
@@ -43,7 +45,8 @@ public class UserDataRarelyAccessed {
         boolean fbIdSetOnUserCreate,
         String gameCenterId,
         Date lastObstacleSpawnTime,
-        Date lastMiniJobGeneratedTime )
+        Date lastMiniJobGeneratedTime,
+        int avatarMonsterId )
     {
         super();
         this.userId = userId;
@@ -56,6 +59,7 @@ public class UserDataRarelyAccessed {
         this.gameCenterId = gameCenterId;
         this.lastObstacleSpawnTime = lastObstacleSpawnTime;
         this.lastMiniJobGeneratedTime = lastMiniJobGeneratedTime;
+        this.avatarMonsterId = avatarMonsterId;
     }
 
     @DynamoDBHashKey(attributeName = "userId")
@@ -148,7 +152,45 @@ public class UserDataRarelyAccessed {
         this.lastMiniJobGeneratedTime = lastMiniJobGeneratedTime;
     }
 
-    @Override
+    public int getAvatarMonsterId()
+	{
+		return avatarMonsterId;
+	}
+
+	public void setAvatarMonsterId( int avatarMonsterId )
+	{
+		this.avatarMonsterId = avatarMonsterId;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "UserDataRarelyAccessed [userId="
+			+ userId
+			+ ", udidForHistory="
+			+ udidForHistory
+			+ ", lastLogin="
+			+ lastLogin
+			+ ", lastLogout="
+			+ lastLogout
+			+ ", deviceToken="
+			+ deviceToken
+			+ ", createTime="
+			+ createTime
+			+ ", fbIdSetOnUserCreate="
+			+ fbIdSetOnUserCreate
+			+ ", gameCenterId="
+			+ gameCenterId
+			+ ", lastObstacleSpawnTime="
+			+ lastObstacleSpawnTime
+			+ ", lastMiniJobGeneratedTime="
+			+ lastMiniJobGeneratedTime
+			+ ", avatarMonsterId="
+			+ avatarMonsterId
+			+ "]";
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

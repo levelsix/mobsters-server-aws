@@ -197,8 +197,10 @@ public interface UserService
 
 		public ModifyUserDataRarelyAccessedSpecBuilder setGameCenterIdNotNull(
 			String nonNullGameCenterId );
-
+		
 		public ModifyUserDataRarelyAccessedSpecBuilder setDeviceToken( String deviceToken );
+		
+		public ModifyUserDataRarelyAccessedSpecBuilder setAvatarMonsterId( int monsterId );
 
 	}
 

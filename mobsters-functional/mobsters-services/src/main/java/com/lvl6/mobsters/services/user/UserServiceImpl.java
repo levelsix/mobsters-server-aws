@@ -263,6 +263,13 @@ public class UserServiceImpl implements UserService
 			usersDraModificationsSet.add(new SetDeviceToken(deviceToken));
 			return this;
 		}
+
+		@Override
+		public ModifyUserDataRarelyAccessedSpecBuilder setAvatarMonsterId( int monsterId )
+		{
+			usersDraModificationsSet.add(new SetAvatarMonsterId(monsterId));
+			return null;
+		}
 	}
 
 	static class SetGameCenterIdNotNull implements UserDataRarelyAccessedFunc
@@ -294,6 +301,20 @@ public class UserServiceImpl implements UserService
 		public void apply( UserDataRarelyAccessed udra )
 		{
 			udra.setDeviceToken(deviceToken);
+		}
+	}
+	
+	static class SetAvatarMonsterId implements UserDataRarelyAccessedFunc
+	{
+		private int monsterId;
+		
+		SetAvatarMonsterId( int monsterId ) {
+			this.monsterId = monsterId;
+		}
+		
+		@Override
+		public void apply( UserDataRarelyAccessed udra ) {
+			udra.setAvatarMonsterId(monsterId);
 		}
 	}
 
