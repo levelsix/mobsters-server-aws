@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.QuestForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 
@@ -39,7 +39,7 @@ public class TestQuestForUsers {
 	
 	
 	@Autowired
-	public QuestForUserRepository qfuRepo;
+	public QuestForUserRepositoryImpl qfuRepo;
 	
 	
 	
@@ -63,7 +63,7 @@ public class TestQuestForUsers {
 	
 	
 	public void destroyTestData() {
-		List<QuestForUser> quests = qfuRepo.getQuestsForUser(userId, true, questIds);
+		List<QuestForUser> quests = qfuRepo.findByUserIdAndIsCompleteAndQuestIdIn(userId, true, questIds);
 		qfuRepo.getMapper().batchDelete(quests);
 	}
 	
@@ -74,7 +74,7 @@ public class TestQuestForUsers {
 	@Test
 	public void test() {
 		createTestData();
-		Collection<QuestForUser> quests = qfuRepo.getQuestsForUser(userId, true, questIds);
+		Collection<QuestForUser> quests = qfuRepo.findByUserIdAndIsCompleteAndQuestIdIn(userId, true, questIds);
 		log.info("Found {} quests", quests.size());
 		Assert.assertTrue("Found all quests", quests.size() == questIds.size());
 		destroyTestData();
@@ -102,12 +102,12 @@ public class TestQuestForUsers {
 	}
 
 
-	public QuestForUserRepository getQfuRepo() {
+	public QuestForUserRepositoryImpl getQfuRepo() {
 		return qfuRepo;
 	}
 
 
-	public void setQfuRepo(QuestForUserRepository qfuRepo) {
+	public void setQfuRepo(QuestForUserRepositoryImpl qfuRepo) {
 		this.qfuRepo = qfuRepo;
 	}
 

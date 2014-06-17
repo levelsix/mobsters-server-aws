@@ -18,18 +18,22 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 
 @Component
-public class QuestForUserRepository extends BaseDynamoRepositoryImpl<QuestForUser> {
+public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestForUser>
+	implements
+		QuestForUserRepository
+{
 
 	private static final Logger log = LoggerFactory
-			.getLogger(QuestForUserRepository.class);
-	public QuestForUserRepository()
+			.getLogger(QuestForUserRepositoryImpl.class);
+	public QuestForUserRepositoryImpl()
 	{
 		super(
 			QuestForUser.class);
 		isActive = true;
 	}
 
-	public List<QuestForUser> getQuestsForUser(
+	@Override
+	public List<QuestForUser> findByUserIdAndIsCompleteAndQuestIdIn(
 		final String userId,
 		final boolean isComplete,
 		final Collection<Integer> questIds )
@@ -56,7 +60,7 @@ public class QuestForUserRepository extends BaseDynamoRepositoryImpl<QuestForUse
 						new Condition().withComparisonOperator(
 								ComparisonOperator.IN).withAttributeValueList(
 								questIdz)).withConsistentRead(true);
-		QuestForUserRepository.log.info(
+		QuestForUserRepositoryImpl.log.info(
 			"Query: {}",
 			query);
 		final PaginatedQueryList<QuestForUser> questsForUser = query(query);
