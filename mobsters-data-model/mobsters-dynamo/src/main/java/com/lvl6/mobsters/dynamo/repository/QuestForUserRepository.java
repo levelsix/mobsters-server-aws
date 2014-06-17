@@ -14,4 +14,5 @@ public interface QuestForUserRepository extends BaseDynamoRepository<QuestForUse
 		final boolean isComplete,
 		final Collection<Integer> questIds );
 	
+	public List<QuestForUser> findByUserId( String userId );
 }

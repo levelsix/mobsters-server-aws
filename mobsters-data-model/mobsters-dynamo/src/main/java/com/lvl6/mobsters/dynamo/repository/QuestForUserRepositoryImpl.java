@@ -69,6 +69,26 @@ public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestFo
 	}
 
 	@Override
+	public List<QuestForUser> findByUserId( String userId )
+	{
+		final QuestForUser hashKey = new QuestForUser();
+		hashKey.setUserId(userId);
+
+		final DynamoDBQueryExpression<QuestForUser> query =
+			new DynamoDBQueryExpression<QuestForUser>()
+				//.withIndexName("userIdGlobalIndex")
+				.withHashKeyValues(hashKey)
+				.withConsistentRead(true);
+		QuestForUserRepositoryImpl.log.info(
+			"Query: {}",
+			query);
+		
+		final PaginatedQueryList<QuestForUser> questsForUser = query(query);
+		questsForUser.loadAllResults();
+		return questsForUser;
+	}
+
+	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes()
 	{
 		/*
