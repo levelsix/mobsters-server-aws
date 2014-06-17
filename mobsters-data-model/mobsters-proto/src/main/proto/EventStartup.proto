@@ -25,18 +25,15 @@ option java_outer_classname = "EventStartupProto";
 message StartupRequestProto {				//client will also send ChangeUserLocationRequestProto
      optional string udid = 1;
      optional float versionNum = 2;			//1.0->2.0 critical, 1.0->1.1 minor. server checks db for latest vnum
-     optional string apsalarId = 3;
-     optional string macAddress = 4;	//don't think is used
-     optional string advertiserId = 5;
-     optional bool isForceTutorial = 6; //don't think is used
+     optional string advertiserId = 3;
      
      //check fb then udid
      //if this exists, then send facebook user first,
      //then send udid, 
-     optional string fbId = 7;
+     optional string fbId = 4;
      
      //if user is starting up app and the app is not a background process
-     optional bool isFreshRestart = 8;
+     optional bool isFreshRestart = 5;
      
 }
 
