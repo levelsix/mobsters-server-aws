@@ -18,7 +18,7 @@ public class UserDataRarelyAccessedRepository
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory
-			.getLogger(QuestForUserRepository.class);
+			.getLogger(UserDataRarelyAccessedRepository.class);
 
 	public UserDataRarelyAccessedRepository() {
 		super(UserDataRarelyAccessed.class);
