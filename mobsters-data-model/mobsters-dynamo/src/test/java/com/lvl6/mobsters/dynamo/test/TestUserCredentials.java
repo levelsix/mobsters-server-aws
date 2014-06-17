@@ -82,7 +82,6 @@ public class TestUserCredentials
 		Assert.assertEquals("Found one user by udid", userz.size(), 1);
 		Assert.assertEquals("Found same", users.get(0), userz.get(0));
 	}
-	}
 
 	public SetupDynamoDB getSetup()
 	{
