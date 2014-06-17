@@ -14,7 +14,7 @@ import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.UserQuestJobProto;
 
-public class CreateNoneventQuestProtoUtil
+public class NoneventQuestProtoSerializerImpl
 {
 
 	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()

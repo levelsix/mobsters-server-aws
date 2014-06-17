@@ -20,7 +20,7 @@ import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserCredentialProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserDataRarelyUsedProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto;
 
-public class CreateNoneventUserProtoUtil {
+public class NoneventUserProtoSerializerImpl {
 
 	private static Logger log = LoggerFactory.getLogger(new Object() {
 	}.getClass().getEnclosingClass());
