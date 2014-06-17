@@ -26,7 +26,9 @@ import com.lvl6.mobsters.events.request.StartupRequestEvent;
 import com.lvl6.mobsters.events.response.StartupResponseEvent;
 import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.utils.CreateNoneventQuestProtoUtil;
+import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
+import com.lvl6.mobsters.noneventproto.utils.NoneventQuestProtoSerializer;
+import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.quest.QuestService;
 import com.lvl6.mobsters.services.user.UserService;
@@ -44,6 +46,12 @@ public class StartupController extends EventController
 
 	@Autowired
 	protected QuestService questService;
+	
+	@Autowired
+	protected NoneventQuestProtoSerializer noneventQuestProtoSerializer;
+	
+	@Autowired
+	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
 	
 	/*
 	 * @Autowired protected EventWriter eventWriter;
@@ -238,7 +246,7 @@ public class StartupController extends EventController
 		Map<Integer, Quest> questIdToQuests = null;//QuestRetrieveUtils.getQuestIdsToQuests();
 
 		//generate the user quests
-		List<com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto> currentUserQuests = CreateNoneventQuestProtoUtil
+		List<FullUserQuestProto> currentUserQuests = noneventQuestProtoSerializer
 			.createFullUserQuestDataLarges(inProgressQuests, questIdToQuests,
 				questIdToUserQuestJobs);
 		resBuilder.addAllUserQuests(currentUserQuests);
@@ -247,7 +255,9 @@ public class StartupController extends EventController
 		resBuilder.addAllRedeemedQuestIds(redeemedQuestIds);
 	}
 	
-	
+	private void setUserClanInfos() {
+		
+	}
 	
 
 	public UserService getUserService()
@@ -270,5 +280,26 @@ public class StartupController extends EventController
 		this.questService = questService;
 	}
 
-	
+	public NoneventUserProtoSerializer getNoneventUserProtoSerializer()
+	{
+		return noneventUserProtoSerializer;
+	}
+
+	public void setNoneventUserProtoSerializer(
+		NoneventUserProtoSerializer noneventUserProtoSerializer )
+	{
+		this.noneventUserProtoSerializer = noneventUserProtoSerializer;
+	}
+
+	public NoneventQuestProtoSerializer getNoneventQuestProtoSerializer()
+	{
+		return noneventQuestProtoSerializer;
+	}
+
+	public void setNoneventQuestProtoSerializer(
+		NoneventQuestProtoSerializer noneventQuestProtoSerializer )
+	{
+		this.noneventQuestProtoSerializer = noneventQuestProtoSerializer;
+	}
+
 }

@@ -20,12 +20,13 @@ import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserCredentialProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserDataRarelyUsedProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto;
 
-public class NoneventUserProtoSerializerImpl {
+public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSerializer {
 
 	private static Logger log = LoggerFactory.getLogger(new Object() {
 	}.getClass().getEnclosingClass());
 
-	public static ClanProto createClanProto(Clan clan) {
+	@Override
+	public ClanProto createClanProto(Clan clan) {
 		ClanProto.Builder cpb = ClanProto.newBuilder();
 		
 		cpb.setClanUuid(clan.getId());
@@ -64,8 +65,8 @@ public class NoneventUserProtoSerializerImpl {
 		return cpb.build();
 	}
 	
-
-	public static MinimumUserProto createMinimumUserProto(
+	@Override
+	public MinimumUserProto createMinimumUserProto(
 			User user, Clan clan) {
 		MinimumUserProto.Builder mupb = MinimumUserProto.newBuilder();
 		
@@ -88,7 +89,8 @@ public class NoneventUserProtoSerializerImpl {
 		return mupb.build();
 	}
 	
-	public static MinimumUserProtoWithFacebookId createMinimumUserProtoWithFacebookId(
+	@Override
+	public MinimumUserProtoWithFacebookId createMinimumUserProtoWithFacebookId(
 			String facebookId, User user, Clan clan) {
 		MinimumUserProtoWithFacebookId.Builder mupwfib =
 				MinimumUserProtoWithFacebookId.newBuilder();
@@ -105,7 +107,8 @@ public class NoneventUserProtoSerializerImpl {
 		return mupwfib.build();
 	}
 	
-	public static UserProto createUserProto(User user, Clan clan) {
+	@Override
+	public UserProto createUserProto(User user, Clan clan) {
 		UserProto.Builder upb = UserProto.newBuilder();
 		
 		upb.setUserUuid(user.getId());
@@ -134,7 +137,8 @@ public class NoneventUserProtoSerializerImpl {
 		return upb.build();
 	}
 	
-	public static UserCredentialProto createUserCredentialProto(
+	@Override
+	public UserCredentialProto createUserCredentialProto(
 			UserCredential uc) {
 		UserCredentialProto.Builder ucpb = UserCredentialProto.newBuilder();
 		
@@ -157,7 +161,8 @@ public class NoneventUserProtoSerializerImpl {
 		return ucpb.build();
 	}
 	
-	public static UserDataRarelyUsedProto createUserDataRarelyUsedProto(
+	@Override
+	public UserDataRarelyUsedProto createUserDataRarelyUsedProto(
 			UserDataRarelyAccessed udra) {
 		UserDataRarelyUsedProto.Builder udrupb =
 				UserDataRarelyUsedProto.newBuilder();
@@ -222,7 +227,8 @@ public class NoneventUserProtoSerializerImpl {
 		return udrupb.build();
 	}
 	
-	public static FullUserProto createFullUserProto(User user,
+	@Override
+	public FullUserProto createFullUserProto(User user,
 			UserCredential uc, UserDataRarelyAccessed udra, Clan clan,
 			PvpLeagueForUser plfu) {
 		FullUserProto.Builder fupb = FullUserProto.newBuilder();
@@ -250,7 +256,8 @@ public class NoneventUserProtoSerializerImpl {
 		return fupb.build();
 	}
 	
-	public static StaticUserLevelInfoProto createStaticUserLevelInfoProto(
+	@Override
+	public StaticUserLevelInfoProto createStaticUserLevelInfoProto(
 			StaticUserLevelInfo suli) {
 		StaticUserLevelInfoProto.Builder sulipb = StaticUserLevelInfoProto
 				.newBuilder();

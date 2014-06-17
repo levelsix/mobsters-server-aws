@@ -14,13 +14,14 @@ import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.UserQuestJobProto;
 
-public class NoneventQuestProtoSerializerImpl
+public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSerializer 
 {
 
 	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
 		.getEnclosingClass());
 
-	public static List<FullUserQuestProto> createFullUserQuestDataLarges(
+	@Override
+	public List<FullUserQuestProto> createFullUserQuestDataLarges(
 		List<QuestForUser> userQuests,
 		Map<Integer, Quest> questIdsToQuests,
 		Map<Integer, Collection<QuestJobForUser>> questIdToUserQuestJobs )
@@ -58,7 +59,8 @@ public class NoneventQuestProtoSerializerImpl
 		return fullUserQuestDataLargeProtos;
 	}
 
-	public static List<UserQuestJobProto> createUserQuestJobProto(
+	@Override
+	public List<UserQuestJobProto> createUserQuestJobProto(
 		int questId,
 		Map<Integer, Collection<QuestJobForUser>> questIdToUserQuestJobs )
 	{
@@ -81,7 +83,8 @@ public class NoneventQuestProtoSerializerImpl
 		return userQuestJobProtoList;
 	}
 
-	public static UserQuestJobProto createUserJobProto( QuestJobForUser qjfu )
+	@Override
+	public UserQuestJobProto createUserJobProto( QuestJobForUser qjfu )
 	{
 		UserQuestJobProto.Builder uqjpb = UserQuestJobProto.newBuilder();
 
