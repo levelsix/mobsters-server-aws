@@ -184,7 +184,7 @@ public class StartupController extends EventController
 		LOG.info("No major update... getting user info");
 		setInProgressAndAvailableQuests(resBuilder, userId);
 //		LOG.info("{}ms at setInProgressAndAvailableQuests", stopWatch.getTime());
-		setUserClanInfos(resBuilder, userId);
+//		setUserClanInfos(resBuilder, userId);
 //		LOG.info("{}ms at setUserClanInfos", stopWatch.getTime());
 //		setNotifications(resBuilder, user);
 //		LOG.info("{}ms at setNotifications", stopWatch.getTime());

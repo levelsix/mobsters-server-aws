@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.esotericsoftware.minlog.Log;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
@@ -27,7 +26,6 @@ import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.server.ControllerConstants;
-import com.lvl6.proto.ChatProto.GroupChatMessageProto;
 
 @Component
 @Transactional
