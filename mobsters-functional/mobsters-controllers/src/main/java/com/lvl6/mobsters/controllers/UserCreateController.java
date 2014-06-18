@@ -148,7 +148,11 @@ public class UserCreateController extends EventController
 			LOG.error(
 				"exception in UserCreateController processEvent when initializing user", e);
 		}
-
+		//if using xtend expression language (higher programming language using java underneath)
+		//this is how to populate the necessary data before calling the service:
+		//pojo = factory.createWriteStructs(userId, createTime, structsJustBuilt);
+		//this is how to actually build the object that will be passed into the service class
+		//pojo.writeStructs()
 	}
 
 	private void writeUser(
@@ -216,6 +220,9 @@ public class UserCreateController extends EventController
 			createBuilder.setComplete(userStructureId, true);
 		}
 
+		//if using xtend expression language, this is how to call the service with
+		//the xtend created java object
+		//structureService.createStructuresForUser(pojo.userId, createBuilder.build());
 		structureService.createStructuresForUser(userId, createBuilder.build());
 		LOG.info("gave user buildings");
 	}
