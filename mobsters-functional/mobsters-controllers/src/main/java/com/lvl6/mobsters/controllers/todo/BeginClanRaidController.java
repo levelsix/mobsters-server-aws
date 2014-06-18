@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.common.utils.TimeUtils;
 import com.lvl6.mobsters.dynamo.ClanEventPersistentForClan;
 import com.lvl6.mobsters.dynamo.ClanEventPersistentForUser;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.BeginClanRaidRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.BeginClanRaidResponseProto;
@@ -121,7 +121,7 @@ public class BeginClanRaidController extends EventController
 		try {
 			// User user =
 			// RetrieveUtils.userRetrieveUtils().getUserById(userUuid);
-			final UserClan uc = RetrieveUtils.userClanRetrieveUtils()
+			final ClanForUser uc = RetrieveUtils.userClanRetrieveUtils()
 			    .getSpecificUserClan(userUuid, clanId);
 			final boolean legitRequest =
 			    checkLegitRequest(resBuilder, lockedClan, senderProto, userUuid, clanId, uc,
@@ -215,7 +215,7 @@ public class BeginClanRaidController extends EventController
 
 	private boolean checkLegitRequest( final Builder resBuilder, final boolean lockedClan,
 	    final MinimumUserProto mupfc, final String userUuid, final int clanId,
-	    final UserClan uc, final int clanEventId, final int clanRaidId, final Date curDate,
+	    final ClanForUser uc, final int clanEventId, final int clanRaidId, final Date curDate,
 	    final Timestamp curTime, final boolean setMonsterTeamForRaid,
 	    final List<Long> userMonsterUuids, final boolean isFirstStage )
 	{

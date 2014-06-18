@@ -19,7 +19,7 @@ import com.lvl6.mobsters.dynamo.ClanEventPersistentForClan;
 import com.lvl6.mobsters.dynamo.ClanEventPersistentForUser;
 import com.lvl6.mobsters.dynamo.ClanEventPersistentUserReward;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.AttackClanRaidMonsterRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.AttackClanRaidMonsterResponseProto;
@@ -269,7 +269,7 @@ public class AttackClanRaidMonsterController extends EventController
 		}
 
 		// check if user is in clan
-		final UserClan uc = RetrieveUtils.userClanRetrieveUtils()
+		final ClanForUser uc = RetrieveUtils.userClanRetrieveUtils()
 		    .getSpecificUserClan(userUuid, clanId);
 		if (null == uc) {
 			resBuilder.setStatus(AttackClanRaidMonsterStatus.FAIL_USER_NOT_IN_CLAN);

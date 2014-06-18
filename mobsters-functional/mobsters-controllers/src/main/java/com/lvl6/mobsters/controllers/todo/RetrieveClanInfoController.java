@@ -19,7 +19,7 @@ import com.lvl6.mobsters.dynamo.CepfuRaidHistory;
 import com.lvl6.mobsters.dynamo.Clan;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.RetrieveClanInfoRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.RetrieveClanInfoRequestProto.ClanInfoGrabType;
@@ -127,7 +127,7 @@ public class RetrieveClanInfoController extends EventController
 					    || (grabType == ClanInfoGrabType.MEMBERS)) {
 						LOG.info("getUserClansRelatedToClan clanId="
 						    + clanId);
-						final List<UserClan> userClans = RetrieveUtils.userClanRetrieveUtils()
+						final List<ClanForUser> userClans = RetrieveUtils.userClanRetrieveUtils()
 						    .getUserClansRelatedToClan(clanId);
 						LOG.info("user clans related to clanId:"
 						    + clanId
@@ -142,7 +142,7 @@ public class RetrieveClanInfoController extends EventController
 						// owner id in clan is not needed
 						// Clan c = ClanRetrieveUtils.getClanWithId(clanId);
 						// int ownerId = c.getOwnerId();
-						for (final UserClan uc : userClans) {
+						for (final ClanForUser uc : userClans) {
 							userUuids.add(uc.getUserUuid());
 						}
 						// userUuids.add(ownerId);
@@ -165,7 +165,7 @@ public class RetrieveClanInfoController extends EventController
 						final Map<Integer, Float> userIdToClanRaidContribution =
 						    calculateRaidContribution(timesToUserIdToRaidHistory);
 
-						for (final UserClan uc : userClans) {
+						for (final ClanForUser uc : userClans) {
 							final String userUuid = uc.getUserUuid();
 							final User u = usersMap.get(userUuid);
 

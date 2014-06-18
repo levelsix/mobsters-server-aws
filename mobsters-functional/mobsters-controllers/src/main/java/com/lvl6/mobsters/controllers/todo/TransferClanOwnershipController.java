@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.Clan;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto;
@@ -88,7 +88,7 @@ public class TransferClanOwnershipController extends EventController
 		try {
 			final Map<Integer, User> users = RetrieveUtils.userRetrieveUtils()
 			    .getUsersByUuids(userUuids);
-			final Map<Integer, UserClan> userClans = RetrieveUtils.userClanRetrieveUtils()
+			final Map<Integer, ClanForUser> userClans = RetrieveUtils.userClanRetrieveUtils()
 			    .getUserClanForUsers(clanId, userUuids);
 
 			final User user = users.get(userUuid);
@@ -164,7 +164,7 @@ public class TransferClanOwnershipController extends EventController
 
 	private boolean checkLegitTransfer( final Builder resBuilder, final boolean lockedClan,
 	    final String userUuid, final User user, final int newClanOwnerId,
-	    final User newClanOwner, final Map<Integer, UserClan> userClans )
+	    final User newClanOwner, final Map<Integer, ClanForUser> userClans )
 	{
 
 		if (!lockedClan) {
@@ -206,7 +206,7 @@ public class TransferClanOwnershipController extends EventController
 			    + "\t userClans="
 			    + userClans);
 		}
-		final UserClan userClan = userClans.get(user.getId());
+		final ClanForUser userClan = userClans.get(user.getId());
 
 		if (!UserClanStatus.LEADER.equals(userClan.getStatus())) {
 			resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_NOT_AUTHORIZED);

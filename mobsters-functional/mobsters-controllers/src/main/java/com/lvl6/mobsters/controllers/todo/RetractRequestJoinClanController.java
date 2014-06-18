@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.Clan;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.RetractRequestJoinClanRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.RetractRequestJoinClanResponseProto;
@@ -158,7 +158,7 @@ public class RetractRequestJoinClanController extends EventController
 			    + user.getClanId());
 			return false;
 		}
-		final UserClan uc = RetrieveUtils.userClanRetrieveUtils()
+		final ClanForUser uc = RetrieveUtils.userClanRetrieveUtils()
 		    .getSpecificUserClan(user.getId(), clan.getId());
 		if ((uc == null)
 		    || !UserClanStatus.REQUESTING.name()

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.Clan;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.ApproveOrRejectRequestToJoinClanRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.ApproveOrRejectRequestToJoinClanResponseProto;
@@ -220,7 +220,7 @@ public class ApproveOrRejectRequestToJoinClanController extends EventController
 			return false;
 		}
 
-		final UserClan uc = RetrieveUtils.userClanRetrieveUtils()
+		final ClanForUser uc = RetrieveUtils.userClanRetrieveUtils()
 		    .getSpecificUserClan(requester.getId(), clanId);
 		if ((uc == null)
 		    || !UserClanStatus.REQUESTING.name()

@@ -20,7 +20,7 @@ import com.lvl6.mobsters.dynamo.ClanEventPersistentForClan;
 import com.lvl6.mobsters.dynamo.ClanEventPersistentForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.RequestJoinClanRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.RequestJoinClanResponseProto;
@@ -246,7 +246,7 @@ public class RequestJoinClanController extends EventController
 		// user.getType());
 		// return false;
 		// }
-		final UserClan uc = RetrieveUtils.userClanRetrieveUtils()
+		final ClanForUser uc = RetrieveUtils.userClanRetrieveUtils()
 		    .getSpecificUserClan(user.getId(), clanId);
 		if (uc != null) {
 			resBuilder.setStatus(RequestJoinClanStatus.FAIL_REQUEST_ALREADY_FILED);

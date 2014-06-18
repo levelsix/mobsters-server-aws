@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 
 @DynamoDBTable(tableName="UserClan")
-public class UserClan {
+public class ClanForUser {
 
 
 
@@ -21,8 +21,8 @@ public class UserClan {
 	private int clanId;
 	private String status;
 	private Date requestTime;
-	public UserClan(){}
-	public UserClan(int userId, int clanId, String status, Date requestTime) {
+	public ClanForUser(){}
+	public ClanForUser(int userId, int clanId, String status, Date requestTime) {
 		super();
 		this.userId = userId;
 		this.clanId = clanId;
@@ -88,7 +88,7 @@ public class UserClan {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserClan other = (UserClan) obj;
+		ClanForUser other = (ClanForUser) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

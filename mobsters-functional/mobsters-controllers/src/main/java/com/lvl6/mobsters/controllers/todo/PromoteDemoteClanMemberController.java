@@ -11,7 +11,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserClan;
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.eventproto.EventClanProto.PromoteDemoteClanMemberRequestProto;
 import com.lvl6.mobsters.eventproto.EventClanProto.PromoteDemoteClanMemberResponseProto;
@@ -89,7 +89,7 @@ public class PromoteDemoteClanMemberController extends EventController
 		try {
 			final Map<Integer, User> users = RetrieveUtils.userRetrieveUtils()
 			    .getUsersByUuids(userUuids);
-			final Map<Integer, UserClan> userClans = RetrieveUtils.userClanRetrieveUtils()
+			final Map<Integer, ClanForUser> userClans = RetrieveUtils.userClanRetrieveUtils()
 			    .getUserClanForUsers(clanId, userUuids);
 
 			final boolean legitRequest =
@@ -99,7 +99,7 @@ public class PromoteDemoteClanMemberController extends EventController
 			boolean success = false;
 			if (legitRequest) {
 				final User victim = users.get(victimId);
-				final UserClan oldInfo = userClans.get(victimId);
+				final ClanForUser oldInfo = userClans.get(victimId);
 				try {
 					final UserClanStatus ucs = UserClanStatus.valueOf(oldInfo.getStatus());
 					resBuilder.setPrevUserClanStatus(ucs);
@@ -172,7 +172,7 @@ public class PromoteDemoteClanMemberController extends EventController
 	private boolean checkLegitRequest( final Builder resBuilder, final boolean lockedClan,
 	    final String userUuid, final int victimId, final UserClanStatus newUserClanStatus,
 	    final Map<Integer, User> userUuidsToUsers,
-	    final Map<Integer, UserClan> userUuidsToUserClans )
+	    final Map<Integer, ClanForUser> userUuidsToUserClans )
 	{
 
 		if (!lockedClan) {
@@ -215,8 +215,8 @@ public class PromoteDemoteClanMemberController extends EventController
 		}
 
 		// check if user can demote/promote the other one
-		final UserClan promoterDemoter = userUuidsToUserClans.get(userUuid);
-		final UserClan victim = userUuidsToUserClans.get(victimId);
+		final ClanForUser promoterDemoter = userUuidsToUserClans.get(userUuid);
+		final ClanForUser victim = userUuidsToUserClans.get(victimId);
 
 		final UserClanStatus first = UserClanStatus.valueOf(promoterDemoter.getStatus());
 		final UserClanStatus second = UserClanStatus.valueOf(victim.getStatus());
@@ -254,7 +254,7 @@ public class PromoteDemoteClanMemberController extends EventController
 	}
 
 	private boolean writeChangesToDB( final User victim, final int victimId, final int clanId,
-	    final UserClan oldInfo, final UserClanStatus newUserClanStatus )
+	    final ClanForUser oldInfo, final UserClanStatus newUserClanStatus )
 	{
 		if (!UpdateUtils.get()
 		    .updateUserClanStatus(victimId, clanId, newUserClanStatus)) {
