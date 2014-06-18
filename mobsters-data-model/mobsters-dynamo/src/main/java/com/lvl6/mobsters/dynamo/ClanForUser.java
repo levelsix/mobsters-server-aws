@@ -13,7 +13,7 @@ public class ClanForUser {
 
 //	private String id;
 	private String userId;
-	private int clanId;
+	private String clanId;
 	private Long version;
 
 	
@@ -21,7 +21,7 @@ public class ClanForUser {
 	private String status;
 	private Date requestTime;
 	public ClanForUser(){}
-	public ClanForUser(String userId, int clanId, String status, Date requestTime) {
+	public ClanForUser(String userId, String clanId, String status, Date requestTime) {
 		super();
 		this.userId = userId;
 		this.clanId = clanId;
@@ -42,10 +42,10 @@ public class ClanForUser {
 	}
 	
 	@DynamoDBRangeKey(attributeName = "userId")
-	public int getClanId() {
+	public String getClanId() {
 		return clanId;
 	}
-	public void setClanId(int clanId) {
+	public void setClanId(String clanId) {
 		this.clanId = clanId;
 	}
 
@@ -79,7 +79,7 @@ public class ClanForUser {
 		int result = 1;
 		result = prime
 			* result
-			+ clanId;
+			+ ((clanId == null) ? 0 : clanId.hashCode());
 		result = prime
 			* result
 			+ ((userId == null) ? 0 : userId.hashCode());
@@ -95,7 +95,10 @@ public class ClanForUser {
 		if (getClass() != obj.getClass())
 			return false;
 		ClanForUser other = (ClanForUser) obj;
-		if (clanId != other.clanId)
+		if (clanId == null) {
+			if (other.clanId != null)
+				return false;
+		} else if (!clanId.equals(other.clanId))
 			return false;
 		if (userId == null) {
 			if (other.userId != null)
@@ -104,7 +107,5 @@ public class ClanForUser {
 			return false;
 		return true;
 	}
-
- 	
 
 }
