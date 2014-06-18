@@ -12,6 +12,7 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.UserCredential;
@@ -27,9 +28,11 @@ import com.lvl6.mobsters.events.response.StartupResponseEvent;
 import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
+import com.lvl6.mobsters.noneventproto.utils.NoneventClanProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventQuestProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.clan.ClanService;
 import com.lvl6.mobsters.services.quest.QuestService;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.properties.Globals;
@@ -48,10 +51,16 @@ public class StartupController extends EventController
 	protected QuestService questService;
 	
 	@Autowired
+	protected ClanService clanService;
+	
+	@Autowired
 	protected NoneventQuestProtoSerializer noneventQuestProtoSerializer;
 	
 	@Autowired
 	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
+	
+	@Autowired
+	protected NoneventClanProtoSerializer noneventClanProtoSerializer;
 	
 	/*
 	 * @Autowired protected EventWriter eventWriter;
@@ -184,7 +193,7 @@ public class StartupController extends EventController
 		LOG.info("No major update... getting user info");
 		setInProgressAndAvailableQuests(resBuilder, userId);
 //		LOG.info("{}ms at setInProgressAndAvailableQuests", stopWatch.getTime());
-//		setUserClanInfos(resBuilder, userId);
+		setUserClanInfos(resBuilder, userId);
 //		LOG.info("{}ms at setUserClanInfos", stopWatch.getTime());
 //		setNotifications(resBuilder, user);
 //		LOG.info("{}ms at setNotifications", stopWatch.getTime());
@@ -255,8 +264,13 @@ public class StartupController extends EventController
 		resBuilder.addAllRedeemedQuestIds(redeemedQuestIds);
 	}
 	
-	private void setUserClanInfos() {
+	private void setUserClanInfos(Builder resBuilder, String userId) {
+		List<ClanForUser> userClans = clanService.findByUserId(userId);
 		
+		for (ClanForUser cfu : userClans) {
+			resBuilder.addUserClanInfo(
+				noneventClanProtoSerializer.createFullUserClanProtoFromUserClan(cfu));
+		}
 	}
 	
 
@@ -280,6 +294,16 @@ public class StartupController extends EventController
 		this.questService = questService;
 	}
 
+	public ClanService getClanService()
+	{
+		return clanService;
+	}
+
+	public void setClanService( ClanService clanService )
+	{
+		this.clanService = clanService;
+	}
+
 	public NoneventUserProtoSerializer getNoneventUserProtoSerializer()
 	{
 		return noneventUserProtoSerializer;
@@ -300,6 +324,17 @@ public class StartupController extends EventController
 		NoneventQuestProtoSerializer noneventQuestProtoSerializer )
 	{
 		this.noneventQuestProtoSerializer = noneventQuestProtoSerializer;
+	}
+
+	public NoneventClanProtoSerializer getNoneventClanProtoSerializer()
+	{
+		return noneventClanProtoSerializer;
+	}
+
+	public void setNoneventClanProtoSerializer(
+		NoneventClanProtoSerializer noneventClanProtoSerializer )
+	{
+		this.noneventClanProtoSerializer = noneventClanProtoSerializer;
 	}
 
 }
