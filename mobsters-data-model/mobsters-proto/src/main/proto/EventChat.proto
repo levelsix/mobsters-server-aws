@@ -38,9 +38,14 @@ message SendGroupChatResponseProto {
 	
 	enum SendGroupChatStatus {
 		SUCCESS = 1;
-		TOO_LONG = 2;
-		OTHER_FAIL = 3;
-		BANNED = 4;
+		//TOO_LONG = 2;
+		FAIL_MSG_TOO_LONG = 2;
+		
+		//OTHER_FAIL = 3;
+		FAIL_OTHER = 3;
+		
+		//BANNED = 4;
+		FAIL_BANNED = 4;
 	}
 }
 
@@ -67,10 +72,17 @@ message PrivateChatPostResponseProto {
 	
      enum PrivateChatPostStatus {
      	SUCCESS = 1;
-     	NO_CONTENT_SENT = 2;
-     	POST_TOO_LARGE = 3;
-     	OTHER_FAIL = 4;
-     	BANNED = 5;
+     	//NO_CONTENT_SENT = 2;
+     	FAIL_EMPTY_MSG = 2;
+     	
+     	//POST_TOO_LARGE = 3;
+     	FAIL_MSG_TOO_LONG = 3;
+     	
+     	//OTHER_FAIL = 4;
+     	FAIL_OTHER = 4;
+     	
+     	//BANNED = 5;
+     	FAIL_BANNED = 5;
 	}
 }
 

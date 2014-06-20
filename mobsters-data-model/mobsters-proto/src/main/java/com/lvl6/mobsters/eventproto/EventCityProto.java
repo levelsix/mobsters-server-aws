@@ -594,12 +594,12 @@ public final class EventCityProto {
     public enum LoadPlayerCityStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      FAIL_NO_SUCH_PLAYER(1, 2),
+      FAIL_NONEXISTENT_USER(1, 2),
       FAIL_OTHER(2, 3),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_NO_SUCH_PLAYER_VALUE = 2;
+      public static final int FAIL_NONEXISTENT_USER_VALUE = 2;
       public static final int FAIL_OTHER_VALUE = 3;
       
       
@@ -608,7 +608,7 @@ public final class EventCityProto {
       public static LoadPlayerCityStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return FAIL_NO_SUCH_PLAYER;
+          case 2: return FAIL_NONEXISTENT_USER;
           case 3: return FAIL_OTHER;
           default: return null;
         }
@@ -640,7 +640,7 @@ public final class EventCityProto {
       }
       
       private static final LoadPlayerCityStatus[] VALUES = {
-        SUCCESS, FAIL_NO_SUCH_PLAYER, FAIL_OTHER, 
+        SUCCESS, FAIL_NONEXISTENT_USER, FAIL_OTHER, 
       };
       
       public static LoadPlayerCityStatus valueOf(
@@ -2315,13 +2315,11 @@ public final class EventCityProto {
     public enum LoadCityStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      NOT_ACCESSIBLE_TO_USER(1, 2),
-      OTHER_FAIL(2, 3),
+      FAIL_OTHER(1, 3),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int NOT_ACCESSIBLE_TO_USER_VALUE = 2;
-      public static final int OTHER_FAIL_VALUE = 3;
+      public static final int FAIL_OTHER_VALUE = 3;
       
       
       public final int getNumber() { return value; }
@@ -2329,8 +2327,7 @@ public final class EventCityProto {
       public static LoadCityStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return NOT_ACCESSIBLE_TO_USER;
-          case 3: return OTHER_FAIL;
+          case 3: return FAIL_OTHER;
           default: return null;
         }
       }
@@ -2361,7 +2358,7 @@ public final class EventCityProto {
       }
       
       private static final LoadCityStatus[] VALUES = {
-        SUCCESS, NOT_ACCESSIBLE_TO_USER, OTHER_FAIL, 
+        SUCCESS, FAIL_OTHER, 
       };
       
       public static LoadCityStatus valueOf(
@@ -3184,26 +3181,25 @@ public final class EventCityProto {
       "ture.proto\032\022NoneventUser.proto\"\\\n\032LoadPl" +
       "ayerCityRequestProto\022\'\n\006sender\030\001 \001(\0132\027.p" +
       "roto.MinimumUserProto\022\025\n\rcityOwnerUuid\030\002" +
-      " \001(\t\"\357\002\n\033LoadPlayerCityResponseProto\022\'\n\006" +
+      " \001(\t\"\361\002\n\033LoadPlayerCityResponseProto\022\'\n\006" +
       "sender\030\001 \001(\0132\027.proto.MinimumUserProto\022*\n" +
       "\tcityOwner\030\002 \001(\0132\027.proto.MinimumUserProt" +
       "o\022G\n\006status\030\003 \001(\01627.proto.LoadPlayerCity" +
       "ResponseProto.LoadPlayerCityStatus\0227\n\020ow",
       "nerNormStructs\030\004 \003(\0132\035.proto.FullUserStr" +
       "uctureProto\022+\n\tobstacles\030\006 \003(\0132\030.proto.U" +
-      "serObstacleProto\"L\n\024LoadPlayerCityStatus" +
-      "\022\013\n\007SUCCESS\020\001\022\027\n\023FAIL_NO_SUCH_PLAYER\020\002\022\016" +
-      "\n\nFAIL_OTHER\020\003\"O\n\024LoadCityRequestProto\022\'" +
-      "\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022" +
-      "\016\n\006cityId\030\002 \001(\005\"\207\002\n\025LoadCityResponseProt" +
-      "o\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserPro" +
-      "to\022;\n\006status\030\002 \001(\0162+.proto.LoadCityRespo" +
-      "nseProto.LoadCityStatus\022-\n\014cityElements\030",
-      "\003 \003(\0132\027.proto.CityElementProto\022\016\n\006cityId" +
-      "\030\004 \001(\005\"I\n\016LoadCityStatus\022\013\n\007SUCCESS\020\001\022\032\n" +
-      "\026NOT_ACCESSIBLE_TO_USER\020\002\022\016\n\nOTHER_FAIL\020" +
-      "\003B.\n\034com.lvl6.mobsters.eventprotoB\016Event" +
-      "CityProto"
+      "serObstacleProto\"N\n\024LoadPlayerCityStatus" +
+      "\022\013\n\007SUCCESS\020\001\022\031\n\025FAIL_NONEXISTENT_USER\020\002" +
+      "\022\016\n\nFAIL_OTHER\020\003\"O\n\024LoadCityRequestProto" +
+      "\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProt" +
+      "o\022\016\n\006cityId\030\002 \001(\005\"\353\001\n\025LoadCityResponsePr" +
+      "oto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserP" +
+      "roto\022;\n\006status\030\002 \001(\0162+.proto.LoadCityRes" +
+      "ponseProto.LoadCityStatus\022-\n\014cityElement",
+      "s\030\003 \003(\0132\027.proto.CityElementProto\022\016\n\006city" +
+      "Id\030\004 \001(\005\"-\n\016LoadCityStatus\022\013\n\007SUCCESS\020\001\022" +
+      "\016\n\nFAIL_OTHER\020\003B.\n\034com.lvl6.mobsters.eve" +
+      "ntprotoB\016EventCityProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

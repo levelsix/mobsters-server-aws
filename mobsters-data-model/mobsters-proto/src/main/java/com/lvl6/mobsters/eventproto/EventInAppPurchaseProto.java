@@ -965,13 +965,13 @@ public final class EventInAppPurchaseProto {
     public enum InAppPurchaseStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      FAIL(1, 2),
-      DUPLICATE_RECEIPT(2, 3),
+      FAIL_OTHER(1, 2),
+      FAIL_DUPLICATE_RECEIPT(2, 3),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_VALUE = 2;
-      public static final int DUPLICATE_RECEIPT_VALUE = 3;
+      public static final int FAIL_OTHER_VALUE = 2;
+      public static final int FAIL_DUPLICATE_RECEIPT_VALUE = 3;
       
       
       public final int getNumber() { return value; }
@@ -979,8 +979,8 @@ public final class EventInAppPurchaseProto {
       public static InAppPurchaseStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return FAIL;
-          case 3: return DUPLICATE_RECEIPT;
+          case 2: return FAIL_OTHER;
+          case 3: return FAIL_DUPLICATE_RECEIPT;
           default: return null;
         }
       }
@@ -1011,7 +1011,7 @@ public final class EventInAppPurchaseProto {
       }
       
       private static final InAppPurchaseStatus[] VALUES = {
-        SUCCESS, FAIL, DUPLICATE_RECEIPT, 
+        SUCCESS, FAIL_OTHER, FAIL_DUPLICATE_RECEIPT, 
       };
       
       public static InAppPurchaseStatus valueOf(
@@ -3082,29 +3082,29 @@ public final class EventInAppPurchaseProto {
       "uestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minimu" +
       "mUserProto\022\017\n\007receipt\030\002 \001(\t\022\022\n\nlocalcent" +
       "s\030\003 \001(\t\022\025\n\rlocalcurrency\030\004 \001(\t\022\016\n\006locale" +
-      "\030\005 \001(\t\022\016\n\006ipaddr\030\006 \001(\t\"\272\002\n\032InAppPurchase" +
+      "\030\005 \001(\t\022\016\n\006ipaddr\030\006 \001(\t\"\305\002\n\032InAppPurchase" +
       "ResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Mi" +
       "nimumUserProto\022E\n\006status\030\002 \001(\01625.proto.I",
       "nAppPurchaseResponseProto.InAppPurchaseS" +
       "tatus\022\026\n\016diamondsGained\030\003 \001(\005\022\023\n\013coinsGa" +
       "ined\030\004 \001(\005\022\023\n\013packageName\030\005 \001(\t\022\024\n\014packa" +
-      "gePrice\030\006 \001(\001\022\017\n\007receipt\030\007 \001(\t\"C\n\023InAppP" +
-      "urchaseStatus\022\013\n\007SUCCESS\020\001\022\010\n\004FAIL\020\002\022\025\n\021" +
-      "DUPLICATE_RECEIPT\020\003\"\313\001\n$ExchangeGemsForR" +
-      "esourcesRequestProto\0227\n\006sender\030\001 \001(\0132\'.p" +
-      "roto.MinimumUserProtoWithMaxResources\022\017\n" +
-      "\007numGems\030\002 \001(\005\022\024\n\014numResources\030\003 \001(\005\022/\n\014" +
-      "resourceType\030\004 \001(\0162\023.proto.ResourceType:",
-      "\004CASH\022\022\n\nclientTime\030\005 \001(\003\"\230\002\n%ExchangeGe" +
-      "msForResourcesResponseProto\0227\n\006sender\030\001 " +
-      "\001(\0132\'.proto.MinimumUserProtoWithMaxResou" +
-      "rces\022[\n\006status\030\002 \001(\0162K.proto.ExchangeGem" +
-      "sForResourcesResponseProto.ExchangeGemsF" +
-      "orResourcesStatus\"Y\n\036ExchangeGemsForReso" +
-      "urcesStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002" +
-      "\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\003B7\n\034com.lvl6" +
-      ".mobsters.eventprotoB\027EventInAppPurchase" +
-      "Proto"
+      "gePrice\030\006 \001(\001\022\017\n\007receipt\030\007 \001(\t\"N\n\023InAppP" +
+      "urchaseStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER" +
+      "\020\002\022\032\n\026FAIL_DUPLICATE_RECEIPT\020\003\"\313\001\n$Excha" +
+      "ngeGemsForResourcesRequestProto\0227\n\006sende" +
+      "r\030\001 \001(\0132\'.proto.MinimumUserProtoWithMaxR" +
+      "esources\022\017\n\007numGems\030\002 \001(\005\022\024\n\014numResource" +
+      "s\030\003 \001(\005\022/\n\014resourceType\030\004 \001(\0162\023.proto.Re",
+      "sourceType:\004CASH\022\022\n\nclientTime\030\005 \001(\003\"\230\002\n" +
+      "%ExchangeGemsForResourcesResponseProto\0227" +
+      "\n\006sender\030\001 \001(\0132\'.proto.MinimumUserProtoW" +
+      "ithMaxResources\022[\n\006status\030\002 \001(\0162K.proto." +
+      "ExchangeGemsForResourcesResponseProto.Ex" +
+      "changeGemsForResourcesStatus\"Y\n\036Exchange" +
+      "GemsForResourcesStatus\022\013\n\007SUCCESS\020\001\022\016\n\nF" +
+      "AIL_OTHER\020\002\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\003B" +
+      "7\n\034com.lvl6.mobsters.eventprotoB\027EventIn" +
+      "AppPurchaseProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

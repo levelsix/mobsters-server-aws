@@ -569,11 +569,11 @@ public final class EventApnsProto {
     public enum EnableAPNSStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      NOT_ENABLED(1, 2),
+      FAIL_OTHER(1, 2),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int NOT_ENABLED_VALUE = 2;
+      public static final int FAIL_OTHER_VALUE = 2;
       
       
       public final int getNumber() { return value; }
@@ -581,7 +581,7 @@ public final class EventApnsProto {
       public static EnableAPNSStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return NOT_ENABLED;
+          case 2: return FAIL_OTHER;
           default: return null;
         }
       }
@@ -612,7 +612,7 @@ public final class EventApnsProto {
       }
       
       private static final EnableAPNSStatus[] VALUES = {
-        SUCCESS, NOT_ENABLED, 
+        SUCCESS, FAIL_OTHER, 
       };
       
       public static EnableAPNSStatus valueOf(
@@ -1107,13 +1107,13 @@ public final class EventApnsProto {
       "\n\017EventApns.proto\022\005proto\032\022NoneventUser.p" +
       "roto\"V\n\026EnableAPNSRequestProto\022\'\n\006sender" +
       "\030\001 \001(\0132\027.proto.MinimumUserProto\022\023\n\013devic" +
-      "eToken\030\002 \001(\t\"\265\001\n\027EnableAPNSResponseProto" +
+      "eToken\030\002 \001(\t\"\264\001\n\027EnableAPNSResponseProto" +
       "\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProt" +
       "o\022?\n\006status\030\002 \001(\0162/.proto.EnableAPNSResp" +
-      "onseProto.EnableAPNSStatus\"0\n\020EnableAPNS" +
-      "Status\022\013\n\007SUCCESS\020\001\022\017\n\013NOT_ENABLED\020\002B.\n\034" +
-      "com.lvl6.mobsters.eventprotoB\016EventApnsP" +
-      "roto"
+      "onseProto.EnableAPNSStatus\"/\n\020EnableAPNS" +
+      "Status\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002B.\n\034c" +
+      "om.lvl6.mobsters.eventprotoB\016EventApnsPr" +
+      "oto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

@@ -20,7 +20,8 @@ message EnableAPNSResponseProto {
 	
 	enum EnableAPNSStatus {
 		SUCCESS = 1;
-		NOT_ENABLED = 2;
+		//NOT_ENABLED = 2; //meant the user disabled APNS via empty deviceToken, but could also be treated as SUCCESS
+		FAIL_OTHER = 2;
 	}
 }
 

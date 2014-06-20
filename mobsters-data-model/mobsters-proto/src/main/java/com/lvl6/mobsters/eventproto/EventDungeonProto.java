@@ -4591,12 +4591,12 @@ public final class EventDungeonProto {
     public enum ReviveInDungeonStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      FAIL_INSUFFICIENT_FUNDS(1, 2),
-      FAIL_OTHER(2, 3),
+      FAIL_INSUFFICIENT_GEMS(1, 3),
       ;
       
+      public static final ReviveInDungeonStatus FAIL_OTHER = FAIL_INSUFFICIENT_GEMS;
       public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_INSUFFICIENT_FUNDS_VALUE = 2;
+      public static final int FAIL_INSUFFICIENT_GEMS_VALUE = 3;
       public static final int FAIL_OTHER_VALUE = 3;
       
       
@@ -4605,8 +4605,7 @@ public final class EventDungeonProto {
       public static ReviveInDungeonStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return FAIL_INSUFFICIENT_FUNDS;
-          case 3: return FAIL_OTHER;
+          case 3: return FAIL_INSUFFICIENT_GEMS;
           default: return null;
         }
       }
@@ -4637,7 +4636,7 @@ public final class EventDungeonProto {
       }
       
       private static final ReviveInDungeonStatus[] VALUES = {
-        SUCCESS, FAIL_INSUFFICIENT_FUNDS, FAIL_OTHER, 
+        SUCCESS, FAIL_INSUFFICIENT_GEMS, FAIL_OTHER, 
       };
       
       public static ReviveInDungeonStatus valueOf(
@@ -5182,14 +5181,14 @@ public final class EventDungeonProto {
       "(\0132\027.proto.MinimumUserProto\022\024\n\014userTaskU" +
       "uid\030\002 \001(\t\022\022\n\nclientTime\030\003 \001(\003\0226\n\010reviveM" +
       "e\030\004 \003(\0132$.proto.UserMonsterCurrentHealth" +
-      "Proto\022\021\n\tgemsSpent\030\005 \001(\005\"\345\001\n\034ReviveInDun" +
+      "Proto\022\021\n\tgemsSpent\030\005 \001(\005\"\344\001\n\034ReviveInDun" +
       "geonResponseProto\022\'\n\006sender\030\001 \001(\0132\027.prot" +
       "o.MinimumUserProto\022I\n\006status\030\002 \001(\01629.pro" +
       "to.ReviveInDungeonResponseProto.ReviveIn" +
-      "DungeonStatus\"Q\n\025ReviveInDungeonStatus\022\013" +
-      "\n\007SUCCESS\020\001\022\033\n\027FAIL_INSUFFICIENT_FUNDS\020\002" +
-      "\022\016\n\nFAIL_OTHER\020\003B1\n\034com.lvl6.mobsters.ev",
-      "entprotoB\021EventDungeonProto"
+      "DungeonStatus\"P\n\025ReviveInDungeonStatus\022\013" +
+      "\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\003\022" +
+      "\016\n\nFAIL_OTHER\020\003B1\n\034com.lvl6.mobsters.eve",
+      "ntprotoB\021EventDungeonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

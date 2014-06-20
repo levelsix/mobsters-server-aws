@@ -29,7 +29,8 @@ message LoadPlayerCityResponseProto {
      
     enum LoadPlayerCityStatus {
      	SUCCESS = 1;
-     	FAIL_NO_SUCH_PLAYER = 2;
+     	//FAIL_NO_SUCH_PLAYER = 2;
+     	FAIL_NONEXISTENT_USER= 2;
      	FAIL_OTHER = 3;
      }
 }
@@ -77,8 +78,10 @@ message LoadCityResponseProto {
      
      enum LoadCityStatus {
      	SUCCESS = 1;
-     	NOT_ACCESSIBLE_TO_USER = 2;
-     	OTHER_FAIL = 3;
+     	//NOT_ACCESSIBLE_TO_USER = 2;
+     	
+     	//OTHER_FAIL = 3;
+     	FAIL_OTHER = 3;
      }    
 }
 
