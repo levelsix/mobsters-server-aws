@@ -2,6 +2,6 @@ package com.lvl6.mobsters.info.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.City;
-public interface CityRepository extends JpaRepository<City, String>{
+public interface CityRepository extends JpaRepository<City, Integer>{
 
 }

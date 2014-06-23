@@ -34,8 +34,8 @@ public class TaskStageMonster extends BaseIntPersistentObject{
 	@Column(name = "chance_to_appear")
 	private float chanceToAppear;  
 
-	@Column(name = "rand")
 	private Random rand;
+	
 	public TaskStageMonster(){}
 	public TaskStageMonster(int id, int stageId, int monsterId, String monsterType,
 		int expReward, int minCashDrop, int maxCashDrop, int minOilDrop,

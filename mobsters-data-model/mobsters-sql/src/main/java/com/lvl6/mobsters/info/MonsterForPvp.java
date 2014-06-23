@@ -27,9 +27,8 @@ public class MonsterForPvp extends BaseIntPersistentObject{
 	private int maxOilReward;	
 	
 	//not part of the table, just for convenience
-
-	@Column(name = "rand")
 	private Random rand;	
+	
 	public MonsterForPvp(){}
 	public MonsterForPvp(int id, int monsterId, int monsterLvl, int elo,
 			int minCashReward, int maxCashReward, int minOilReward, int maxOilReward) {

@@ -2,6 +2,6 @@ package com.lvl6.mobsters.info.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.BoosterPack;
-public interface BoosterPackRepository extends JpaRepository<BoosterPack, String>{
+public interface BoosterPackRepository extends JpaRepository<BoosterPack, Integer>{
 
 }

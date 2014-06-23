@@ -4,7 +4,7 @@ import java.util.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.Achievement;
-public interface AchievementRepository extends JpaRepository<Achievement, String>{
+public interface AchievementRepository extends JpaRepository<Achievement, Integer>{
 	
 	Collection<Achievement> findByLvlBetween(Integer low, Integer high);
 	Collection<Achievement> findByQuantityGreaterThan(Integer low);

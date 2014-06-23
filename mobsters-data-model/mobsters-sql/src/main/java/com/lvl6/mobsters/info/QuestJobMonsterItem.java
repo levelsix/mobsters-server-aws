@@ -21,8 +21,8 @@ public class QuestJobMonsterItem extends BaseIntPersistentObject{
 	private float itemDropRate;	
 	//convenience object
 
-	@Column(name = "rand")
 	private Random rand;
+	
 	public QuestJobMonsterItem(){}
 	public QuestJobMonsterItem(int questJobId, int monsterId, int itemId,
 			float itemDropRate) {
@@ -90,7 +90,7 @@ public class QuestJobMonsterItem extends BaseIntPersistentObject{
 	public String toString() {
 		return "QuestJobMonsterItem [questJobId=" + questJobId + ", monsterId="
 				+ monsterId + ", itemId=" + itemId + ", itemDropRate="
-				+ itemDropRate + ", rand=" + rand + "]";
+				+ itemDropRate + "]";
 	}
 	
 }

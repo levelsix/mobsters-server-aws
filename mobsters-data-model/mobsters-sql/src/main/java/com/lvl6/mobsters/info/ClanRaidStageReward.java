@@ -25,10 +25,10 @@ public class ClanRaidStageReward extends BaseIntPersistentObject{
 	private int monsterId;
 	@Column(name = "expected_monster_reward_quantity")
 	private int expectedMonsterRewardQuantity;//also monster drop rate multiplier	
+	
 	//not part of the table, just for convenience
-
-	@Column(name = "rand")
 	private Random rand;	
+	
 	public ClanRaidStageReward(){}
 	public ClanRaidStageReward(int id, int clanRaidStageId, int minOilReward,
 			int maxOilReward, int minCashReward, int maxCashReward, int monsterId,
