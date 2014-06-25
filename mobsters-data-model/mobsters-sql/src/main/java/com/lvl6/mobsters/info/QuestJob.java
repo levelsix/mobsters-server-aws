@@ -1,7 +1,12 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class QuestJob extends BaseIntPersistentObject{
@@ -9,8 +14,13 @@ public class QuestJob extends BaseIntPersistentObject{
 	
 	private static final long serialVersionUID = 8512045755153249399L;	
 
-	@Column(name = "quest_id")
-	private int questId;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "quest_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Quest quest;
+	
 	@Column(name = "quest_job_type")
 	private String questJobType;
 	@Column(name = "description")
@@ -33,11 +43,11 @@ public class QuestJob extends BaseIntPersistentObject{
 	@Column(name = "city_asset_num")
 	private int cityAssetNum;	
 	public QuestJob(){}
-	public QuestJob(int id, int questId, String questJobType,
+	public QuestJob(int id, Quest quest, String questJobType,
 			String description, int staticDataId, int quantity, int priority,
 			int cityId, int cityAssetNum) {
 		super(id);
-		this.questId = questId;
+		this.quest = quest;
 		this.questJobType = questJobType;
 		this.description = description;
 		this.staticDataId = staticDataId;
@@ -49,14 +59,15 @@ public class QuestJob extends BaseIntPersistentObject{
 
 
 
-	public int getQuestId() {
-		return questId;
-	}
 
-	public void setQuestId(int questId) {
-		this.questId = questId;
+	public Quest getQuest()
+	{
+		return quest;
 	}
-
+	public void setQuest( Quest quest )
+	{
+		this.quest = quest;
+	}
 	public String getQuestJobType() {
 		return questJobType;
 	}
@@ -115,7 +126,7 @@ public class QuestJob extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "QuestJob [id=" + id + ", questId=" + questId
+		return "QuestJob [id=" + id + ", questId=" + quest
 				+ ", questJobType=" + questJobType + ", description="
 				+ description + ", staticDataId=" + staticDataId
 				+ ", quantity=" + quantity + ", priority=" + priority

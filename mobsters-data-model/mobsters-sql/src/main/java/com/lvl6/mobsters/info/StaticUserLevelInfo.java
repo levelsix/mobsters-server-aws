@@ -12,6 +12,7 @@ public class StaticUserLevelInfo extends BaseIntPersistentObject{
 	private int lvl;
 	@Column(name = "required_exp")
 	private int requiredExp;  
+	
 	public StaticUserLevelInfo(){}
 	public StaticUserLevelInfo(int lvl, int requiredExp) {
 		super();

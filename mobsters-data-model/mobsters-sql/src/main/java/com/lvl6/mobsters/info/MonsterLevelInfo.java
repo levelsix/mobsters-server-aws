@@ -1,7 +1,11 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class MonsterLevelInfo extends BaseIntPersistentObject{
@@ -9,8 +13,13 @@ public class MonsterLevelInfo extends BaseIntPersistentObject{
 	
 	private static final long serialVersionUID = -2871557654511408447L;	
 
-	@Column(name = "monster_id")
-	private int monsterId;
+	@OneToOne
+	@JoinColumn(
+		name = "monster_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Monster monster;
+	
 	@Column(name = "level")
 	private int level;
 	@Column(name = "hp")
@@ -42,13 +51,13 @@ public class MonsterLevelInfo extends BaseIntPersistentObject{
 	@Column(name = "exp_lvl_exponent")
 	private float expLvlExponent;	
 	public MonsterLevelInfo(){}
-	public MonsterLevelInfo(int monsterId, int level, int hp,
+	public MonsterLevelInfo(Monster monster, int level, int hp,
 			int curLvlRequiredExp, int feederExp, int fireDmg, int grassDmg,
 			int waterDmg, int lightningDmg, int darknessDmg, int rockDmg,
 			int speed, float hpExponentBase, float dmgExponentBase,
 			float expLvlDivisor, float expLvlExponent) {
 		super();
-		this.monsterId = monsterId;
+		this.monster = monster;
 		this.level = level;
 		this.hp = hp;
 		this.curLvlRequiredExp = curLvlRequiredExp;
@@ -66,14 +75,15 @@ public class MonsterLevelInfo extends BaseIntPersistentObject{
 		this.expLvlExponent = expLvlExponent;
 	}
 
-	public int getMonsterId() {
-		return monsterId;
-	}
 
-	public void setMonsterId(int monsterId) {
-		this.monsterId = monsterId;
+	public Monster getMonster()
+	{
+		return monster;
 	}
-
+	public void setMonster( Monster monster )
+	{
+		this.monster = monster;
+	}
 	public int getLevel() {
 		return level;
 	}
@@ -196,7 +206,7 @@ public class MonsterLevelInfo extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "MonsterLevelInfo [monsterId=" + monsterId + ", level=" + level
+		return "MonsterLevelInfo [monsterId=" + monster + ", level=" + level
 				+ ", hp=" + hp + ", curLvlRequiredExp=" + curLvlRequiredExp
 				+ ", feederExp=" + feederExp + ", fireDmg=" + fireDmg
 				+ ", grassDmg=" + grassDmg + ", waterDmg=" + waterDmg

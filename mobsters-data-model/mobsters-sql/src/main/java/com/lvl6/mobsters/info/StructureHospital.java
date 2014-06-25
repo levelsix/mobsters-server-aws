@@ -1,36 +1,41 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class StructureHospital extends BaseIntPersistentObject{
-/**
-	 * 
-	 */
 
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure struct;
 	
-	private static final long serialVersionUID = 2595468911342522178L;
-	//
-	//	private static final long serialVersionUID = -3569030137246330339L;
-	@Column(name = "struct_id")
-	private int structId;
 	@Column(name = "queue_size")
 	private int queueSize;	float healthPerSecond;
 	
 	public StructureHospital(){}
-	public StructureHospital(int structId, int queueSize, float healthPerSecond) {
+	public StructureHospital(Structure struct, int queueSize, float healthPerSecond) {
 		super();
-		this.structId = structId;
+		this.struct = struct;
 		this.queueSize = queueSize;
 		this.healthPerSecond = healthPerSecond;
 	}
 	
-	public int getStructId() {
-		return structId;
+	public Structure getStruct()
+	{
+		return struct;
 	}
-	public void setStructId(int structId) {
-		this.structId = structId;
+	public void setStruct( Structure struct )
+	{
+		this.struct = struct;
 	}
 	public int getQueueSize() {
 		return queueSize;
@@ -47,7 +52,7 @@ public class StructureHospital extends BaseIntPersistentObject{
 	
 	@Override
 	public String toString() {
-		return "StructureHospital [structId=" + structId + ", queueSize="
+		return "StructureHospital [structId=" + struct + ", queueSize="
 				+ queueSize + ", healthPerSecond=" + healthPerSecond + "]";
 	}
 }

@@ -1,36 +1,47 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class EventPersistent extends BaseIntPersistentObject{	
 
 	
-	private static final long serialVersionUID = 515573356447727757L;
 	@Column(name = "day_of_week")
 	private String dayOfWeek;
 	@Column(name = "start_hour")
 	private int startHour;
 	@Column(name = "event_duration_minutes")
 	private int eventDurationMinutes;
-	@Column(name = "task_id")
-	private int taskId;
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "task_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Task task;
+	
 	@Column(name = "cooldown_minutes")
 	private int cooldownMinutes;
 	@Column(name = "event_type")
 	private String eventType;
 	@Column(name = "monster_element")
 	private String monsterElement;	
+	
 	public EventPersistent(){}
 	public EventPersistent(int id, String dayOfWeek, int startHour,
-			int eventDurationMinutes, int taskId, int cooldownMinutes,
+			int eventDurationMinutes, Task task, int cooldownMinutes,
 			String eventType, String monsterElement) {
 		super(id);
 		this.dayOfWeek = dayOfWeek;
 		this.startHour = startHour;
 		this.eventDurationMinutes = eventDurationMinutes;
-		this.taskId = taskId;
+		this.task = task;
 		this.cooldownMinutes = cooldownMinutes;
 		this.eventType = eventType;
 		this.monsterElement = monsterElement;
@@ -62,14 +73,14 @@ public class EventPersistent extends BaseIntPersistentObject{
 		this.eventDurationMinutes = eventDurationMinutes;
 	}
 
-	public int getTaskId() {
-		return taskId;
+	public Task getTask()
+	{
+		return task;
 	}
-
-	public void setTaskId(int taskId) {
-		this.taskId = taskId;
+	public void setTask( Task task )
+	{
+		this.task = task;
 	}
-
 	public int getCooldownMinutes() {
 		return cooldownMinutes;
 	}
@@ -98,7 +109,7 @@ public class EventPersistent extends BaseIntPersistentObject{
 	public String toString() {
 		return "EventPersistent [id=" + id + ", dayOfWeek=" + dayOfWeek
 				+ ", startHour=" + startHour + ", eventDurationMinutes="
-				+ eventDurationMinutes + ", taskId=" + taskId + ", cooldownMinutes="
+				+ eventDurationMinutes + ", taskId=" + task + ", cooldownMinutes="
 				+ cooldownMinutes + ", eventType=" + eventType + ", monsterElement="
 				+ monsterElement + "]";
 	}

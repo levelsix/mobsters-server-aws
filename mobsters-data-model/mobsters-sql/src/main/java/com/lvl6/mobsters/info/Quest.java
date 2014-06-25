@@ -2,10 +2,12 @@ package com.lvl6.mobsters.info;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,24 +17,16 @@ public class Quest extends BaseIntPersistentObject{
 	
 	private static final long serialVersionUID = -7293560537221688587L;	
 
-	//@Column(name = "city_id")
-	//	private int cityId;
 	@Column(name = "quest_name")
 	private String questName;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "done_response")
 	private String doneResponse;
+	
 	@Column(name = "accept_dialogue")
-	private Dialogue acceptDialogue;
-	//@Column(name = "quest_type")
-	//	private String questType;
-	//@Column(name = "job_description")
-	//	private String jobDescription;
-	//@Column(name = "static_data_id")
-	//	private int staticDataId;
-	//@Column(name = "quantity")
-	//	private int quantity;
+	private String acceptDialogue;
+	
 	@Column(name = "cash_reward")
 	private int cashReward;
 	@Column(name = "oil_reward")
@@ -56,17 +50,23 @@ public class Quest extends BaseIntPersistentObject{
 	private int priority;
 	@Column(name = "carrot_id")
 	private String carrotId;
-	//@Column(name = "is_achievement")
-	//	private boolean isAchievement;
 	@Column(name = "monster_element")
 	private String monsterElement;	
+	
+	@OneToMany(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="quest", 
+		orphanRemoval=true)
+	private List<QuestJob> questJobs;  
+	
 	public Quest(){}
 	public Quest(int id, String questName, String description, String doneResponse,
-			Dialogue acceptDialogue, int cashReward, int oilReward, int gemReward,
+			String acceptDialogue, int cashReward, int oilReward, int gemReward,
 			int expReward, int monsterIdReward, boolean isCompleteMonster,
 			List<Quest> questsRequiredForThis, String questGiverName,
 			String questGiverImagePrefix, int priority, String carrotId,
-			String monsterElement) {
+			String monsterElement, List<QuestJob> questJobs) {
 		super(id);
 		this.questName = questName;
 		this.description = description;
@@ -84,6 +84,7 @@ public class Quest extends BaseIntPersistentObject{
 		this.priority = priority;
 		this.carrotId = carrotId;
 		this.monsterElement = monsterElement;
+		this.questJobs = questJobs;
 	}
 
 
@@ -112,11 +113,11 @@ public class Quest extends BaseIntPersistentObject{
 		this.doneResponse = doneResponse;
 	}
 
-	public Dialogue getAcceptDialogue() {
+	public String getAcceptDialogue() {
 		return acceptDialogue;
 	}
 
-	public void setAcceptDialogue(Dialogue acceptDialogue) {
+	public void setAcceptDialogue(String acceptDialogue) {
 		this.acceptDialogue = acceptDialogue;
 	}
 
@@ -216,6 +217,15 @@ public class Quest extends BaseIntPersistentObject{
 		this.monsterElement = monsterElement;
 	}
 
+	public List<QuestJob> getQuestJobs()
+	{
+		return questJobs;
+	}
+	public void setQuestJobs( List<QuestJob> questJobs )
+	{
+		this.questJobs = questJobs;
+	}
+	
 	@Override
 	public String toString() {
 		return "Quest [id=" + id + ", questName=" + questName

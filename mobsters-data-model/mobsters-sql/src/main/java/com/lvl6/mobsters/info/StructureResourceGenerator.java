@@ -1,20 +1,25 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class StructureResourceGenerator extends BaseIntPersistentObject{
-/**
-	 * 
-	 */
 
+
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure struct;
 	
-	private static final long serialVersionUID = -6050297635384603916L;
-	//
-	//	private static final long serialVersionUID = -2371172975086740032L;
-	@Column(name = "struct_id")
-	private int structId;
 	@Column(name = "resource_type_generated")
 	private String resourceTypeGenerated;	//at the moment, some amount per hour
 
@@ -22,24 +27,26 @@ public class StructureResourceGenerator extends BaseIntPersistentObject{
 	private float productionRate;
 	@Column(name = "capacity")
 	private int capacity;	
+	
 	public StructureResourceGenerator(){}
-	public StructureResourceGenerator(int structId, String resourceTypeGenerated,
+	public StructureResourceGenerator(Structure struct, String resourceTypeGenerated,
 			float productionRate, int capacity) {
 		super();
-		this.structId = structId;
+		this.struct = struct;
 		this.resourceTypeGenerated = resourceTypeGenerated;
 		this.productionRate = productionRate;
 		this.capacity = capacity;
 	}
 
-	public int getStructId() {
-		return structId;
-	}
 
-	public void setStructId(int structId) {
-		this.structId = structId;
+	public Structure getStruct()
+	{
+		return struct;
 	}
-
+	public void setStruct( Structure struct )
+	{
+		this.struct = struct;
+	}
 	public String getResourceTypeGenerated() {
 		return resourceTypeGenerated;
 	}
@@ -66,7 +73,7 @@ public class StructureResourceGenerator extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "ResourceGenerator [structId=" + structId
+		return "ResourceGenerator [structId=" + struct
 				+ ", resourceTypeGenerated=" + resourceTypeGenerated
 				+ ", productionRate=" + productionRate + ", capacity=" + capacity + "]";
 	}

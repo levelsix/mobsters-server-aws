@@ -3,7 +3,11 @@ package com.lvl6.mobsters.info;
 import java.util.Random;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class MonsterForPvp extends BaseIntPersistentObject{
@@ -11,8 +15,13 @@ public class MonsterForPvp extends BaseIntPersistentObject{
 	
 	private static final long serialVersionUID = 4471110536112855370L;	
 
-	@Column(name = "monster_id")
-	private int monsterId;
+	@ManyToOne
+	@JoinColumn(
+		name = "monster_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Monster monster;
+	
 	@Column(name = "monster_lvl")
 	private int monsterLvl;
 	@Column(name = "elo")
@@ -30,10 +39,10 @@ public class MonsterForPvp extends BaseIntPersistentObject{
 	private Random rand;	
 	
 	public MonsterForPvp(){}
-	public MonsterForPvp(int id, int monsterId, int monsterLvl, int elo,
+	public MonsterForPvp(int id, Monster monster, int monsterLvl, int elo,
 			int minCashReward, int maxCashReward, int minOilReward, int maxOilReward) {
 		super(id);
-		this.monsterId = monsterId;
+		this.monster = monster;
 		this.monsterLvl = monsterLvl;
 		this.elo = elo;
 		this.minCashReward = minCashReward;
@@ -80,16 +89,17 @@ public class MonsterForPvp extends BaseIntPersistentObject{
   //end covenience methods--------------------------------------------------------
 
 
-
-
-	public int getMonsterId() {
-		return monsterId;
+	
+	public Monster getMonster()
+	{
+		return monster;
 	}
-
-	public void setMonsterId(int monsterId) {
-		this.monsterId = monsterId;
+	public void setMonster( Monster monster )
+	{
+		this.monster = monster;
 	}
-
+	
+	
 	public int getMonsterLvl() {
 		return monsterLvl;
 	}
@@ -140,7 +150,7 @@ public class MonsterForPvp extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "MonsterForPvp [id=" + id + ", monsterId=" + monsterId
+		return "MonsterForPvp [id=" + id + ", monsterId=" + monster
 				+ ", monsterLvl=" + monsterLvl + ", elo=" + elo + ", minCashReward="
 				+ minCashReward + ", maxCashReward=" + maxCashReward
 				+ ", minOilReward=" + minOilReward + ", maxOilReward=" + maxOilReward

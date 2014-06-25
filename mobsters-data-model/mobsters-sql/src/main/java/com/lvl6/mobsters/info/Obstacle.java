@@ -28,9 +28,14 @@ public class Obstacle extends BaseIntPersistentObject{
 	@Column(name = "description")
 	private String description;
 	@Column(name = "chance_to_appear")
-	private float chanceToAppear;  String shadowImgName;
-  float shadowVerticalOffset;
-  float shadowHorizontalOffset;
+	private float chanceToAppear;
+	
+	@Column(name = "shadow_img_name")
+	private String shadowImgName;
+	@Column(name = "shadow_vertical_offset")
+	private float shadowVerticalOffset;
+	@Column(name = "shadow_horizontal_offset")
+	private float shadowHorizontalOffset;
   
 	public Obstacle(){}
 	public Obstacle(int id, String name, String removalCostType, int cost,

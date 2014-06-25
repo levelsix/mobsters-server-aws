@@ -3,18 +3,32 @@ package com.lvl6.mobsters.info;
 import java.util.Random;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class TaskStageMonster extends BaseIntPersistentObject{
 
-	
-	private static final long serialVersionUID = 9192496432635630281L;	
+	private static final long serialVersionUID = -8786008429159573146L;
 
-	@Column(name = "stage_id")
-	private int stageId;
-	@Column(name = "monster_id")
-	private int monsterId;
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=TaskStage.class)
+	@JoinColumn(
+		name = "stage_id",
+		nullable = false,
+		foreignKey = @ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private TaskStage stage;
+	
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Monster.class)
+	@JoinColumn(
+		name = "monster_id",
+		nullable = false,
+		foreignKey = @ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Monster monster;
+	
 	@Column(name = "monster_type")
 	private String monsterType;
 	@Column(name = "exp_reward")
@@ -34,16 +48,16 @@ public class TaskStageMonster extends BaseIntPersistentObject{
 	@Column(name = "chance_to_appear")
 	private float chanceToAppear;  
 
-	private Random rand;
+	private Random rand = new Random();
 	
 	public TaskStageMonster(){}
-	public TaskStageMonster(int id, int stageId, int monsterId, String monsterType,
+	public TaskStageMonster(int id, TaskStage stage, Monster monster, String monsterType,
 		int expReward, int minCashDrop, int maxCashDrop, int minOilDrop,
 		int maxOilDrop, float puzzlePieceDropRate, int level,
 		float chanceToAppear) {
 	super(id);
-	this.stageId = stageId;
-	this.monsterId = monsterId;
+	this.stage= stage;
+	this.monster = monster;
 	this.monsterType = monsterType;
 	this.expReward = expReward;
 	this.minCashDrop = minCashDrop;
@@ -98,21 +112,21 @@ public class TaskStageMonster extends BaseIntPersistentObject{
   //end covenience methods--------------------------------------------------------
 
 
-
-  public int getStageId() {
-	  return stageId;
+  public TaskStage getStage()
+  {
+	  return stage;
   }
-
-  public void setStageId(int stageId) {
-	  this.stageId = stageId;
+  public void setStage( TaskStage stage )
+  {
+	  this.stage = stage;
   }
-
-  public int getMonsterId() {
-	  return monsterId;
+  public Monster getMonster()
+  {
+	  return monster;
   }
-
-  public void setMonsterId(int monsterId) {
-	  this.monsterId = monsterId;
+  public void setMonster( Monster monster )
+  {
+	  this.monster = monster;
   }
 
   public String getMonsterType() {
@@ -189,8 +203,8 @@ public class TaskStageMonster extends BaseIntPersistentObject{
 
   @Override
   public String toString() {
-	  return "TaskStageMonster [id=" + id + ", stageId=" + stageId
-			  + ", monsterId=" + monsterId + ", monsterType=" + monsterType
+	  return "TaskStageMonster [id=" + id + ", stageId=" + stage
+			  + ", monsterId=" + monster + ", monsterType=" + monsterType
 			  + ", expReward=" + expReward + ", minCashDrop=" + minCashDrop
 			  + ", maxCashDrop=" + maxCashDrop + ", minOilDrop=" + minOilDrop
 			  + ", maxOilDrop=" + maxOilDrop + ", puzzlePieceDropRate="

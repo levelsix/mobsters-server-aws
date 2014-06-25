@@ -1,7 +1,13 @@
 package com.lvl6.mobsters.info;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -62,6 +68,21 @@ public class Monster extends BaseIntPersistentObject{
 	private int atkAnimationRepeatedFramesEnd;
 	@Column(name = "shorter_name")
 	private String shorterName;	
+	
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="monster", 
+		orphanRemoval=true)
+	private List<MonsterLevelInfo> lvlInfo;
+	
+	@OneToMany(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="monster", 
+		orphanRemoval=true)
+	private List<MonsterBattleDialogue> battleDialogue;
+	
 	public Monster() { }
 	public Monster(int id, String name, String monsterGroup, String quality,
 			int evolutionLevel, String displayName, String element,
@@ -73,7 +94,9 @@ public class Monster extends BaseIntPersistentObject{
 			int evolutionCost, String animationType, int verticalPixelOffset,
 			String atkSoundFile, int atkSoundAnimationFrame,
 			int atkAnimationRepeatedFramesStart,
-			int atkAnimationRepeatedFramesEnd, String shorterName) {
+			int atkAnimationRepeatedFramesEnd, String shorterName,
+			List<MonsterLevelInfo> lvlInfo,
+			List<MonsterBattleDialogue> battleDialogue) {
 		super(id);
 		this.name = name;
 		this.monsterGroup = monsterGroup;
@@ -101,6 +124,8 @@ public class Monster extends BaseIntPersistentObject{
 		this.atkAnimationRepeatedFramesStart = atkAnimationRepeatedFramesStart;
 		this.atkAnimationRepeatedFramesEnd = atkAnimationRepeatedFramesEnd;
 		this.shorterName = shorterName;
+		this.lvlInfo = lvlInfo;
+		this.battleDialogue = battleDialogue;
 	}
 
 
@@ -314,6 +339,23 @@ public class Monster extends BaseIntPersistentObject{
 		this.shorterName = shorterName;
 	}
 
+	public List<MonsterLevelInfo> getLvlInfo()
+	{
+		return lvlInfo;
+	}
+	public void setLvlInfo( List<MonsterLevelInfo> lvlInfo )
+	{
+		this.lvlInfo = lvlInfo;
+	}
+	public List<MonsterBattleDialogue> getBattleDialogue()
+	{
+		return battleDialogue;
+	}
+	public void setBattleDialogue( List<MonsterBattleDialogue> battleDialogue )
+	{
+		this.battleDialogue = battleDialogue;
+	}
+	
 	@Override
 	public String toString() {
 		return "Monster [id=" + id + ", name=" + name + ", monsterGroup="

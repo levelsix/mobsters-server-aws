@@ -1,29 +1,38 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class StructureResidence extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 4051797541566106042L;
-	@Column(name = "struct_id")
-	private int structId;	//how many monster slots this residence gives the user (absolute number)
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure struct;
+	
+	//how many monster slots this residence gives the user (absolute number)
 	//does not depend on previous lower level structures
-
 	@Column(name = "num_monster_slots")
 	private int numMonsterSlots;	
+	
 	//additional slots if user buys some gems or invites friends
-
 	@Column(name = "num_bonus_monster_slots")
 	private int numBonusMonsterSlots;	
+	
 	//number of gems it costs to buy all numBonusMonsterSlots
-
 	@Column(name = "num_gems_required")
 	private int numGemsRequired;	
+	
 	//number of accepted fb invites to get all numBonusMonsterSlots
-
 	@Column(name = "num_accepted_fb_invites")
 	private int numAcceptedFbInvites;	
 
@@ -31,11 +40,11 @@ public class StructureResidence extends BaseIntPersistentObject{
 	private String occupationName;	
 	
 	public StructureResidence(){}
-	public StructureResidence(int structId, int numMonsterSlots,
+	public StructureResidence(Structure struct, int numMonsterSlots,
 			int numBonusMonsterSlots, int numGemsRequired, int numAcceptedFbInvites,
 			String occupationName) {
 		super();
-		this.structId = structId;
+		this.struct = struct;
 		this.numMonsterSlots = numMonsterSlots;
 		this.numBonusMonsterSlots = numBonusMonsterSlots;
 		this.numGemsRequired = numGemsRequired;
@@ -43,14 +52,15 @@ public class StructureResidence extends BaseIntPersistentObject{
 		this.occupationName = occupationName;
 	}
 
-	public int getStructId() {
-		return structId;
-	}
-	
-	public void setStructId(int structId) {
-		this.structId = structId;
-	}
 
+	public Structure getStruct()
+	{
+		return struct;
+	}
+	public void setStruct( Structure struct )
+	{
+		this.struct = struct;
+	}
 	public int getNumMonsterSlots() {
 		return numMonsterSlots;
 	}
@@ -93,7 +103,7 @@ public class StructureResidence extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "StructureResidence [structId=" + structId + ", numMonsterSlots="
+		return "StructureResidence [structId=" + struct + ", numMonsterSlots="
 				+ numMonsterSlots + ", numBonusMonsterSlots=" + numBonusMonsterSlots
 				+ ", numGemsRequired=" + numGemsRequired + ", numAcceptedFbInvites="
 				+ numAcceptedFbInvites + ", occupationName=" + occupationName + "]";

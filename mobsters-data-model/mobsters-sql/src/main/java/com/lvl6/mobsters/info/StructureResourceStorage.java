@@ -1,40 +1,46 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class StructureResourceStorage extends BaseIntPersistentObject{
-/**
-	 * 
-	 */
 
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure struct;
 	
-	private static final long serialVersionUID = -1614890686257355530L;
-	//
-//	private static final long serialVersionUID = 5021640371198924904L;
-	@Column(name = "struct_id")
-	private int structId;
 	@Column(name = "resource_type_stored")
 	private String resourceTypeStored;
 	@Column(name = "capacity")
 	private int capacity;	
+	
 	public StructureResourceStorage(){}
-	public StructureResourceStorage(int structId, String resourceTypeStored, int capacity) {
+	public StructureResourceStorage(Structure struct, String resourceTypeStored, int capacity) {
 		super();
-		this.structId = structId;
+		this.struct = struct;
 		this.resourceTypeStored = resourceTypeStored;
 		this.capacity = capacity;
 	}
 
-	public int getStructId() {
-		return structId;
-	}
 
-	public void setStructId(int structId) {
-		this.structId = structId;
+	public Structure getStruct()
+	{
+		return struct;
 	}
-
+	public void setStruct( Structure struct )
+	{
+		this.struct = struct;
+	}
 	public String getResourceTypeStored() {
 		return resourceTypeStored;
 	}
@@ -53,7 +59,7 @@ public class StructureResourceStorage extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "ResourceStorage [structId=" + structId + ", resourceTypeStored="
+		return "ResourceStorage [structId=" + struct + ", resourceTypeStored="
 				+ resourceTypeStored + ", capacity=" + capacity + "]";
 	}
 }

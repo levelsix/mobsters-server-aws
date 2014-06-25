@@ -1,15 +1,26 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class StructureTownHall extends BaseIntPersistentObject{
 
 	
 	private static final long serialVersionUID = 1342783029881923550L;
-	@Column(name = "struct_id")
-	private int structId;
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure struct;
+	
 	@Column(name = "num_resource_one_generators")
 	private int numResourceOneGenerators;
 	@Column(name = "num_resource_one_storages")
@@ -30,14 +41,15 @@ public class StructureTownHall extends BaseIntPersistentObject{
 	private int pvpQueueCashCost;
 	@Column(name = "resource_capacity")
 	private int resourceCapacity;	
+	
 	public StructureTownHall(){}
-	public StructureTownHall(int structId, int numResourceOneGenerators,
+	public StructureTownHall(Structure struct, int numResourceOneGenerators,
 			int numResourceOneStorages, int numResourceTwoGenerators,
 			int numResourceTwoStorages, int numHospitals, int numResidences,
 			int numMonsterSlots, int numLabs, int pvpQueueCashCost,
 			int resourceCapacity) {
 		super();
-		this.structId = structId;
+		this.struct = struct;
 		this.numResourceOneGenerators = numResourceOneGenerators;
 		this.numResourceOneStorages = numResourceOneStorages;
 		this.numResourceTwoGenerators = numResourceTwoGenerators;
@@ -50,14 +62,15 @@ public class StructureTownHall extends BaseIntPersistentObject{
 		this.resourceCapacity = resourceCapacity;
 	}
 
-	public int getStructId() {
-		return structId;
-	}
 
-	public void setStructId(int structId) {
-		this.structId = structId;
+	public Structure getStruct()
+	{
+		return struct;
 	}
-
+	public void setStruct( Structure struct )
+	{
+		this.struct = struct;
+	}
 	public int getNumResourceOneGenerators() {
 		return numResourceOneGenerators;
 	}
@@ -140,7 +153,7 @@ public class StructureTownHall extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "StructureTownHall [structId=" + structId
+		return "StructureTownHall [structId=" + struct
 				+ ", numResourceOneGenerators=" + numResourceOneGenerators
 				+ ", numResourceOneStorages=" + numResourceOneStorages
 				+ ", numResourceTwoGenerators=" + numResourceTwoGenerators

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,22 +22,28 @@ public class Task extends BaseIntPersistentObject{
 	@Column(name = "description")
 	private String description;
 
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "city_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "city_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private City city;
-
-	// @Column(name = "energy_cost")
-	// private int energyCost;
 
 	@Column(name = "asset_number_within_city")
 	private int assetNumberWithinCity;
 
 	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "prerequisite_task_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	Task prerequisiteTask;
+	@JoinColumn(
+		name = "prerequisite_task_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Task prerequisiteTask;
 
 	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "prerequisite_quest_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(
+		name = "prerequisite_quest_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private Quest prerequisiteQuest;	
 
 	public Task() {

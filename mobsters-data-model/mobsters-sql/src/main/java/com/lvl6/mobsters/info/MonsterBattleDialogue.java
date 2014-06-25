@@ -1,15 +1,22 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class MonsterBattleDialogue extends BaseIntPersistentObject{
 
+	@ManyToOne
+	@JoinColumn(
+		name = "monster_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Monster monster;
 	
-	private static final long serialVersionUID = 375017930527401926L;
-	@Column(name = "monster_id")
-	private int monsterId;
 	@Column(name = "dialogue_type")
 	private String dialogueType;
 	@Column(name = "dialogue")
@@ -17,20 +24,22 @@ public class MonsterBattleDialogue extends BaseIntPersistentObject{
 	@Column(name = "probability_uttered")
 	private float probabilityUttered;	
 	public MonsterBattleDialogue(){}
-	public MonsterBattleDialogue(int id, int monsterId, String dialogueType,
+	public MonsterBattleDialogue(int id, Monster monster, String dialogueType,
 			String dialogue, float probabilityUttered) {
 		super(id);
-		this.monsterId = monsterId;
+		this.monster = monster;
 		this.dialogueType = dialogueType;
 		this.dialogue = dialogue;
 		this.probabilityUttered = probabilityUttered;
 	}
 	
-	public int getMonsterId() {
-		return monsterId;
+	public Monster getMonster()
+	{
+		return monster;
 	}
-	public void setMonsterId(int monsterId) {
-		this.monsterId = monsterId;
+	public void setMonster( Monster monster )
+	{
+		this.monster = monster;
 	}
 	public String getDialogueType() {
 		return dialogueType;
@@ -53,7 +62,7 @@ public class MonsterBattleDialogue extends BaseIntPersistentObject{
 
 	@Override
 	public String toString() {
-		return "MonsterBattleDialogue [id=" + id + ", monsterId=" + monsterId
+		return "MonsterBattleDialogue [id=" + id + ", monsterId=" + monster
 				+ ", dialogueType=" + dialogueType + ", dialogue=" + dialogue
 				+ ", probabilityUttered=" + probabilityUttered + "]";
 	}

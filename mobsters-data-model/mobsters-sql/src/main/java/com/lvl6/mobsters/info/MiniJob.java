@@ -3,15 +3,22 @@ package com.lvl6.mobsters.info;
 import java.util.Random;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class MiniJob extends BaseIntPersistentObject{
 
-    private static final long serialVersionUID = 2845499373585125591L;
-
-    @Column(name = "required_struct_id")
-	private int requiredStructId;
+    @ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "required_struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+    private Structure requiredStruct;
 	
 	@Column(name = "name")
 	private String name;
@@ -25,8 +32,12 @@ public class MiniJob extends BaseIntPersistentObject{
 	@Column(name = "gem_reward")
 	private int gemReward;
 	
-	@Column(name = "monster_id_reward")
-	private int monsterIdReward;
+	@ManyToOne
+	@JoinColumn(
+		name = "monster_id_reward",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Monster monsterReward;
 	
 	@Column(name = "quality")
 	private String quality;
@@ -60,12 +71,12 @@ public class MiniJob extends BaseIntPersistentObject{
 	public MiniJob(){}
 
     public MiniJob(
-        int requiredStructId,
+        Structure requiredStruct,
         String name,
         int cashReward,
         int oilReward,
         int gemReward,
-        int monsterIdReward,
+        Monster monsterReward,
         String quality,
         int maxNumMonstersAllowed,
         float chanceToAppear,
@@ -77,12 +88,12 @@ public class MiniJob extends BaseIntPersistentObject{
         int durationMaxMinutes )
     {
         super();
-        this.requiredStructId = requiredStructId;
+        this.requiredStruct = requiredStruct;
         this.name = name;
         this.cashReward = cashReward;
         this.oilReward = oilReward;
         this.gemReward = gemReward;
-        this.monsterIdReward = monsterIdReward;
+        this.monsterReward = monsterReward;
         this.quality = quality;
         this.maxNumMonstersAllowed = maxNumMonstersAllowed;
         this.chanceToAppear = chanceToAppear;
@@ -126,22 +137,23 @@ public class MiniJob extends BaseIntPersistentObject{
     //end covenience methods--------------------------------------------------------
 
 
-    public int getRequiredStructId()
-    {
-        return requiredStructId;
-    }
-
-    public void setRequiredStructId( int requiredStructId )
-    {
-        this.requiredStructId = requiredStructId;
-    }
 
     public String getName()
     {
         return name;
     }
 
-    public void setName( String name )
+    public Structure getRequiredStruct()
+	{
+		return requiredStruct;
+	}
+
+	public void setRequiredStruct( Structure requiredStruct )
+	{
+		this.requiredStruct = requiredStruct;
+	}
+
+	public void setName( String name )
     {
         this.name = name;
     }
@@ -176,17 +188,17 @@ public class MiniJob extends BaseIntPersistentObject{
         this.gemReward = gemReward;
     }
 
-    public int getMonsterIdReward()
-    {
-        return monsterIdReward;
-    }
+	public Monster getMonsterReward()
+	{
+		return monsterReward;
+	}
 
-    public void setMonsterIdReward( int monsterIdReward )
-    {
-        this.monsterIdReward = monsterIdReward;
-    }
+	public void setMonsterReward( Monster monsterReward )
+	{
+		this.monsterReward = monsterReward;
+	}
 
-    public String getQuality()
+	public String getQuality()
     {
         return quality;
     }
@@ -280,7 +292,7 @@ public class MiniJob extends BaseIntPersistentObject{
     public String toString()
     {
         return "MiniJob [requiredStructId=" +
-            requiredStructId +
+            requiredStruct +
             ", name=" +
             name +
             ", cashReward=" +
@@ -290,7 +302,7 @@ public class MiniJob extends BaseIntPersistentObject{
             ", gemReward=" +
             gemReward +
             ", monsterIdReward=" +
-            monsterIdReward +
+            monsterReward +
             ", quality=" +
             quality +
             ", maxNumMonstersAllowed=" +

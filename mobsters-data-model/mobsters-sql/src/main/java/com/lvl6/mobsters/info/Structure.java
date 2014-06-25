@@ -1,14 +1,20 @@
 package com.lvl6.mobsters.info;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Structure extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 7037261155175136307L;	
-
 	@Column(name = "name")
 	private String name;
 	@Column(name = "level")
@@ -27,10 +33,21 @@ public class Structure extends BaseIntPersistentObject{
 	private int width;
 	@Column(name = "height")
 	private int height;
-	@Column(name = "predecessor_struct_id")
-	private int predecessorStructId;
-	@Column(name = "successor_struct_id")
-	private int successorStructId;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(
+		name = "predecessor_struct_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure predecessorStruct;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(
+		name = "successor_struct_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Structure successorStruct;
+	
 	@Column(name = "img_name")
 	private String imgName;
 	@Column(name = "img_vertical_pixel_offset")
@@ -49,15 +66,64 @@ public class Structure extends BaseIntPersistentObject{
 	private float shadowHorizontalOffset;
 	@Column(name = "shadow_scale")
 	private float shadowScale;	
+
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="struct", 
+		orphanRemoval=true)
+	private List<StructureHospital> hospitals;
+
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="struct", 
+		orphanRemoval=true)
+	private List<StructureLab> labs;
+
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="struct", 
+		orphanRemoval=true)
+	private List<StructureResidence> residences;
+
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="struct", 
+		orphanRemoval=true)
+	private List<StructureResourceGenerator> resourceGenerators;
+
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="struct", 
+		orphanRemoval=true)
+	private List<StructureResourceStorage> resourceStorages;
+
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="struct", 
+		orphanRemoval=true)
+	private List<StructureTownHall> townHalls;
+	
+	
 	public Structure(){}
 	public Structure(int id, String name, int level, String structType,
 			String buildResourceType, int buildCost, int minutesToBuild,
 			int requiredTownHallLvl, int width, int height,
-			int predecessorStructId, int successorStructId, String imgName,
+			Structure predecessorStruct, Structure  successorStruct, String imgName,
 			float imgVerticalPixelOffset, float imgHorizontalPixelOffset,
 			String description, String shortDescription, String shadowImgName,
 			float shadowVerticalOffset, float shadowHorizontalOffset,
-			float shadowScale) {
+			float shadowScale, List<StructureHospital> hospitals,
+			List<StructureLab> labs, List<StructureResidence> residences,
+			List<StructureResourceGenerator> resourceGenerators,
+			List<StructureResourceStorage> resourceStorages,
+			List<StructureTownHall> townHalls) {
+		
 		super(id);
 		this.name = name;
 		this.level = level;
@@ -68,8 +134,8 @@ public class Structure extends BaseIntPersistentObject{
 		this.requiredTownHallLvl = requiredTownHallLvl;
 		this.width = width;
 		this.height = height;
-		this.predecessorStructId = predecessorStructId;
-		this.successorStructId = successorStructId;
+		this.predecessorStruct = predecessorStruct;
+		this.successorStruct = successorStruct;
 		this.imgName = imgName;
 		this.imgVerticalPixelOffset = imgVerticalPixelOffset;
 		this.imgHorizontalPixelOffset = imgHorizontalPixelOffset;
@@ -79,6 +145,12 @@ public class Structure extends BaseIntPersistentObject{
 		this.shadowVerticalOffset = shadowVerticalOffset;
 		this.shadowHorizontalOffset = shadowHorizontalOffset;
 		this.shadowScale = shadowScale;
+		this.hospitals = hospitals;
+		this.labs = labs;
+		this.residences = residences;
+		this.resourceGenerators = resourceGenerators;
+		this.resourceStorages = resourceStorages;
+		this.townHalls = townHalls;
 	}
 
 
@@ -155,22 +227,22 @@ public class Structure extends BaseIntPersistentObject{
 		this.height = height;
 	}
 
-	public int getPredecessorStructId() {
-		return predecessorStructId;
+	public Structure getPredecessorStruct()
+	{
+		return predecessorStruct;
 	}
-
-	public void setPredecessorStructId(int predecessorStructId) {
-		this.predecessorStructId = predecessorStructId;
+	public void setPredecessorStruct( Structure predecessorStruct )
+	{
+		this.predecessorStruct = predecessorStruct;
 	}
-
-	public int getSuccessorStructId() {
-		return successorStructId;
+	public Structure getSuccessorStruct()
+	{
+		return successorStruct;
 	}
-
-	public void setSuccessorStructId(int successorStructId) {
-		this.successorStructId = successorStructId;
+	public void setSuccessorStruct( Structure successorStruct )
+	{
+		this.successorStruct = successorStruct;
 	}
-
 	public String getImgName() {
 		return imgName;
 	}
@@ -242,7 +314,55 @@ public class Structure extends BaseIntPersistentObject{
 	public void setShadowScale(float shadowScale) {
 		this.shadowScale = shadowScale;
 	}
-
+	
+	public List<StructureHospital> getHospitals()
+	{
+		return hospitals;
+	}
+	public void setHospitals( List<StructureHospital> hospitals )
+	{
+		this.hospitals = hospitals;
+	}
+	public List<StructureLab> getLabs()
+	{
+		return labs;
+	}
+	public void setLabs( List<StructureLab> labs )
+	{
+		this.labs = labs;
+	}
+	public List<StructureResidence> getResidences()
+	{
+		return residences;
+	}
+	public void setResidences( List<StructureResidence> residences )
+	{
+		this.residences = residences;
+	}
+	public List<StructureResourceGenerator> getResourceGenerators()
+	{
+		return resourceGenerators;
+	}
+	public void setResourceGenerators( List<StructureResourceGenerator> resourceGenerators )
+	{
+		this.resourceGenerators = resourceGenerators;
+	}
+	public List<StructureResourceStorage> getResourceStorages()
+	{
+		return resourceStorages;
+	}
+	public void setResourceStorages( List<StructureResourceStorage> resourceStorages )
+	{
+		this.resourceStorages = resourceStorages;
+	}
+	public List<StructureTownHall> getTownHalls()
+	{
+		return townHalls;
+	}
+	public void setTownHalls( List<StructureTownHall> townHalls )
+	{
+		this.townHalls = townHalls;
+	}
 	@Override
 	public String toString() {
 		return "Structure [id=" + id + ", name=" + name + ", level=" + level
@@ -251,8 +371,8 @@ public class Structure extends BaseIntPersistentObject{
 				+ ", minutesToBuild=" + minutesToBuild
 				+ ", requiredTownHallLvl=" + requiredTownHallLvl + ", width="
 				+ width + ", height=" + height + ", predecessorStructId="
-				+ predecessorStructId + ", successorStructId="
-				+ successorStructId + ", imgName=" + imgName
+				+ predecessorStruct + ", successorStructId="
+				+ successorStruct + ", imgName=" + imgName
 				+ ", imgVerticalPixelOffset=" + imgVerticalPixelOffset
 				+ ", imgHorizontalPixelOffset=" + imgHorizontalPixelOffset
 				+ ", description=" + description + ", shortDescription="
