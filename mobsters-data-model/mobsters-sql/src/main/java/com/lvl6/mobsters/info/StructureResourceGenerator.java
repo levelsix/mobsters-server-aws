@@ -7,18 +7,24 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Entity
-public class StructureResourceGenerator extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
+@Entity(name="StructureResourceGenerator")
+@Table(name="structure_resource_generator")
+@Proxy(lazy=true, proxyClass=IStructureResourceGenerator.class)
+public class StructureResourceGenerator extends BaseIntPersistentObject implements IStructureResourceGenerator{
 
+	private static final long serialVersionUID = 6894348581947398084L;
+	
 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Structure struct;
+	private IStructure struct;
 	
 	@Column(name = "resource_type_generated")
 	private String resourceTypeGenerated;	//at the moment, some amount per hour
@@ -29,7 +35,7 @@ public class StructureResourceGenerator extends BaseIntPersistentObject{
 	private int capacity;	
 	
 	public StructureResourceGenerator(){}
-	public StructureResourceGenerator(Structure struct, String resourceTypeGenerated,
+	public StructureResourceGenerator(IStructure struct, String resourceTypeGenerated,
 			float productionRate, int capacity) {
 		super();
 		this.struct = struct;
@@ -39,34 +45,66 @@ public class StructureResourceGenerator extends BaseIntPersistentObject{
 	}
 
 
-	public Structure getStruct()
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#getStruct()
+	 */
+	@Override
+	public IStructure getStruct()
 	{
 		return struct;
 	}
-	public void setStruct( Structure struct )
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#setStruct(com.lvl6.mobsters.info.Structure)
+	 */
+	@Override
+	public void setStruct( IStructure struct )
 	{
 		this.struct = struct;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#getResourceTypeGenerated()
+	 */
+	@Override
 	public String getResourceTypeGenerated() {
 		return resourceTypeGenerated;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#setResourceTypeGenerated(java.lang.String)
+	 */
+	@Override
 	public void setResourceTypeGenerated(String resourceTypeGenerated) {
 		this.resourceTypeGenerated = resourceTypeGenerated;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#getProductionRate()
+	 */
+	@Override
 	public float getProductionRate() {
 		return productionRate;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#setProductionRate(float)
+	 */
+	@Override
 	public void setProductionRate(float productionRate) {
 		this.productionRate = productionRate;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#getCapacity()
+	 */
+	@Override
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceGenerator#setCapacity(int)
+	 */
+	@Override
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}

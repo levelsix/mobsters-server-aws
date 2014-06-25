@@ -2,13 +2,18 @@ package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
-public class PvpLeague extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
+@Entity(name="PvpLeague")
+@Table(name="pvp_league")
+@Proxy(lazy=true, proxyClass=IPvpLeague.class)
+public class PvpLeague extends BaseIntPersistentObject implements IPvpLeague{
+
+	private static final long serialVersionUID = -5973475549260002542L;
 	
-	private static final long serialVersionUID = -6279541522498753204L;	
-
+	
 	@Column(name = "league_name")
 	private String leagueName;
 	@Column(name = "img_prefix")
@@ -35,50 +40,98 @@ public class PvpLeague extends BaseIntPersistentObject{
 
 
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#getLeagueName()
+	 */
+	@Override
 	public String getLeagueName() {
 		return leagueName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#setLeagueName(java.lang.String)
+	 */
+	@Override
 	public void setLeagueName(String leagueName) {
 		this.leagueName = leagueName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#getImgPrefix()
+	 */
+	@Override
 	public String getImgPrefix() {
 		return imgPrefix;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#setImgPrefix(java.lang.String)
+	 */
+	@Override
 	public void setImgPrefix(String imgPrefix) {
 		this.imgPrefix = imgPrefix;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#getNumRanks()
+	 */
+	@Override
 	public int getNumRanks() {
 		return numRanks;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#setNumRanks(int)
+	 */
+	@Override
 	public void setNumRanks(int numRanks) {
 		this.numRanks = numRanks;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#getDescription()
+	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#setDescription(java.lang.String)
+	 */
+	@Override
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#getMinElo()
+	 */
+	@Override
 	public int getMinElo() {
 		return minElo;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#setMinElo(int)
+	 */
+	@Override
 	public void setMinElo(int minElo) {
 		this.minElo = minElo;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#getMaxElo()
+	 */
+	@Override
 	public int getMaxElo() {
 		return maxElo;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IPvpLeague#setMaxElo(int)
+	 */
+	@Override
 	public void setMaxElo(int maxElo) {
 		this.maxElo = maxElo;
 	}

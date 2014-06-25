@@ -7,12 +7,17 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity
-public class QuestJob extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
+@Entity(name="QuestJob")
+@Table(name="quest_job")
+@Proxy(lazy=true, proxyClass=IQuestJob.class)
+public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
+
+	private static final long serialVersionUID = -9216295516712129814L;
 	
-	private static final long serialVersionUID = 8512045755153249399L;	
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(
@@ -60,66 +65,130 @@ public class QuestJob extends BaseIntPersistentObject{
 
 
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getQuest()
+	 */
+	@Override
 	public Quest getQuest()
 	{
 		return quest;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setQuest(com.lvl6.mobsters.info.Quest)
+	 */
+	@Override
 	public void setQuest( Quest quest )
 	{
 		this.quest = quest;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getQuestJobType()
+	 */
+	@Override
 	public String getQuestJobType() {
 		return questJobType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setQuestJobType(java.lang.String)
+	 */
+	@Override
 	public void setQuestJobType(String questJobType) {
 		this.questJobType = questJobType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getDescription()
+	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setDescription(java.lang.String)
+	 */
+	@Override
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getStaticDataId()
+	 */
+	@Override
 	public int getStaticDataId() {
 		return staticDataId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setStaticDataId(int)
+	 */
+	@Override
 	public void setStaticDataId(int staticDataId) {
 		this.staticDataId = staticDataId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getQuantity()
+	 */
+	@Override
 	public int getQuantity() {
 		return quantity;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setQuantity(int)
+	 */
+	@Override
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getPriority()
+	 */
+	@Override
 	public int getPriority() {
 		return priority;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setPriority(int)
+	 */
+	@Override
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getCityId()
+	 */
+	@Override
 	public int getCityId() {
 		return cityId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setCityId(int)
+	 */
+	@Override
 	public void setCityId(int cityId) {
 		this.cityId = cityId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#getCityAssetNum()
+	 */
+	@Override
 	public int getCityAssetNum() {
 		return cityAssetNum;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJob#setCityAssetNum(int)
+	 */
+	@Override
 	public void setCityAssetNum(int cityAssetNum) {
 		this.cityAssetNum = cityAssetNum;
 	}

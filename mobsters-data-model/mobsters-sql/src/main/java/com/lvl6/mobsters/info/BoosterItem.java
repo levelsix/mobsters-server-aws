@@ -16,12 +16,15 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="BoosterItem") //set so the cache can refer to this class/table by name 
 @Table(name="booster_item")
 //created proxy because don't want hibernate to create two instances of this class (?)
+//"lazy=true" means a proxy will be used unless another class loads this class eagerly
+//in which case the "lazy=true" is overridden and the actual class instead of the proxy is loaded
+//default is lazy=true, just being explicit here
 @Proxy(lazy=true, proxyClass=IBoosterItem.class) 
 public class BoosterItem extends BaseIntPersistentObject implements IBoosterItem{	
 
-	private static final long serialVersionUID = -5013736350979058326L;
-
+	private static final long serialVersionUID = 967478067223025160L;
 	
+
 	//"targetEntity=BoosterPack.class" is specified because the property is IBoosterPack
 	//and need a real implementation
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=BoosterPack.class)
@@ -39,7 +42,7 @@ public class BoosterItem extends BaseIntPersistentObject implements IBoosterItem
 		name = "monster_id",
 		nullable = true,
 		foreignKey = @ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Monster monster;
+	private IMonster monster;
 	
 	@Column(name = "num_pieces")
 	private int numPieces;
@@ -60,7 +63,7 @@ public class BoosterItem extends BaseIntPersistentObject implements IBoosterItem
 	private float chanceToAppear;  
 	
 	public BoosterItem(){}
-	public BoosterItem(int id, IBoosterPack boosterPack, Monster monster, int numPieces,
+	public BoosterItem(int id, IBoosterPack boosterPack, IMonster monster, int numPieces,
 			boolean isComplete, boolean isSpecial, int gemReward, int cashReward,
 			float chanceToAppear) {
 		super(id);
@@ -96,7 +99,7 @@ public class BoosterItem extends BaseIntPersistentObject implements IBoosterItem
 	 * @see com.lvl6.mobsters.info.IBoosterItem#getMonster()
 	 */
 	@Override
-	public Monster getMonster() {
+	public IMonster getMonster() {
 		return monster;
 	}
 
@@ -104,7 +107,7 @@ public class BoosterItem extends BaseIntPersistentObject implements IBoosterItem
 	 * @see com.lvl6.mobsters.info.IBoosterItem#setMonster(com.lvl6.mobsters.info.Monster)
 	 */
 	@Override
-	public void setMonster(Monster monster) {
+	public void setMonster(IMonster monster) {
 		this.monster = monster;
 	}
 

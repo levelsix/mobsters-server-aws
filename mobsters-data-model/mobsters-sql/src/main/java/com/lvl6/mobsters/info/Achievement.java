@@ -7,10 +7,17 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Entity
-public class Achievement extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
+@Entity(name="Achievement")
+@Table(name="achievement")
+@Proxy(lazy=false, proxyClass=IAchievement.class)
+public class Achievement extends BaseIntPersistentObject implements IAchievement{
+
+	private static final long serialVersionUID = 873467535443000372L;
+	
 	
 	@Column(name = "achievement_name")
 	private String achievementName;
@@ -35,26 +42,26 @@ public class Achievement extends BaseIntPersistentObject{
 	@Column(name = "priority")
 	private int priority;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Achievement.class, optional=true)
 	@JoinColumn(
 		name = "prerequisite_id",
 		nullable = true,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Achievement prerequisiteAchievement;
+	private IAchievement prerequisiteAchievement;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Achievement.class, optional=true)
 	@JoinColumn(
 		name = "successor_id",
 		nullable = true,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Achievement successorAchievement;	
+	private IAchievement successorAchievement;	
 	
 	public Achievement(){}
 	public Achievement(int id, String achievementName, String description,
 			int gemReward, int lvl, String achievementType,
 			String resourceType, String monsterElement, String monsterQuality,
-			int staticDataId, int quantity, int priority, Achievement prerequisiteAchievement,
-			Achievement successorAchievement) {
+			int staticDataId, int quantity, int priority, IAchievement prerequisiteAchievement,
+			IAchievement successorAchievement) {
 		super(id);
 		this.achievementName = achievementName;
 		this.description = description;
@@ -73,107 +80,211 @@ public class Achievement extends BaseIntPersistentObject{
 
 
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getAchievementName()
+	 */
+	@Override
 	public String getAchievementName() {
 		return achievementName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setAchievementName(java.lang.String)
+	 */
+	@Override
 	public void setAchievementName(String achievementName) {
 		this.achievementName = achievementName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getDescription()
+	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setDescription(java.lang.String)
+	 */
+	@Override
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getGemReward()
+	 */
+	@Override
 	public int getGemReward() {
 		return gemReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setGemReward(int)
+	 */
+	@Override
 	public void setGemReward(int gemReward) {
 		this.gemReward = gemReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getLvl()
+	 */
+	@Override
 	public int getLvl() {
 		return lvl;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setLvl(int)
+	 */
+	@Override
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getAchievementType()
+	 */
+	@Override
 	public String getAchievementType() {
 		return achievementType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setAchievementType(java.lang.String)
+	 */
+	@Override
 	public void setAchievementType(String achievementType) {
 		this.achievementType = achievementType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getResourceType()
+	 */
+	@Override
 	public String getResourceType() {
 		return resourceType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setResourceType(java.lang.String)
+	 */
+	@Override
 	public void setResourceType(String resourceType) {
 		this.resourceType = resourceType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getMonsterElement()
+	 */
+	@Override
 	public String getMonsterElement() {
 		return monsterElement;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setMonsterElement(java.lang.String)
+	 */
+	@Override
 	public void setMonsterElement(String monsterElement) {
 		this.monsterElement = monsterElement;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getMonsterQuality()
+	 */
+	@Override
 	public String getMonsterQuality() {
 		return monsterQuality;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setMonsterQuality(java.lang.String)
+	 */
+	@Override
 	public void setMonsterQuality(String monsterQuality) {
 		this.monsterQuality = monsterQuality;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getStaticDataId()
+	 */
+	@Override
 	public int getStaticDataId() {
 		return staticDataId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setStaticDataId(int)
+	 */
+	@Override
 	public void setStaticDataId(int staticDataId) {
 		this.staticDataId = staticDataId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getQuantity()
+	 */
+	@Override
 	public int getQuantity() {
 		return quantity;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setQuantity(int)
+	 */
+	@Override
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getPriority()
+	 */
+	@Override
 	public int getPriority() {
 		return priority;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setPriority(int)
+	 */
+	@Override
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
 
-	public Achievement getPrerequisiteAchievement()
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getPrerequisiteAchievement()
+	 */
+	@Override
+	public IAchievement getPrerequisiteAchievement()
 	{
 		return prerequisiteAchievement;
 	}
-	public void setPrerequisiteAchievement( Achievement prerequisiteAchievement )
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setPrerequisiteAchievement(com.lvl6.mobsters.info.IAchievement)
+	 */
+	@Override
+	public void setPrerequisiteAchievement( IAchievement prerequisiteAchievement )
 	{
 		this.prerequisiteAchievement = prerequisiteAchievement;
 	}
-	public Achievement getSuccessorAchievement()
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#getSuccessorAchievement()
+	 */
+	@Override
+	public IAchievement getSuccessorAchievement()
 	{
 		return successorAchievement;
 	}
-	public void setSuccessorAchievement( Achievement successorAchievement )
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IAchievement#setSuccessorAchievement(com.lvl6.mobsters.info.IAchievement)
+	 */
+	@Override
+	public void setSuccessorAchievement( IAchievement successorAchievement )
 	{
 		this.successorAchievement = successorAchievement;
 	}

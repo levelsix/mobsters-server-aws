@@ -12,12 +12,13 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
-@Entity
+@Entity(name="BoosterPack")
 @Table(name="booster_pack")
 @Proxy(lazy=false, proxyClass=IBoosterPack.class)
 public class BoosterPack extends BaseIntPersistentObject implements IBoosterPack{	
 
-	private static final long serialVersionUID = -7927101098350853116L;
+	private static final long serialVersionUID = 4409215709388010378L;
+	
 	
 	@Column(name = "name")
 	private String name;
@@ -55,7 +56,7 @@ public class BoosterPack extends BaseIntPersistentObject implements IBoosterPack
 	public BoosterPack(int id, String name, int gemPrice,
 			String listBackgroundImgName, String listDescription,
 			String navBarImgName, String navTitleImgName, String machineImgName,
-			List<BoosterItem> packItems, List<BoosterDisplayItem> packDisplayItems) {
+			List<IBoosterItem> packItems, List<IBoosterDisplayItem> packDisplayItems) {
 		super(id);
 		this.name = name;
 		this.gemPrice = gemPrice;

@@ -9,25 +9,31 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity
-public class TaskStageMonster extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
-	private static final long serialVersionUID = -8786008429159573146L;
+@Entity(name="TaskStageMonster")
+@Table(name="task_stage_monster")
+@Proxy(lazy=true, proxyClass=ITaskStageMonster.class)
+public class TaskStageMonster extends BaseIntPersistentObject implements ITaskStageMonster{
 
+	private static final long serialVersionUID = -1173954752765668247L;
+
+	
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=TaskStage.class)
 	@JoinColumn(
 		name = "stage_id",
 		nullable = false,
 		foreignKey = @ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private TaskStage stage;
+	private ITaskStage stage;
 	
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "monster_id",
 		nullable = false,
 		foreignKey = @ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Monster monster;
+	private IMonster monster;
 	
 	@Column(name = "monster_type")
 	private String monsterType;
@@ -51,7 +57,7 @@ public class TaskStageMonster extends BaseIntPersistentObject{
 	private Random rand = new Random();
 	
 	public TaskStageMonster(){}
-	public TaskStageMonster(int id, TaskStage stage, Monster monster, String monsterType,
+	public TaskStageMonster(int id, ITaskStage stage, IMonster monster, String monsterType,
 		int expReward, int minCashDrop, int maxCashDrop, int minOilDrop,
 		int maxOilDrop, float puzzlePieceDropRate, int level,
 		float chanceToAppear) {
@@ -112,92 +118,180 @@ public class TaskStageMonster extends BaseIntPersistentObject{
   //end covenience methods--------------------------------------------------------
 
 
-  public TaskStage getStage()
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getStage()
+ */
+@Override
+public ITaskStage getStage()
   {
 	  return stage;
   }
-  public void setStage( TaskStage stage )
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setStage(com.lvl6.mobsters.info.TaskStage)
+ */
+@Override
+public void setStage( ITaskStage stage )
   {
 	  this.stage = stage;
   }
-  public Monster getMonster()
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getMonster()
+ */
+@Override
+public IMonster getMonster()
   {
 	  return monster;
   }
-  public void setMonster( Monster monster )
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setMonster(com.lvl6.mobsters.info.Monster)
+ */
+@Override
+public void setMonster( IMonster monster )
   {
 	  this.monster = monster;
   }
 
-  public String getMonsterType() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getMonsterType()
+ */
+@Override
+public String getMonsterType() {
 	  return monsterType;
   }
 
-  public void setMonsterType(String monsterType) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setMonsterType(java.lang.String)
+ */
+@Override
+public void setMonsterType(String monsterType) {
 	  this.monsterType = monsterType;
   }
 
-  public int getExpReward() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getExpReward()
+ */
+@Override
+public int getExpReward() {
 	  return expReward;
   }
 
-  public void setExpReward(int expReward) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setExpReward(int)
+ */
+@Override
+public void setExpReward(int expReward) {
 	  this.expReward = expReward;
   }
 
-  public int getMinCashDrop() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getMinCashDrop()
+ */
+@Override
+public int getMinCashDrop() {
 	  return minCashDrop;
   }
 
-  public void setMinCashDrop(int minCashDrop) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setMinCashDrop(int)
+ */
+@Override
+public void setMinCashDrop(int minCashDrop) {
 	  this.minCashDrop = minCashDrop;
   }
 
-  public int getMaxCashDrop() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getMaxCashDrop()
+ */
+@Override
+public int getMaxCashDrop() {
 	  return maxCashDrop;
   }
 
-  public void setMaxCashDrop(int maxCashDrop) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setMaxCashDrop(int)
+ */
+@Override
+public void setMaxCashDrop(int maxCashDrop) {
 	  this.maxCashDrop = maxCashDrop;
   }
 
-  public int getMinOilDrop() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getMinOilDrop()
+ */
+@Override
+public int getMinOilDrop() {
 	  return minOilDrop;
   }
 
-  public void setMinOilDrop(int minOilDrop) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setMinOilDrop(int)
+ */
+@Override
+public void setMinOilDrop(int minOilDrop) {
 	  this.minOilDrop = minOilDrop;
   }
 
-  public int getMaxOilDrop() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getMaxOilDrop()
+ */
+@Override
+public int getMaxOilDrop() {
 	  return maxOilDrop;
   }
 
-  public void setMaxOilDrop(int maxOilDrop) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setMaxOilDrop(int)
+ */
+@Override
+public void setMaxOilDrop(int maxOilDrop) {
 	  this.maxOilDrop = maxOilDrop;
   }
 
-  public float getPuzzlePieceDropRate() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getPuzzlePieceDropRate()
+ */
+@Override
+public float getPuzzlePieceDropRate() {
 	  return puzzlePieceDropRate;
   }
 
-  public void setPuzzlePieceDropRate(float puzzlePieceDropRate) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setPuzzlePieceDropRate(float)
+ */
+@Override
+public void setPuzzlePieceDropRate(float puzzlePieceDropRate) {
 	  this.puzzlePieceDropRate = puzzlePieceDropRate;
   }
 
-  public int getLevel() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getLevel()
+ */
+@Override
+public int getLevel() {
 	  return level;
   }
 
-  public void setLevel(int level) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setLevel(int)
+ */
+@Override
+public void setLevel(int level) {
 	  this.level = level;
   }
 
-  public float getChanceToAppear() {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#getChanceToAppear()
+ */
+@Override
+public float getChanceToAppear() {
 	  return chanceToAppear;
   }
 
-  public void setChanceToAppear(float chanceToAppear) {
+  /* (non-Javadoc)
+ * @see com.lvl6.mobsters.info.ITaskStageMonster#setChanceToAppear(float)
+ */
+@Override
+public void setChanceToAppear(float chanceToAppear) {
 	  this.chanceToAppear = chanceToAppear;
   }
 

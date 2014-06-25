@@ -6,9 +6,9 @@ public interface IBoosterItem extends IBaseIntPersistentObject
 
 	public void setBoosterPack( IBoosterPack boosterPack );
 
-	public Monster getMonster();
+	public IMonster getMonster();
 
-	public void setMonster( Monster monster );
+	public void setMonster( IMonster monster );
 
 	public int getNumPieces();
 

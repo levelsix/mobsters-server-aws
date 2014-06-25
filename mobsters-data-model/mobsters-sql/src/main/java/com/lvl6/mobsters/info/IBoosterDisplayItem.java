@@ -1,6 +1,6 @@
 package com.lvl6.mobsters.info;
 
-public interface IBoosterDisplayItem
+public interface IBoosterDisplayItem extends IBaseIntPersistentObject
 {
 
 	public IBoosterPack getBoosterPack();

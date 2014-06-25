@@ -40,7 +40,7 @@ public class MonsterForUser extends BasePersistentObject {
 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "monster_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Monster monster;
+	private IMonster monster;
 
 	@Column(name="num_pieces")
 	private byte numPieces;
@@ -59,7 +59,7 @@ public class MonsterForUser extends BasePersistentObject {
 
 	public MonsterForUser(String id, Timestamp combineStartTime,
 			int currentExperience, int currentHealth, byte currentLevel,
-			byte isComplete, Monster monster, byte numPieces,
+			byte isComplete, IMonster monster, byte numPieces,
 			String sourceOfPieces, byte teamSlotNum, User user) {
 		super(id);
 		this.combineStartTime = combineStartTime;
@@ -114,11 +114,11 @@ public class MonsterForUser extends BasePersistentObject {
 		this.isComplete = isComplete;
 	}
 
-	public Monster getMonster() {
+	public IMonster getMonster() {
 		return this.monster;
 	}
 
-	public void setMonster(Monster monster) {
+	public void setMonster(IMonster monster) {
 		this.monster = monster;
 	}
 

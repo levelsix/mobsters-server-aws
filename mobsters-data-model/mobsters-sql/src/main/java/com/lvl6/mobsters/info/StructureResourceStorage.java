@@ -7,17 +7,24 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-@Entity
-public class StructureResourceStorage extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
+@Entity(name="StructureResourceStorage")
+@Table(name="structure_resource_storage")
+@Proxy(lazy=true, proxyClass=IStructureResourceStorage.class)
+public class StructureResourceStorage extends BaseIntPersistentObject implements IStructureResourceStorage{
+
+	private static final long serialVersionUID = 155994504717867502L;
+	
 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Structure struct;
+	private IStructure struct;
 	
 	@Column(name = "resource_type_stored")
 	private String resourceTypeStored;
@@ -25,7 +32,7 @@ public class StructureResourceStorage extends BaseIntPersistentObject{
 	private int capacity;	
 	
 	public StructureResourceStorage(){}
-	public StructureResourceStorage(Structure struct, String resourceTypeStored, int capacity) {
+	public StructureResourceStorage(IStructure struct, String resourceTypeStored, int capacity) {
 		super();
 		this.struct = struct;
 		this.resourceTypeStored = resourceTypeStored;
@@ -33,26 +40,50 @@ public class StructureResourceStorage extends BaseIntPersistentObject{
 	}
 
 
-	public Structure getStruct()
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceStorage#getStruct()
+	 */
+	@Override
+	public IStructure getStruct()
 	{
 		return struct;
 	}
-	public void setStruct( Structure struct )
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceStorage#setStruct(com.lvl6.mobsters.info.Structure)
+	 */
+	@Override
+	public void setStruct( IStructure struct )
 	{
 		this.struct = struct;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceStorage#getResourceTypeStored()
+	 */
+	@Override
 	public String getResourceTypeStored() {
 		return resourceTypeStored;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceStorage#setResourceTypeStored(java.lang.String)
+	 */
+	@Override
 	public void setResourceTypeStored(String resourceTypeStored) {
 		this.resourceTypeStored = resourceTypeStored;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceStorage#getCapacity()
+	 */
+	@Override
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IStructureResourceStorage#setCapacity(int)
+	 */
+	@Override
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}

@@ -4,6 +4,9 @@ import java.util.Random;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Proxy;
 
 /*
  was duple (quest_job_id, monster_id) unique? but a quest_job_id can have multiple monster_ids?
@@ -12,12 +15,14 @@ import javax.persistence.Entity;
  akamath:  ya it could
  */
 
-@Entity
-public class QuestJobMonsterItem extends BaseIntPersistentObject{
+@Entity(name="QuestJobMonsterItem")
+@Table(name="quest_job_monster_item")
+@Proxy(lazy=true, proxyClass=IQuestJobMonsterItem.class)
+public class QuestJobMonsterItem extends BaseIntPersistentObject implements IQuestJobMonsterItem{
+
+	private static final long serialVersionUID = 2792766000315300575L;
 
 	
-	private static final long serialVersionUID = 8726386331515698573L;	
-
 	@Column(name = "quest_job_id")
 	private int questJobId;
 	
@@ -31,7 +36,7 @@ public class QuestJobMonsterItem extends BaseIntPersistentObject{
 	private float itemDropRate;	
 	//convenience object
 
-	private Random rand;
+	private Random rand = new Random();
 	
 	public QuestJobMonsterItem(){}
 	public QuestJobMonsterItem(int questJobId, int monsterId, int itemId,
@@ -64,34 +69,66 @@ public class QuestJobMonsterItem extends BaseIntPersistentObject{
 	
 	//end covenience methods--------------------------------------------------------
 	
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getQuestJobId()
+	 */
+	@Override
 	public int getQuestJobId() {
 		return questJobId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setQuestJobId(int)
+	 */
+	@Override
 	public void setQuestJobId(int questJobId) {
 		this.questJobId = questJobId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getMonsterId()
+	 */
+	@Override
 	public int getMonsterId() {
 		return monsterId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setMonsterId(int)
+	 */
+	@Override
 	public void setMonsterId(int monsterId) {
 		this.monsterId = monsterId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getItemId()
+	 */
+	@Override
 	public int getItemId() {
 		return itemId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setItemId(int)
+	 */
+	@Override
 	public void setItemId(int itemId) {
 		this.itemId = itemId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getItemDropRate()
+	 */
+	@Override
 	public float getItemDropRate() {
 		return itemDropRate;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setItemDropRate(float)
+	 */
+	@Override
 	public void setItemDropRate(float itemDropRate) {
 		this.itemDropRate = itemDropRate;
 	}
