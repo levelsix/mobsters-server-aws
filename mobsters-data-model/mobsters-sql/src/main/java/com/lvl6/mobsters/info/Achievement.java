@@ -1,14 +1,17 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Achievement extends BaseIntPersistentObject{
 
 	
-	private static final long serialVersionUID = 5024365951273441363L;	
-
 	@Column(name = "achievement_name")
 	private String achievementName;
 	@Column(name = "description")
@@ -31,16 +34,27 @@ public class Achievement extends BaseIntPersistentObject{
 	private int quantity;
 	@Column(name = "priority")
 	private int priority;
-	@Column(name = "prerequisite_id")
-	private int prerequisiteId;
-	@Column(name = "successor_id")
-	private int successorId;	
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "prerequisite_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Achievement prerequisiteAchievement;
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(
+		name = "successor_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private Achievement successorAchievement;	
+	
 	public Achievement(){}
 	public Achievement(int id, String achievementName, String description,
 			int gemReward, int lvl, String achievementType,
 			String resourceType, String monsterElement, String monsterQuality,
-			int staticDataId, int quantity, int priority, int prerequisiteId,
-			int successorId) {
+			int staticDataId, int quantity, int priority, Achievement prerequisiteAchievement,
+			Achievement successorAchievement) {
 		super(id);
 		this.achievementName = achievementName;
 		this.description = description;
@@ -53,8 +67,8 @@ public class Achievement extends BaseIntPersistentObject{
 		this.staticDataId = staticDataId;
 		this.quantity = quantity;
 		this.priority = priority;
-		this.prerequisiteId = prerequisiteId;
-		this.successorId = successorId;
+		this.prerequisiteAchievement = prerequisiteAchievement;
+		this.successorAchievement = successorAchievement;
 	}
 
 
@@ -147,22 +161,23 @@ public class Achievement extends BaseIntPersistentObject{
 		this.priority = priority;
 	}
 
-	public int getPrerequisiteId() {
-		return prerequisiteId;
+	public Achievement getPrerequisiteAchievement()
+	{
+		return prerequisiteAchievement;
 	}
-
-	public void setPrerequisiteId(int prerequisiteId) {
-		this.prerequisiteId = prerequisiteId;
+	public void setPrerequisiteAchievement( Achievement prerequisiteAchievement )
+	{
+		this.prerequisiteAchievement = prerequisiteAchievement;
 	}
-
-	public int getSuccessorId() {
-		return successorId;
+	public Achievement getSuccessorAchievement()
+	{
+		return successorAchievement;
 	}
-
-	public void setSuccessorId(int successorId) {
-		this.successorId = successorId;
+	public void setSuccessorAchievement( Achievement successorAchievement )
+	{
+		this.successorAchievement = successorAchievement;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Achievement [id=" + id + ", achievementName=" + achievementName
@@ -172,7 +187,7 @@ public class Achievement extends BaseIntPersistentObject{
 				+ monsterElement + ", monsterQuality=" + monsterQuality
 				+ ", staticDataId=" + staticDataId + ", quantity=" + quantity
 				+ ", priority=" + priority + ", prerequisiteId="
-				+ prerequisiteId + ", successorId=" + successorId + "]";
+				+ prerequisiteAchievement + ", successorId=" + successorAchievement + "]";
 	}
 	
 }
