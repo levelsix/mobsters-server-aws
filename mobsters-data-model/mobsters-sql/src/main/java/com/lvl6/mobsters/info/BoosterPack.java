@@ -42,11 +42,20 @@ public class BoosterPack extends BaseIntPersistentObject implements IBoosterPack
 		targetEntity=BoosterItem.class)
 	private List<IBoosterItem> packItems;  
 	
+
+	@OneToMany(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="boosterPack", //the exact property name (verbatim) in BoosterDisplayItem.java 
+		orphanRemoval=true,
+		targetEntity=BoosterDisplayItem.class)
+	private List<IBoosterDisplayItem> packDisplayItems;
+	
 	public BoosterPack(){}
 	public BoosterPack(int id, String name, int gemPrice,
 			String listBackgroundImgName, String listDescription,
 			String navBarImgName, String navTitleImgName, String machineImgName,
-			List<BoosterItem> packItems) {
+			List<BoosterItem> packItems, List<BoosterDisplayItem> packDisplayItems) {
 		super(id);
 		this.name = name;
 		this.gemPrice = gemPrice;
@@ -56,6 +65,7 @@ public class BoosterPack extends BaseIntPersistentObject implements IBoosterPack
 		this.navTitleImgName = navTitleImgName;
 		this.machineImgName = machineImgName;
 		this.setPackItems(new ArrayList<IBoosterItem>(packItems));
+		this.setPackDisplayItems(new ArrayList<IBoosterDisplayItem>(packDisplayItems));
 	}
 
 
@@ -142,12 +152,22 @@ public class BoosterPack extends BaseIntPersistentObject implements IBoosterPack
 	}
 	
 	@Override
+	public List<IBoosterDisplayItem> getPackDisplayItems()
+	{
+		return packDisplayItems;
+	}
+	@Override
+	public void setPackDisplayItems( List<IBoosterDisplayItem> packDisplayItems )
+	{
+		this.packDisplayItems = packDisplayItems;
+	}
+
+	@Override
 	public String toString() {
 		return "BoosterPack [id=" + id + ", name=" + name + ", gemPrice="
 				+ gemPrice + ", listBackgroundImgName=" + listBackgroundImgName
 				+ ", listDescription=" + listDescription + ", navBarImgName="
 				+ navBarImgName + ", navTitleImgName=" + navTitleImgName
 				+ ", machineImgName=" + machineImgName + "]";
-	}
-	
+	}	
 }

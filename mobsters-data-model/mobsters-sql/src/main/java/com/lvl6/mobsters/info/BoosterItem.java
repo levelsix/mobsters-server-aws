@@ -13,7 +13,7 @@ import org.hibernate.annotations.Proxy;
 
 //monster_id, gems, and cash are all mutually exclusive
 
-@Entity
+@Entity(name="BoosterItem") //set so the cache can refer to this class/table by name 
 @Table(name="booster_item")
 //created proxy because don't want hibernate to create two instances of this class (?)
 @Proxy(lazy=true, proxyClass=IBoosterItem.class) 
