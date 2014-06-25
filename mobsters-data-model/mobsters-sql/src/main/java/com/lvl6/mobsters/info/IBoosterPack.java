@@ -36,4 +36,9 @@ public interface IBoosterPack extends IBaseIntPersistentObject
 
 	public int getGemPrice();
 
+
+	public void setPackDisplayItems( List<IBoosterDisplayItem> packDisplayItems );
+
+	public List<IBoosterDisplayItem> getPackDisplayItems();
+
 }
