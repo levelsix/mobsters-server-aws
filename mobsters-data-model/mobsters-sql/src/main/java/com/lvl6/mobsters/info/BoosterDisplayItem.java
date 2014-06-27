@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Proxy;
 
 @Entity(name="BoosterDisplayItem")
-@Table(name="BoosterDisplayItem")
+@Table(name="booster_display_item")
 @Proxy(lazy=true, proxyClass=IBoosterDisplayItem.class) 
 public class BoosterDisplayItem extends BaseIntPersistentObject implements IBoosterDisplayItem{	
 

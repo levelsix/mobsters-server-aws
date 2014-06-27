@@ -19,7 +19,7 @@ public class StructureResourceStorage extends BaseIntPersistentObject implements
 	private static final long serialVersionUID = 155994504717867502L;
 	
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,

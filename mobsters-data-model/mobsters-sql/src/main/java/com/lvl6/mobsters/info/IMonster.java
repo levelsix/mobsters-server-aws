@@ -5,9 +5,9 @@ import java.util.List;
 public interface IMonster extends IBaseIntPersistentObject
 {
 
-	public String getName();
+	public String getEvolutionGroup();
 
-	public void setName( String name );
+	public void setEvolutionGroup( String evolutionGroup );
 
 	public String getMonsterGroup();
 
@@ -49,9 +49,9 @@ public interface IMonster extends IBaseIntPersistentObject
 
 	public void setEvolutionMonster( IMonster evolutionMonster );
 
-	public IMonster getEvolutionCatalystMonsterId();
+	public IMonster getEvolutionCatalystMonster();
 
-	public void setEvolutionCatalystMonsterId( IMonster evolutionCatalystMonsterId );
+	public void setEvolutionCatalystMonster( IMonster evolutionCatalystMonster );
 
 	public int getMinutesToEvolve();
 

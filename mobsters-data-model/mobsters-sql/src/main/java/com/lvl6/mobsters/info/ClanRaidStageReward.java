@@ -5,8 +5,10 @@ import java.util.Random;
 //the oil, cash, monster rewards can be set or not set; not mutually exclusive
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name="ClanRaidStageReward")
+@Table(name="clan_raid_stage_reward")
 public class ClanRaidStageReward extends BaseIntPersistentObject{	
 
 	

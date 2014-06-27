@@ -3,6 +3,7 @@ package com.lvl6.mobsters.info;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -15,10 +16,10 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=IMonsterLevelInfo.class)
 public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonsterLevelInfo{
 
-	private static final long serialVersionUID = 1472868643070904874L;
-	
+	private static final long serialVersionUID = -7133780689684424323L;
 
-	@OneToOne
+	
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "monster_id",
 		nullable = false,
@@ -55,12 +56,15 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 	private float expLvlDivisor;
 	@Column(name = "exp_lvl_exponent")
 	private float expLvlExponent;	
+	@Column(name = "sell_amount")
+	private int sellAmount;
+	
 	public MonsterLevelInfo(){}
 	public MonsterLevelInfo(IMonster monster, int level, int hp,
 			int curLvlRequiredExp, int feederExp, int fireDmg, int grassDmg,
 			int waterDmg, int lightningDmg, int darknessDmg, int rockDmg,
 			int speed, float hpExponentBase, float dmgExponentBase,
-			float expLvlDivisor, float expLvlExponent) {
+			float expLvlDivisor, float expLvlExponent, int sellAmount) {
 		super();
 		this.monster = monster;
 		this.level = level;
@@ -78,6 +82,7 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 		this.dmgExponentBase = dmgExponentBase;
 		this.expLvlDivisor = expLvlDivisor;
 		this.expLvlExponent = expLvlExponent;
+		this.sellAmount = sellAmount;
 	}
 
 
@@ -337,6 +342,17 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 		this.expLvlExponent = expLvlExponent;
 	}
 
+	@Override
+	public int getSellAmount()
+	{
+		return sellAmount;
+	}
+	@Override
+	public void setSellAmount( int sellAmount )
+	{
+		this.sellAmount = sellAmount;
+	}
+	
 	@Override
 	public String toString() {
 		return "MonsterLevelInfo [monsterId=" + monster + ", level=" + level

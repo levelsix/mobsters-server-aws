@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,7 +21,7 @@ public class MonsterForPvp extends BaseIntPersistentObject implements IMonsterFo
 	private static final long serialVersionUID = -3692062543893586730L;
 	
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "monster_id",
 		nullable = false,

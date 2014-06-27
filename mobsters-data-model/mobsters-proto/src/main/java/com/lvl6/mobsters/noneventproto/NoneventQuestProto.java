@@ -2073,13 +2073,9 @@ public final class NoneventQuestProto {
     boolean hasPriority();
     int getPriority();
     
-    // optional int32 cityId = 8;
-    boolean hasCityId();
-    int getCityId();
-    
-    // optional int32 cityAssetNum = 9;
-    boolean hasCityAssetNum();
-    int getCityAssetNum();
+    // optional int32 taskId = 8;
+    boolean hasTaskId();
+    int getTaskId();
   }
   public static final class QuestJobProto extends
       com.google.protobuf.GeneratedMessage
@@ -2113,16 +2109,14 @@ public final class NoneventQuestProto {
         implements com.google.protobuf.ProtocolMessageEnum {
       NO_QUEST_JOB_TYPE(0, 7),
       KILL_SPECIFIC_MONSTER(1, 1),
-      KILL_MONSTER_IN_CITY(2, 2),
-      DONATE_MONSTER(3, 3),
-      COMPLETE_TASK(4, 4),
-      UPGRADE_STRUCT(5, 5),
-      COLLECT_SPECIAL_ITEM(6, 6),
+      DONATE_MONSTER(2, 3),
+      COMPLETE_TASK(3, 4),
+      UPGRADE_STRUCT(4, 5),
+      COLLECT_SPECIAL_ITEM(5, 6),
       ;
       
       public static final int NO_QUEST_JOB_TYPE_VALUE = 7;
       public static final int KILL_SPECIFIC_MONSTER_VALUE = 1;
-      public static final int KILL_MONSTER_IN_CITY_VALUE = 2;
       public static final int DONATE_MONSTER_VALUE = 3;
       public static final int COMPLETE_TASK_VALUE = 4;
       public static final int UPGRADE_STRUCT_VALUE = 5;
@@ -2135,7 +2129,6 @@ public final class NoneventQuestProto {
         switch (value) {
           case 7: return NO_QUEST_JOB_TYPE;
           case 1: return KILL_SPECIFIC_MONSTER;
-          case 2: return KILL_MONSTER_IN_CITY;
           case 3: return DONATE_MONSTER;
           case 4: return COMPLETE_TASK;
           case 5: return UPGRADE_STRUCT;
@@ -2170,7 +2163,7 @@ public final class NoneventQuestProto {
       }
       
       private static final QuestJobType[] VALUES = {
-        NO_QUEST_JOB_TYPE, KILL_SPECIFIC_MONSTER, KILL_MONSTER_IN_CITY, DONATE_MONSTER, COMPLETE_TASK, UPGRADE_STRUCT, COLLECT_SPECIAL_ITEM, 
+        NO_QUEST_JOB_TYPE, KILL_SPECIFIC_MONSTER, DONATE_MONSTER, COMPLETE_TASK, UPGRADE_STRUCT, COLLECT_SPECIAL_ITEM, 
       };
       
       public static QuestJobType valueOf(
@@ -2286,24 +2279,14 @@ public final class NoneventQuestProto {
       return priority_;
     }
     
-    // optional int32 cityId = 8;
-    public static final int CITYID_FIELD_NUMBER = 8;
-    private int cityId_;
-    public boolean hasCityId() {
+    // optional int32 taskId = 8;
+    public static final int TASKID_FIELD_NUMBER = 8;
+    private int taskId_;
+    public boolean hasTaskId() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
-    public int getCityId() {
-      return cityId_;
-    }
-    
-    // optional int32 cityAssetNum = 9;
-    public static final int CITYASSETNUM_FIELD_NUMBER = 9;
-    private int cityAssetNum_;
-    public boolean hasCityAssetNum() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
-    public int getCityAssetNum() {
-      return cityAssetNum_;
+    public int getTaskId() {
+      return taskId_;
     }
     
     private void initFields() {
@@ -2314,8 +2297,7 @@ public final class NoneventQuestProto {
       staticDataId_ = 0;
       quantity_ = 0;
       priority_ = 0;
-      cityId_ = 0;
-      cityAssetNum_ = 0;
+      taskId_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2351,10 +2333,7 @@ public final class NoneventQuestProto {
         output.writeInt32(7, priority_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeInt32(8, cityId_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeInt32(9, cityAssetNum_);
+        output.writeInt32(8, taskId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2395,11 +2374,7 @@ public final class NoneventQuestProto {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, cityId_);
-      }
-      if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(9, cityAssetNum_);
+          .computeInt32Size(8, taskId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2539,10 +2514,8 @@ public final class NoneventQuestProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         priority_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
-        cityId_ = 0;
+        taskId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000080);
-        cityAssetNum_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       
@@ -2612,11 +2585,7 @@ public final class NoneventQuestProto {
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
-        result.cityId_ = cityId_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.cityAssetNum_ = cityAssetNum_;
+        result.taskId_ = taskId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2654,11 +2623,8 @@ public final class NoneventQuestProto {
         if (other.hasPriority()) {
           setPriority(other.getPriority());
         }
-        if (other.hasCityId()) {
-          setCityId(other.getCityId());
-        }
-        if (other.hasCityAssetNum()) {
-          setCityAssetNum(other.getCityAssetNum());
+        if (other.hasTaskId()) {
+          setTaskId(other.getTaskId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2734,12 +2700,7 @@ public final class NoneventQuestProto {
             }
             case 64: {
               bitField0_ |= 0x00000080;
-              cityId_ = input.readInt32();
-              break;
-            }
-            case 72: {
-              bitField0_ |= 0x00000100;
-              cityAssetNum_ = input.readInt32();
+              taskId_ = input.readInt32();
               break;
             }
           }
@@ -2913,44 +2874,23 @@ public final class NoneventQuestProto {
         return this;
       }
       
-      // optional int32 cityId = 8;
-      private int cityId_ ;
-      public boolean hasCityId() {
+      // optional int32 taskId = 8;
+      private int taskId_ ;
+      public boolean hasTaskId() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
-      public int getCityId() {
-        return cityId_;
+      public int getTaskId() {
+        return taskId_;
       }
-      public Builder setCityId(int value) {
+      public Builder setTaskId(int value) {
         bitField0_ |= 0x00000080;
-        cityId_ = value;
+        taskId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearCityId() {
+      public Builder clearTaskId() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        cityId_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional int32 cityAssetNum = 9;
-      private int cityAssetNum_ ;
-      public boolean hasCityAssetNum() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
-      public int getCityAssetNum() {
-        return cityAssetNum_;
-      }
-      public Builder setCityAssetNum(int value) {
-        bitField0_ |= 0x00000100;
-        cityAssetNum_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearCityAssetNum() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        cityAssetNum_ = 0;
+        taskId_ = 0;
         onChanged();
         return this;
       }
@@ -6288,33 +6228,31 @@ public final class NoneventQuestProto {
       "\n\023questGiverImgOffset\030\021 \001(\0132\026.proto.Coor" +
       "dinateProto\0222\n\016monsterElement\030\023 \001(\0162\016.pr" +
       "oto.Element:\nNO_ELEMENT\022\"\n\004jobs\030\025 \003(\0132\024." +
-      "proto.QuestJobProto\"\247\003\n\rQuestJobProto\022\022\n" +
+      "proto.QuestJobProto\"\367\002\n\rQuestJobProto\022\022\n" +
       "\nquestJobId\030\001 \001(\005\022\017\n\007questId\030\002 \001(\005\022J\n\014qu" +
       "estJobType\030\003 \001(\0162!.proto.QuestJobProto.Q" +
       "uestJobType:\021NO_QUEST_JOB_TYPE\022\023\n\013descri",
       "ption\030\004 \001(\t\022\024\n\014staticDataId\030\005 \001(\005\022\020\n\010qua" +
-      "ntity\030\006 \001(\005\022\020\n\010priority\030\007 \001(\005\022\016\n\006cityId\030" +
-      "\010 \001(\005\022\024\n\014cityAssetNum\030\t \001(\005\"\257\001\n\014QuestJob" +
-      "Type\022\025\n\021NO_QUEST_JOB_TYPE\020\007\022\031\n\025KILL_SPEC" +
-      "IFIC_MONSTER\020\001\022\030\n\024KILL_MONSTER_IN_CITY\020\002" +
-      "\022\022\n\016DONATE_MONSTER\020\003\022\021\n\rCOMPLETE_TASK\020\004\022" +
-      "\022\n\016UPGRADE_STRUCT\020\005\022\030\n\024COLLECT_SPECIAL_I" +
-      "TEM\020\006\"\265\001\n\rDialogueProto\022>\n\rspeechSegment" +
-      "\030\001 \003(\0132\'.proto.DialogueProto.SpeechSegme" +
-      "ntProto\032d\n\022SpeechSegmentProto\022\017\n\007speaker",
-      "\030\001 \001(\t\022\024\n\014speakerImage\030\002 \001(\t\022\023\n\013speakerT" +
-      "ext\030\003 \001(\t\022\022\n\nisLeftSide\030\004 \001(\010\"\220\001\n\022FullUs" +
-      "erQuestProto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007questI" +
-      "d\030\002 \001(\005\022\022\n\nisRedeemed\030\003 \001(\010\022\022\n\nisComplet" +
-      "e\030\004 \001(\010\022/\n\ruserQuestJobs\030\005 \003(\0132\030.proto.U" +
-      "serQuestJobProto\"^\n\021UserQuestJobProto\022\017\n" +
-      "\007questId\030\001 \001(\005\022\022\n\nquestJobId\030\002 \001(\005\022\022\n\nis" +
-      "Complete\030\003 \001(\010\022\020\n\010progress\030\004 \001(\005\"s\n\tItem" +
-      "Proto\022\016\n\006itemId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\017\n\007i" +
-      "mgName\030\003 \001(\t\022\025\n\rborderImgName\030\004 \001(\t\022 \n\005c",
-      "olor\030\005 \001(\0132\021.proto.ColorProtoB5\n\037com.lvl" +
-      "6.mobsters.noneventprotoB\022NoneventQuestP" +
-      "roto"
+      "ntity\030\006 \001(\005\022\020\n\010priority\030\007 \001(\005\022\016\n\006taskId\030" +
+      "\010 \001(\005\"\225\001\n\014QuestJobType\022\025\n\021NO_QUEST_JOB_T" +
+      "YPE\020\007\022\031\n\025KILL_SPECIFIC_MONSTER\020\001\022\022\n\016DONA" +
+      "TE_MONSTER\020\003\022\021\n\rCOMPLETE_TASK\020\004\022\022\n\016UPGRA" +
+      "DE_STRUCT\020\005\022\030\n\024COLLECT_SPECIAL_ITEM\020\006\"\265\001" +
+      "\n\rDialogueProto\022>\n\rspeechSegment\030\001 \003(\0132\'" +
+      ".proto.DialogueProto.SpeechSegmentProto\032" +
+      "d\n\022SpeechSegmentProto\022\017\n\007speaker\030\001 \001(\t\022\024" +
+      "\n\014speakerImage\030\002 \001(\t\022\023\n\013speakerText\030\003 \001(",
+      "\t\022\022\n\nisLeftSide\030\004 \001(\010\"\220\001\n\022FullUserQuestP" +
+      "roto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007questId\030\002 \001(\005\022" +
+      "\022\n\nisRedeemed\030\003 \001(\010\022\022\n\nisComplete\030\004 \001(\010\022" +
+      "/\n\ruserQuestJobs\030\005 \003(\0132\030.proto.UserQuest" +
+      "JobProto\"^\n\021UserQuestJobProto\022\017\n\007questId" +
+      "\030\001 \001(\005\022\022\n\nquestJobId\030\002 \001(\005\022\022\n\nisComplete" +
+      "\030\003 \001(\010\022\020\n\010progress\030\004 \001(\005\"s\n\tItemProto\022\016\n" +
+      "\006itemId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\017\n\007imgName\030\003" +
+      " \001(\t\022\025\n\rborderImgName\030\004 \001(\t\022 \n\005color\030\005 \001" +
+      "(\0132\021.proto.ColorProtoB5\n\037com.lvl6.mobste",
+      "rs.noneventprotoB\022NoneventQuestProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -6334,7 +6272,7 @@ public final class NoneventQuestProto {
           internal_static_proto_QuestJobProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_QuestJobProto_descriptor,
-              new java.lang.String[] { "QuestJobId", "QuestId", "QuestJobType", "Description", "StaticDataId", "Quantity", "Priority", "CityId", "CityAssetNum", },
+              new java.lang.String[] { "QuestJobId", "QuestId", "QuestJobType", "Description", "StaticDataId", "Quantity", "Priority", "TaskId", },
               com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.class,
               com.lvl6.mobsters.noneventproto.NoneventQuestProto.QuestJobProto.Builder.class);
           internal_static_proto_DialogueProto_descriptor =

@@ -10,8 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
+import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Quest;
+import com.lvl6.mobsters.noneventproto.NoneventChatProto.ColorProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
+import com.lvl6.mobsters.noneventproto.NoneventQuestProto.ItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.UserQuestJobProto;
 
 public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSerializer 
@@ -96,4 +99,34 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 		return uqjpb.build();
 	}
 
+
+	@Override
+	public ItemProto createItemProtoFromItem(Item item) {
+		ItemProto.Builder ipb = ItemProto.newBuilder();
+	  	
+		ipb.setItemId(item.getId());
+	  	
+	  	String str = item.getName();
+	  	if (null != str) {
+	  		ipb.setName(str);
+	  	}
+	  	
+	  	str = item.getImgName();
+	  	if (null != str) {
+	  		ipb.setImgName(str);
+	  	}
+	  	
+	  	str = item.getBorderImgName();
+	  	if (null != str) {
+	  		ipb.setBorderImgName(str);
+	  	}
+	  	
+	  	ColorProto.Builder clrB = ColorProto.newBuilder();
+	  	clrB.setBlue(item.getBlue());
+	  	clrB.setGreen(item.getGreen());
+	  	clrB.setRed(item.getRed());
+	  	ipb.setColor(clrB.build());
+	  	
+	  	return ipb.build();
+	}
 }

@@ -1,8 +1,11 @@
 package com.lvl6.mobsters.cache;
 
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import javax.persistence.Cache;
+import javax.persistence.EntityManagerFactory;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,18 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lvl6.mobsters.info.Clan;
-import com.lvl6.mobsters.info.ClanIcon;
-import com.lvl6.mobsters.info.repository.ClanIconRepository;
-import com.lvl6.mobsters.info.repository.ClanRepository;
+import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.repository.AchievementRepository;
 
 
-// @RunWith(SpringJUnit4ClassRunner.class)
+ @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring-db.xml", "classpath:spring-redis.xml"})
 public class TestHibCache {
 
 	
-	@Autowired
+	/*@Autowired
 	protected ClanRepository clanRepo;
 	
 	@Autowired
@@ -36,16 +37,16 @@ public class TestHibCache {
 	
 	public ClanIconRepository getClanIconRepo() {
 		return clanIconRepo;
-	}
+	}*/
 
-	private ClanIcon iconOne;
+	/*private ClanIcon iconOne;
 	private ClanIcon iconTwo;
 	private Clan clanOne;
-	private Clan clanTwo;
+	private Clan clanTwo;*/
 	
 	@Before
 	public void initialize() {
-		iconOne = new ClanIcon();
+		/*iconOne = new ClanIcon();
 		iconOne.setId(6);
 		iconOne.setImgName("imageNameOne.jpg");
 		iconOne.setAvailable(true);
@@ -57,7 +58,7 @@ public class TestHibCache {
 		clanOne.setTag("ClanTag");
 		clanOne.setRequestToJoinRequired(true);
 		// clanOne.setClanIcon(iconOne);
-		clanRepo.save(clanOne);
+		clanRepo.save(clanOne);*/
 
 //		assertTrue("Quantity is 3", achRepo.findByQuantityGreaterThan(0).size() == 3);
 //		assertTrue("Lvl is 3", achRepo.findByLvlBetween(1, 3).size() == 3);
@@ -72,7 +73,7 @@ public class TestHibCache {
 	private static final int REPETITIONS = 150;
 	
 	// @Test
-	public void testLotsaFetch() {
+	/*public void testLotsaFetch() {
 		// NOTE: At the moment, this doesn't actually do anything to prove that repeat queries for the same
 		//       object actually come from cache instead of extra queries.  It does however provide a 
 		//       rudimentary set of circumstances for observing whether the cache is being utilized in a
@@ -87,5 +88,52 @@ public class TestHibCache {
 		}
 		long delta_t = System.currentTimeMillis() - start_t;
 	    System.out.println("Time for <" + REPETITIONS + ">: " + delta_t);	
+	}*/
+	
+	
+	@Autowired
+	protected AchievementRepository achRepo;
+	
+	public AchievementRepository getAchRepo()
+	{
+		return achRepo;
 	}
+
+	public void setAchRepo( AchievementRepository achRepo )
+	{
+		this.achRepo = achRepo;
+	}
+
+	@Autowired
+	protected EntityManagerFactory emf;
+	
+	
+	public EntityManagerFactory getEmf()
+	{
+		return emf;
+	}
+	public void setEmf( EntityManagerFactory emf )
+	{
+		this.emf = emf;
+	}
+	
+	@Test
+	public void testCache() {
+//		Collection<Achievement> achs = achRepo.findByAchievementNameStartingWith("test");
+//		achRepo.delete(achs);
+		Achievement ach = new Achievement(1, "test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, null, null);
+		ach = achRepo.save(ach);
+		
+		Cache cache = emf.getCache();
+		assertEquals("making sure achievement is not cached on save!!!", false, cache.contains(Achievement.class, ach));
+		
+		int size = achRepo.findAll().size();
+		assertTrue("Quantity expected: 1. actual:" + size, size == 1);
+		
+		assertEquals("checking if achievement is cached!!!", true, cache.contains(Achievement.class, ach));
+		
+		achRepo.deleteInBatch(achRepo.findByAchievementNameStartingWith("test"));
+		assertEquals("No achievements left post-delete", 0, achRepo.findAll().size());
+	}
+
 }

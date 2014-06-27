@@ -1,6 +1,5 @@
 //BAD!!! DON'T START NAMES WITH NEW OR COPY
 
-import "NoneventCity.proto";
 import "NoneventQuest.proto";
 import "NoneventStructure.proto";
 import "NoneventUser.proto";
@@ -62,7 +61,7 @@ message PurchaseCityExpansionResponseProto {
 }
 */
 //------------------------------------------------------------------------------------------
-
+/*
 message LoadCityRequestProto {
      optional MinimumUserProto sender = 1;
      optional int32 cityId = 2;    
@@ -84,6 +83,7 @@ message LoadCityResponseProto {
      	FAIL_OTHER = 3;
      }    
 }
+*/
 
 //------------------------------------------------------------------------------------------
 			

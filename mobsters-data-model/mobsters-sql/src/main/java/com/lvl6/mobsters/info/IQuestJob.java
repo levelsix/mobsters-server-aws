@@ -27,12 +27,8 @@ public interface IQuestJob extends IBaseIntPersistentObject
 
 	public void setPriority( int priority );
 
-	public int getCityId();
+	public abstract void setTask( ITask task );
 
-	public void setCityId( int cityId );
-
-	public int getCityAssetNum();
-
-	public void setCityAssetNum( int cityAssetNum );
+	public abstract ITask getTask();
 
 }

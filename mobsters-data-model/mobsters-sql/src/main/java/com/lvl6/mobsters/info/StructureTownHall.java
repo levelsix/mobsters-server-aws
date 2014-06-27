@@ -19,7 +19,7 @@ public class StructureTownHall extends BaseIntPersistentObject implements IStruc
 	
 	private static final long serialVersionUID = 1342783029881923550L;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,

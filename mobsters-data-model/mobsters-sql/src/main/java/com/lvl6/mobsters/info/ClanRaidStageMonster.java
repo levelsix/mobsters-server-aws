@@ -4,8 +4,10 @@ package com.lvl6.mobsters.info;
 //multiple monsters can point to stage (all must spawn)
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name="ClanRaidStageMonster")
+@Table(name="clan_raid_stage_monster")
 public class ClanRaidStageMonster extends BaseIntPersistentObject{
 
 	

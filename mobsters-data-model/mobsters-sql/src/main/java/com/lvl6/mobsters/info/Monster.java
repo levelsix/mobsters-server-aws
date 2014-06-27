@@ -20,11 +20,11 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=IMonster.class)
 public class Monster extends BaseIntPersistentObject implements IMonster{	
 
-	private static final long serialVersionUID = 3183753976673859196L;
+	private static final long serialVersionUID = -6165082176139667297L;
 	
 	
-	@Column(name = "name")
-	private String name;
+	@Column(name = "evolution_group")
+	private String evolutionGroup;
 	@Column(name = "monster_group")
 	private String monsterGroup;
 	@Column(name = "quality")
@@ -56,7 +56,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		name = "evolution_catalyst_monster_id",
 			nullable = true,
 			foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private IMonster evolutionCatalystMonsterId;
+	private IMonster evolutionCatalystMonster;
 	
 	@Column(name = "minutes_to_evolve")
 	private int minutesToEvolve;
@@ -118,7 +118,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 			List<IMonsterLevelInfo> lvlInfo,
 			List<IMonsterBattleDialogue> battleDialogue) {
 		super(id);
-		this.name = name;
+		this.evolutionGroup = name;
 		this.monsterGroup = monsterGroup;
 		this.quality = quality;
 		this.evolutionLevel = evolutionLevel;
@@ -129,7 +129,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		this.minutesToCombinePieces = minutesToCombinePieces;
 		this.maxLevel = maxLevel;
 		this.evolutionMonster = evolutionMonster;
-		this.evolutionCatalystMonsterId = evolutionCatalystMonster;
+		this.evolutionCatalystMonster = evolutionCatalystMonster;
 		this.minutesToEvolve = minutesToEvolve;
 		this.numCatalystsRequired = numCatalystsRequired;
 		this.carrotRecruited = carrotRecruited;
@@ -154,16 +154,16 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	 * @see com.lvl6.mobsters.info.IMonster#getName()
 	 */
 	@Override
-	public String getName() {
-		return name;
+	public String getEvolutionGroup() {
+		return evolutionGroup;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#setName(java.lang.String)
 	 */
 	@Override
-	public void setName(String name) {
-		this.name = name;
+	public void setEvolutionGroup(String evolutionGroup) {
+		this.evolutionGroup = evolutionGroup;
 	}
 
 	/* (non-Javadoc)
@@ -327,20 +327,20 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		this.evolutionMonster = evolutionMonster;
 	}
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#getEvolutionCatalystMonsterId()
+	 * @see com.lvl6.mobsters.info.IMonster#getEvolutionCatalystMonster()
 	 */
 	@Override
-	public IMonster getEvolutionCatalystMonsterId()
+	public IMonster getEvolutionCatalystMonster()
 	{
-		return evolutionCatalystMonsterId;
+		return evolutionCatalystMonster;
 	}
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#setEvolutionCatalystMonsterId(com.lvl6.mobsters.info.IMonster)
+	 * @see com.lvl6.mobsters.info.IMonster#setEvolutionCatalystMonster(com.lvl6.mobsters.info.IMonster)
 	 */
 	@Override
-	public void setEvolutionCatalystMonsterId( IMonster evolutionCatalystMonsterId )
+	public void setEvolutionCatalystMonster( IMonster evolutionCatalystMonster )
 	{
-		this.evolutionCatalystMonsterId = evolutionCatalystMonsterId;
+		this.evolutionCatalystMonster = evolutionCatalystMonster;
 	}
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getMinutesToEvolve()
@@ -602,7 +602,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	
 	@Override
 	public String toString() {
-		return "Monster [id=" + id + ", name=" + name + ", monsterGroup="
+		return "Monster [id=" + id + ", evolutionGroup=" + evolutionGroup + ", monsterGroup="
 				+ monsterGroup + ", quality=" + quality + ", evolutionLevel="
 				+ evolutionLevel + ", displayName=" + displayName
 				+ ", element=" + element + ", imagePrefix=" + imagePrefix
@@ -610,7 +610,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 				+ ", minutesToCombinePieces=" + minutesToCombinePieces
 				+ ", maxLevel=" + maxLevel + ", evolutionMonsterId="
 				+ evolutionMonster + ", evolutionCatalystMonsterId="
-				+ evolutionCatalystMonsterId + ", minutesToEvolve="
+				+ evolutionCatalystMonster + ", minutesToEvolve="
 				+ minutesToEvolve + ", numCatalystsRequired="
 				+ numCatalystsRequired + ", carrotRecruited=" + carrotRecruited
 				+ ", carrotDefeated=" + carrotDefeated + ", carrotEvolved="

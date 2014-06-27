@@ -50,11 +50,7 @@ message QuestJobProto {
 	//with the same quest id
 	optional int32 priority = 7;
 	
-	//could be 0
-	optional int32 cityId = 8;
-	
-	//could be 0
-	optional int32 cityAssetNum = 9;
+	optional int32 taskId = 8;
 	
 	enum QuestJobType {
 		NO_QUEST_JOB_TYPE = 7;
@@ -63,8 +59,9 @@ message QuestJobProto {
      	//if staticDataId is null or 0 then this means kill any monster
      	KILL_SPECIFIC_MONSTER = 1; 
      	
+     	//DEPRECATED: NO MORE CITIES
      	//staticDataId is city id, quantity is num of any monsters in city to kill
-     	KILL_MONSTER_IN_CITY = 2; 
+     	//KILL_MONSTER_IN_CITY = 2; 
      	
      	//staticDataId is monster id, quantity is num to donate
      	DONATE_MONSTER = 3;
@@ -80,6 +77,7 @@ message QuestJobProto {
      	UPGRADE_STRUCT = 5;
 		
 
+		//June 25,2014: Since cities are now removed, task id will now take city's place
 		//MONSTERS SPECIFIED IN quest_monster_item_table drop the required item
 		//NOTE: a quest is tied to a city. So if a monster is listed in 
 		//quest_monster_item table then everywhere the aforementioned monster

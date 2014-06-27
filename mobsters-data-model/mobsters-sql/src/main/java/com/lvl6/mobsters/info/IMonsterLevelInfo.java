@@ -67,4 +67,8 @@ public interface IMonsterLevelInfo extends IBaseIntPersistentObject
 
 	public void setExpLvlExponent( float expLvlExponent );
 
+	public abstract void setSellAmount( int sellAmount );
+
+	public abstract int getSellAmount();
+
 }

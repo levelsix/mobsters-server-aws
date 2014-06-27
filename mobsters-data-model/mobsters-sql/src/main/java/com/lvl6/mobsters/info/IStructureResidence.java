@@ -27,4 +27,8 @@ public interface IStructureResidence extends IBaseIntPersistentObject
 
 	public void setOccupationName( String occupationName );
 
+	public abstract void setImgSuffix( String imgSuffix );
+
+	public abstract String getImgSuffix();
+
 }

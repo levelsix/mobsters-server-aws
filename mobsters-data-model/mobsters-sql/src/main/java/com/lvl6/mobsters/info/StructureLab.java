@@ -16,10 +16,10 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=IStructureLab.class)
 public class StructureLab extends BaseIntPersistentObject implements IStructureLab{
 
-	private static final long serialVersionUID = 5549839794854564717L;
+	private static final long serialVersionUID = -7843526067221565804L;
 	
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,
@@ -27,7 +27,10 @@ public class StructureLab extends BaseIntPersistentObject implements IStructureL
 	private IStructure struct;
 	
 	@Column(name = "queue_size")
-	private int queueSize;	float pointsPerSecond;
+	private int queueSize;
+	
+	@Column(name = "points_per_second")
+	private float pointsPerSecond;
 	
 	public StructureLab(){}
 	public StructureLab(IStructure struct, int queueSize, float pointsPerSecond) {
@@ -81,4 +84,16 @@ public class StructureLab extends BaseIntPersistentObject implements IStructureL
 	public void setPointsPerSecond(float pointsPerSecond) {
 		this.pointsPerSecond = pointsPerSecond;
 	}
+	@Override
+	public String toString()
+	{
+		return "StructureLab [struct="
+			+ struct
+			+ ", queueSize="
+			+ queueSize
+			+ ", pointsPerSecond="
+			+ pointsPerSecond
+			+ "]";
+	}
+	
 }

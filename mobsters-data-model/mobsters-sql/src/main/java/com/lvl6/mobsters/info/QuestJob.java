@@ -7,16 +7,21 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
+
+//June 25, 2014
+//At the moment, one quest_job per quest
+//At the moment, one quest_job for a task, one-to-one
 
 @Entity(name="QuestJob")
 @Table(name="quest_job")
 @Proxy(lazy=true, proxyClass=IQuestJob.class)
 public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
-
-	private static final long serialVersionUID = -9216295516712129814L;
+	
+	private static final long serialVersionUID = -7270821507727387958L;
 	
 
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -34,23 +39,23 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
 	private int staticDataId;
 	@Column(name = "quantity")
 	private int quantity;	
+	
 	//how this quest job is ordered among other quest jobs
 	//with the same quest id
-
 	@Column(name = "priority")
 	private int priority;	
-	//could be 0
 
-	@Column(name = "city_id")
-	private int cityId;	
-	//could be 0
-
-	@Column(name = "city_asset_num")
-	private int cityAssetNum;	
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Task.class, optional=false)
+	@JoinColumn(
+		name = "task_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private ITask task;
+	
 	public QuestJob(){}
 	public QuestJob(int id, Quest quest, String questJobType,
 			String description, int staticDataId, int quantity, int priority,
-			int cityId, int cityAssetNum) {
+			ITask task) {
 		super(id);
 		this.quest = quest;
 		this.questJobType = questJobType;
@@ -58,8 +63,7 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
 		this.staticDataId = staticDataId;
 		this.quantity = quantity;
 		this.priority = priority;
-		this.cityId = cityId;
-		this.cityAssetNum = cityAssetNum;
+		this.task = task;
 	}
 
 
@@ -161,45 +165,23 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
 		this.priority = priority;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJob#getCityId()
-	 */
 	@Override
-	public int getCityId() {
-		return cityId;
+	public ITask getTask()
+	{
+		return task;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJob#setCityId(int)
-	 */
 	@Override
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
+	public void setTask( ITask task )
+	{
+		this.task = task;
 	}
-
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJob#getCityAssetNum()
-	 */
-	@Override
-	public int getCityAssetNum() {
-		return cityAssetNum;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJob#setCityAssetNum(int)
-	 */
-	@Override
-	public void setCityAssetNum(int cityAssetNum) {
-		this.cityAssetNum = cityAssetNum;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "QuestJob [id=" + id + ", questId=" + quest
 				+ ", questJobType=" + questJobType + ", description="
 				+ description + ", staticDataId=" + staticDataId
-				+ ", quantity=" + quantity + ", priority=" + priority
-				+ ", cityId=" + cityId + ", cityAssetNum=" + cityAssetNum + "]";
+				+ ", quantity=" + quantity + ", priority=" + priority + "]";
 	}
 	
 }

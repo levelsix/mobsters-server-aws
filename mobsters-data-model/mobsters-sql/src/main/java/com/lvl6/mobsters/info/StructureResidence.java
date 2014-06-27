@@ -16,9 +16,10 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=IStructureResidence.class)
 public class StructureResidence extends BaseIntPersistentObject implements IStructureResidence{
 
-	private static final long serialVersionUID = -844138512086407166L;
+	private static final long serialVersionUID = 2004953796398792669L;
+	
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,
@@ -45,10 +46,13 @@ public class StructureResidence extends BaseIntPersistentObject implements IStru
 	@Column(name = "occupation_name")
 	private String occupationName;	
 	
+	@Column(name = "img_suffix")
+	private String imgSuffix;
+	
 	public StructureResidence(){}
 	public StructureResidence(IStructure struct, int numMonsterSlots,
 			int numBonusMonsterSlots, int numGemsRequired, int numAcceptedFbInvites,
-			String occupationName) {
+			String occupationName, String imgSuffix) {
 		super();
 		this.struct = struct;
 		this.numMonsterSlots = numMonsterSlots;
@@ -56,6 +60,7 @@ public class StructureResidence extends BaseIntPersistentObject implements IStru
 		this.numGemsRequired = numGemsRequired;
 		this.numAcceptedFbInvites = numAcceptedFbInvites;
 		this.occupationName = occupationName;
+		this.imgSuffix = imgSuffix;
 	}
 
 
@@ -156,11 +161,34 @@ public class StructureResidence extends BaseIntPersistentObject implements IStru
 	}
 
 	@Override
-	public String toString() {
-		return "StructureResidence [structId=" + struct + ", numMonsterSlots="
-				+ numMonsterSlots + ", numBonusMonsterSlots=" + numBonusMonsterSlots
-				+ ", numGemsRequired=" + numGemsRequired + ", numAcceptedFbInvites="
-				+ numAcceptedFbInvites + ", occupationName=" + occupationName + "]";
+	public String getImgSuffix()
+	{
+		return imgSuffix;
 	}
-
+	@Override
+	public void setImgSuffix( String imgSuffix )
+	{
+		this.imgSuffix = imgSuffix;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "StructureResidence [struct="
+			+ struct
+			+ ", numMonsterSlots="
+			+ numMonsterSlots
+			+ ", numBonusMonsterSlots="
+			+ numBonusMonsterSlots
+			+ ", numGemsRequired="
+			+ numGemsRequired
+			+ ", numAcceptedFbInvites="
+			+ numAcceptedFbInvites
+			+ ", occupationName="
+			+ occupationName
+			+ ", imgSuffix="
+			+ imgSuffix
+			+ "]";
+	}
+	
 }

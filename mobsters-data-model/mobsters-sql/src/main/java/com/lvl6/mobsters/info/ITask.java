@@ -11,14 +11,6 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public void setDescription( String description );
 
-	public City getCity();
-
-	public void setCity( City city );
-
-	public int getAssetNumberWithinCity();
-
-	public void setAssetNumberWithinCity( int assetNumberWithinCity );
-
 	public ITask getPrerequisiteTask();
 
 	public void setPrerequisiteTask( ITask prerequisiteTask );

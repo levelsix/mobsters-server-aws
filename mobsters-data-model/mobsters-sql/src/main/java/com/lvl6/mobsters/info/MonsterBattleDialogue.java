@@ -3,6 +3,7 @@ package com.lvl6.mobsters.info;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +19,7 @@ public class MonsterBattleDialogue extends BaseIntPersistentObject implements IM
 	private static final long serialVersionUID = 712145467719179722L;
 	
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "monster_id",
 		nullable = false,

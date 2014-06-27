@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,7 +16,8 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=ITask.class)
 public class Task extends BaseIntPersistentObject implements ITask{
 
-	private static final long serialVersionUID = -520057120226567292L;
+	private static final long serialVersionUID = -8221278285986682349L;
+	
 
 	@Column(name = "good_name")
 	private String goodName;
@@ -25,24 +25,14 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	@Column(name = "description")
 	private String description;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(
-		name = "city_id",
-		nullable = false,
-		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private City city;
-
-	@Column(name = "asset_number_within_city")
-	private int assetNumberWithinCity;
-
-	@OneToOne(fetch=FetchType.LAZY, targetEntity=Task.class)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Task.class, optional=true)
 	@JoinColumn(
 		name = "prerequisite_task_id",
 		nullable = true,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private ITask prerequisiteTask;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, optional=true)
 	@JoinColumn(
 		name = "prerequisite_quest_id",
 		nullable = true,
@@ -54,13 +44,11 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	}
 
 
-	public Task(final int id, final String goodName, final String description, final City city,
-			final int assetNumberWithinCity, final ITask prerequisiteTask, final Quest prerequisiteQuest) {
+	public Task(final int id, final String goodName, final String description,
+			final ITask prerequisiteTask, final Quest prerequisiteQuest) {
 		super(id);
 		this.goodName = goodName;
 		this.description = description;
-		this.city = city;
-		this.assetNumberWithinCity = assetNumberWithinCity;
 		this.prerequisiteTask = prerequisiteTask;
 		this.prerequisiteQuest = prerequisiteQuest;
 	}
@@ -94,34 +82,6 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		this.description = description;
 	}
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#getCity()
-	 */
-	@Override
-	public City getCity() {
-		return city;
-	}
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#setCity(com.lvl6.mobsters.info.City)
-	 */
-	@Override
-	public void setCity(City city) {
-		this.city = city;
-	}
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#getAssetNumberWithinCity()
-	 */
-	@Override
-	public int getAssetNumberWithinCity() {
-		return assetNumberWithinCity;
-	}
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#setAssetNumberWithinCity(int)
-	 */
-	@Override
-	public void setAssetNumberWithinCity(int assetNumberWithinCity) {
-		this.assetNumberWithinCity = assetNumberWithinCity;
-	}
-	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.ITask#getPrerequisiteTask()
 	 */
 	@Override
@@ -149,13 +109,20 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	public void setPrerequisiteQuest(Quest prerequisiteQuest) {
 		this.prerequisiteQuest = prerequisiteQuest;
 	}
+
+
 	@Override
-	public String toString() {
-		return "Task [goodName=" + goodName + ", description=" + description
-				+ ", city=" + city + ", assetNumberWithinCity="
-				+ assetNumberWithinCity + ", prerequisiteTask="
-				+ prerequisiteTask + ", prerequisiteQuest="
-				+ prerequisiteQuest + "]";
+	public String toString()
+	{
+		return "Task [goodName="
+			+ goodName
+			+ ", description="
+			+ description
+			+ ", prerequisiteTask="
+			+ prerequisiteTask
+			+ ", prerequisiteQuest="
+			+ prerequisiteQuest
+			+ "]";
 	}
-	
+
 }

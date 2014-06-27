@@ -10,7 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name="Quest")
 @Table(name="quest")
 public class Quest extends BaseIntPersistentObject{
 

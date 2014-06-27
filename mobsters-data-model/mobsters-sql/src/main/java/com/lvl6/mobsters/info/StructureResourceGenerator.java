@@ -19,7 +19,7 @@ public class StructureResourceGenerator extends BaseIntPersistentObject implemen
 	private static final long serialVersionUID = 6894348581947398084L;
 	
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,

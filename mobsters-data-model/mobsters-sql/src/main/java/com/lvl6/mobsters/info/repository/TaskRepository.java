@@ -4,13 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.lvl6.mobsters.info.ITask;
 import com.lvl6.mobsters.info.Task;
 public interface TaskRepository extends JpaRepository<Task, Integer>{
 	
-	ITask findByCityIdAndAssetNumberWithinCity( int cityId, int assetNumberWithinCity );
-	
 	List<Task> findByIdIn( Collection<Integer> idList );
 	
-	List<Task> findByCityId( Collection<Integer> idList );
 }

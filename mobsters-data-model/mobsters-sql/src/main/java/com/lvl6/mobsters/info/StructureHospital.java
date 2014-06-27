@@ -19,7 +19,7 @@ public class StructureHospital extends BaseIntPersistentObject implements IStruc
 	private static final long serialVersionUID = 1217501402525066820L;
 	
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
 	@JoinColumn(
 		name = "struct_id",
 		nullable = false,
@@ -27,7 +27,10 @@ public class StructureHospital extends BaseIntPersistentObject implements IStruc
 	private IStructure struct;
 	
 	@Column(name = "queue_size")
-	private int queueSize;	float healthPerSecond;
+	private int queueSize;
+	
+	@Column(name = "health_per_second")
+	float healthPerSecond;
 	
 	public StructureHospital(){}
 	public StructureHospital(IStructure struct, int queueSize, float healthPerSecond) {
