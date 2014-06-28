@@ -5,8 +5,14 @@
  	name="MobstersConfigCache"
     maxBytesLocalHeap="250M">    
 
-    <!-- defaultCache eternal="true" maxElementsInMemory="1000" overflowToDisk="false" /-->           
+    <defaultCache eternal="true" copyOnRead="true" overflowToDisk="false" />           
 
-    <cache name="Achievement" maxElementsInMemory="100" eternal="true" overflowToDisk="false" />  
+<!--     <cache  -->
+<!--     	name="Achievement" -->
+<!--     	eternal="true" -->
+<!-- 		overflowToDisk="false" -->
+<!--     	maxBytesLocalHeap="100M" -->
+<!--     	timeToIdleSeconds="3000" -->
+<!--     	timeToLiveSeconds="6000" />   -->
 	
  </ehcache>

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.esotericsoftware.minlog.Log;
 import com.lvl6.mobsters.info.Achievement;
 import com.lvl6.mobsters.info.repository.AchievementRepository;
 
@@ -129,8 +130,15 @@ public class TestHibCache {
 		
 		int size = achRepo.findAll().size();
 		assertTrue("Quantity expected: 1. actual:" + size, size == 1);
+		achRepo.findAll();
 		
-		assertEquals("checking if achievement is cached!!!", true, cache.contains(Achievement.class, ach));
+		if (cache.contains(Achievement.class, ach.getId())) {
+			Log.info("in the cache!");
+		}
+		
+		ach = achRepo.findOne(ach.getId());
+		
+		assertEquals("checking if achievement is cached!!!", true, cache.contains(Achievement.class, ach.getId()));
 		
 		achRepo.deleteInBatch(achRepo.findByAchievementNameStartingWith("test"));
 		assertEquals("No achievements left post-delete", 0, achRepo.findAll().size());

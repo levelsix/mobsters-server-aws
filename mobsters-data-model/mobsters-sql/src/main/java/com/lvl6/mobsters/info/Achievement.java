@@ -16,7 +16,7 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="Achievement")
 @Table(name="achievement")
 @Proxy(lazy=false, proxyClass=IAchievement.class)
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Achievement extends BaseIntPersistentObject implements IAchievement{
 
 	private static final long serialVersionUID = 873467535443000372L;
