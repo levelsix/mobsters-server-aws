@@ -130,13 +130,13 @@ public class TestHibCache {
 		
 		int size = achRepo.findAll().size();
 		assertTrue("Quantity expected: 1. actual:" + size, size == 1);
-		achRepo.findAll();
+//		achRepo.findAll();
 		
-		if (cache.contains(Achievement.class, ach.getId())) {
-			Log.info("in the cache!");
-		}
+//		if (cache.contains(Achievement.class, ach.getId())) {
+//			Log.info("in the cache!");
+//		}
 		
-		ach = achRepo.findOne(ach.getId());
+//		ach = achRepo.findOne(ach.getId());
 		
 		assertEquals("checking if achievement is cached!!!", true, cache.contains(Achievement.class, ach.getId()));
 		
@@ -144,4 +144,28 @@ public class TestHibCache {
 		assertEquals("No achievements left post-delete", 0, achRepo.findAll().size());
 	}
 
+	@Test
+	public void testCacheNamedQuery() {
+//		Collection<Achievement> achs = achRepo.findByAchievementNameStartingWith("test");
+//		achRepo.delete(achs);
+		Achievement ach = new Achievement(1, "test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, null, null);
+		ach = achRepo.save(ach);
+		
+		Cache cache = emf.getCache();
+		assertEquals("making sure achievement is not cached on save!!!", false, cache.contains(Achievement.class, ach));
+
+		//it is cached...
+//		assertEquals("checking writing to db that achievement is not cached.", false, cache.contains(Achievement.class, ach.getId()));
+		
+		cache.evict(Achievement.class, ach.getId());
+		assertEquals("checking writing to db that achievement is not cached.", false, cache.contains(Achievement.class, ach.getId()));
+		
+		int size = achRepo.findByAchievementNameStartingWith("test").size();
+		assertTrue("Quantity expected: 1. actual:" + size, size == 1);
+		
+		assertEquals("checking if achievement is cached!!!", true, cache.contains(Achievement.class, ach.getId()));
+		
+		achRepo.deleteInBatch(achRepo.findByAchievementNameStartingWith("test"));
+		assertEquals("No achievements left post-delete", 0, achRepo.findAll().size());
+	}
 }
