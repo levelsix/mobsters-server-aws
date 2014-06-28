@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
@@ -20,6 +21,7 @@ import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.FullUserMonsterProto
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterLevelInfoProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterHealingProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto.DialogueType;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto.AnimationType;
 
@@ -233,5 +235,23 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 
 	    fumpb.setTeamSlotNum(mfu.getTeamSlotNum());
 	    return fumpb.build();
+	}
+	
+	@Override
+	public UserMonsterHealingProto createUserMonsterHealingProto(MonsterHealingForUser mhfu) {
+		UserMonsterHealingProto.Builder umhpb = UserMonsterHealingProto.newBuilder();
+	    umhpb.setUserUuid(mhfu.getUserId());
+	    umhpb.setUserMonsterUuid(mhfu.getMonsterForUserId());
+
+	    Date aDate = mhfu.getQueuedTime();
+	    if (null != aDate) {
+	      umhpb.setQueuedTimeMillis(aDate.getTime());
+	    }
+
+	    //  	umhpb.setUserHospitalStructId(mhfu.getUserStructHospitalId());
+	    umhpb.setHealthProgress(mhfu.getHealthProgress());
+	    umhpb.setPriority(mhfu.getPriority());
+
+	    return umhpb.build();
 	}
 }

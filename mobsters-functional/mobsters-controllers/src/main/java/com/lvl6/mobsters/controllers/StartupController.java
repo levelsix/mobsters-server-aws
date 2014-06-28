@@ -16,6 +16,7 @@ import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.User;
@@ -420,12 +421,22 @@ public class StartupController extends EventController
 		
 		if (!CollectionUtils.lacksSubstance(userMonsters)) {
 			for (MonsterForUser mfu : userMonsters) {
-				resBuilder.addUsersMonsters(noneventMonsterProtoSerializer.createFullUserMonsterProtoFromUserMonster(mfu));
+				resBuilder.addUsersMonsters(
+					noneventMonsterProtoSerializer.createFullUserMonsterProtoFromUserMonster(mfu));
 			}
 		}
 		
 		//monsters in healing
+		List<MonsterHealingForUser> userMonstersHealing =
+			monsterService.getMonstersInHealingForUser(userId);
+		if (!CollectionUtils.lacksSubstance(userMonstersHealing)) {
+			for (MonsterHealingForUser mhfu : userMonstersHealing) {
+				resBuilder.addMonstersHealing(
+					noneventMonsterProtoSerializer.createUserMonsterHealingProto(mhfu));
+			}
+		}
 		
+		//monsters in enhancing
 	}
 	
 	private void setAllStaticData(Builder resBuilder, String userId, boolean userIdSet) {
