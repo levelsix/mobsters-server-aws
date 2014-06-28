@@ -5,9 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import javax.persistence.Cache;
-import javax.persistence.EntityManagerFactory;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
