@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
+import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
+import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecBuilderImpl;
@@ -17,6 +19,10 @@ public interface MonsterService
 	
 	public List<MonsterHealingForUser> getMonstersInHealingForUser( String userId );
 
+	public List<MonsterEnhancingForUser> getMonstersInEnhancingForUser( String userId );
+	
+//	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId );
+	
 	// END READ ONLY LOGIC******************************************************************
 		
 	

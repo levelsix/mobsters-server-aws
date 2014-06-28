@@ -9,6 +9,7 @@ import java.util.TreeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.info.IMonster;
@@ -19,11 +20,13 @@ import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.FullUserMonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto.DialogueType;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterLevelInfoProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto;
-import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterHealingProto;
-import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto.DialogueType;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto.AnimationType;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementProto;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterHealingProto;
 
 public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoSerializer 
 {
@@ -254,4 +257,38 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 
 	    return umhpb.build();
 	}
+	
+	@Override
+	public UserEnhancementItemProto createUserEnhancementItemProto(
+		MonsterEnhancingForUser mefu)
+	{
+		UserEnhancementItemProto.Builder ueipb = UserEnhancementItemProto.newBuilder();
+	    ueipb.setUserMonsterUuid(mefu.getMonsterForUserId());
+
+	    Date startTime = mefu.getExpectedStartTime();
+	    if (null != startTime) {
+	      ueipb.setExpectedStartTimeMillis(startTime.getTime());
+	    }
+
+	    ueipb.setEnhancingCost(mefu.getEnhancingCost());
+
+	    return ueipb.build();
+	}
+	
+	@Override
+	public UserEnhancementProto createUserEnhancementProto(
+		String userId,
+		UserEnhancementItemProto baseMonster,
+		List<UserEnhancementItemProto> feeders )
+	{
+
+		UserEnhancementProto.Builder uepb = UserEnhancementProto.newBuilder();
+
+		uepb.setUserUuid(userId);
+		uepb.setBaseMonster(baseMonster);
+		uepb.addAllFeeders(feeders);
+
+		return uepb.build();
+	}
+	
 }

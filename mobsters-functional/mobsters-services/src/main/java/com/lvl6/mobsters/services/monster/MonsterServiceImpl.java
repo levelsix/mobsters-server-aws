@@ -15,8 +15,12 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
+import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
+import com.lvl6.mobsters.dynamo.repository.MonsterEnhancingForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
@@ -36,7 +40,12 @@ public class MonsterServiceImpl implements MonsterService
 	@Autowired
 	private MonsterHealingForUserRepository monsterHealingForUserRepository;
 
+	@Autowired
+	private MonsterEnhancingForUserRepository monsterEnhancingForUserRepository;
 
+//	@Autowired
+//	private MonsterEvolvingForUserRepository monsterEvolvingForUserRepository;
+	
 	// BEGIN READ ONLY LOGIC******************************************************************
 	
 	@Override
@@ -48,6 +57,16 @@ public class MonsterServiceImpl implements MonsterService
 	public List<MonsterHealingForUser> getMonstersInHealingForUser( String userId ) {
 		return monsterHealingForUserRepository.findByUserId(userId);
 	}
+	
+	@Override
+	public List<MonsterEnhancingForUser> getMonstersInEnhancingForUser( String userId ) {
+		return monsterEnhancingForUserRepository.findByUserId(userId);
+	}
+	
+//	@Override
+//	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId ) {
+//		
+//	}
 	
 	// END READ ONLY LOGIC******************************************************************
 		
@@ -283,7 +302,7 @@ public class MonsterServiceImpl implements MonsterService
 		// TODO: Record into monsterForUserHistory
 		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
 	}
-	
+
 	/*
 	static class CreateMonstersSpecBuilderImpl implements CreateMonstersSpecBuilder
 	{
@@ -383,4 +402,49 @@ public class MonsterServiceImpl implements MonsterService
 		}
 	}
 	*/
+	
+
+	public MonsterForUserRepository getMonsterForUserRepository()
+	{
+		return monsterForUserRepository;
+	}
+
+	public void setMonsterForUserRepository( MonsterForUserRepository monsterForUserRepository )
+	{
+		this.monsterForUserRepository = monsterForUserRepository;
+	}
+
+	public MonsterForUserHistoryRepository getMonsterForUserHistoryRepository()
+	{
+		return monsterForUserHistoryRepository;
+	}
+
+	public void setMonsterForUserHistoryRepository(
+		MonsterForUserHistoryRepository monsterForUserHistoryRepository )
+	{
+		this.monsterForUserHistoryRepository = monsterForUserHistoryRepository;
+	}
+
+	public MonsterHealingForUserRepository getMonsterHealingForUserRepository()
+	{
+		return monsterHealingForUserRepository;
+	}
+
+	public void setMonsterHealingForUserRepository(
+		MonsterHealingForUserRepository monsterHealingForUserRepository )
+	{
+		this.monsterHealingForUserRepository = monsterHealingForUserRepository;
+	}
+
+	public MonsterEnhancingForUserRepository getMonsterEnhancingForUserRepository()
+	{
+		return monsterEnhancingForUserRepository;
+	}
+
+	public void setMonsterEnhancingForUserRepository(
+		MonsterEnhancingForUserRepository monsterEnhancingForUserRepository )
+	{
+		this.monsterEnhancingForUserRepository = monsterEnhancingForUserRepository;
+	}
+	
 }

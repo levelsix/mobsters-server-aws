@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 import com.lvl6.mobsters.dynamo.ClanForUser;
+import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
@@ -67,6 +68,7 @@ import com.lvl6.mobsters.info.repository.StructureResourceStorageRepository;
 import com.lvl6.mobsters.info.repository.StructureTownHallRepository;
 import com.lvl6.mobsters.info.repository.TaskRepository;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventStaticDataProto.StaticDataProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
@@ -437,6 +439,42 @@ public class StartupController extends EventController
 		}
 		
 		//monsters in enhancing
+		List<MonsterEnhancingForUser> userMonstersEnhancing =
+			monsterService.getMonstersInEnhancingForUser(userId);
+		if (!CollectionUtils.lacksSubstance(userMonstersEnhancing)) {
+	    	UserEnhancementItemProto baseMonster = null;
+	    	
+	    	List<UserEnhancementItemProto> feeders = new ArrayList<UserEnhancementItemProto>();
+	    	for (MonsterEnhancingForUser mefu : userMonstersEnhancing) {
+	    		UserEnhancementItemProto ueip =
+	    			noneventMonsterProtoSerializer.createUserEnhancementItemProto(mefu);
+	    		
+	    		//TODO: if user has no monsters with null start time
+	    		//(if user has all monsters with a start time), or if user has more than one
+	    		//monster with a null start time
+	    		//STORE THEM AND DELETE THEM OR SOMETHING
+	    		
+	    		//search for the monster that is being enhanced, the one with null start time
+	    		Date startTime = mefu.getExpectedStartTime();
+	    		if(null == startTime) {
+	    			//found him
+	    			baseMonster = ueip;
+	    		} else {
+	    			//just a feeder, add him to the list
+	    			feeders.add(ueip);
+	    		}
+	    	}
+			
+	    	resBuilder.setEnhancements(
+	    		noneventMonsterProtoSerializer.createUserEnhancementProto(
+	    			userId,
+	    			baseMonster,
+	    			feeders)
+	    	);
+		}
+		
+		//monsters in evolution
+		
 	}
 	
 	private void setAllStaticData(Builder resBuilder, String userId, boolean userIdSet) {
