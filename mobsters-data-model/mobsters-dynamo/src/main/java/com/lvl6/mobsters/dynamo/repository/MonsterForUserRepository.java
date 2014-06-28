@@ -10,6 +10,8 @@ import com.lvl6.mobsters.dynamo.MonsterForUser;
 @Component
 public interface MonsterForUserRepository extends BaseDynamoRepository<MonsterForUser>
 {
+	List<MonsterForUser> findByUserId( String userId );
+	
 	List<MonsterForUser> findByUserIdAndId( String userId, Collection<String> monsterForUserIds );
 
 	List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(

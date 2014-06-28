@@ -32,8 +32,8 @@ public class QuestServiceImpl implements QuestService {
     
     //CRUD LOGIC******************************************************************
 
-    /**************************************************************************/
-
+    // BEGIN READ ONLY LOGIC******************************************************************
+	
     @Override
     public List<QuestForUser> findByUserId( String userId ) {
     	//return questForUserRepository.load
@@ -67,6 +67,8 @@ public class QuestServiceImpl implements QuestService {
 
 		return questIdToQjfuList;
    	}
+
+    // END READ ONLY LOGIC******************************************************************
 
 
 	public QuestForUserRepository getQuestForUserRepository()

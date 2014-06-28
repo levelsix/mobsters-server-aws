@@ -14,9 +14,12 @@ public interface QuestService
 
 	// CRUD LOGIC******************************************************************
 	
+	// BEGIN READ ONLY LOGIC******************************************************************
 	public List<QuestForUser> findByUserId( String userId );
-	/**************************************************************************/
 
 	public Map<Integer, Collection<QuestJobForUser>> findByUserIdAndQuestIdIn( String userId, Collection<Integer> questIds);
 
+	// END READ ONLY LOGIC******************************************************************
+
+	
 }

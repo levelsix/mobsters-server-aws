@@ -7,9 +7,19 @@ import java.util.Set;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecBuilderImpl;
 public interface MonsterService
 {
+	
+	// BEGIN READ ONLY LOGIC******************************************************************
+	public List<MonsterForUser> getMonstersForUser( String userId );
+	
+	public List<MonsterHealingForUser> getMonstersInHealingForUser( String userId );
+
+	// END READ ONLY LOGIC******************************************************************
+		
+	
 	/**
 	 * The monsterForUserId will have its teamSlotNum property set to the given teamSlotNum. All
 	 * monstersForUser currently in the teamSlot (at most 1) will have their property set to 0.
@@ -19,7 +29,7 @@ public interface MonsterService
 	 * @param teamSlotNum
 	 *        - should not be 0
 	 */
-	public abstract void addMonsterForUserToTeamSlot(
+	public void addMonsterForUserToTeamSlot(
 		String userId,
 		String monsterForUserId,
 		int teamSlotNum );
@@ -29,7 +39,7 @@ public interface MonsterService
 	 * @param userId
 	 * @param monsterForUserIds
 	 */
-	public abstract void clearMonstersForUserTeamSlot(
+	public void clearMonstersForUserTeamSlot(
 		String userId,
 		Set<String> monsterForUserIds );
 
@@ -42,7 +52,7 @@ public interface MonsterService
 	 * @param details
 	 * @see MonsterForUserOp
 	 */
-	public abstract void modifyMonstersForUser( String userId, ModifyMonstersSpec details );
+	public void modifyMonstersForUser( String userId, ModifyMonstersSpec details );
 
 	public interface ModifyMonstersSpecBuilder
 	{
@@ -91,7 +101,7 @@ public interface MonsterService
 	 * @param combineStartTime
 	 */
 	
-	public abstract void createCompleteMonstersForUser( String userId, List<Integer> monsterIds, Date combineStartTime );
+	public void createCompleteMonstersForUser( String userId, List<Integer> monsterIds, Date combineStartTime );
 
 	/*
 	public interface CreateMonstersSpecBuilder

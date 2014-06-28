@@ -16,8 +16,10 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
@@ -30,7 +32,26 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Autowired
 	private MonsterForUserHistoryRepository monsterForUserHistoryRepository;
+	
+	@Autowired
+	private MonsterHealingForUserRepository monsterHealingForUserRepository;
 
+
+	// BEGIN READ ONLY LOGIC******************************************************************
+	
+	@Override
+	public List<MonsterForUser> getMonstersForUser(String userId) {
+		return monsterForUserRepository.findByUserId(userId);
+	}
+
+	@Override
+	public List<MonsterHealingForUser> getMonstersInHealingForUser( String userId ) {
+		return monsterHealingForUserRepository.findByUserId(userId);
+	}
+	
+	// END READ ONLY LOGIC******************************************************************
+		
+	
 	@Override
 	public void addMonsterForUserToTeamSlot(
 		String userId,
@@ -63,14 +84,14 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
 	{
-		List<MonsterForUser> monsterList =
-			monsterForUserRepository.findAll(userId, monsterForUserIds);
-
-		for (MonsterForUser mfu : monsterList) {
-			mfu.setTeamSlotNum(0);
-		}
-
-		monsterForUserRepository.saveAll(monsterList);
+//		List<MonsterForUser> monsterList =
+//			monsterForUserRepository.findAll(userId, monsterForUserIds);
+//
+//		for (MonsterForUser mfu : monsterList) {
+//			mfu.setTeamSlotNum(0);
+//		}
+//
+//		monsterForUserRepository.saveAll(monsterList);
 
 	}
 

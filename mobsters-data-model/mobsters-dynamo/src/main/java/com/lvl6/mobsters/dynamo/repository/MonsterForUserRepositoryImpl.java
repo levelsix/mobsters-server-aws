@@ -93,4 +93,22 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Monst
 		return monstersForUser;
 	}
 
+	@Override
+	public List<MonsterForUser> findByUserId( final String userId )
+	{
+		final MonsterForUser hashKey = new MonsterForUser();
+		hashKey.setUserId(userId);
+
+		final DynamoDBQueryExpression<MonsterForUser> query =
+			new DynamoDBQueryExpression<MonsterForUser>()
+			// .withIndexName("userIdGlobalIndex")
+				.withHashKeyValues(hashKey)
+				.withConsistentRead(true);
+
+		LOG.info("Query: {}", query);
+		final PaginatedQueryList<MonsterForUser> monsterForUsersForUser = query(query);
+		monsterForUsersForUser.loadAllResults();
+		return monsterForUsersForUser;
+	}
+	
 }
