@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
+import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.noneventproto.NoneventChatProto.ColorProto;
@@ -26,7 +27,7 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 	@Override
 	public List<FullUserQuestProto> createFullUserQuestDataLarges(
 		List<QuestForUser> userQuests,
-		Map<Integer, Quest> questIdsToQuests,
+		Map<Integer, BaseIntPersistentObject> questIdsToQuests,
 		Map<Integer, Collection<QuestJobForUser>> questIdToUserQuestJobs )
 	{
 		List<FullUserQuestProto> fullUserQuestDataLargeProtos =
@@ -34,7 +35,7 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 
 		for (QuestForUser userQuest : userQuests) {
 			int questId = userQuest.getQuestId();
-			Quest quest = questIdsToQuests.get(questId);
+			Quest quest = (Quest) questIdsToQuests.get(questId);
 			FullUserQuestProto.Builder builder = FullUserQuestProto.newBuilder();
 
 			if (null == quest) {
@@ -42,9 +43,7 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 					+ userQuest.getQuestId()
 					+ ", userQuest="
 					+ userQuest);
-			}
-
-			if (null != quest) {
+			} else {
 				builder.setUserUuid(userQuest.getUserId());
 				builder.setQuestId(quest.getId());
 				builder.setIsRedeemed(userQuest.isRedeemed());

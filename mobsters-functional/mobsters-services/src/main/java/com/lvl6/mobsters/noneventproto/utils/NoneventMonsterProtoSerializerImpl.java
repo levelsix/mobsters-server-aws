@@ -2,18 +2,21 @@ package com.lvl6.mobsters.noneventproto.utils;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.FullUserMonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterLevelInfoProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto;
@@ -208,4 +211,27 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 
 	    return mbdpb.build();
 	  }
+	
+	//BEGIN USER DATA SERIALIZATION
+	
+	@Override
+	public FullUserMonsterProto createFullUserMonsterProtoFromUserMonster(MonsterForUser mfu) {
+		FullUserMonsterProto.Builder fumpb = FullUserMonsterProto.newBuilder();
+	    fumpb.setUserMonsterUuid(mfu.getMonsterForUserId());
+	    fumpb.setUserUuid(mfu.getUserId());
+	    fumpb.setMonsterId(mfu.getMonsterId());
+	    fumpb.setCurrentExp(mfu.getCurrentExp());
+	    fumpb.setCurrentLvl(mfu.getCurrentLvl());
+	    fumpb.setCurrentHealth(mfu.getCurrentHealth());
+	    fumpb.setNumPieces(mfu.getNumPieces());
+	    fumpb.setIsComplete(mfu.isComplete());
+
+	    Date combineStartTime = mfu.getCombineStartTime();
+	    if (null != combineStartTime) {
+	      fumpb.setCombineStartTime(combineStartTime.getTime());
+	    }
+
+	    fumpb.setTeamSlotNum(mfu.getTeamSlotNum());
+	    return fumpb.build();
+	}
 }

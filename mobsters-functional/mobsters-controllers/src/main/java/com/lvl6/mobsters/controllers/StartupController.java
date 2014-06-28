@@ -12,7 +12,10 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 import com.lvl6.mobsters.dynamo.ClanForUser;
+import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.User;
@@ -27,6 +30,7 @@ import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.StartupRequestEvent;
 import com.lvl6.mobsters.events.response.StartupResponseEvent;
 import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.EventPersistent;
 import com.lvl6.mobsters.info.Item;
@@ -34,7 +38,6 @@ import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
 import com.lvl6.mobsters.info.Obstacle;
 import com.lvl6.mobsters.info.PvpLeague;
-import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.info.StaticUserLevelInfo;
 import com.lvl6.mobsters.info.StructureHospital;
 import com.lvl6.mobsters.info.StructureLab;
@@ -52,6 +55,7 @@ import com.lvl6.mobsters.info.repository.MonsterBattleDialogueRepository;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 import com.lvl6.mobsters.info.repository.ObstacleRepository;
 import com.lvl6.mobsters.info.repository.PvpLeagueRepository;
+import com.lvl6.mobsters.info.repository.QuestRepository;
 import com.lvl6.mobsters.info.repository.StaticUserLevelInfoRepository;
 import com.lvl6.mobsters.info.repository.StructureHospitalRepository;
 import com.lvl6.mobsters.info.repository.StructureLabRepository;
@@ -76,6 +80,7 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventTaskProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.clan.ClanService;
+import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.quest.QuestService;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.properties.Globals;
@@ -89,21 +94,27 @@ public class StartupController extends EventController
 
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired
+	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
 
 	@Autowired
 	protected QuestService questService;
 	
 	@Autowired
-	protected ClanService clanService;
+	protected QuestRepository questRepository;
 	
 	@Autowired
 	protected NoneventQuestProtoSerializer noneventQuestProtoSerializer;
 	
 	@Autowired
-	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
+	protected ClanService clanService;
 	
 	@Autowired
 	protected NoneventClanProtoSerializer noneventClanProtoSerializer;
+	
+	@Autowired
+	protected MonsterService monsterService;
 	
 	@Autowired
 	protected TaskRepository taskRepository;
@@ -177,7 +188,6 @@ public class StartupController extends EventController
 	@Autowired
 	protected NoneventAchievementProtoSerializer noneventAchievementProtoSerializer;
 	
-	//TODO
 	/*
 	 * @Autowired protected EventWriter eventWriter;
 	 */
@@ -245,7 +255,7 @@ public class StartupController extends EventController
 
 		try {
 			if (!UpdateStatus.MAJOR_UPDATE.equals(updateStatus)) {
-				user = getUserService().getUserCredentialByFacebookIdOrUdid(fbId, udid);
+				user = userService.getUserCredentialByFacebookIdOrUdid(fbId, udid);
 				if (null != user) {
 					userId = user.getUserId();
 					startupStatus = StartupStatus.USER_IN_DB;
@@ -313,7 +323,7 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at setUserClanInfos", stopWatch.getTime());
 //		setNotifications(resBuilder, user);
 //		LOG.info("{}ms at setNotifications", stopWatch.getTime());
-		setNoticesToPlayers(resBuilder);
+//		setNoticesToPlayers(resBuilder);
 //		LOG.info("{}ms at setNoticesToPlayers", stopWatch.getTime());
 //		setGroupChatMessages(resBuilder, user);
 //		LOG.info("{}ms at groupChatMessages", stopWatch.getTime());
@@ -321,8 +331,6 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at privateChatPosts", stopWatch.getTime());
 		setUserMonsterStuff(resBuilder, userId);
 //		LOG.info("{}ms at setUserMonsterStuff", stopWatch.getTime());
-//		setBoosterPurchases(resBuilder);
-//		LOG.info("{}ms at boosterPurchases", stopWatch.getTime());
 //		setFacebookAndExtraSlotsStuff(resBuilder, user, userId);
 //		LOG.info("{}ms at facebookAndExtraSlotsStuff", stopWatch.getTime());
 //		setTaskStuff(resBuilder, userId);
@@ -368,7 +376,10 @@ public class StartupController extends EventController
 		Map<Integer, Collection<QuestJobForUser>> questIdToUserQuestJobs = questService
 			.findByUserIdAndQuestIdIn(userId, inProgressQuestIds);
 		
-		Map<Integer, Quest> questIdToQuests = null;//QuestRetrieveUtils.getQuestIdsToQuests();
+		Collection<?> configQuests = questRepository.findByIdIn(inProgressQuestIds);
+		
+		Map<Integer, BaseIntPersistentObject> questIdToQuests =
+			ConfigurationDataUtil.mapifyConfigurationData(configQuests);
 
 		//generate the user quests
 		List<FullUserQuestProto> currentUserQuests = noneventQuestProtoSerializer
@@ -376,7 +387,7 @@ public class StartupController extends EventController
 				questIdToUserQuestJobs);
 		resBuilder.addAllUserQuests(currentUserQuests);
 
-		//generate the redeemed quest ids
+		//send the redeemed quest ids
 		resBuilder.addAllRedeemedQuestIds(redeemedQuestIds);
 	}
 	
@@ -389,7 +400,7 @@ public class StartupController extends EventController
 		}
 	}
 	
-	private void setNoticesToPlayers(Builder resBuilder) {
+	/*private void setNoticesToPlayers(Builder resBuilder) {
 		// TODO: Fill in the place holder
 		List<String> notices = null;//StartupStuffRetrieveUtils.getAllActiveAlerts();
 	  	if (null != notices) {
@@ -397,7 +408,7 @@ public class StartupController extends EventController
 	  	    resBuilder.addNoticesToPlayers(notice);
 	  	  }
 	  	}
-	}
+	}*/
 	
 	private void setGroupChatMessages(Builder resBuilder, User user) {
 		// TODO: Fill in
@@ -405,6 +416,16 @@ public class StartupController extends EventController
 	
 	private void setUserMonsterStuff(Builder resBuilder, String userId) {
 		// TODO: Fill in
+		List<MonsterForUser> userMonsters= monsterService.getMonstersForUser(userId);
+		
+		if (!CollectionUtils.lacksSubstance(userMonsters)) {
+			for (MonsterForUser mfu : userMonsters) {
+				resBuilder.addUsersMonsters(noneventMonsterProtoSerializer.createFullUserMonsterProtoFromUserMonster(mfu));
+			}
+		}
+		
+		//monsters in healing
+		
 	}
 	
 	private void setAllStaticData(Builder resBuilder, String userId, boolean userIdSet) {
@@ -580,7 +601,8 @@ public class StartupController extends EventController
 		}
 	}
 	
-	//TODO
+	//TODO: Generate the getters and setters for the autowired properties 
+
 	public UserService getUserService()
 	{
 		return userService;
@@ -589,26 +611,6 @@ public class StartupController extends EventController
 	public void setUserService( UserService userService )
 	{
 		this.userService = userService;
-	}
-
-	public QuestService getQuestService()
-	{
-		return questService;
-	}
-
-	public void setQuestService( QuestService questService )
-	{
-		this.questService = questService;
-	}
-
-	public ClanService getClanService()
-	{
-		return clanService;
-	}
-
-	public void setClanService( ClanService clanService )
-	{
-		this.clanService = clanService;
 	}
 
 	public NoneventUserProtoSerializer getNoneventUserProtoSerializer()
@@ -622,6 +624,26 @@ public class StartupController extends EventController
 		this.noneventUserProtoSerializer = noneventUserProtoSerializer;
 	}
 
+	public QuestService getQuestService()
+	{
+		return questService;
+	}
+
+	public void setQuestService( QuestService questService )
+	{
+		this.questService = questService;
+	}
+
+	public QuestRepository getQuestRepository()
+	{
+		return questRepository;
+	}
+
+	public void setQuestRepository( QuestRepository questRepository )
+	{
+		this.questRepository = questRepository;
+	}
+
 	public NoneventQuestProtoSerializer getNoneventQuestProtoSerializer()
 	{
 		return noneventQuestProtoSerializer;
@@ -633,6 +655,16 @@ public class StartupController extends EventController
 		this.noneventQuestProtoSerializer = noneventQuestProtoSerializer;
 	}
 
+	public ClanService getClanService()
+	{
+		return clanService;
+	}
+
+	public void setClanService( ClanService clanService )
+	{
+		this.clanService = clanService;
+	}
+
 	public NoneventClanProtoSerializer getNoneventClanProtoSerializer()
 	{
 		return noneventClanProtoSerializer;
@@ -642,6 +674,16 @@ public class StartupController extends EventController
 		NoneventClanProtoSerializer noneventClanProtoSerializer )
 	{
 		this.noneventClanProtoSerializer = noneventClanProtoSerializer;
+	}
+
+	public MonsterService getMonsterService()
+	{
+		return monsterService;
+	}
+
+	public void setMonsterService( MonsterService monsterService )
+	{
+		this.monsterService = monsterService;
 	}
 
 	public TaskRepository getTaskRepository()
@@ -814,15 +856,15 @@ public class StartupController extends EventController
 		this.eventPersistentRepository = eventPersistentRepository;
 	}
 
-	public NoneventEventPersistentProtoSerializer getEventPersistentSerializer()
+	public NoneventEventPersistentProtoSerializer getEventPersistentProtoSerializer()
 	{
 		return eventPersistentProtoSerializer;
 	}
 
-	public void setEventPersistentSerializer(
-		NoneventEventPersistentProtoSerializer eventPersistentSerializer )
+	public void setEventPersistentProtoSerializer(
+		NoneventEventPersistentProtoSerializer eventPersistentProtoSerializer )
 	{
-		this.eventPersistentProtoSerializer = eventPersistentSerializer;
+		this.eventPersistentProtoSerializer = eventPersistentProtoSerializer;
 	}
 
 	public MonsterBattleDialogueRepository getMonsterBattleDialogueRepository()
@@ -834,17 +876,6 @@ public class StartupController extends EventController
 		MonsterBattleDialogueRepository monsterBattleDialogueRepository )
 	{
 		this.monsterBattleDialogueRepository = monsterBattleDialogueRepository;
-	}
-
-	public NoneventEventPersistentProtoSerializer getEventPersistentProtoSerializer()
-	{
-		return eventPersistentProtoSerializer;
-	}
-
-	public void setEventPersistentProtoSerializer(
-		NoneventEventPersistentProtoSerializer eventPersistentProtoSerializer )
-	{
-		this.eventPersistentProtoSerializer = eventPersistentProtoSerializer;
 	}
 
 	public ItemRepository getItemRepository()
