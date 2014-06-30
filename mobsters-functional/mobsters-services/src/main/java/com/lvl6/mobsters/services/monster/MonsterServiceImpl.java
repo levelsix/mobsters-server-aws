@@ -43,8 +43,8 @@ public class MonsterServiceImpl implements MonsterService
 	@Autowired
 	private MonsterEnhancingForUserRepository monsterEnhancingForUserRepository;
 
-//	@Autowired
-//	private MonsterEvolvingForUserRepository monsterEvolvingForUserRepository;
+	@Autowired
+	private MonsterEvolvingForUserRepository monsterEvolvingForUserRepository;
 	
 	// BEGIN READ ONLY LOGIC******************************************************************
 	
@@ -63,10 +63,10 @@ public class MonsterServiceImpl implements MonsterService
 		return monsterEnhancingForUserRepository.findByUserId(userId);
 	}
 	
-//	@Override
-//	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId ) {
-//		
-//	}
+	@Override
+	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId ) {
+		return monsterEvolvingForUserRepository.findByUserId(userId);
+	}
 	
 	// END READ ONLY LOGIC******************************************************************
 		

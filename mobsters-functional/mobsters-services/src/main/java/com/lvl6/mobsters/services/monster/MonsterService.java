@@ -21,7 +21,7 @@ public interface MonsterService
 
 	public List<MonsterEnhancingForUser> getMonstersInEnhancingForUser( String userId );
 	
-//	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId );
+	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId );
 	
 	// END READ ONLY LOGIC******************************************************************
 		

@@ -1,5 +1,6 @@
 package com.lvl6.mobsters.noneventproto.utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
+import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.info.IMonster;
@@ -26,6 +28,7 @@ import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterProto.AnimationType;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementProto;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterEvolutionProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterHealingProto;
 
 public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoSerializer 
@@ -289,6 +292,30 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 		uepb.addAllFeeders(feeders);
 
 		return uepb.build();
+	}
+
+	@Override
+	public UserMonsterEvolutionProto createUserEvolutionProtoFromEvolution(
+		MonsterEvolvingForUser mefu )
+	{
+		UserMonsterEvolutionProto.Builder uepb = UserMonsterEvolutionProto.newBuilder();
+
+	    String catalystUserMonsterId = mefu.getCatalystMonsterForUserId();
+	    String one = mefu.getMonsterForUserIdOne();
+	    String two = mefu.getMonsterForUserIdTwo();
+	    Date startTime = mefu.getStartTime();
+
+	    uepb.setCatalystUserMonsterUuid(catalystUserMonsterId);
+
+	    long startTimeMillis = startTime.getTime();
+	    uepb.setStartTime(startTimeMillis);
+
+	    List<String> userMonsterIds = new ArrayList<String>();
+	    userMonsterIds.add(one);
+	    userMonsterIds.add(two);
+	    uepb.addAllUserMonsterUuids(userMonsterIds);
+
+	    return uepb.build();
 	}
 	
 }

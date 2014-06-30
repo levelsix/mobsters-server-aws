@@ -16,6 +16,7 @@ import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
+import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
@@ -421,7 +422,8 @@ public class StartupController extends EventController
 		// TODO: Fill in
 		List<MonsterForUser> userMonsters= monsterService.getMonstersForUser(userId);
 		
-		if (!CollectionUtils.lacksSubstance(userMonsters)) {
+		if (!CollectionUtils.lacksSubstance(userMonsters))
+		{
 			for (MonsterForUser mfu : userMonsters) {
 				resBuilder.addUsersMonsters(
 					noneventMonsterProtoSerializer.createFullUserMonsterProtoFromUserMonster(mfu));
@@ -431,7 +433,8 @@ public class StartupController extends EventController
 		//monsters in healing
 		List<MonsterHealingForUser> userMonstersHealing =
 			monsterService.getMonstersInHealingForUser(userId);
-		if (!CollectionUtils.lacksSubstance(userMonstersHealing)) {
+		if (!CollectionUtils.lacksSubstance(userMonstersHealing))
+		{
 			for (MonsterHealingForUser mhfu : userMonstersHealing) {
 				resBuilder.addMonstersHealing(
 					noneventMonsterProtoSerializer.createUserMonsterHealingProto(mhfu));
@@ -441,7 +444,8 @@ public class StartupController extends EventController
 		//monsters in enhancing
 		List<MonsterEnhancingForUser> userMonstersEnhancing =
 			monsterService.getMonstersInEnhancingForUser(userId);
-		if (!CollectionUtils.lacksSubstance(userMonstersEnhancing)) {
+		if (!CollectionUtils.lacksSubstance(userMonstersEnhancing))
+		{
 	    	UserEnhancementItemProto baseMonster = null;
 	    	
 	    	List<UserEnhancementItemProto> feeders = new ArrayList<UserEnhancementItemProto>();
@@ -474,7 +478,18 @@ public class StartupController extends EventController
 		}
 		
 		//monsters in evolution
+		List<MonsterEvolvingForUser> userMonstersEvolving =
+			monsterService.getMonstersInEvolution(userId);
 		
+		if (!CollectionUtils.lacksSubstance(userMonstersEvolving))
+		{
+			for (MonsterEvolvingForUser mefu : userMonstersEvolving) {
+				// TODO: NOTE THAT IF MORE THAN ONE EVOLUTION IS ALLLOWED AT A TIME,
+				// THIS METHOD CALL NEEDS TO CHANGE
+				resBuilder.setEvolution(
+					noneventMonsterProtoSerializer.createUserEvolutionProtoFromEvolution(mefu));
+			}
+		}
 	}
 	
 	private void setAllStaticData(Builder resBuilder, String userId, boolean userIdSet) {
