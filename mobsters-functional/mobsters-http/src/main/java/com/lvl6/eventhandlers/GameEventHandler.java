@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
+import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.PreDatabaseRequestEvent;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.info.ConnectedPlayer;
@@ -50,7 +51,7 @@ public class GameEventHandler extends AbstractGameEventHandler {
 			return;
 		}
 		updatePlayerToServerMaps(event, session);
-		ec.handleEvent(event);
+		EventsToDispatch responseEvents = ec.handleEvent(event);
 	}
 
 	protected void updatePlayerToServerMaps(RequestEvent event, WebSocketSession session) {

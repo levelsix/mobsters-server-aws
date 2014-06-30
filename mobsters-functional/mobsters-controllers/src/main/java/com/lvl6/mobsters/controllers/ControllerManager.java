@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +40,17 @@ public class ControllerManager {
 	// synchronized mutex down to one volatile read in the common case where the map has already been built.
 	//
 	// TODO: Evaluate whether eventControllerList can manifest additional entries after the first time it is
-	//       used to build a lookup map.  If it cannot, and threads perform multiple EventControllerMap lookups in 
+	//       used to build a lookup map. (You could have just asked me)  If it cannot, and threads perform multiple EventControllerMap lookups in 
 	//       their lifetime, then it is even possible to do away with the volatile read cost by using ThreadLocal
 	//       to capture the map after its is first looked up.  If the map can change at runtime after its initial
 	//       build, then preventing future thread-safe atomic get() calls is not viable.
+	
+
+	//		The map was created by Spring before anything uses it.
+	//		The map is never modified after creation.
+	//		The map is only used by the GameEventHandler which is also created by Spring and doesn't process
+	//		any events until after creation is complete.
+	
 	private static final class EventControllerMap {
 		private final HashMap<EventProtocolRequest, EventController> eventControllerMap;
 		
@@ -81,6 +90,12 @@ public class ControllerManager {
 		}
 		
 		return eventControllerMap.getEventControllerByEventType(eventType);
+	}
+	
+	@PostConstruct
+	public void createMap() {
+		EventControllerMap eventControllerMap = eventControllers.get();
+		eventControllerMap = loadEventControllers(eventControllerMap);
 	}
 
 	/**

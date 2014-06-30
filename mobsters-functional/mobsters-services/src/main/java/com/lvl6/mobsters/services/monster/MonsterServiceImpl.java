@@ -63,7 +63,7 @@ public class MonsterServiceImpl implements MonsterService
 	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
 	{
 		List<MonsterForUser> monsterList =
-			monsterForUserRepository.findAll(userId, monsterForUserIds);
+			monsterForUserRepository.findByUserIdAndId(userId, monsterForUserIds);
 
 		for (MonsterForUser mfu : monsterList) {
 			mfu.setTeamSlotNum(0);
