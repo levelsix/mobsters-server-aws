@@ -2,8 +2,10 @@ package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name="ClanIcon")
+@Table(name="clan_icon")
 public class ClanIcon extends BaseIntPersistentObject{
 	
 	private static final long serialVersionUID = -5510816987235168564L;	

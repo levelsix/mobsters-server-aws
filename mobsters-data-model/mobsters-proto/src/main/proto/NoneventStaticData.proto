@@ -4,7 +4,6 @@
 import "NoneventAchievement.proto";
 import "NoneventPvp.proto";
 import "NoneventBoosterPack.proto";
-import "NoneventCity.proto";
 import "NoneventClan.proto";
 import "NoneventMonster.proto";
 import "NoneventQuest.proto";
@@ -22,7 +21,7 @@ option java_outer_classname = "NoneventStaticDataProto";
 message StaticDataProto {
     optional MinimumUserProto sender = 1;
 	//repeated CityExpansionCostProto expansionCosts = 2;
-	repeated FullCityProto allCities = 3;
+	//repeated FullCityProto allCities = 3;
 	repeated FullTaskProto allTasks = 4;
 	repeated MonsterProto allMonsters = 5;
 	repeated StaticUserLevelInfoProto slip = 6;

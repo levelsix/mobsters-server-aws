@@ -3,8 +3,10 @@ package com.lvl6.mobsters.info;
 //this class is analogous to a task
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name="ClanRaidStage")
+@Table(name="clan_raid_stage")
 public class ClanRaidStage extends BaseIntPersistentObject{
 
 	

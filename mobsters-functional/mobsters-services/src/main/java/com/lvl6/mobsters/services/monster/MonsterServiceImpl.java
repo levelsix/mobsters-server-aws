@@ -18,6 +18,7 @@ import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
+import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 
@@ -242,7 +243,7 @@ public class MonsterServiceImpl implements MonsterService
 	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
 	  		Collections.sort(lvls);
 	  		int firstOne = lvls.get(0);
-	  		MonsterLevelInfo mli = info.get(firstOne);
+	  		IMonsterLevelInfo mli = info.get(firstOne);
 	  		
 	  		MonsterForUser mfu = new MonsterForUser();
 	  		mfu.setUserId(userId);

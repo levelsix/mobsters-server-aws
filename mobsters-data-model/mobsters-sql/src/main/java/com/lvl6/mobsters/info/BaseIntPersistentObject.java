@@ -1,15 +1,10 @@
 package com.lvl6.mobsters.info;
 
-import java.io.Serializable;
-
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.GenericGenerator;
-
 @MappedSuperclass
-public abstract class BaseIntPersistentObject implements Serializable{
+public abstract class BaseIntPersistentObject implements IBaseIntPersistentObject {
 
     private static final long serialVersionUID = 970907783140746344L;
 

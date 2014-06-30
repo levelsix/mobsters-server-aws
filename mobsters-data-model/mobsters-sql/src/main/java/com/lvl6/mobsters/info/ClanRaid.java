@@ -3,8 +3,10 @@ package com.lvl6.mobsters.info;
 //multiple clan raids can be available at the same time
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name="ClanRaid")
+@Table(name="clan_raid")
 public class ClanRaid extends BaseIntPersistentObject{
 
 	

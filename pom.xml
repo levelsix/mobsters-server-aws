@@ -77,6 +77,9 @@
 			more verbose output from Hibernate about session boundaries and queries evaluated. -->
 		<hibernate.generate_statistics>false</hibernate.generate_statistics>
 		<hibernate.show_sql>false</hibernate.show_sql>
+		<hibernate.cache.use_second_level_cache>true</hibernate.cache.use_second_level_cache>
+		<hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
+		<hibernate.cache.region.factory_class>org.hibernate.cache.ehcache.EhCacheRegionFactory</hibernate.cache.region.factory_class>
 
 		<!-- Redis/Elasticache -->
 		<lvl6.jedis.host>robot.lvl6.com</lvl6.jedis.host>
@@ -385,6 +388,12 @@
 				<artifactId>chill-java</artifactId>
 				<version>${chill-java.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>4.3.5.Final</version>
+<!-- 				<version>${hibernate-version}</version> -->
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -450,6 +459,10 @@
 			<artifactId>powermock-module-junit4-rule-agent</artifactId>
 			<version>${powermock.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
 		</dependency>
 	</dependencies>
 </project>

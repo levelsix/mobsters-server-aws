@@ -5,8 +5,10 @@ import java.util.Random;
 //the oil, cash, monster rewards can be set or not set; not mutually exclusive
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity
+@Entity(name="ClanRaidStageReward")
+@Table(name="clan_raid_stage_reward")
 public class ClanRaidStageReward extends BaseIntPersistentObject{	
 
 	
@@ -25,10 +27,10 @@ public class ClanRaidStageReward extends BaseIntPersistentObject{
 	private int monsterId;
 	@Column(name = "expected_monster_reward_quantity")
 	private int expectedMonsterRewardQuantity;//also monster drop rate multiplier	
+	
 	//not part of the table, just for convenience
-
-	@Column(name = "rand")
 	private Random rand;	
+	
 	public ClanRaidStageReward(){}
 	public ClanRaidStageReward(int id, int clanRaidStageId, int minOilReward,
 			int maxOilReward, int minCashReward, int maxCashReward, int monsterId,

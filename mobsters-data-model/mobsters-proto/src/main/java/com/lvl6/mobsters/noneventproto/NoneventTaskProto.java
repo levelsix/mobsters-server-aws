@@ -634,19 +634,11 @@ public final class NoneventTaskProto {
     boolean hasDescription();
     String getDescription();
     
-    // optional int32 cityId = 4;
-    boolean hasCityId();
-    int getCityId();
-    
-    // optional int32 assetNumWithinCity = 5;
-    boolean hasAssetNumWithinCity();
-    int getAssetNumWithinCity();
-    
-    // optional int32 prerequisiteTaskId = 6;
+    // optional int32 prerequisiteTaskId = 4;
     boolean hasPrerequisiteTaskId();
     int getPrerequisiteTaskId();
     
-    // optional int32 prerequisiteQuestId = 7;
+    // optional int32 prerequisiteQuestId = 5;
     boolean hasPrerequisiteQuestId();
     int getPrerequisiteQuestId();
   }
@@ -753,41 +745,21 @@ public final class NoneventTaskProto {
       }
     }
     
-    // optional int32 cityId = 4;
-    public static final int CITYID_FIELD_NUMBER = 4;
-    private int cityId_;
-    public boolean hasCityId() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    public int getCityId() {
-      return cityId_;
-    }
-    
-    // optional int32 assetNumWithinCity = 5;
-    public static final int ASSETNUMWITHINCITY_FIELD_NUMBER = 5;
-    private int assetNumWithinCity_;
-    public boolean hasAssetNumWithinCity() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    public int getAssetNumWithinCity() {
-      return assetNumWithinCity_;
-    }
-    
-    // optional int32 prerequisiteTaskId = 6;
-    public static final int PREREQUISITETASKID_FIELD_NUMBER = 6;
+    // optional int32 prerequisiteTaskId = 4;
+    public static final int PREREQUISITETASKID_FIELD_NUMBER = 4;
     private int prerequisiteTaskId_;
     public boolean hasPrerequisiteTaskId() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     public int getPrerequisiteTaskId() {
       return prerequisiteTaskId_;
     }
     
-    // optional int32 prerequisiteQuestId = 7;
-    public static final int PREREQUISITEQUESTID_FIELD_NUMBER = 7;
+    // optional int32 prerequisiteQuestId = 5;
+    public static final int PREREQUISITEQUESTID_FIELD_NUMBER = 5;
     private int prerequisiteQuestId_;
     public boolean hasPrerequisiteQuestId() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     public int getPrerequisiteQuestId() {
       return prerequisiteQuestId_;
@@ -797,8 +769,6 @@ public final class NoneventTaskProto {
       taskId_ = 0;
       name_ = "";
       description_ = "";
-      cityId_ = 0;
-      assetNumWithinCity_ = 0;
       prerequisiteTaskId_ = 0;
       prerequisiteQuestId_ = 0;
     }
@@ -824,16 +794,10 @@ public final class NoneventTaskProto {
         output.writeBytes(3, getDescriptionBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, cityId_);
+        output.writeInt32(4, prerequisiteTaskId_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, assetNumWithinCity_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeInt32(6, prerequisiteTaskId_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeInt32(7, prerequisiteQuestId_);
+        output.writeInt32(5, prerequisiteQuestId_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -858,19 +822,11 @@ public final class NoneventTaskProto {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, cityId_);
+          .computeInt32Size(4, prerequisiteTaskId_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, assetNumWithinCity_);
-      }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(6, prerequisiteTaskId_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(7, prerequisiteQuestId_);
+          .computeInt32Size(5, prerequisiteQuestId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1002,14 +958,10 @@ public final class NoneventTaskProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         description_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        cityId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        assetNumWithinCity_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         prerequisiteTaskId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000008);
         prerequisiteQuestId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -1063,17 +1015,9 @@ public final class NoneventTaskProto {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.cityId_ = cityId_;
+        result.prerequisiteTaskId_ = prerequisiteTaskId_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
-        }
-        result.assetNumWithinCity_ = assetNumWithinCity_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.prerequisiteTaskId_ = prerequisiteTaskId_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
         }
         result.prerequisiteQuestId_ = prerequisiteQuestId_;
         result.bitField0_ = to_bitField0_;
@@ -1100,12 +1044,6 @@ public final class NoneventTaskProto {
         }
         if (other.hasDescription()) {
           setDescription(other.getDescription());
-        }
-        if (other.hasCityId()) {
-          setCityId(other.getCityId());
-        }
-        if (other.hasAssetNumWithinCity()) {
-          setAssetNumWithinCity(other.getAssetNumWithinCity());
         }
         if (other.hasPrerequisiteTaskId()) {
           setPrerequisiteTaskId(other.getPrerequisiteTaskId());
@@ -1161,21 +1099,11 @@ public final class NoneventTaskProto {
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              cityId_ = input.readInt32();
+              prerequisiteTaskId_ = input.readInt32();
               break;
             }
             case 40: {
               bitField0_ |= 0x00000010;
-              assetNumWithinCity_ = input.readInt32();
-              break;
-            }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              prerequisiteTaskId_ = input.readInt32();
-              break;
-            }
-            case 56: {
-              bitField0_ |= 0x00000040;
               prerequisiteQuestId_ = input.readInt32();
               break;
             }
@@ -1278,85 +1206,43 @@ public final class NoneventTaskProto {
         onChanged();
       }
       
-      // optional int32 cityId = 4;
-      private int cityId_ ;
-      public boolean hasCityId() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      public int getCityId() {
-        return cityId_;
-      }
-      public Builder setCityId(int value) {
-        bitField0_ |= 0x00000008;
-        cityId_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearCityId() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        cityId_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional int32 assetNumWithinCity = 5;
-      private int assetNumWithinCity_ ;
-      public boolean hasAssetNumWithinCity() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      public int getAssetNumWithinCity() {
-        return assetNumWithinCity_;
-      }
-      public Builder setAssetNumWithinCity(int value) {
-        bitField0_ |= 0x00000010;
-        assetNumWithinCity_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearAssetNumWithinCity() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        assetNumWithinCity_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // optional int32 prerequisiteTaskId = 6;
+      // optional int32 prerequisiteTaskId = 4;
       private int prerequisiteTaskId_ ;
       public boolean hasPrerequisiteTaskId() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       public int getPrerequisiteTaskId() {
         return prerequisiteTaskId_;
       }
       public Builder setPrerequisiteTaskId(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000008;
         prerequisiteTaskId_ = value;
         onChanged();
         return this;
       }
       public Builder clearPrerequisiteTaskId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000008);
         prerequisiteTaskId_ = 0;
         onChanged();
         return this;
       }
       
-      // optional int32 prerequisiteQuestId = 7;
+      // optional int32 prerequisiteQuestId = 5;
       private int prerequisiteQuestId_ ;
       public boolean hasPrerequisiteQuestId() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       public int getPrerequisiteQuestId() {
         return prerequisiteQuestId_;
       }
       public Builder setPrerequisiteQuestId(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000010;
         prerequisiteQuestId_ = value;
         onChanged();
         return this;
       }
       public Builder clearPrerequisiteQuestId() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000010);
         prerequisiteQuestId_ = 0;
         onChanged();
         return this;
@@ -4142,34 +4028,32 @@ public final class NoneventTaskProto {
       "ster.proto\032\036ConfigNoneventSharedEnum.pro" +
       "to\"V\n\016TaskStageProto\022\017\n\007stageId\030\001 \001(\005\0223\n" +
       "\rstageMonsters\030\002 \003(\0132\034.proto.TaskStageMo" +
-      "nsterProto\"\247\001\n\rFullTaskProto\022\016\n\006taskId\030\001" +
-      " \001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022" +
-      "\016\n\006cityId\030\004 \001(\005\022\032\n\022assetNumWithinCity\030\005 " +
-      "\001(\005\022\032\n\022prerequisiteTaskId\030\006 \001(\005\022\033\n\023prere" +
-      "quisiteQuestId\030\007 \001(\005\"d\n\024MinimumUserTaskP" +
-      "roto\022\020\n\010userUuid\030\001 \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026",
-      "\n\016curTaskStageId\030\003 \001(\005\022\022\n\nuserTaskId\030\004 \001" +
-      "(\t\"\223\002\n\025TaskStageMonsterProto\022\021\n\tmonsterI" +
-      "d\030\001 \001(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.Tas" +
-      "kStageMonsterProto.MonsterType\022\021\n\texpRew" +
-      "ard\030\003 \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilRewa" +
-      "rd\030\010 \001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005" +
-      "level\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\"3\n\013MonsterTy" +
-      "pe\022\013\n\007REGULAR\020\001\022\r\n\tMINI_BOSS\020\002\022\010\n\004BOSS\020\003" +
-      "\"\370\002\n\024PersistentEventProto\022\017\n\007eventId\030\001 \001" +
-      "(\005\022+\n\tdayOfWeek\030\002 \001(\0162\020.proto.DayOfWeek:",
-      "\006MONDAY\022\021\n\tstartHour\030\003 \001(\005\022\034\n\024eventDurat" +
-      "ionMinutes\030\004 \001(\005\022\016\n\006taskId\030\005 \001(\005\022\027\n\017cool" +
-      "downMinutes\030\006 \001(\005\022M\n\004type\030\007 \001(\0162%.proto." +
-      "PersistentEventProto.EventType:\030NO_PERSI" +
-      "STENT_EVENT_TYPE\0222\n\016monsterElement\030\010 \001(\016" +
-      "2\016.proto.Element:\nNO_ELEMENT\"E\n\tEventTyp" +
-      "e\022\013\n\007ENHANCE\020\001\022\r\n\tEVOLUTION\020\002\022\034\n\030NO_PERS" +
-      "ISTENT_EVENT_TYPE\020\003\"X\n\030UserPersistentEve" +
-      "ntProto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007eventId\030\002 \001" +
-      "(\005\022\031\n\021coolDownStartTime\030\003 \001(\003B4\n\037com.lvl",
-      "6.mobsters.noneventprotoB\021NoneventTaskPr" +
-      "oto"
+      "nsterProto\"{\n\rFullTaskProto\022\016\n\006taskId\030\001 " +
+      "\001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\032" +
+      "\n\022prerequisiteTaskId\030\004 \001(\005\022\033\n\023prerequisi" +
+      "teQuestId\030\005 \001(\005\"d\n\024MinimumUserTaskProto\022" +
+      "\020\n\010userUuid\030\001 \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026\n\016cur" +
+      "TaskStageId\030\003 \001(\005\022\022\n\nuserTaskId\030\004 \001(\t\"\223\002",
+      "\n\025TaskStageMonsterProto\022\021\n\tmonsterId\030\001 \001" +
+      "(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.TaskStag" +
+      "eMonsterProto.MonsterType\022\021\n\texpReward\030\003" +
+      " \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilReward\030\010 " +
+      "\001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005level" +
+      "\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\"3\n\013MonsterType\022\013\n" +
+      "\007REGULAR\020\001\022\r\n\tMINI_BOSS\020\002\022\010\n\004BOSS\020\003\"\370\002\n\024" +
+      "PersistentEventProto\022\017\n\007eventId\030\001 \001(\005\022+\n" +
+      "\tdayOfWeek\030\002 \001(\0162\020.proto.DayOfWeek:\006MOND" +
+      "AY\022\021\n\tstartHour\030\003 \001(\005\022\034\n\024eventDurationMi",
+      "nutes\030\004 \001(\005\022\016\n\006taskId\030\005 \001(\005\022\027\n\017cooldownM" +
+      "inutes\030\006 \001(\005\022M\n\004type\030\007 \001(\0162%.proto.Persi" +
+      "stentEventProto.EventType:\030NO_PERSISTENT" +
+      "_EVENT_TYPE\0222\n\016monsterElement\030\010 \001(\0162\016.pr" +
+      "oto.Element:\nNO_ELEMENT\"E\n\tEventType\022\013\n\007" +
+      "ENHANCE\020\001\022\r\n\tEVOLUTION\020\002\022\034\n\030NO_PERSISTEN" +
+      "T_EVENT_TYPE\020\003\"X\n\030UserPersistentEventPro" +
+      "to\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007eventId\030\002 \001(\005\022\031\n" +
+      "\021coolDownStartTime\030\003 \001(\003B4\n\037com.lvl6.mob" +
+      "sters.noneventprotoB\021NoneventTaskProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4189,7 +4073,7 @@ public final class NoneventTaskProto {
           internal_static_proto_FullTaskProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FullTaskProto_descriptor,
-              new java.lang.String[] { "TaskId", "Name", "Description", "CityId", "AssetNumWithinCity", "PrerequisiteTaskId", "PrerequisiteQuestId", },
+              new java.lang.String[] { "TaskId", "Name", "Description", "PrerequisiteTaskId", "PrerequisiteQuestId", },
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto.class,
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto.Builder.class);
           internal_static_proto_MinimumUserTaskProto_descriptor =

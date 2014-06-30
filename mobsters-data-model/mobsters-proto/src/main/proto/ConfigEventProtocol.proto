@@ -22,7 +22,6 @@ import "EventUser.proto";
 import "NoneventAchievement.proto";
 import "NoneventBoosterPack.proto";
 import "NoneventChat.proto";
-import "NoneventCity.proto";
 import "NoneventClan.proto";
 import "NoneventInAppPurchase.proto";
 import "NoneventMiniJob.proto";
@@ -62,7 +61,7 @@ enum EventProtocolRequest {
 	C_LEVEL_UP_EVENT = 17;
 	C_ENABLE_APNS_EVENT = 18;
 	C_USER_CREATE_EVENT = 19;
-	C_LOAD_CITY_EVENT = 20;
+	//C_LOAD_CITY_EVENT = 20;
 	
 	//C_RETRIEVE_USERS_FOR_USER_IDS_EVENT = 21;
 	//C_EARN_FREE_DIAMONDS_EVENT = 22;
@@ -162,7 +161,7 @@ enum EventProtocolResponse {
 	S_LEVEL_UP_EVENT = 17;
 	S_ENABLE_APNS_EVENT = 18;
 	S_USER_CREATE_EVENT = 19;
-	S_LOAD_CITY_EVENT = 20;
+	//S_LOAD_CITY_EVENT = 20;
 	
 	//S_RETRIEVE_USERS_FOR_USER_IDS_EVENT = 21;
 	//S_EARN_FREE_DIAMONDS_EVENT = 22;
