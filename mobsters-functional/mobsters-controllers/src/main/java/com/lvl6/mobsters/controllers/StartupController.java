@@ -21,6 +21,7 @@ import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
+import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
@@ -73,6 +74,7 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventStaticDataProto.StaticDataProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventBoosterPackProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventClanProtoSerializer;
@@ -499,15 +501,37 @@ public class StartupController extends EventController
 	
 	private void setTaskStuff(Builder resBuilder, String userId) {
 		//TODO: tasks completed
-		
+		List<TaskForUserCompleted> tfucList = taskService.getTaskCompletedForUser(userId);
+		for (TaskForUserCompleted tfuc : tfucList) {
+			resBuilder.addCompletedTaskIds(tfuc.getTaskId());
+		}
 		
 		TaskForUserOngoing aTaskForUser = taskService.getUserTaskForUserId(userId);
 		
 		if (null != aTaskForUser) {
 			//TODO: do the necessary logic (db read) to set the task,
 			//similar to begin dungeon
+			LOG.warn("user has incompleted task userTask=" + aTaskForUser);
+			setOngoingTask(resBuilder, userId, aTaskForUser);
 		}
 	}
+	
+	private void setOngoingTask(Builder resBuilder, String userId,
+		TaskForUserOngoing aTaskForUser)
+	{
+		try {
+			MinimumUserTaskProto mutp = noneventTaskProtoSerializer
+				.createMinimumUserTaskProto(userId, aTaskForUser);
+			resBuilder.setCurTask(mutp);
+			
+			//create protos for stages
+//			List<TaskStageForUser> taskStages =
+		} catch (Exception e) {
+			LOG.error("could not create existing user task, letting it get" +
+		  		" deleted when user starts another task.", e);
+		}
+	}
+	
 	
 	private void setAllStaticData(Builder resBuilder, String userId, boolean userIdSet) {
 		StaticDataProto.Builder sdpb = StaticDataProto.newBuilder();

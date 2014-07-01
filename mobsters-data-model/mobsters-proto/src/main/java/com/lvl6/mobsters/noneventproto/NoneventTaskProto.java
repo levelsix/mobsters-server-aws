@@ -1274,9 +1274,9 @@ public final class NoneventTaskProto {
     boolean hasCurTaskStageId();
     int getCurTaskStageId();
     
-    // optional string userTaskId = 4;
-    boolean hasUserTaskId();
-    String getUserTaskId();
+    // optional string userTaskUuid = 4;
+    boolean hasUserTaskUuid();
+    String getUserTaskUuid();
   }
   public static final class MinimumUserTaskProto extends
       com.google.protobuf.GeneratedMessage
@@ -1359,14 +1359,14 @@ public final class NoneventTaskProto {
       return curTaskStageId_;
     }
     
-    // optional string userTaskId = 4;
-    public static final int USERTASKID_FIELD_NUMBER = 4;
-    private java.lang.Object userTaskId_;
-    public boolean hasUserTaskId() {
+    // optional string userTaskUuid = 4;
+    public static final int USERTASKUUID_FIELD_NUMBER = 4;
+    private java.lang.Object userTaskUuid_;
+    public boolean hasUserTaskUuid() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
-    public String getUserTaskId() {
-      java.lang.Object ref = userTaskId_;
+    public String getUserTaskUuid() {
+      java.lang.Object ref = userTaskUuid_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -1374,17 +1374,17 @@ public final class NoneventTaskProto {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          userTaskId_ = s;
+          userTaskUuid_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getUserTaskIdBytes() {
-      java.lang.Object ref = userTaskId_;
+    private com.google.protobuf.ByteString getUserTaskUuidBytes() {
+      java.lang.Object ref = userTaskUuid_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        userTaskId_ = b;
+        userTaskUuid_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -1395,7 +1395,7 @@ public final class NoneventTaskProto {
       userUuid_ = "";
       taskId_ = 0;
       curTaskStageId_ = 0;
-      userTaskId_ = "";
+      userTaskUuid_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1419,7 +1419,7 @@ public final class NoneventTaskProto {
         output.writeInt32(3, curTaskStageId_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getUserTaskIdBytes());
+        output.writeBytes(4, getUserTaskUuidBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1444,7 +1444,7 @@ public final class NoneventTaskProto {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getUserTaskIdBytes());
+          .computeBytesSize(4, getUserTaskUuidBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1576,7 +1576,7 @@ public final class NoneventTaskProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         curTaskStageId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        userTaskId_ = "";
+        userTaskUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
@@ -1631,7 +1631,7 @@ public final class NoneventTaskProto {
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.userTaskId_ = userTaskId_;
+        result.userTaskUuid_ = userTaskUuid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1657,8 +1657,8 @@ public final class NoneventTaskProto {
         if (other.hasCurTaskStageId()) {
           setCurTaskStageId(other.getCurTaskStageId());
         }
-        if (other.hasUserTaskId()) {
-          setUserTaskId(other.getUserTaskId());
+        if (other.hasUserTaskUuid()) {
+          setUserTaskUuid(other.getUserTaskUuid());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1708,7 +1708,7 @@ public final class NoneventTaskProto {
             }
             case 34: {
               bitField0_ |= 0x00000008;
-              userTaskId_ = input.readBytes();
+              userTaskUuid_ = input.readBytes();
               break;
             }
           }
@@ -1795,39 +1795,39 @@ public final class NoneventTaskProto {
         return this;
       }
       
-      // optional string userTaskId = 4;
-      private java.lang.Object userTaskId_ = "";
-      public boolean hasUserTaskId() {
+      // optional string userTaskUuid = 4;
+      private java.lang.Object userTaskUuid_ = "";
+      public boolean hasUserTaskUuid() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
-      public String getUserTaskId() {
-        java.lang.Object ref = userTaskId_;
+      public String getUserTaskUuid() {
+        java.lang.Object ref = userTaskUuid_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          userTaskId_ = s;
+          userTaskUuid_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setUserTaskId(String value) {
+      public Builder setUserTaskUuid(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000008;
-        userTaskId_ = value;
+        userTaskUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserTaskId() {
+      public Builder clearUserTaskUuid() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        userTaskId_ = getDefaultInstance().getUserTaskId();
+        userTaskUuid_ = getDefaultInstance().getUserTaskUuid();
         onChanged();
         return this;
       }
-      void setUserTaskId(com.google.protobuf.ByteString value) {
+      void setUserTaskUuid(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000008;
-        userTaskId_ = value;
+        userTaskUuid_ = value;
         onChanged();
       }
       
@@ -4031,29 +4031,29 @@ public final class NoneventTaskProto {
       "nsterProto\"{\n\rFullTaskProto\022\016\n\006taskId\030\001 " +
       "\001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\032" +
       "\n\022prerequisiteTaskId\030\004 \001(\005\022\033\n\023prerequisi" +
-      "teQuestId\030\005 \001(\005\"d\n\024MinimumUserTaskProto\022" +
+      "teQuestId\030\005 \001(\005\"f\n\024MinimumUserTaskProto\022" +
       "\020\n\010userUuid\030\001 \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026\n\016cur" +
-      "TaskStageId\030\003 \001(\005\022\022\n\nuserTaskId\030\004 \001(\t\"\223\002",
-      "\n\025TaskStageMonsterProto\022\021\n\tmonsterId\030\001 \001" +
-      "(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.TaskStag" +
-      "eMonsterProto.MonsterType\022\021\n\texpReward\030\003" +
-      " \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilReward\030\010 " +
-      "\001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005level" +
-      "\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\"3\n\013MonsterType\022\013\n" +
-      "\007REGULAR\020\001\022\r\n\tMINI_BOSS\020\002\022\010\n\004BOSS\020\003\"\370\002\n\024" +
-      "PersistentEventProto\022\017\n\007eventId\030\001 \001(\005\022+\n" +
-      "\tdayOfWeek\030\002 \001(\0162\020.proto.DayOfWeek:\006MOND" +
-      "AY\022\021\n\tstartHour\030\003 \001(\005\022\034\n\024eventDurationMi",
-      "nutes\030\004 \001(\005\022\016\n\006taskId\030\005 \001(\005\022\027\n\017cooldownM" +
-      "inutes\030\006 \001(\005\022M\n\004type\030\007 \001(\0162%.proto.Persi" +
-      "stentEventProto.EventType:\030NO_PERSISTENT" +
-      "_EVENT_TYPE\0222\n\016monsterElement\030\010 \001(\0162\016.pr" +
-      "oto.Element:\nNO_ELEMENT\"E\n\tEventType\022\013\n\007" +
-      "ENHANCE\020\001\022\r\n\tEVOLUTION\020\002\022\034\n\030NO_PERSISTEN" +
-      "T_EVENT_TYPE\020\003\"X\n\030UserPersistentEventPro" +
-      "to\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007eventId\030\002 \001(\005\022\031\n" +
-      "\021coolDownStartTime\030\003 \001(\003B4\n\037com.lvl6.mob" +
-      "sters.noneventprotoB\021NoneventTaskProto"
+      "TaskStageId\030\003 \001(\005\022\024\n\014userTaskUuid\030\004 \001(\t\"",
+      "\223\002\n\025TaskStageMonsterProto\022\021\n\tmonsterId\030\001" +
+      " \001(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.TaskSt" +
+      "ageMonsterProto.MonsterType\022\021\n\texpReward" +
+      "\030\003 \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilReward\030" +
+      "\010 \001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005lev" +
+      "el\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\"3\n\013MonsterType\022" +
+      "\013\n\007REGULAR\020\001\022\r\n\tMINI_BOSS\020\002\022\010\n\004BOSS\020\003\"\370\002" +
+      "\n\024PersistentEventProto\022\017\n\007eventId\030\001 \001(\005\022" +
+      "+\n\tdayOfWeek\030\002 \001(\0162\020.proto.DayOfWeek:\006MO" +
+      "NDAY\022\021\n\tstartHour\030\003 \001(\005\022\034\n\024eventDuration",
+      "Minutes\030\004 \001(\005\022\016\n\006taskId\030\005 \001(\005\022\027\n\017cooldow" +
+      "nMinutes\030\006 \001(\005\022M\n\004type\030\007 \001(\0162%.proto.Per" +
+      "sistentEventProto.EventType:\030NO_PERSISTE" +
+      "NT_EVENT_TYPE\0222\n\016monsterElement\030\010 \001(\0162\016." +
+      "proto.Element:\nNO_ELEMENT\"E\n\tEventType\022\013" +
+      "\n\007ENHANCE\020\001\022\r\n\tEVOLUTION\020\002\022\034\n\030NO_PERSIST" +
+      "ENT_EVENT_TYPE\020\003\"X\n\030UserPersistentEventP" +
+      "roto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007eventId\030\002 \001(\005\022" +
+      "\031\n\021coolDownStartTime\030\003 \001(\003B4\n\037com.lvl6.m" +
+      "obsters.noneventprotoB\021NoneventTaskProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4081,7 +4081,7 @@ public final class NoneventTaskProto {
           internal_static_proto_MinimumUserTaskProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_MinimumUserTaskProto_descriptor,
-              new java.lang.String[] { "UserUuid", "TaskId", "CurTaskStageId", "UserTaskId", },
+              new java.lang.String[] { "UserUuid", "TaskId", "CurTaskStageId", "UserTaskUuid", },
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto.class,
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto.Builder.class);
           internal_static_proto_TaskStageMonsterProto_descriptor =
