@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.services.task;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
@@ -9,21 +10,21 @@ import com.lvl6.mobsters.services.task.TaskServiceImpl.CreateUserTasksCompletedS
 public interface TaskService {
     
 	
+	
+	//NON CRUD LOGIC
+	
+	/**************************************************************************/
+	//CRUD LOGIC
     
-    // BEGIN READ ONLY LOGIC******************************************************************
+    // BEGIN READ ONLY LOGIC
     
 	public abstract TaskForUserOngoing getUserTaskForUserId( String userId );
 
-	// END READ ONLY LOGIC******************************************************************
+	public abstract List<TaskForUserCompleted> getTaskCompletedForUser( String userId ); 
 	
-
+	// END READ ONLY LOGIC
 	
-    //NON CRUD LOGIC******************************************************************
-    
-    //CRUD LOGIC******************************************************************
-
-
-    /**************************************************************************/
+	/**************************************************************************/
     
     public abstract void createTasksForUserCompleted( String userId, CreateUserTasksCompletedSpec createSpec );
     

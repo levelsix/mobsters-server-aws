@@ -2,6 +2,7 @@ package com.lvl6.mobsters.services.task;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository;
+import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository;
 
 @Component
@@ -20,25 +22,29 @@ public class TaskServiceImpl implements TaskService {
     private static Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     @Autowired
-    private TaskForUserCompletedRepository taskForUserCompletedRepository;
+    private TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository;
 
     @Autowired
     protected TaskForUserOngoingRepository taskForUserOngoingRepository;
     
-    // BEGIN READ ONLY LOGIC******************************************************************
+    //NON CRUD LOGIC
+    
+    /**************************************************************************/
+    //CRUD LOGIC
+    
+    // BEGIN READ ONLY LOGIC
     @Override
 	public TaskForUserOngoing getUserTaskForUserId( String userId ) {
     	return taskForUserOngoingRepository.findByUserId( userId );
     }
 
-	// END READ ONLY LOGIC******************************************************************
-	
+    @Override
+    public List<TaskForUserCompleted> getTaskCompletedForUser( String userId ) {
+    	return taskForUserCompletedRepository.findByUserId(userId);
+    }
     
-    //NON CRUD LOGIC******************************************************************
+	// END READ ONLY LOGIC
     
-    
-    //CRUD LOGIC******************************************************************
-
     /**************************************************************************/
 
     @Override
@@ -101,7 +107,7 @@ public class TaskServiceImpl implements TaskService {
         return taskForUserCompletedRepository;
     }
 
-    public void setTaskForUserCompletedRepository( TaskForUserCompletedRepository taskForUserCompletedRepository )
+    public void setTaskForUserCompletedRepository( TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository )
     {
         this.taskForUserCompletedRepository = taskForUserCompletedRepository;
     }
