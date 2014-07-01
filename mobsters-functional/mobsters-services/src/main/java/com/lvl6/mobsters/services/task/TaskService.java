@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
+import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.services.task.TaskServiceImpl.CreateUserTasksCompletedSpecBuilderImpl;
 public interface TaskService {
     
@@ -21,6 +22,8 @@ public interface TaskService {
 	public abstract TaskForUserOngoing getUserTaskForUserId( String userId );
 
 	public abstract List<TaskForUserCompleted> getTaskCompletedForUser( String userId ); 
+	
+	public abstract List<TaskStageForUser> getTaskStagesForUserWithTaskForUserId( String userTaskId );
 	
 	// END READ ONLY LOGIC
 	

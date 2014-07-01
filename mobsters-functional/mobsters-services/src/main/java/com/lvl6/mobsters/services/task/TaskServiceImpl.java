@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
+import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository;
+import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository;
 
 @Component
 public class TaskServiceImpl implements TaskService {
@@ -26,6 +28,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     protected TaskForUserOngoingRepository taskForUserOngoingRepository;
+    
+    @Autowired
+    protected TaskStageForUserRepository taskStageForUserRepository;
     
     //NON CRUD LOGIC
     
@@ -41,6 +46,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskForUserCompleted> getTaskCompletedForUser( String userId ) {
     	return taskForUserCompletedRepository.findByUserId(userId);
+    }
+    
+    @Override
+    public List<TaskStageForUser> getTaskStagesForUserWithTaskForUserId( String userTaskId ) {
+    	return taskStageForUserRepository.findByTaskForUserId(userTaskId);
     }
     
 	// END READ ONLY LOGIC
@@ -112,4 +122,25 @@ public class TaskServiceImpl implements TaskService {
         this.taskForUserCompletedRepository = taskForUserCompletedRepository;
     }
 
+	public TaskForUserOngoingRepository getTaskForUserOngoingRepository()
+	{
+		return taskForUserOngoingRepository;
+	}
+
+	public void setTaskForUserOngoingRepository(
+		TaskForUserOngoingRepository taskForUserOngoingRepository )
+	{
+		this.taskForUserOngoingRepository = taskForUserOngoingRepository;
+	}
+
+	public TaskStageForUserRepository getTaskStageForUserRepository()
+	{
+		return taskStageForUserRepository;
+	}
+
+	public void setTaskStageForUserRepository( TaskStageForUserRepository taskStageForUserRepository )
+	{
+		this.taskStageForUserRepository = taskStageForUserRepository;
+	}
+	
 }

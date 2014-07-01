@@ -3,6 +3,7 @@ package com.lvl6.mobsters.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
+import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
@@ -75,6 +77,7 @@ import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemP
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventStaticDataProto.StaticDataProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventBoosterPackProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventClanProtoSerializer;
@@ -426,7 +429,6 @@ public class StartupController extends EventController
 	}
 	
 	private void setUserMonsterStuff(Builder resBuilder, String userId) {
-		// TODO: Fill in
 		List<MonsterForUser> userMonsters= monsterService.getMonstersForUser(userId);
 		
 		if (!CollectionUtils.lacksSubstance(userMonsters))
@@ -460,10 +462,10 @@ public class StartupController extends EventController
 	    		UserEnhancementItemProto ueip =
 	    			noneventMonsterProtoSerializer.createUserEnhancementItemProto(mefu);
 	    		
-	    		//TODO: if user has no monsters with null start time
-	    		//(if user has all monsters with a start time), or if user has more than one
-	    		//monster with a null start time
-	    		//STORE THEM AND DELETE THEM OR SOMETHING
+	    		// TODO: if user has no monsters with null start time
+	    		// (if user has all monsters with a start time), or
+	    		// if user has more than one monster with a null start time
+	    		// store them to history and delete them or something
 	    		
 	    		//search for the monster that is being enhanced, the one with null start time
 	    		Date startTime = mefu.getExpectedStartTime();
@@ -500,17 +502,13 @@ public class StartupController extends EventController
 	}
 	
 	private void setTaskStuff(Builder resBuilder, String userId) {
-		//TODO: tasks completed
 		List<TaskForUserCompleted> tfucList = taskService.getTaskCompletedForUser(userId);
 		for (TaskForUserCompleted tfuc : tfucList) {
 			resBuilder.addCompletedTaskIds(tfuc.getTaskId());
 		}
 		
 		TaskForUserOngoing aTaskForUser = taskService.getUserTaskForUserId(userId);
-		
 		if (null != aTaskForUser) {
-			//TODO: do the necessary logic (db read) to set the task,
-			//similar to begin dungeon
 			LOG.warn("user has incompleted task userTask=" + aTaskForUser);
 			setOngoingTask(resBuilder, userId, aTaskForUser);
 		}
@@ -525,7 +523,38 @@ public class StartupController extends EventController
 			resBuilder.setCurTask(mutp);
 			
 			//create protos for stages
-//			List<TaskStageForUser> taskStages =
+			List<TaskStageForUser> taskStages = taskService
+				.getTaskStagesForUserWithTaskForUserId(
+					aTaskForUser.getTaskForUserId());
+			
+			//group taskStageForUsers by stage nums because more than one
+			//taskStageForUser with the same stage num means this stage
+			//has more than one monster
+			Map<Integer, List<TaskStageForUser>> stageNumToTsfu =
+				new HashMap<Integer, List<TaskStageForUser>>();
+			for (TaskStageForUser tsfu : taskStages) {
+				int stageNum = tsfu.getStageNum();
+
+				if (!stageNumToTsfu.containsKey(stageNum)) {
+					List<TaskStageForUser> a = new ArrayList<TaskStageForUser>(); 
+					stageNumToTsfu.put(stageNum, a);
+				}
+
+				List<TaskStageForUser> tsfuList = stageNumToTsfu.get(stageNum);
+				tsfuList.add(tsfu);
+			}
+
+			//now that we have grouped all the monsters in their corresponding
+			//task stages, protofy them
+			int taskId = aTaskForUser.getTaskId();
+			for (Integer stageNum : stageNumToTsfu.keySet()) {
+				List<TaskStageForUser> monsters = stageNumToTsfu.get(stageNum);
+
+				TaskStageProto tsp = noneventTaskProtoSerializer.createTaskStageProto(
+					taskId, stageNum, monsters);
+				resBuilder.addCurTaskStages(tsp);
+			}
+				
 		} catch (Exception e) {
 			LOG.error("could not create existing user task, letting it get" +
 		  		" deleted when user starts another task.", e);
@@ -704,6 +733,10 @@ public class StartupController extends EventController
 			sdpb.addAchievements(
 				noneventAchievementProtoSerializer.createAchievementProto(a));
 		}
+	}
+	
+	private setEventStuff( StaticDataProto.Builder sdpb, String userId ) {
+		
 	}
 	
 	//TODO: Generate the getters and setters for the autowired properties 
