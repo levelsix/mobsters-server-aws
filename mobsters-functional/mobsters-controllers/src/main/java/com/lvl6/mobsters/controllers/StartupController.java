@@ -21,6 +21,7 @@ import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
+import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
@@ -86,6 +87,7 @@ import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.clan.ClanService;
 import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.quest.QuestService;
+import com.lvl6.mobsters.services.task.TaskService;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.properties.Globals;
 import com.lvl6.properties.MDCKeys;
@@ -119,6 +121,9 @@ public class StartupController extends EventController
 	
 	@Autowired
 	protected MonsterService monsterService;
+	
+	@Autowired
+	protected TaskService taskService;
 	
 	@Autowired
 	protected TaskRepository taskRepository;
@@ -337,7 +342,7 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at setUserMonsterStuff", stopWatch.getTime());
 //		setFacebookAndExtraSlotsStuff(resBuilder, user, userId);
 //		LOG.info("{}ms at facebookAndExtraSlotsStuff", stopWatch.getTime());
-//		setTaskStuff(resBuilder, userId);
+		setTaskStuff(resBuilder, userId);
 //		LOG.info("{}ms at task stuff", stopWatch.getTime());
 		setAllStaticData(resBuilder, userId, true);
 //		LOG.info("{}ms at static data", stopWatch.getTime());
@@ -489,6 +494,18 @@ public class StartupController extends EventController
 				resBuilder.setEvolution(
 					noneventMonsterProtoSerializer.createUserEvolutionProtoFromEvolution(mefu));
 			}
+		}
+	}
+	
+	private void setTaskStuff(Builder resBuilder, String userId) {
+		//TODO: tasks completed
+		
+		
+		TaskForUserOngoing aTaskForUser = taskService.getUserTaskForUserId(userId);
+		
+		if (null != aTaskForUser) {
+			//TODO: do the necessary logic (db read) to set the task,
+			//similar to begin dungeon
 		}
 	}
 	

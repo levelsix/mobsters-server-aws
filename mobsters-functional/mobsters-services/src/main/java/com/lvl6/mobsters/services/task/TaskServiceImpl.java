@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
+import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository;
+import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository;
 
 @Component
 public class TaskServiceImpl implements TaskService {
@@ -20,6 +22,18 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskForUserCompletedRepository taskForUserCompletedRepository;
 
+    @Autowired
+    protected TaskForUserOngoingRepository taskForUserOngoingRepository;
+    
+    // BEGIN READ ONLY LOGIC******************************************************************
+    @Override
+	public TaskForUserOngoing getUserTaskForUserId( String userId ) {
+    	return taskForUserOngoingRepository.findByUserId( userId );
+    }
+
+	// END READ ONLY LOGIC******************************************************************
+	
+    
     //NON CRUD LOGIC******************************************************************
     
     
