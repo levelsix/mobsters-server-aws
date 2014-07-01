@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
@@ -19,17 +20,19 @@ public interface TaskService {
     
     // BEGIN READ ONLY LOGIC
     
-	public abstract TaskForUserOngoing getUserTaskForUserId( String userId );
+	public TaskForUserOngoing getUserTaskForUserId( String userId );
 
-	public abstract List<TaskForUserCompleted> getTaskCompletedForUser( String userId ); 
+	public List<TaskForUserCompleted> getTaskCompletedForUser( String userId ); 
 	
-	public abstract List<TaskStageForUser> getTaskStagesForUserWithTaskForUserId( String userTaskId );
+	public List<TaskStageForUser> getTaskStagesForUserWithTaskForUserId( String userTaskId );
+	
+	public List<EventPersistentForUser> getUserPersistentEventForUserId( String userId );
 	
 	// END READ ONLY LOGIC
 	
 	/**************************************************************************/
     
-    public abstract void createTasksForUserCompleted( String userId, CreateUserTasksCompletedSpec createSpec );
+    public void createTasksForUserCompleted( String userId, CreateUserTasksCompletedSpec createSpec );
     
 
 	public interface CreateUserTasksCompletedSpecBuilder {
@@ -55,7 +58,7 @@ public interface TaskService {
             return new CreateUserTasksCompletedSpecBuilderImpl();
         }
     }
-    
+
     /**************************************************************************/
     
 }

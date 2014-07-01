@@ -1,11 +1,13 @@
 package com.lvl6.mobsters.noneventproto.utils;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.info.ITask;
@@ -22,6 +24,7 @@ import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageMonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageMonsterProto.MonsterType;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.UserPersistentEventProto;
 
 public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSerializer 
 {
@@ -147,6 +150,23 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		  return bldr.build();
 	}
 
+	@Override
+	public UserPersistentEventProto createUserPersistentEventProto(
+		EventPersistentForUser epfu) {
+		UserPersistentEventProto.Builder upepb = UserPersistentEventProto.newBuilder();
+
+		Date timeOfEntry = epfu.getTimeOfEntry();
+
+		upepb.setUserUuid(epfu.getUserId());
+		upepb.setEventId(epfu.getEventPersistentId());
+
+		if (null != timeOfEntry) {
+			upepb.setCoolDownStartTime(timeOfEntry.getTime());
+		}
+
+		return upepb.build();
+	}
+	
 	public TaskStageRepository getTaskStageRepository()
 	{
 		return taskStageRepository;

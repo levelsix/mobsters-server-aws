@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
+import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository;
@@ -31,6 +33,9 @@ public class TaskServiceImpl implements TaskService {
     
     @Autowired
     protected TaskStageForUserRepository taskStageForUserRepository;
+    
+    @Autowired
+    protected EventPersistentForUserRepository eventPersistentForUserRepository;
     
     //NON CRUD LOGIC
     
@@ -51,6 +56,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskStageForUser> getTaskStagesForUserWithTaskForUserId( String userTaskId ) {
     	return taskStageForUserRepository.findByTaskForUserId(userTaskId);
+    }
+    
+    @Override
+    public List<EventPersistentForUser> getUserPersistentEventForUserId( String userId ) {
+    	return eventPersistentForUserRepository.findByUserId(userId);
     }
     
 	// END READ ONLY LOGIC

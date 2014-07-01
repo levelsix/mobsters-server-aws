@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 import com.lvl6.mobsters.dynamo.ClanForUser;
+import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
@@ -351,7 +352,7 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at task stuff", stopWatch.getTime());
 		setAllStaticData(resBuilder, userId, true);
 //		LOG.info("{}ms at static data", stopWatch.getTime());
-//		setEventStuff(resBuilder, userId);
+		setEventStuff(resBuilder, userId);
 //		LOG.info("{}ms at eventStuff", stopWatch.getTime());
 		//if server sees that the user is in a pvp battle, decrement user's elo
 //		PvpLeagueForUser plfu = pvpBattleStuff(resBuilder, user,
@@ -735,8 +736,14 @@ public class StartupController extends EventController
 		}
 	}
 	
-	private setEventStuff( StaticDataProto.Builder sdpb, String userId ) {
+	private void setEventStuff( Builder resBuilder, String userId ) {
+		List<EventPersistentForUser> events = taskService
+			.getUserPersistentEventForUserId(userId);
 		
+		for (EventPersistentForUser epfu : events) {
+			resBuilder.addUserEvents(
+				noneventTaskProtoSerializer.createUserPersistentEventProto(epfu));
+		}
 	}
 	
 	//TODO: Generate the getters and setters for the autowired properties 
