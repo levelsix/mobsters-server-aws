@@ -18,17 +18,21 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 
 @Component
-public class MiniJobForUserRepository extends
-		BaseDynamoRepositoryImpl<MiniJobForUser> {
+public class MiniJobForUserRepositoryImpl extends
+		BaseDynamoRepositoryImpl<MiniJobForUser> implements MiniJobForUserRepository {
 
 	private static final Logger log = LoggerFactory
-			.getLogger(MiniJobForUserRepository.class);
+			.getLogger(MiniJobForUserRepositoryImpl.class);
 
-	public MiniJobForUserRepository() {
+	public MiniJobForUserRepositoryImpl() {
 		super(MiniJobForUser.class);
 		isActive = true;// for unit test
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository#findByUserIdAndId(java.lang.String, java.util.Collection)
+	 */
+	@Override
 	public List<MiniJobForUser> findByUserIdAndId(final String userId,
         final Collection<String> userMiniJobIds) {
         final List<AttributeValue> userMiniJobIdz = new ArrayList<>();
@@ -47,12 +51,28 @@ public class MiniJobForUserRepository extends
                     ComparisonOperator.IN).withAttributeValueList(
                         userMiniJobIdz)).withConsistentRead(true);
 
-        MiniJobForUserRepository.log.info("Query: {}", query);
+        MiniJobForUserRepositoryImpl.log.info("Query: {}", query);
         final PaginatedQueryList<MiniJobForUser> miniJobsForUser = query(query);
         miniJobsForUser.loadAllResults();
         return miniJobsForUser;
     }
 
+	@Override
+	public List<MiniJobForUser> findByUserId( final String userId ) {
+		final MiniJobForUser hashKey = new MiniJobForUser();
+        hashKey.setUserId(userId);
+        
+        final DynamoDBQueryExpression<MiniJobForUser> query = new DynamoDBQueryExpression<MiniJobForUser>()
+            // .withIndexName("userIdGlobalIndex")
+            .withHashKeyValues(hashKey)
+            .withConsistentRead(true);
+
+        MiniJobForUserRepositoryImpl.log.info("Query: {}", query);
+        final PaginatedQueryList<MiniJobForUser> miniJobsForUser = query(query);
+        miniJobsForUser.loadAllResults();
+        return miniJobsForUser;
+	}
+	
 	/*
 	@Override
 	protected void createTable() {

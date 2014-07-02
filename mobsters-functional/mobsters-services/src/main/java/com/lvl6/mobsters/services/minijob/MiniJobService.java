@@ -16,8 +16,18 @@ public interface MiniJobService {
     //NON CRUD LOGIC******************************************************************
     public abstract List<MiniJob> spawnMiniJobs(int numToSpawn, int structId); 
     
-    //CRUD LOGIC******************************************************************
+    /**************************************************************************/
+	//CRUD LOGIC
+    
+    // BEGIN READ ONLY LOGIC
 
+    public List<MiniJobForUser> getMiniJobForUserId( String userId );
+
+    // END READ ONLY LOGIC
+	
+ 	/**************************************************************************/
+     
+     
     public abstract void modifyMiniJobsForUser( String userId, ModifyUserMiniJobsSpec details );
 
     public interface ModifyUserMiniJobsSpecBuilder {
@@ -86,4 +96,5 @@ public interface MiniJobService {
             return new CreateUserMiniJobsSpecBuilderImpl();
         }
     }
+
 }

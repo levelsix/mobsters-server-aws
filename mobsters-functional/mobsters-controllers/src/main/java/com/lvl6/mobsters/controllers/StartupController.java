@@ -18,6 +18,7 @@ import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 import com.lvl6.mobsters.dynamo.AchievementForUser;
 import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
+import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
@@ -84,6 +85,7 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventBoosterPackProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventClanProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventEventPersistentProtoSerializer;
+import com.lvl6.mobsters.noneventproto.utils.NoneventMiniJobProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventMonsterProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventPvpProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventQuestProtoSerializer;
@@ -93,6 +95,7 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.clan.ClanService;
+import com.lvl6.mobsters.services.minijob.MiniJobService;
 import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.quest.QuestService;
 import com.lvl6.mobsters.services.task.TaskService;
@@ -207,6 +210,12 @@ public class StartupController extends EventController
 	
 	@Autowired
 	protected AchievementService achievementService;
+	
+	@Autowired
+	protected MiniJobService miniJobService;
+	
+	@Autowired
+	protected NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer;
 	
 	// TODO
 	/*
@@ -370,7 +379,7 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at clanRaidStuff", stopWatch.getTime());
 		setAchievementStuff(resBuilder, userId);
 //		LOG.info("{}ms at achivementStuff", stopWatch.getTime());
-//		setMiniJob(resBuilder, userId);
+		setMiniJob(resBuilder, userId);
 //		LOG.info("{}ms at miniJobStuff", stopWatch.getTime());
 	}
 	
@@ -762,6 +771,15 @@ public class StartupController extends EventController
 		}
 	}
 	
+	private void setMiniJob( Builder resBuilder, String userId ) {
+		List<MiniJobForUser> userMiniJobs = miniJobService
+			.getMiniJobForUserId(userId);
+		resBuilder.addAllUserMiniJobProtos(
+			noneventMiniJobProtoSerializer
+			.createUserMiniJobProtos(userMiniJobs, null));
+		
+	}
+	
 	//TODO: Generate the getters and setters for the autowired properties 
 
 	public UserService getUserService()
@@ -1098,6 +1116,47 @@ public class StartupController extends EventController
 		NoneventAchievementProtoSerializer noneventAchievementProtoSerializer )
 	{
 		this.noneventAchievementProtoSerializer = noneventAchievementProtoSerializer;
+	}
+
+	public TaskService getTaskService()
+	{
+		return taskService;
+	}
+
+	public void setTaskService( TaskService taskService )
+	{
+		this.taskService = taskService;
+	}
+
+	public AchievementService getAchievementService()
+	{
+		return achievementService;
+	}
+
+	public void setAchievementService( AchievementService achievementService )
+	{
+		this.achievementService = achievementService;
+	}
+
+	public MiniJobService getMiniJobService()
+	{
+		return miniJobService;
+	}
+
+	public void setMiniJobService( MiniJobService miniJobService )
+	{
+		this.miniJobService = miniJobService;
+	}
+
+	public NoneventMiniJobProtoSerializer getNoneventMiniJobProtoSerializer()
+	{
+		return noneventMiniJobProtoSerializer;
+	}
+
+	public void setNoneventMiniJobProtoSerializer(
+		NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer )
+	{
+		this.noneventMiniJobProtoSerializer = noneventMiniJobProtoSerializer;
 	}
 
 }
