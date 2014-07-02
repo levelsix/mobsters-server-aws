@@ -18,17 +18,21 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.AchievementForUser;
 
 @Component
-public class AchievementForUserRepository extends
-		BaseDynamoRepositoryImpl<AchievementForUser> {
+public class AchievementForUserRepositoryImpl extends
+		BaseDynamoRepositoryImpl<AchievementForUser> implements AchievementForUserRepository {
 
 	private static final Logger log = LoggerFactory
-			.getLogger(AchievementForUserRepository.class);
+			.getLogger(AchievementForUserRepositoryImpl.class);
 
-	public AchievementForUserRepository() {
+	public AchievementForUserRepositoryImpl() {
 		super(AchievementForUser.class);
 		isActive = true;// for unit test
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository#findByUserIdAndId(java.lang.String, java.util.Collection)
+	 */
+	@Override
 	public List<AchievementForUser> findByUserIdAndId(final String userId,
 	    final Collection<Integer> achievementIds) {
 	    final List<AttributeValue> achievementIdz = new ArrayList<>();
@@ -47,12 +51,28 @@ public class AchievementForUserRepository extends
 	                ComparisonOperator.IN).withAttributeValueList(
 	                    achievementIdz)).withConsistentRead(true);
 
-	    AchievementForUserRepository.log.info("Query: {}", query);
+	    AchievementForUserRepositoryImpl.log.info("Query: {}", query);
 	    final PaginatedQueryList<AchievementForUser> achievementsForUser = query(query);
 	    achievementsForUser.loadAllResults();
 	    return achievementsForUser;
 	}
 
+	@Override
+	public List<AchievementForUser> findByUserId( final String userId ) {
+		final AchievementForUser hashKey = new AchievementForUser();
+	    hashKey.setUserId(userId);
+	    
+	    final DynamoDBQueryExpression<AchievementForUser> query = new DynamoDBQueryExpression<AchievementForUser>()
+	        // .withIndexName("userIdGlobalIndex")
+	        .withHashKeyValues(hashKey)
+	        .withConsistentRead(true);
+
+	    AchievementForUserRepositoryImpl.log.info("Query: {}", query);
+	    final PaginatedQueryList<AchievementForUser> achievementsForUser = query(query);
+	    achievementsForUser.loadAllResults();
+	    return achievementsForUser;
+	}
+	
 	/*
 	@Override
 	protected void createTable() {

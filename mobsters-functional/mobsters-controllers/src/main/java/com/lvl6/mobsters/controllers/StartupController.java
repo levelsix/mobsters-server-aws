@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
+import com.lvl6.mobsters.dynamo.AchievementForUser;
 import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
@@ -90,6 +91,7 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventStructureProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventTaskProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.clan.ClanService;
 import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.quest.QuestService;
@@ -203,6 +205,10 @@ public class StartupController extends EventController
 	@Autowired
 	protected NoneventAchievementProtoSerializer noneventAchievementProtoSerializer;
 	
+	@Autowired
+	protected AchievementService achievementService;
+	
+	// TODO
 	/*
 	 * @Autowired protected EventWriter eventWriter;
 	 */
@@ -362,7 +368,7 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at pvpBattleHistoryStuff", stopWatch.getTime());
 //		setClanRaidStuff(resBuilder, user, userId, now);
 //		LOG.info("{}ms at clanRaidStuff", stopWatch.getTime());
-//		setAchievementStuff(resBuilder, userId);
+		setAchievementStuff(resBuilder, userId);
 //		LOG.info("{}ms at achivementStuff", stopWatch.getTime());
 //		setMiniJob(resBuilder, userId);
 //		LOG.info("{}ms at miniJobStuff", stopWatch.getTime());
@@ -743,6 +749,16 @@ public class StartupController extends EventController
 		for (EventPersistentForUser epfu : events) {
 			resBuilder.addUserEvents(
 				noneventTaskProtoSerializer.createUserPersistentEventProto(epfu));
+		}
+	}
+	
+	private void setAchievementStuff( Builder resBuilder, String userId) {
+		List<AchievementForUser> userAchievements = achievementService
+			.getAchievementsForUserId(userId);
+		
+		for (AchievementForUser afu : userAchievements) {
+			resBuilder.addUserAchievements(
+				noneventAchievementProtoSerializer.createUserAchievementProto(afu));
 		}
 	}
 	
