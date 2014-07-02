@@ -16,11 +16,10 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=ITask.class)
 public class Task extends BaseIntPersistentObject implements ITask{
 
-	private static final long serialVersionUID = -8221278285986682349L;
-	
+	private static final long serialVersionUID = -1373482423852411024L;
 
-	@Column(name = "good_name")
-	private String goodName;
+	@Column(name = "name")
+	private String name;
 
 	@Column(name = "description")
 	private String description;
@@ -32,40 +31,32 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private ITask prerequisiteTask;
 
-	@OneToOne(fetch=FetchType.LAZY, optional=true)
-	@JoinColumn(
-		name = "prerequisite_quest_id",
-		nullable = true,
-		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Quest prerequisiteQuest;	
-
 	public Task() {
 		super();
 	}
 
 
-	public Task(final int id, final String goodName, final String description,
-			final ITask prerequisiteTask, final Quest prerequisiteQuest) {
+	public Task(final int id, final String name, final String description,
+			final ITask prerequisiteTask) {
 		super(id);
-		this.goodName = goodName;
+		this.name = name;
 		this.description = description;
 		this.prerequisiteTask = prerequisiteTask;
-		this.prerequisiteQuest = prerequisiteQuest;
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#getGoodName()
+	 * @see com.lvl6.mobsters.info.ITask#getName()
 	 */
 	@Override
-	public String getGoodName() {
-		return goodName;
+	public String getName() {
+		return name;
 	}
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#setGoodName(java.lang.String)
+	 * @see com.lvl6.mobsters.info.ITask#setName(java.lang.String)
 	 */
 	@Override
-	public void setGoodName(String goodName) {
-		this.goodName = goodName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.ITask#getDescription()
@@ -95,33 +86,16 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	public void setPrerequisiteTask(ITask prerequisiteTask) {
 		this.prerequisiteTask = prerequisiteTask;
 	}
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#getPrerequisiteQuest()
-	 */
-	@Override
-	public Quest getPrerequisiteQuest() {
-		return prerequisiteQuest;
-	}
-	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.ITask#setPrerequisiteQuest(com.lvl6.mobsters.info.Quest)
-	 */
-	@Override
-	public void setPrerequisiteQuest(Quest prerequisiteQuest) {
-		this.prerequisiteQuest = prerequisiteQuest;
-	}
-
 
 	@Override
 	public String toString()
 	{
 		return "Task [goodName="
-			+ goodName
+			+ name
 			+ ", description="
 			+ description
 			+ ", prerequisiteTask="
 			+ prerequisiteTask
-			+ ", prerequisiteQuest="
-			+ prerequisiteQuest
 			+ "]";
 	}
 

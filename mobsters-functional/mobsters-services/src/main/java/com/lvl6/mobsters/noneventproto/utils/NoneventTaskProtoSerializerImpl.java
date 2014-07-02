@@ -45,7 +45,7 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 	public FullTaskProto createFullTaskProtoFromTask( Task task )
 	{
 		FullTaskProto.Builder builder = FullTaskProto.newBuilder();
-		String str = task.getGoodName();
+		String str = task.getName();
 
 		builder.setTaskId(task.getId());
 		if (null != str) {
@@ -60,11 +60,6 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		ITask prerequisiteTask = task.getPrerequisiteTask();
 		if (null != prerequisiteTask) {
 			builder.setPrerequisiteTaskId(prerequisiteTask.getId());
-		}
-
-		Quest prerequisiteQuest = task.getPrerequisiteQuest();
-		if (null != prerequisiteQuest) {
-			builder.setPrerequisiteQuestId(prerequisiteQuest.getId());
 		}
 
 		return builder.build();
