@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 
-public interface TaskForUserCompletedRepository
+public interface TaskForUserCompletedRepository extends BaseDynamoRepository<TaskForUserCompleted>
 {
 
-	List<TaskForUserCompleted> findByUserId( String userId );
+	public List<TaskForUserCompleted> findByUserId( String userId );
 
 }

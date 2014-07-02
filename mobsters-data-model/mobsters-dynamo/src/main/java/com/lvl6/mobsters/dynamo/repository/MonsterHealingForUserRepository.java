@@ -7,6 +7,6 @@ import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 public interface MonsterHealingForUserRepository extends BaseDynamoRepository<MonsterHealingForUser>
 {
 
-	List<MonsterHealingForUser> findByUserId( String userId );
+	public List<MonsterHealingForUser> findByUserId( String userId );
 
 }

@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
 
-public interface TaskStageForUserRepository
+public interface TaskStageForUserRepository extends BaseDynamoRepository<TaskStageForUser>
 {
 
-	List<TaskStageForUser> findByTaskForUserId( String taskForUserId );
+	public List<TaskStageForUser> findByTaskForUserId( String taskForUserId );
 	
 }

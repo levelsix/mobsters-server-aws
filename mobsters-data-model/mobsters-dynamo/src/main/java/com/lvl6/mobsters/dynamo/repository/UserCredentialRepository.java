@@ -6,7 +6,7 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 
 public interface UserCredentialRepository extends BaseDynamoRepository<UserCredential>
 {
-	public abstract List<UserCredential> getUserCredentialByFacebook( final String facebookId );
+	public List<UserCredential> getUserCredentialByFacebook( final String facebookId );
 
-	public abstract List<UserCredential> getUserCredentialByUdid( final String udid );
+	public List<UserCredential> getUserCredentialByUdid( final String udid );
 }
