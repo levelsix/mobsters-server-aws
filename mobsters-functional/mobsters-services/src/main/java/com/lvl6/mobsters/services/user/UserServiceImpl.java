@@ -148,7 +148,8 @@ public class UserServiceImpl implements UserService
 		return retVal;
 	}
 	 */
-
+	
+	@Override
 	public void createUser( String userId, String name, int cash,
 		int oil, int gems ) {
 		User u = new User();
@@ -166,6 +167,21 @@ public class UserServiceImpl implements UserService
 		userRepo.save(u);
 	}
 
+	@Override
+	public User levelUpUser( String userId, int newLevel ) {
+		User user = userRepo.load(userId);
+		
+		if (null == user) {
+			throw new IllegalArgumentException(
+			"no User for userId="
+				+ userId);
+		}
+		
+		user.setLevel(newLevel);
+		userRepo.save(user);
+		return user;
+	}
+	
 	 @Override
 	 public User modifyUser( String userId, ModifyUserSpec modifySpec ) {
 		 final Set<UserFunc> userOps =

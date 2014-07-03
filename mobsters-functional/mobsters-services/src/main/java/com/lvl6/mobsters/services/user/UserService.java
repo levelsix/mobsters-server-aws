@@ -127,6 +127,8 @@ public interface UserService
 	public void createUser( String userId, String name, int cash,
 		int oil, int gems );
 	
+	public User levelUpUser( String userId, int newLevel );
+	
 	public abstract User modifyUser( String userId, ModifyUserSpec modifySpec );
 
 	public interface ModifyUserSpecBuilder
