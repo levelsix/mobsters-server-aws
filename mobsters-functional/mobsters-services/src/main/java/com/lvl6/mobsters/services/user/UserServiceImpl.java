@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
@@ -25,7 +23,10 @@ import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
+import com.lvl6.mobsters.dynamo.repository.UserRepositoryImpl;
 import com.lvl6.mobsters.server.ControllerConstants;
+import com.lvl6.mobsters.services.common.Lvl6MobstersException;
+import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
 
 @Component
 @Transactional
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService
 	private static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	@Autowired
-	UserRepository userRepo;
+	UserRepositoryImpl userRepo;
 
 	@Autowired
 	UserDataRarelyAccessedRepository userDraRepo;
@@ -148,13 +149,6 @@ public class UserServiceImpl implements UserService
 	}
 	 */
 
-	// @Override
-	// public void modifyUser( ModifyUserSpec modifySpec ) {
-	// final Multimap<String, UserFunc> usersModificationsMap =
-	// modifySpec.getUsersModificationsMap();
-	//
-	// }
-
 	public void createUser( String userId, String name, int cash,
 		int oil, int gems ) {
 		User u = new User();
@@ -172,24 +166,187 @@ public class UserServiceImpl implements UserService
 		userRepo.save(u);
 	}
 
+	 @Override
+	 public User modifyUser( String userId, ModifyUserSpec modifySpec ) {
+		 final Set<UserFunc> userOps =
+			 modifySpec.getUserModificationsSet();
+	
+		 User user = userRepo.load(userId);
+
+			if (null == user) {
+				throw new IllegalArgumentException(
+				"no User for userId="
+					+ userId);
+			}
+
+			// Mutate the object
+
+			for (UserFunc userOp : userOps) {
+				userOp.apply(user);
+			}
+
+			userRepo.save(user);
+			return user;
+	 }
+	
 	static class ModifyUserSpecBuilderImpl implements ModifyUserSpecBuilder
 	{
-		// keys are userIds
-		final Multimap<String, UserFunc> usersModificationsMap;
+		final Set<UserFunc> usersModificationsSet;
 
 		ModifyUserSpecBuilderImpl()
 		{
-			usersModificationsMap = ArrayListMultimap.create();
+			usersModificationsSet = new HashSet<UserFunc>();
 		}
 
 		@Override
 		public ModifyUserSpec build()
 		{
-			return new ModifyUserSpec(usersModificationsMap);
+			return new ModifyUserSpec(usersModificationsSet);
+		}
+
+		@Override
+		public ModifyUserSpecBuilder decrementGems( int gemsDelta )
+		{
+			usersModificationsSet.add(new DecrementGems(gemsDelta));
+			return this;
+		}
+
+		@Override
+		public ModifyUserSpecBuilder decrementCash( int cashDelta )
+		{
+			usersModificationsSet.add(new DecrementCash(cashDelta));
+			return this;
+		}
+
+		@Override
+		public ModifyUserSpecBuilder decrementOil( int oilDelta )
+		{
+			usersModificationsSet.add(new DecrementOil(oilDelta));
+			return this;
+		}
+
+		@Override
+		public ModifyUserSpecBuilder setExpRelative( int expDelta )
+		{
+			usersModificationsSet.add(new SetExpRelative(expDelta));
+			return this;
 		}
 
 	}
+	
+	static class DecrementGems implements UserFunc {
+		private int gemsDelta; //should be a positive number
 
+		public DecrementGems( int gemsDelta )
+		{
+			super();
+			this.gemsDelta = gemsDelta;
+		}
+
+		@Override
+		public void apply( User u )
+		{
+			if (0 > gemsDelta && u.isAdmin()) {
+				LOG.info("admin wants to add gems when should be decrementing, whatevs. unsignedGemsDelta="
+					+ gemsDelta
+					+ ", user="
+					+ u);
+			} else {
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			}
+			
+			int newGems = u.getGems() - gemsDelta;
+			
+			if (0 > newGems) {
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
+			}
+			
+			u.setGems(newGems);
+		}
+		
+	}
+
+	static class DecrementCash implements UserFunc {
+		private int cashDelta; //should be a positive number
+
+		public DecrementCash( int cashDelta )
+		{
+			super();
+			this.cashDelta = cashDelta;
+		}
+
+		@Override
+		public void apply( User u )
+		{
+			if (0 > cashDelta && u.isAdmin()) {
+				LOG.info("admin wants to add cash when should be decrementing, whatevs. unsignedCashDelta="
+					+ cashDelta
+					+ ", user="
+					+ u);
+			} else {
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			}
+			
+			int newCash = u.getCash() - cashDelta;
+			
+			if (0 > newCash) {
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_CASH);
+			}
+			
+			u.setCash(newCash);
+		}
+		
+	}
+	
+	static class DecrementOil implements UserFunc {
+		private int oilDelta; //should be a positive number
+
+		public DecrementOil( int oilDelta )
+		{
+			super();
+			this.oilDelta = oilDelta;
+		}
+
+		@Override
+		public void apply( User u )
+		{
+			if (0 > oilDelta && u.isAdmin()) {
+				LOG.info("admin wants to add oil when should be decrementing, whatevs. unsignedOilDelta="
+					+ oilDelta
+					+ ", user="
+					+ u);
+			} else {
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			}
+			
+			int newOil = u.getOil() + oilDelta;
+			
+			if (0 > newOil) {
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_OIL);
+			}
+			
+			u.setOil(newOil);
+		}
+		
+	}
+	
+	static class SetExpRelative implements UserFunc {
+		private int expDelta;
+
+		public SetExpRelative( int expDelta )
+		{
+			super();
+			this.expDelta = expDelta;
+		}
+
+		@Override
+		public void apply( User u )
+		{
+			int newExp = u.getExperience() + expDelta;
+			u.setExperience(newExp);
+		}
+	}	
+	
 	/**************************************************************************/
 
 	/**
@@ -420,7 +577,7 @@ public class UserServiceImpl implements UserService
 		return userRepo;
 	}
 
-	public void setUserRepo( UserRepository userRepo )
+	public void setUserRepo( UserRepositoryImpl userRepo )
 	{
 		this.userRepo = userRepo;
 	}

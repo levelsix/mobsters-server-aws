@@ -117,6 +117,7 @@ message SetFacebookIdResponseProto {
 
 //------------------------------------------------------------------------------------------
 //this event is mainly to make a regular user pay for something, never to give stuff to him
+//so the name should really use Decrement instead of Update
 message UpdateUserCurrencyRequestProto {
 	optional MinimumUserProto sender = 1;
 	

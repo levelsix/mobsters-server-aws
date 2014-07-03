@@ -10,7 +10,7 @@ public enum Lvl6MobstersStatusCode
 	FAIL_USER_WITH_FACEBOOK_ID_EXISTS,
 	FAIL_FB_ID_EXISTS,
 	FAIL_USER_FB_ID_ALREADY_SET,
-	FAIL_NOT_USERS_STRUCT, //means fail not user's struct
+	FAIL_NOT_USERS_STRUCT, //means: fail, not user's struct
 	FAIL_AT_MAX_LEVEL,
 	FAIL_CONSTRUCTION_INCOMPLETE,
 	

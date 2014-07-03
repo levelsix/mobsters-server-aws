@@ -3,11 +3,10 @@ package com.lvl6.mobsters.services.user;
 import java.util.Date;
 import java.util.Set;
 
-import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
+import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
-import com.lvl6.mobsters.info.User;
 import com.lvl6.mobsters.services.user.UserServiceImpl.ModifyUserDataRarelyAccessedSpecBuilderImpl;
 import com.lvl6.mobsters.services.user.UserServiceImpl.ModifyUserSpecBuilderImpl;
 
@@ -128,7 +127,7 @@ public interface UserService
 	public void createUser( String userId, String name, int cash,
 		int oil, int gems );
 	
-	// public abstract void modifyUser( ModifyUserSpec modifySpec );
+	public abstract User modifyUser( String userId, ModifyUserSpec modifySpec );
 
 	public interface ModifyUserSpecBuilder
 	{
@@ -136,6 +135,14 @@ public interface UserService
 
 		public ModifyUserSpec build();
 
+		public ModifyUserSpecBuilder decrementGems( int gemsDelta );
+		
+		public ModifyUserSpecBuilder decrementCash( int cashDelta );
+		
+		public ModifyUserSpecBuilder decrementOil( int oilDelta );
+		
+		public ModifyUserSpecBuilder setExpRelative( int expDelta );
+		
 	}
 
 	// cuts down the amount of typing
@@ -145,17 +152,16 @@ public interface UserService
 	// implicitly static
 	public class ModifyUserSpec
 	{
-		// keys are userIds
-		final private Multimap<String, UserFunc> usersModificationsMap;
+		final private Set<UserFunc> userModificationsSet;
 
-		ModifyUserSpec( Multimap<String, UserFunc> usersModificationsMap )
+		ModifyUserSpec( Set<UserFunc> userModificationsSet )
 		{
-			this.usersModificationsMap = usersModificationsMap;
+			this.userModificationsSet = userModificationsSet;
 		}
 
-		Multimap<String, UserFunc> getUsersModificationsMap()
+		Set<UserFunc> getUserModificationsSet()
 		{
-			return usersModificationsMap;
+			return userModificationsSet;
 		}
 
 		public static ModifyUserSpecBuilder builder()
