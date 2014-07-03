@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +17,10 @@ import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
+import com.lvl6.mobsters.info.repository.MonsterRepository;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
@@ -30,31 +31,40 @@ public class MonsterServiceImpl implements MonsterService
 	@Autowired
 	private MonsterForUserHistoryRepository monsterForUserHistoryRepository;
 
+	@Autowired
+	private MonsterRepository monsterRepository;
+	
+	@Autowired
+	private DataServiceTxManager txManager;
+	
 	@Override
 	public void addMonsterForUserToTeamSlot(
 		String userId,
 		String monsterForUserId,
 		int teamSlotNum )
 	{
-		Set<String> monsterForUserIds = Collections.singleton(monsterForUserId);
-
-		List<MonsterForUser> monstersForUser =
-			monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId,
-				monsterForUserIds, teamSlotNum);
-
-		final Map<String, MonsterForUser> userMonsterIdToMfu =
-			new HashMap<String, MonsterForUser>();
-
-		for (final MonsterForUser mfu : monstersForUser) {
-			userMonsterIdToMfu.put(mfu.getMonsterForUserId(), mfu);
-		}
-
-		for (MonsterForUser mfu : userMonsterIdToMfu.values()) {
-			if (monsterForUserIds.contains(mfu.getMonsterForUserId())) {
-				mfu.setTeamSlotNum(teamSlotNum);
-
-			} else if (mfu.getTeamSlotNum() == teamSlotNum) {
-				mfu.setTeamSlotNum(0);
+		txManager.beginTransaction();
+		boolean success = false;
+		try {
+			final List<MonsterForUser> monstersForUser =
+				monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId,
+					Collections.singleton(monsterForUserId), teamSlotNum);
+	
+			for (final MonsterForUser mfu : monstersForUser) {
+				if (monsterForUserId == mfu.getMonsterForUserUuid()) {
+					mfu.setTeamSlotNum(teamSlotNum);
+				} else {
+					mfu.setTeamSlotNum(0);
+				}
+			}
+			
+			monsterForUserRepository.saveEach(monstersForUser);
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
 			}
 		}
 	}
@@ -62,15 +72,25 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
 	{
-		List<MonsterForUser> monsterList =
-			monsterForUserRepository.findAll(userId, monsterForUserIds);
+		txManager.beginTransaction();
+		boolean success = false;
+		try {
+			final List<MonsterForUser> monsterList =
+				monsterForUserRepository.loadEach(userId, monsterForUserIds);
 
-		for (MonsterForUser mfu : monsterList) {
-			mfu.setTeamSlotNum(0);
+			for (final MonsterForUser mfu : monsterList) {
+				mfu.setTeamSlotNum(0);
+			}
+
+			monsterForUserRepository.saveEach(monsterList);
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
 		}
-
-		monsterForUserRepository.saveAll(monsterList);
-
 	}
 
 	/*
@@ -89,37 +109,41 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void modifyMonstersForUser( String userId, ModifyMonstersSpec modifySpec )
 	{
-		// txManager.startTransaction();
-
-		// get whatever we need from the database
-		final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
-		final Set<String> userMonsterIds = specMap.keySet();
-
-		List<MonsterForUser> existingUserMonsters =
-			monsterForUserRepository.findByUserIdAndId(userId, userMonsterIds);
-		if (CollectionUtils.lacksSubstance(existingUserMonsters)
-			|| (userMonsterIds.size() != existingUserMonsters.size())) {
-			// txManager.rollback();
-			throw new IllegalArgumentException("No monsters for userId "
-				+ userId
-				+ " and userMonsterIds: "
-				+ userMonsterIds);
-		}
-
-		// Mutate the objects
-
-		// txManager.startTransaction();
-		for (final MonsterForUser nextMonster : existingUserMonsters) {
-			Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserId());
-			for (MonsterFunc nextMonsterOp : monsterOps) {
-				nextMonsterOp.apply(nextMonster);
+		txManager.beginTransaction();
+		boolean success = false;
+		try {			
+			// get whatever we need from the database
+			final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
+			final Set<String> userMonsterIds = specMap.keySet();
+			
+			final List<MonsterForUser> existingUserMonsters =
+				monsterForUserRepository.loadEach(userId, userMonsterIds);
+			if ( (userMonsterIds.size() != existingUserMonsters.size())
+				|| CollectionUtils.lacksSubstance(existingUserMonsters)) {
+				throw new IllegalArgumentException("Missing monsters for userId "
+						+ userId
+						+ " and monsterForUserIds: "
+						+ userMonsterIds);
+			}
+			
+			// Mutate the objects
+			for (final MonsterForUser nextMonster : existingUserMonsters) {
+				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserUuid());
+				for (MonsterFunc nextMonsterOp : monsterOps) {
+					nextMonsterOp.apply(nextMonster);
+				}
+			}
+			
+			// Write back to the database, then close the transaction by returning
+			monsterForUserRepository.saveEach(existingUserMonsters);
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
 			}
 		}
-
-		// Write back to the database, then close the transaction by returning
-		// TBD: Need to restore a workable save interface.
-		// monsterForUserRepository.save(existingUserMonsters);
-		// txManager.endTransaction();
 	}
 
 	static class ModifyMonstersSpecBuilderImpl implements ModifyMonstersSpecBuilder
@@ -230,36 +254,47 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Override
 	public void createCompleteMonstersForUser( String userId, List<Integer> monsterIds, Date combineStartTime ) {
-		List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
-		
-		for (int i = 0; i < monsterIds.size(); i++) {
-	  		int monsterId = monsterIds.get(i);
-	  		int teamSlotNum = i + 1;
-	  		
-	  		Monster monzter = null;//MonsterRetrieveUtils.getMonsterForMonsterId(monsterId);
-	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
-	  		
-	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
-	  		Collections.sort(lvls);
-	  		int firstOne = lvls.get(0);
-	  		MonsterLevelInfo mli = info.get(firstOne);
-	  		
-	  		MonsterForUser mfu = new MonsterForUser();
-	  		mfu.setUserId(userId);
-	  		mfu.setMonsterId(monsterId);
-	  		mfu.setCurrentExp(0);
-	  		mfu.setCurrentLvl(mli.getLevel());
-	  		mfu.setCurrentHealth(mli.getHp());
-	  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
-	  		mfu.setComplete(true);
-	  		mfu.setCombineStartTime(combineStartTime);
-	  		mfu.setTeamSlotNum(teamSlotNum);
-	  		
-	  	}
-		
-		monsterForUserRepository.saveAll(mfuList);
-		// TODO: Record into monsterForUserHistory
-		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+		txManager.beginTransaction();
+		boolean success = false;
+		try {
+			List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();			
+			List<Monster> monzters = monsterRepository.findAll(monsterIds);
+			int ii=0;
+			
+			for (Monster monzter : monzters) {
+		  		int monsterId = monzter.getId();
+		  		int teamSlotNum = ++ii;
+		  		
+		  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
+		  		
+		  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
+		  		Collections.sort(lvls);
+		  		int firstOne = lvls.get(0);
+		  		MonsterLevelInfo mli = info.get(firstOne);
+		  		
+		  		MonsterForUser mfu = new MonsterForUser();
+		  		mfu.setUserId(userId);
+		  		mfu.setMonsterId(monsterId);
+		  		mfu.setCurrentExp(0);
+		  		mfu.setCurrentLvl(mli.getLevel());
+		  		mfu.setCurrentHealth(mli.getHp());
+		  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
+		  		mfu.setComplete(true);
+		  		mfu.setCombineStartTime(combineStartTime);
+		  		mfu.setTeamSlotNum(teamSlotNum);
+		  	}
+			
+			monsterForUserRepository.saveEach(mfuList);
+			// TODO: Record into monsterForUserHistory
+			//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
+		}
 	}
 	
 	/*
