@@ -56,7 +56,7 @@ public class AchievementServiceImpl implements AchievementService {
             achievementIdToAfu.put(achievementId, nextAchievement);
         }
 
-        achievementForUserRepository.saveAll(achievementIdToAfu.values());
+        achievementForUserRepository.saveEach(achievementIdToAfu.values());
         // Write back to the database, then close the transaction by returning
         // TBD: Need to restore a workable save interface.
         // monsterForUserRepository.save(existingUserAchievements);

@@ -84,6 +84,10 @@ public class AchievementForUser {
         this.achievementId = achievementId;
     }
 
+    public void setAchievementId( Integer achievementId ) {
+        this.achievementId = achievementId.intValue();
+    }
+
     public int getProgress() {
         return progress;
     }

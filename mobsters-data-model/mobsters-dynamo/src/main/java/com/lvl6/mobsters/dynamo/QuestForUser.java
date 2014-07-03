@@ -70,6 +70,10 @@ public class QuestForUser {
 		this.questId = questId;
 	}
 
+	public void setQuestId(Integer questId) {
+		this.questId = questId.intValue();
+	}
+
 	public boolean isRedeemed() {
 		return isRedeemed;
 	}

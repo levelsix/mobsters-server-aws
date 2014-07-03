@@ -18,7 +18,7 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 
 @Component
-public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestForUser>
+public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<QuestForUser, Integer>
 	implements
 		QuestForUserRepository
 {
@@ -28,8 +28,7 @@ public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestFo
 	public QuestForUserRepositoryImpl()
 	{
 		super(
-			QuestForUser.class);
-		isActive = true;
+			QuestForUser.class, "questId", Integer.class);
 	}
 
 	@Override

@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -17,6 +19,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.lvl6.mobsters.dynamo.QuestForUser;
+import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepositoryImpl;
+import com.lvl6.mobsters.dynamo.repository.DynamoRepositorySetup;
+import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
@@ -39,8 +44,10 @@ public class TestQuestForUsers {
 	
 	
 	@Autowired
-	public QuestForUserRepositoryImpl qfuRepo;
+	public QuestForUserRepository qfuRepo;
 	
+	@Autowired
+	public List<DynamoRepositorySetup> repoSetupList;
 	
 	
 	public static String userId = UUID.randomUUID().toString();
@@ -49,67 +56,51 @@ public class TestQuestForUsers {
 	
 	
 	
-	//@BeforeClass
+	@Before
 	public void createTestData() {
 		for(Integer quest : questIds) {
 			QuestForUser qu = new QuestForUser(userId, quest, false, true);
 			log.info("Saving: {}", qu);
 			qfuRepo.save(qu);
-			QuestForUser qul = qfuRepo.getMapper().load(QuestForUser.class, qu.getUserId(), qu.getQuestId());
 			//questForUserIds.add(qu.getId());
-			log.info("Loaded: {}", qul);
 		}
 	}
 	
-	
+	@After
 	public void destroyTestData() {
-		List<QuestForUser> quests = qfuRepo.findByUserIdAndIsCompleteAndQuestIdIn(userId, true, questIds);
-		qfuRepo.getMapper().batchDelete(quests);
+		for (DynamoRepositorySetup nextRepoSetup : repoSetupList) {
+			nextRepoSetup.emptyTable();
+		}
 	}
 	
-	
-	
-	
-	
 	@Test
-	public void test() {
-		createTestData();
+	public void testLoadEach() {
 		Collection<QuestForUser> quests = qfuRepo.findByUserIdAndIsCompleteAndQuestIdIn(userId, true, questIds);
 		log.info("Found {} quests", quests.size());
 		Assert.assertTrue("Found all quests", quests.size() == questIds.size());
-		destroyTestData();
 	}
 	
-	
-	
-	
-	
-
-	public SetupDynamoDB getSetup() {
-		return setup;
+	@Test
+	public void testLoadLoop() {
+		ArrayList<QuestForUser> quests = new ArrayList(questIds.size());
+		for(Integer quest : questIds) {
+			QuestForUser qul = qfuRepo.load(userId, quest);
+			quests.add(qul);
+			log.info("Loaded: {}", qul);			
+		}
+		log.info("Found {} quests", quests.size());
+		Assert.assertEquals("Found all quests", questIds.size(), quests.size());
 	}
 
 	public void setSetup(SetupDynamoDB setup) {
 		this.setup = setup;
 	}
 
-	public AmazonDynamoDBClient getDynamoClient() {
-		return dynamoClient;
-	}
-
 	public void setDynamoClient(AmazonDynamoDBClient dynamoClient) {
 		this.dynamoClient = dynamoClient;
 	}
 
-
-	public QuestForUserRepositoryImpl getQfuRepo() {
-		return qfuRepo;
-	}
-
-
 	public void setQfuRepo(QuestForUserRepositoryImpl qfuRepo) {
 		this.qfuRepo = qfuRepo;
 	}
-
-
 }

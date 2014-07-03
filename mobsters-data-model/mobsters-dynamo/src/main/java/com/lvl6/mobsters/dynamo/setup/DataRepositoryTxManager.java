@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.dynamo.setup;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.transactions.Transaction;
 import com.amazonaws.services.dynamodbv2.transactions.Transaction.IsolationLevel;
 
 public interface DataRepositoryTxManager
@@ -18,7 +19,7 @@ public interface DataRepositoryTxManager
      * @return Returns the current thread's active DynamoDB transaction, if one exists, otherwise returns
      *         null.
 	 */
-    Lvl6Transaction getActiveTransaction();
+    Transaction getActiveTransaction();
 
     <T> T load( T item, IsolationLevel isolationLevel );
 

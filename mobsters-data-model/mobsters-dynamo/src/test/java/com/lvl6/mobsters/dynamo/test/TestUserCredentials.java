@@ -18,7 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.lvl6.mobsters.dynamo.UserCredential;
-import com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository;
+import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepository;
+import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
@@ -62,9 +63,10 @@ public class TestUserCredentials
 	}
 
 	@After
+	@SuppressWarnings("unchecked")
 	public void destroyTestData()
 	{
-		userRepo.emptyTable();
+		((BaseDynamoItemRepositoryImpl<UserCredential>)userRepo).emptyTable();
 		/*
 		 * for (final String userId : TestUserCredentials.userIds) { final List<UserCredential> users =
 		 * userRepo.getUserCredentialByUdid(userId); userRepo.delete(users); }
@@ -83,29 +85,14 @@ public class TestUserCredentials
 		Assert.assertEquals("Found same", users.get(0), userz.get(0));
 	}
 
-	public SetupDynamoDB getSetup()
-	{
-		return setup;
-	}
-
 	public void setSetup( final SetupDynamoDB setup )
 	{
 		this.setup = setup;
 	}
 
-	public AmazonDynamoDBClient getDynamoClient()
-	{
-		return dynamoClient;
-	}
-
 	public void setDynamoClient( final AmazonDynamoDBClient dynamoClient )
 	{
 		this.dynamoClient = dynamoClient;
-	}
-
-	public BaseDynamoRepository<UserCredential> getUserRepo()
-	{
-		return userRepo;
 	}
 
 	public void setUserRepo( final UserCredentialRepository userRepo )

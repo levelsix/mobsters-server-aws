@@ -12,8 +12,8 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
 
 @Component
-public class UserDataRarelyAccessedRepository
-	extends BaseDynamoRepositoryImpl<UserDataRarelyAccessed>
+public abstract class UserDataRarelyAccessedRepository
+	extends BaseDynamoItemRepositoryImpl<UserDataRarelyAccessed>
 {
 
 	@SuppressWarnings("unused")
@@ -22,7 +22,6 @@ public class UserDataRarelyAccessedRepository
 
 	public UserDataRarelyAccessedRepository() {
 		super(UserDataRarelyAccessed.class);
-		isActive = true;// for unit test
 	}
 
 	/*

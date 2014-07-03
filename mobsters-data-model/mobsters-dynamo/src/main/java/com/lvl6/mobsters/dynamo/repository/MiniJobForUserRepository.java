@@ -18,15 +18,14 @@ import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 
 @Component
-public class MiniJobForUserRepository extends
-		BaseDynamoRepositoryImpl<MiniJobForUser> {
+public abstract class MiniJobForUserRepository extends
+		BaseDynamoItemRepositoryImpl<MiniJobForUser> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(MiniJobForUserRepository.class);
 
 	public MiniJobForUserRepository() {
 		super(MiniJobForUser.class);
-		isActive = true;// for unit test
 	}
 
 	public List<MiniJobForUser> findByUserIdAndId(final String userId,

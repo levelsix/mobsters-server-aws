@@ -38,7 +38,7 @@ public class TaskServiceImpl implements TaskService {
             ofu.setUserId(userId);
         }
         
-        taskForUserCompletedRepository.saveAll(userTaskIdToOfu.values());
+        taskForUserCompletedRepository.saveEach(userTaskIdToOfu.values());
     }
     
     // motivation for two separate Builders is because service will only be modifying

@@ -3,6 +3,7 @@ package com.lvl6.mobsters.controllers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +105,31 @@ public class UserCreateController extends EventController
 		UserCredential uc = null;
 		try {
 			uc = userService.createUserCredential(facebookId, udid);
+			
+			CreateUserCallBuilder callBuilder = CreateUserCallBuilderImpl.newBuilder();
+			List<CreateStructureCallBuilder> innerBuilder = new ArrayList<CreateStructureCallBuilder>();
+			
+			callBuilder
+				.facebookId(facebookId)
+				.udid(udid)
+				.name(name)
+				.cash(cash)
+				.oil(oil)
+				.gems(gems)
+				.deviceToken(deviceToken)
+				.createTime(createTime)
+			    .structures( 
+			    	structsJustBuilt.map[ proto |
+			    	    CreateStructureCallBuilder.newBuilder() => [ bldr |
+			    	        bldr
+			    	        	.buildingId( proto.buildingId )
+			    	        	.xCoord( proto.xCoord )
+			    	        	.yCoord( proto.yCoord )
+			    	    ]
+			        ]
+			    );		
+		
+			callResult = userService.createUser( callBuilder.build() );
 		} catch (Exception e) {
 			// TODO: Consider making a hierarchy of exceptions, one for each
 			// UserCreateStatus
@@ -206,7 +232,7 @@ public class UserCreateController extends EventController
 		// upon creation, the user should NOT be able to retrieve from these buildings
 		for (int index = 0; index < structsJustBuilt.size(); index++ ) {
 			// TODO: Perhaps find more efficient way to get an id.
-			String userStructureId = (new StructureForUser()).getId();
+			String userStructureId = UUID.randomUUID().toString();
 
 			TutorialStructProto tsp = structsJustBuilt.get(index);
 

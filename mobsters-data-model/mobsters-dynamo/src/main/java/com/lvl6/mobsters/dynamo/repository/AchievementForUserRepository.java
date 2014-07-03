@@ -19,14 +19,13 @@ import com.lvl6.mobsters.dynamo.AchievementForUser;
 
 @Component
 public class AchievementForUserRepository extends
-		BaseDynamoRepositoryImpl<AchievementForUser> {
+		BaseDynamoCollectionRepositoryImpl<AchievementForUser, Integer> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(AchievementForUserRepository.class);
 
 	public AchievementForUserRepository() {
-		super(AchievementForUser.class);
-		isActive = true;// for unit test
+		super(AchievementForUser.class, "achievementId", Integer.class);
 	}
 
 	public List<AchievementForUser> findByUserIdAndId(final String userId,

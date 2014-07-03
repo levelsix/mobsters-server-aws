@@ -17,14 +17,13 @@ import com.amazonaws.services.dynamodbv2.model.ProjectionType;
 import com.lvl6.mobsters.dynamo.UserCredential;
 
 @Component
-public class UserCredentialRepositoryImpl extends BaseDynamoRepositoryImpl<UserCredential>
+public class UserCredentialRepositoryImpl extends BaseDynamoItemRepositoryImpl<UserCredential>
 	implements
 		UserCredentialRepository
 {
 	public UserCredentialRepositoryImpl()
 	{
 		super(UserCredential.class);
-		isActive = true;// for unit test
 	}
 
 	@SuppressWarnings("unused")
@@ -62,31 +61,34 @@ public class UserCredentialRepositoryImpl extends BaseDynamoRepositoryImpl<UserC
 	}
 
 	@Override
-	public void emptyTable()
-	{
-		super.emptyTable();
-	}
-
-	@Override
 	public List<GlobalSecondaryIndex> getGlobalIndexes()
 	{
+		// TODO Global indices seem to have throughput provisioning independent of their
+		//      host table's provisioning, but we have not provided a facility to set it
+		//      on an index-by-index level yet.
+		
 		final List<GlobalSecondaryIndex> indexes = new ArrayList<>();
 		// udid
 		ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
 		indexKeySchema.add(new KeySchemaElement("udid", KeyType.HASH));
 		indexes.add(new GlobalSecondaryIndex().withIndexName("udidGlobalIndex")
 			.withKeySchema(indexKeySchema)
-			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
-			.withProvisionedThroughput(provisionedThroughput));
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
 
 		// facebooktId
 		indexKeySchema = new ArrayList<KeySchemaElement>();
 		indexKeySchema.add(new KeySchemaElement("facebookId", KeyType.HASH));
 		indexes.add(new GlobalSecondaryIndex().withIndexName("facebookIdGlobalIndex")
 			.withKeySchema(indexKeySchema)
-			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
-			.withProvisionedThroughput(provisionedThroughput));
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL)));
 
 		return indexes;
+	}
+
+	@Override
+	protected UserCredential getHashKeyObject(String hashKey) {
+		UserCredential retVal = new UserCredential();
+		retVal.setUserId(hashKey);
+		return retVal;
 	}
 }
