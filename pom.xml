@@ -28,6 +28,7 @@
 	<modules>
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
+		<!-- module>mobsters-modeling</module-->
 	</modules>
 	
 	<organization>
@@ -52,7 +53,6 @@
 		<aws.dynamo.regionId>local</aws.dynamo.regionId>
 		<aws.dynamo.checkTables>true</aws.dynamo.checkTables>
 		<aws.dynamo.table.name.prefix>DEV_</aws.dynamo.table.name.prefix>
-
 
 		<!-- MySQL -->
 		<jdbc.url><![CDATA[jdbc:mysql://mobstersdev.cirdfrlgyccg.us-west-2.rds.amazonaws.com:3306/mobsters?useLegacyDatetimeCode=false]]></jdbc.url>
@@ -132,6 +132,8 @@
 
 		<tomcat.version>7.0.27</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
+		
+		<xbase.version>2.6.0</xbase.version>
 		<xtext.version>2.6.0</xtext.version>
 	</properties>
 
@@ -454,6 +456,18 @@
 				<groupId>com.twitter</groupId>
 				<artifactId>chill-java</artifactId>
 				<version>${chill-java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase</artifactId>
+				<version>${xbase.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xtext</artifactId>
+				<version>${xtext.version}</version>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
