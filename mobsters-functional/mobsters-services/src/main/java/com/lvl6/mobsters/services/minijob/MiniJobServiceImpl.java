@@ -1,9 +1,9 @@
 package com.lvl6.mobsters.services.minijob;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -16,10 +16,14 @@ import org.springframework.stereotype.Component;
 
 import com.esotericsoftware.minlog.Log;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.MiniJob;
 
 @Component
@@ -29,6 +33,9 @@ public class MiniJobServiceImpl implements MiniJobService {
 
     @Autowired
     private MiniJobForUserRepository miniJobForUserRepository;
+    
+    @Autowired
+    private DataServiceTxManager txManager;
 
     //NON CRUD LOGIC******************************************************************
     @Override
@@ -70,8 +77,8 @@ public class MiniJobServiceImpl implements MiniJobService {
                 spawnedMiniJobs.add(mj);
                 break;
             }
-            //regardless of whether or not we find one,
-            //prevent it from infinite looping
+            
+            //regardless of whether or not we find one, prevent it from infinite looping
             numToSpawnCopy--;
         }
         if (spawnedMiniJobs.size() != numToSpawn) {
@@ -84,36 +91,57 @@ public class MiniJobServiceImpl implements MiniJobService {
     //CRUD LOGIC******************************************************************
 
     @Override
-    public void modifyMiniJobsForUser( String userId, ModifyUserMiniJobsSpec modifySpec ) {
-        // txManager.startTransaction();
-
+    public void modifyMiniJobsForUser( String userId, Director<ModifyUserMiniJobsSpecBuilder> director ) {
+    	// Collect a work definition from the caller
+    	ModifyUserMiniJobsSpecBuilderImpl specBuilder = new ModifyUserMiniJobsSpecBuilderImpl();
+    	director.apply(specBuilder);
+    	
         // get whatever we need from the database
-        final Multimap<String, UserMiniJobFunc> modSpecMultimap = modifySpec.getModSpecMultimap();
+        final Multimap<String, UserMiniJobFunc> modSpecMultimap = specBuilder.getModSpecMultimap();
         final Set<String> miniJobIds = modSpecMultimap.keySet();
         
-        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndId(userId, miniJobIds);
-        // Mutate the objects
+        boolean success = false;
+        txManager.beginTransaction();
+        try {
+	        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndId(userId, miniJobIds);
+	        if (CollectionUtils.isEmptyOrNull(existingUserMiniJobs)) {
+	            final String message = "User has none of the required mini jobs. user=" + userId + ", miniJobIds=" + miniJobIds.toString();
+				Log.error(message);
+				
+				// TODO: Select the Lvl6 Exception that expresses "none found"
+	            throw new IllegalStateException(message);
+	        } else if(existingUserMiniJobs.size() != miniJobIds.size()) {
+	            final String message = "User lacks some of the required mini jobs. user=" + userId + ", miniJobIds=" + miniJobIds.toString();
+				Log.error(message);
+				
+				// TODO: Select the Lvl6 Exception that expresses "some missing"
+	            throw new IllegalStateException(message);
+	        }
         
-        //update the existing ones
-        // txManager.startTransaction();
-        for (final MiniJobForUser nextMiniJob : existingUserMiniJobs) {
-            String miniJobForUserId = nextMiniJob.getMiniJobForUserId();
-            
-            Collection<UserMiniJobFunc> miniJobOps = modSpecMultimap.get(miniJobForUserId);
-            for (UserMiniJobFunc nextMiniJobOp : miniJobOps) {
-                nextMiniJobOp.apply(nextMiniJob);
-            }
+	        // Mutate the objects
+	        for (final MiniJobForUser nextMiniJob : existingUserMiniJobs) {
+	        	// No null test by design.  The contract of repository classes is to return a smaller list when objects do not exist, not to
+	        	// return null placeholders.  Use unit tests to assert invariants hold true rather than redundant runtime null checks.
+	        	
+	            for (final UserMiniJobFunc nextMiniJobOp : 
+	            	modSpecMultimap.get(
+	            		nextMiniJob.getMiniJobForUserId()
+	            	)
+	            ) {
+	                nextMiniJobOp.apply(nextMiniJob);
+	            }
+	        }
+	
+	        // Write back to the database, then commit the transaction by toggling success to true.
+	        miniJobForUserRepository.saveEach(existingUserMiniJobs);	        
+	        success = true;
+        } finally {
+        	if (success) {
+        		txManager.commit();
+        	} else {
+        		txManager.rollback();
+        	}
         }
-
-        if (!CollectionUtils.lacksSubstance(existingUserMiniJobs)) {
-            miniJobForUserRepository.saveAll(existingUserMiniJobs);
-        } else {
-            Log.error("User has no mini jobs. user=" + userId + " modifySpec=" + modifySpec);
-        }
-        // Write back to the database, then close the transaction by returning
-        // TBD: Need to restore a workable save interface.
-        // monsterForUserRepository.save(existingUserMiniJobs);
-        // txManager.endTransaction();
     }
 
     // motivation for two separate Builders is because service will only be modifying
@@ -127,33 +155,26 @@ public class MiniJobServiceImpl implements MiniJobService {
             this.modSpecMap = ArrayListMultimap.create();
         }
         
-        @Override
-        public ModifyUserMiniJobsSpec build() {
-            final ModifyUserMiniJobsSpec retVal = new ModifyUserMiniJobsSpec(modSpecMap);
-            
-            return retVal;
+        /**
+         * This is this concrete builder's build step.  It therefore does NOT belong in the builder interface!
+         */
+        Multimap<String, UserMiniJobFunc> getModSpecMultimap() {
+        	// TODO: There are better ways to prevent the value returned by a call to this method from potentially
+        	//       being changed further, but extracting an immutable copy is the easiest to implement.
+            return ImmutableMultimap.copyOf(modSpecMap);
         }
 
         @Override
-        public ModifyUserMiniJobsSpecBuilder setUserMonsterIds( String userMiniJobId, Set<String> userMonsterIds) {
+        public ModifyUserMiniJobsSpecBuilder startJob( String userMiniJobId, Set<String> userMonsterIds, Date timeStarted ) {
             modSpecMap.put(
                 userMiniJobId,
-                new SetUserMonsterIds(userMonsterIds)
+                new StartMiniJob(userMonsterIds, timeStarted)
             );
             return this;
         }
         
         @Override
-        public ModifyUserMiniJobsSpecBuilder setTimeStarted( String userMiniJobId, Date timeStarted ) {
-            modSpecMap.put(
-                userMiniJobId,
-                new SetTimeStarted(timeStarted)
-            );
-            return this;
-        }
-        
-        @Override
-        public ModifyUserMiniJobsSpecBuilder setTimeCompleted( String userMiniJobId, Date timeCompleted ) {
+        public ModifyUserMiniJobsSpecBuilder completeJob( String userMiniJobId, Date timeCompleted ) {
             modSpecMap.put(
                 userMiniJobId,
                 new SetTimeCompleted(timeCompleted)
@@ -162,43 +183,25 @@ public class MiniJobServiceImpl implements MiniJobService {
         }
     }
     
-    static class SetUserMonsterIds implements UserMiniJobFunc {
-
-        final private Set<String> userMonsterIds;
-        
-        SetUserMonsterIds(Set<String> userMonsterIds) {
-            this.userMonsterIds = userMonsterIds;
-        }
-        
-        @Override
-        public void apply( MiniJobForUser t )
-        {
-            if (CollectionUtils.lacksSubstance(t.getUserMonsterIds())) {
-                t.setUserMonsterIds(userMonsterIds);
-            } else {
-                Log.error("UserMonsterIds already set (not reseting). MiniJob=" + t +
-                    " newMonsterIds=" + userMonsterIds);
-            }
-        }
-        
-    }
-    
-    static class SetTimeStarted implements UserMiniJobFunc {
-
+    static class StartMiniJob implements UserMiniJobFunc {
         final private Date timeStarted;
+		final private HashSet<String> userMonsterIds;
         
-        SetTimeStarted(Date timeStarted) {
+        StartMiniJob(Set<String> userMonsterIds, Date timeStarted) {
+        	this.userMonsterIds = new HashSet<String>(userMonsterIds);
             this.timeStarted = timeStarted;
         }
         
         @Override
         public void apply( MiniJobForUser t )
         {
-            if (null == t.getTimeStarted()) {
+            if (CollectionUtils.lacksSubstance(t.getUserMonsterIds()) && (null == t.getTimeStarted())) {
+                t.setUserMonsterIds(userMonsterIds);
                 t.setTimeStarted(timeStarted);
             } else {
                 Log.error("UserMiniJob already started (not reseting). MiniJob=" + t +
-                    " timeStarted=" + timeStarted);
+                	", userMonsterIds=" + userMonsterIds + 
+                    ", timeStarted=" + timeStarted);
             }
         }
         
@@ -228,34 +231,36 @@ public class MiniJobServiceImpl implements MiniJobService {
     /**************************************************************************/
 
     @Override
-    public void createMiniJobsForUser( String userId, CreateUserMiniJobsSpec createSpec ) {
+    public void createMiniJobsForUser( String userId, Director<CreateUserMiniJobsSpecBuilder> director ) {
         // txManager.startTransaction();
+    	// Collect a work definition from the caller
+    	CreateUserMiniJobsSpecBuilderImpl specBuilder = new CreateUserMiniJobsSpecBuilderImpl(userId);
+    	director.apply(specBuilder);
+    	
+        // get whatever we have been asked to save to the database
+        final Map<String, MiniJobForUser> userMiniJobIdToMjfu = specBuilder.getUserMiniJobIdToMjfu();
         
-        // get whatever we need from the database, which is nothing
-        final Map<String, MiniJobForUser> userMiniJobIdToMjfu = createSpec.getUserMiniJobIdToMjfu();
-        
-        for ( MiniJobForUser mjfu : userMiniJobIdToMjfu.values()) {
-            mjfu.setUserId(userId);
-        }
-        
-        miniJobForUserRepository.saveAll(userMiniJobIdToMjfu.values());
+        miniJobForUserRepository.saveEach(userMiniJobIdToMjfu.values());
     }
     
     // motivation for two separate Builders is because service will only be modifying
     // existing objects or creating new ones
     static class CreateUserMiniJobsSpecBuilderImpl implements CreateUserMiniJobsSpecBuilder
     {
-        // the end state: objects to be saved to db
-        final Map<String, MiniJobForUser> userMiniJobIdToMjfu;
+    	// the end state: objects to be saved to db
+		private final String userId;
+		private final Map<String, MiniJobForUser> userMiniJobIdToMjfu;
         
-        CreateUserMiniJobsSpecBuilderImpl() {
-            this.userMiniJobIdToMjfu = new HashMap<String, MiniJobForUser>();
+        CreateUserMiniJobsSpecBuilderImpl(final String userId) {
+            this.userId = userId;
+			this.userMiniJobIdToMjfu = new HashMap<String, MiniJobForUser>();
         }
 
         private MiniJobForUser getTarget( String userMiniJobId ) {
             MiniJobForUser afu = userMiniJobIdToMjfu.get(userMiniJobId);
             if (null == afu) {
                 afu = new MiniJobForUser();
+                afu.setUserId(userId);
                 userMiniJobIdToMjfu.put(userMiniJobId, afu);
             }
             return afu;
@@ -325,22 +330,19 @@ public class MiniJobServiceImpl implements MiniJobService {
             return this;
         }
 
-        @Override
-        public CreateUserMiniJobsSpec build() {
-
-            return new CreateUserMiniJobsSpec(userMiniJobIdToMjfu);
+       /**
+        * This is this concrete builder's build step.  It therefore does NOT belong in the builder interface!
+        */
+       Map<String, MiniJobForUser> getUserMiniJobIdToMjfu() {
+        	// TODO: There are better ways to prevent the value returned by a call to this method from potentially
+        	//       being changed further, but extracting an immutable copy is the easiest to implement.
+            return ImmutableMap.copyOf(userMiniJobIdToMjfu);
         }
     }
 
     //for the dependency injection
-    public MiniJobForUserRepository getMiniJobForUserRepository()
-    {
-        return miniJobForUserRepository;
-    }
-
     public void setMiniJobForUserRepository( MiniJobForUserRepository miniJobForUserRepository )
     {
         this.miniJobForUserRepository = miniJobForUserRepository;
     }
-
 }
