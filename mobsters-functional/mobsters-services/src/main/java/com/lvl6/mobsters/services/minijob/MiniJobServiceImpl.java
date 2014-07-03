@@ -23,6 +23,7 @@ import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.MiniJob;
 
@@ -33,7 +34,7 @@ public class MiniJobServiceImpl implements MiniJobService {
 
     @Autowired
     private MiniJobForUserRepository miniJobForUserRepository;
-    
+
     @Autowired
     private DataServiceTxManager txManager;
 
@@ -88,14 +89,20 @@ public class MiniJobServiceImpl implements MiniJobService {
         return spawnedMiniJobs;
     }
     
-    //CRUD LOGIC******************************************************************
+    //READ-ONLY CRUD LOGIC******************************************************
 
+    public List<MiniJobForUser> getMiniJobForUserId( String userId ) {
+    	return miniJobForUserRepository.findByUserId(userId);
+    }
+	
+ 	//TRANSACTIONAL CRUD LOGIC**************************************************
+     
     @Override
     public void modifyMiniJobsForUser( String userId, Director<ModifyUserMiniJobsSpecBuilder> director ) {
     	// Collect a work definition from the caller
     	ModifyUserMiniJobsSpecBuilderImpl specBuilder = new ModifyUserMiniJobsSpecBuilderImpl();
     	director.apply(specBuilder);
-    	
+
         // get whatever we need from the database
         final Multimap<String, UserMiniJobFunc> modSpecMultimap = specBuilder.getModSpecMultimap();
         final Set<String> miniJobIds = modSpecMultimap.keySet();
@@ -103,7 +110,7 @@ public class MiniJobServiceImpl implements MiniJobService {
         boolean success = false;
         txManager.beginTransaction();
         try {
-	        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndId(userId, miniJobIds);
+        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndId(userId, miniJobIds);
 	        if (CollectionUtils.isEmptyOrNull(existingUserMiniJobs)) {
 	            final String message = "User has none of the required mini jobs. user=" + userId + ", miniJobIds=" + miniJobIds.toString();
 				Log.error(message);
@@ -118,27 +125,27 @@ public class MiniJobServiceImpl implements MiniJobService {
 	            throw new IllegalStateException(message);
 	        }
         
-	        // Mutate the objects
-	        for (final MiniJobForUser nextMiniJob : existingUserMiniJobs) {
+        // Mutate the objects
+        for (final MiniJobForUser nextMiniJob : existingUserMiniJobs) {
 	        	// No null test by design.  The contract of repository classes is to return a smaller list when objects do not exist, not to
 	        	// return null placeholders.  Use unit tests to assert invariants hold true rather than redundant runtime null checks.
-	        	
+            
 	            for (final UserMiniJobFunc nextMiniJobOp : 
 	            	modSpecMultimap.get(
 	            		nextMiniJob.getMiniJobForUserId()
 	            	)
 	            ) {
-	                nextMiniJobOp.apply(nextMiniJob);
-	            }
-	        }
-	
+                nextMiniJobOp.apply(nextMiniJob);
+            }
+        }
+
 	        // Write back to the database, then commit the transaction by toggling success to true.
 	        miniJobForUserRepository.saveEach(existingUserMiniJobs);	        
 	        success = true;
         } finally {
         	if (success) {
         		txManager.commit();
-        	} else {
+        } else {
         		txManager.rollback();
         	}
         }
@@ -236,7 +243,7 @@ public class MiniJobServiceImpl implements MiniJobService {
     	// Collect a work definition from the caller
     	CreateUserMiniJobsSpecBuilderImpl specBuilder = new CreateUserMiniJobsSpecBuilderImpl(userId);
     	director.apply(specBuilder);
-    	
+        
         // get whatever we have been asked to save to the database
         final Map<String, MiniJobForUser> userMiniJobIdToMjfu = specBuilder.getUserMiniJobIdToMjfu();
         
@@ -247,13 +254,13 @@ public class MiniJobServiceImpl implements MiniJobService {
     // existing objects or creating new ones
     static class CreateUserMiniJobsSpecBuilderImpl implements CreateUserMiniJobsSpecBuilder
     {
-    	// the end state: objects to be saved to db
+        // the end state: objects to be saved to db
 		private final String userId;
 		private final Map<String, MiniJobForUser> userMiniJobIdToMjfu;
         
         CreateUserMiniJobsSpecBuilderImpl(final String userId) {
             this.userId = userId;
-			this.userMiniJobIdToMjfu = new HashMap<String, MiniJobForUser>();
+            this.userMiniJobIdToMjfu = new HashMap<String, MiniJobForUser>();
         }
 
         private MiniJobForUser getTarget( String userMiniJobId ) {
@@ -341,7 +348,7 @@ public class MiniJobServiceImpl implements MiniJobService {
     }
 
     //for the dependency injection
-    public void setMiniJobForUserRepository( MiniJobForUserRepository miniJobForUserRepository )
+    public void setMiniJobForUserRepository( MiniJobForUserRepositoryImpl miniJobForUserRepository )
     {
         this.miniJobForUserRepository = miniJobForUserRepository;
     }

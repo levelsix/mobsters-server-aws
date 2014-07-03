@@ -23,7 +23,6 @@ public class TestJpaSetup {
 	@Autowired
 	protected AchievementRepository achRepo;
 	
-	
 	public AchievementRepository getAchRepo() {
 		return achRepo;
 	}
@@ -38,13 +37,13 @@ public class TestJpaSetup {
 	public void test() {
 		Collection<Achievement> achs = achRepo.findByAchievementNameStartingWith("test");
 		achRepo.delete(achs);
-		Achievement ach = new Achievement(1, "test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, 0, 0);
+		Achievement ach = new Achievement(1, "test0", "test0", 0, 0, "test0", "test0", "test0", "test0", 0, 0, 0, null, null);
 		achRepo.save(ach);
-		ach = new Achievement(2, "test1", "test1", 1, 1, "test1", "test1", "test1", "test1", 1, 1, 1, 1, 1);
+		ach = new Achievement(2, "test1", "test1", 1, 1, "test1", "test1", "test1", "test1", 1, 1, 1, null, null);
 		achRepo.save(ach);
-		ach = new Achievement(3, "test2", "test2", 2, 2, "test2", "test2", "test2", "test2", 2, 2, 2, 2, 2);
+		ach = new Achievement(3, "test2", "test2", 2, 2, "test2", "test2", "test2", "test2", 2, 2, 2, null, null);
 		achRepo.save(ach);
-		ach = new Achievement(4, "test3", "test3", 3, 3, "test3", "test3", "test3", "test3", 3, 3,3, 3, 3);
+		ach = new Achievement(4, "test3", "test3", 3, 3, "test3", "test3", "test3", "test3", 3, 3,3, null, null);
 		achRepo.save(ach);
 		int size = achRepo.findByQuantityGreaterThan(0).size();
 		assertTrue("Quantity expected: 3. actual:" + size, size == 3);
@@ -53,4 +52,5 @@ public class TestJpaSetup {
 	    assertEquals("No achievements left post-delete", 0, achRepo.findAll().size());
 	}
 
+	
 }

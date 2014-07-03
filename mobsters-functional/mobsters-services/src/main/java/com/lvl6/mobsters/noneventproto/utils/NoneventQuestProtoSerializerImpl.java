@@ -10,8 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
+import com.lvl6.mobsters.info.BaseIntPersistentObject;
+import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Quest;
+import com.lvl6.mobsters.noneventproto.NoneventChatProto.ColorProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
+import com.lvl6.mobsters.noneventproto.NoneventQuestProto.ItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.UserQuestJobProto;
 
 public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSerializer 
@@ -23,7 +27,7 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 	@Override
 	public List<FullUserQuestProto> createFullUserQuestDataLarges(
 		List<QuestForUser> userQuests,
-		Map<Integer, Quest> questIdsToQuests,
+		Map<Integer, BaseIntPersistentObject> questIdsToQuests,
 		Map<Integer, Collection<QuestJobForUser>> questIdToUserQuestJobs )
 	{
 		List<FullUserQuestProto> fullUserQuestDataLargeProtos =
@@ -31,7 +35,7 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 
 		for (QuestForUser userQuest : userQuests) {
 			int questId = userQuest.getQuestId();
-			Quest quest = questIdsToQuests.get(questId);
+			Quest quest = (Quest) questIdsToQuests.get(questId);
 			FullUserQuestProto.Builder builder = FullUserQuestProto.newBuilder();
 
 			if (null == quest) {
@@ -39,9 +43,7 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 					+ userQuest.getQuestId()
 					+ ", userQuest="
 					+ userQuest);
-			}
-
-			if (null != quest) {
+			} else {
 				builder.setUserUuid(userQuest.getUserId());
 				builder.setQuestId(quest.getId());
 				builder.setIsRedeemed(userQuest.isRedeemed());
@@ -96,4 +98,34 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 		return uqjpb.build();
 	}
 
+
+	@Override
+	public ItemProto createItemProtoFromItem(Item item) {
+		ItemProto.Builder ipb = ItemProto.newBuilder();
+	  	
+		ipb.setItemId(item.getId());
+	  	
+	  	String str = item.getName();
+	  	if (null != str) {
+	  		ipb.setName(str);
+	  	}
+	  	
+	  	str = item.getImgName();
+	  	if (null != str) {
+	  		ipb.setImgName(str);
+	  	}
+	  	
+	  	str = item.getBorderImgName();
+	  	if (null != str) {
+	  		ipb.setBorderImgName(str);
+	  	}
+	  	
+	  	ColorProto.Builder clrB = ColorProto.newBuilder();
+	  	clrB.setBlue(item.getBlue());
+	  	clrB.setGreen(item.getGreen());
+	  	clrB.setRed(item.getRed());
+	  	ipb.setColor(clrB.build());
+	  	
+	  	return ipb.build();
+	}
 }

@@ -710,15 +710,15 @@ public final class EventPvpProto {
     public enum QueueUpStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      FAIL_NOT_ENOUGH_CASH(1, 2),
+      FAIL_INSUFFICIENT_CASH(1, 2),
       FAIL_OTHER(2, 3),
-      FAIL_NOT_ENOUGH_GEMS(3, 4),
+      FAIL_INSUFFICENT_GEMS(3, 4),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_NOT_ENOUGH_CASH_VALUE = 2;
+      public static final int FAIL_INSUFFICIENT_CASH_VALUE = 2;
       public static final int FAIL_OTHER_VALUE = 3;
-      public static final int FAIL_NOT_ENOUGH_GEMS_VALUE = 4;
+      public static final int FAIL_INSUFFICENT_GEMS_VALUE = 4;
       
       
       public final int getNumber() { return value; }
@@ -726,9 +726,9 @@ public final class EventPvpProto {
       public static QueueUpStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return FAIL_NOT_ENOUGH_CASH;
+          case 2: return FAIL_INSUFFICIENT_CASH;
           case 3: return FAIL_OTHER;
-          case 4: return FAIL_NOT_ENOUGH_GEMS;
+          case 4: return FAIL_INSUFFICENT_GEMS;
           default: return null;
         }
       }
@@ -759,7 +759,7 @@ public final class EventPvpProto {
       }
       
       private static final QueueUpStatus[] VALUES = {
-        SUCCESS, FAIL_NOT_ENOUGH_CASH, FAIL_OTHER, FAIL_NOT_ENOUGH_GEMS, 
+        SUCCESS, FAIL_INSUFFICIENT_CASH, FAIL_OTHER, FAIL_INSUFFICENT_GEMS, 
       };
       
       public static QueueUpStatus valueOf(
@@ -4468,39 +4468,39 @@ public final class EventPvpProto {
       "to\032\022NoneventUser.proto\"\200\001\n\023QueueUpReques" +
       "tProto\022)\n\010attacker\030\001 \001(\0132\027.proto.Minimum" +
       "UserProto\022\023\n\013attackerElo\030\002 \001(\005\022\025\n\rseenUs" +
-      "erUuids\030\005 \003(\t\022\022\n\nclientTime\030\006 \001(\003\"\211\002\n\024Qu" +
+      "erUuids\030\005 \003(\t\022\022\n\nclientTime\030\006 \001(\003\"\214\002\n\024Qu" +
       "eueUpResponseProto\022)\n\010attacker\030\001 \001(\0132\027.p" +
       "roto.MinimumUserProto\022)\n\020defenderInfoLis" +
       "t\030\002 \003(\0132\017.proto.PvpProto\0229\n\006status\030\003 \001(\016" +
       "2).proto.QueueUpResponseProto.QueueUpSta" +
-      "tus\"`\n\rQueueUpStatus\022\013\n\007SUCCESS\020\001\022\030\n\024FAI",
-      "L_NOT_ENOUGH_CASH\020\002\022\016\n\nFAIL_OTHER\020\003\022\030\n\024F" +
-      "AIL_NOT_ENOUGH_GEMS\020\004\"\311\001\n\032BeginPvpBattle" +
-      "RequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min" +
-      "imumUserProto\022\021\n\tsenderElo\030\002 \001(\005\022\027\n\017atta" +
-      "ckStartTime\030\003 \001(\003\022\036\n\005enemy\030\004 \001(\0132\017.proto" +
-      ".PvpProto\022\027\n\017exactingRevenge\030\005 \001(\010\022\035\n\025pr" +
-      "eviousBattleEndTime\030\006 \001(\003\"\340\001\n\033BeginPvpBa" +
-      "ttleResponseProto\022\'\n\006sender\030\001 \001(\0132\027.prot" +
-      "o.MinimumUserProto\022G\n\006status\030\002 \001(\01627.pro" +
-      "to.BeginPvpBattleResponseProto.BeginPvpB",
-      "attleStatus\"O\n\024BeginPvpBattleStatus\022\013\n\007S" +
-      "UCCESS\020\001\022\032\n\026FAIL_ENEMY_UNAVAILABLE\020\002\022\016\n\n" +
-      "FAIL_OTHER\020\003\"\313\001\n\030EndPvpBattleRequestProt" +
-      "o\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumUserPro" +
-      "toWithMaxResources\022\024\n\014defenderUuid\030\002 \001(\t" +
-      "\022\024\n\014userAttacked\030\003 \001(\010\022\017\n\007userWon\030\004 \001(\010\022" +
-      "\022\n\nclientTime\030\005 \001(\003\022\021\n\toilChange\030\006 \001(\005\022\022" +
-      "\n\ncashChange\030\007 \001(\005\"\260\002\n\031EndPvpBattleRespo" +
-      "nseProto\0227\n\006sender\030\001 \001(\0132\'.proto.Minimum" +
-      "UserProtoWithMaxResources\022\024\n\014defenderUui",
-      "d\030\002 \001(\t\022\030\n\020attackerAttacked\030\003 \001(\010\022\023\n\013att" +
-      "ackerWon\030\004 \001(\010\022C\n\006status\030\t \001(\01623.proto.E" +
-      "ndPvpBattleResponseProto.EndPvpBattleSta" +
-      "tus\"P\n\022EndPvpBattleStatus\022\013\n\007SUCCESS\020\001\022\016" +
-      "\n\nFAIL_OTHER\020\002\022\035\n\031FAIL_BATTLE_TOOK_TOO_L" +
-      "ONG\020\003B-\n\034com.lvl6.mobsters.eventprotoB\rE" +
-      "ventPvpProto"
+      "tus\"c\n\rQueueUpStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAI",
+      "L_INSUFFICIENT_CASH\020\002\022\016\n\nFAIL_OTHER\020\003\022\031\n" +
+      "\025FAIL_INSUFFICENT_GEMS\020\004\"\311\001\n\032BeginPvpBat" +
+      "tleRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto." +
+      "MinimumUserProto\022\021\n\tsenderElo\030\002 \001(\005\022\027\n\017a" +
+      "ttackStartTime\030\003 \001(\003\022\036\n\005enemy\030\004 \001(\0132\017.pr" +
+      "oto.PvpProto\022\027\n\017exactingRevenge\030\005 \001(\010\022\035\n" +
+      "\025previousBattleEndTime\030\006 \001(\003\"\340\001\n\033BeginPv" +
+      "pBattleResponseProto\022\'\n\006sender\030\001 \001(\0132\027.p" +
+      "roto.MinimumUserProto\022G\n\006status\030\002 \001(\01627." +
+      "proto.BeginPvpBattleResponseProto.BeginP",
+      "vpBattleStatus\"O\n\024BeginPvpBattleStatus\022\013" +
+      "\n\007SUCCESS\020\001\022\032\n\026FAIL_ENEMY_UNAVAILABLE\020\002\022" +
+      "\016\n\nFAIL_OTHER\020\003\"\313\001\n\030EndPvpBattleRequestP" +
+      "roto\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumUser" +
+      "ProtoWithMaxResources\022\024\n\014defenderUuid\030\002 " +
+      "\001(\t\022\024\n\014userAttacked\030\003 \001(\010\022\017\n\007userWon\030\004 \001" +
+      "(\010\022\022\n\nclientTime\030\005 \001(\003\022\021\n\toilChange\030\006 \001(" +
+      "\005\022\022\n\ncashChange\030\007 \001(\005\"\260\002\n\031EndPvpBattleRe" +
+      "sponseProto\0227\n\006sender\030\001 \001(\0132\'.proto.Mini" +
+      "mumUserProtoWithMaxResources\022\024\n\014defender",
+      "Uuid\030\002 \001(\t\022\030\n\020attackerAttacked\030\003 \001(\010\022\023\n\013" +
+      "attackerWon\030\004 \001(\010\022C\n\006status\030\t \001(\01623.prot" +
+      "o.EndPvpBattleResponseProto.EndPvpBattle" +
+      "Status\"P\n\022EndPvpBattleStatus\022\013\n\007SUCCESS\020" +
+      "\001\022\016\n\nFAIL_OTHER\020\002\022\035\n\031FAIL_BATTLE_TOOK_TO" +
+      "O_LONG\020\003B-\n\034com.lvl6.mobsters.eventproto" +
+      "B\rEventPvpProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

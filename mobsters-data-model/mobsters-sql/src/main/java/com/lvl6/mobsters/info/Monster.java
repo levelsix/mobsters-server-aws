@@ -1,17 +1,30 @@
 package com.lvl6.mobsters.info;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
+import org.hibernate.annotations.Proxy;
+
+@Entity(name="Monster")
 @Table(name="monster")
-public class Monster extends BaseIntPersistentObject{	
+@Proxy(lazy=true, proxyClass=IMonster.class)
+public class Monster extends BaseIntPersistentObject implements IMonster{	
 
-	private static final long serialVersionUID = -3176206778781138581L;
-
-	@Column(name = "name")
-	private String name;
+	private static final long serialVersionUID = -6165082176139667297L;
+	
+	
+	@Column(name = "evolution_group")
+	private String evolutionGroup;
 	@Column(name = "monster_group")
 	private String monsterGroup;
 	@Column(name = "quality")
@@ -30,10 +43,21 @@ public class Monster extends BaseIntPersistentObject{
 	private int minutesToCombinePieces;
 	@Column(name = "max_level")
 	private int maxLevel; //aka max enhancing level
-	@Column(name = "evolution_monster_id")
-	private int evolutionMonsterId;
-	@Column(name = "evolution_catalyst_monster_id")
-	private int evolutionCatalystMonsterId;
+	
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
+	@JoinColumn(
+		name = "evolution_monster_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private IMonster evolutionMonster;
+	
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
+	@JoinColumn(
+		name = "evolution_catalyst_monster_id",
+			nullable = true,
+			foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private IMonster evolutionCatalystMonster;
+	
 	@Column(name = "minutes_to_evolve")
 	private int minutesToEvolve;
 	@Column(name = "num_catalysts_required")
@@ -62,20 +86,39 @@ public class Monster extends BaseIntPersistentObject{
 	private int atkAnimationRepeatedFramesEnd;
 	@Column(name = "shorter_name")
 	private String shorterName;	
+	
+	@OneToOne(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="monster", 
+		orphanRemoval=true,
+		targetEntity=MonsterLevelInfo.class)
+	private List<IMonsterLevelInfo> lvlInfo;
+	
+	@OneToMany(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="monster", 
+		orphanRemoval=true,
+		targetEntity=MonsterBattleDialogue.class)
+	private List<IMonsterBattleDialogue> battleDialogue;
+	
 	public Monster() { }
 	public Monster(int id, String name, String monsterGroup, String quality,
 			int evolutionLevel, String displayName, String element,
 			String imagePrefix, int numPuzzlePieces,
-			int minutesToCombinePieces, int maxLevel, int evolutionMonsterId,
-			int evolutionCatalystMonsterId, int minutesToEvolve,
+			int minutesToCombinePieces, int maxLevel, IMonster evolutionMonster,
+			IMonster evolutionCatalystMonster, int minutesToEvolve,
 			int numCatalystsRequired, String carrotRecruited,
 			String carrotDefeated, String carrotEvolved, String description,
 			int evolutionCost, String animationType, int verticalPixelOffset,
 			String atkSoundFile, int atkSoundAnimationFrame,
 			int atkAnimationRepeatedFramesStart,
-			int atkAnimationRepeatedFramesEnd, String shorterName) {
+			int atkAnimationRepeatedFramesEnd, String shorterName,
+			List<IMonsterLevelInfo> lvlInfo,
+			List<IMonsterBattleDialogue> battleDialogue) {
 		super(id);
-		this.name = name;
+		this.evolutionGroup = name;
 		this.monsterGroup = monsterGroup;
 		this.quality = quality;
 		this.evolutionLevel = evolutionLevel;
@@ -85,8 +128,8 @@ public class Monster extends BaseIntPersistentObject{
 		this.numPuzzlePieces = numPuzzlePieces;
 		this.minutesToCombinePieces = minutesToCombinePieces;
 		this.maxLevel = maxLevel;
-		this.evolutionMonsterId = evolutionMonsterId;
-		this.evolutionCatalystMonsterId = evolutionCatalystMonsterId;
+		this.evolutionMonster = evolutionMonster;
+		this.evolutionCatalystMonster = evolutionCatalystMonster;
 		this.minutesToEvolve = minutesToEvolve;
 		this.numCatalystsRequired = numCatalystsRequired;
 		this.carrotRecruited = carrotRecruited;
@@ -101,230 +144,473 @@ public class Monster extends BaseIntPersistentObject{
 		this.atkAnimationRepeatedFramesStart = atkAnimationRepeatedFramesStart;
 		this.atkAnimationRepeatedFramesEnd = atkAnimationRepeatedFramesEnd;
 		this.shorterName = shorterName;
+		this.lvlInfo = lvlInfo;
+		this.battleDialogue = battleDialogue;
 	}
 
 
 
-	public String getName() {
-		return name;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getName()
+	 */
+	@Override
+	public String getEvolutionGroup() {
+		return evolutionGroup;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setName(java.lang.String)
+	 */
+	@Override
+	public void setEvolutionGroup(String evolutionGroup) {
+		this.evolutionGroup = evolutionGroup;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getMonsterGroup()
+	 */
+	@Override
 	public String getMonsterGroup() {
 		return monsterGroup;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setMonsterGroup(java.lang.String)
+	 */
+	@Override
 	public void setMonsterGroup(String monsterGroup) {
 		this.monsterGroup = monsterGroup;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getQuality()
+	 */
+	@Override
 	public String getQuality() {
 		return quality;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setQuality(java.lang.String)
+	 */
+	@Override
 	public void setQuality(String quality) {
 		this.quality = quality;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getEvolutionLevel()
+	 */
+	@Override
 	public int getEvolutionLevel() {
 		return evolutionLevel;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setEvolutionLevel(int)
+	 */
+	@Override
 	public void setEvolutionLevel(int evolutionLevel) {
 		this.evolutionLevel = evolutionLevel;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getDisplayName()
+	 */
+	@Override
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setDisplayName(java.lang.String)
+	 */
+	@Override
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getElement()
+	 */
+	@Override
 	public String getElement() {
 		return element;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setElement(java.lang.String)
+	 */
+	@Override
 	public void setElement(String element) {
 		this.element = element;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getImagePrefix()
+	 */
+	@Override
 	public String getImagePrefix() {
 		return imagePrefix;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setImagePrefix(java.lang.String)
+	 */
+	@Override
 	public void setImagePrefix(String imagePrefix) {
 		this.imagePrefix = imagePrefix;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getNumPuzzlePieces()
+	 */
+	@Override
 	public int getNumPuzzlePieces() {
 		return numPuzzlePieces;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setNumPuzzlePieces(int)
+	 */
+	@Override
 	public void setNumPuzzlePieces(int numPuzzlePieces) {
 		this.numPuzzlePieces = numPuzzlePieces;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getMinutesToCombinePieces()
+	 */
+	@Override
 	public int getMinutesToCombinePieces() {
 		return minutesToCombinePieces;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setMinutesToCombinePieces(int)
+	 */
+	@Override
 	public void setMinutesToCombinePieces(int minutesToCombinePieces) {
 		this.minutesToCombinePieces = minutesToCombinePieces;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getMaxLevel()
+	 */
+	@Override
 	public int getMaxLevel() {
 		return maxLevel;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setMaxLevel(int)
+	 */
+	@Override
 	public void setMaxLevel(int maxLevel) {
 		this.maxLevel = maxLevel;
 	}
 
-	public int getEvolutionMonsterId() {
-		return evolutionMonsterId;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getEvolutionMonster()
+	 */
+	@Override
+	public IMonster getEvolutionMonster()
+	{
+		return evolutionMonster;
 	}
-
-	public void setEvolutionMonsterId(int evolutionMonsterId) {
-		this.evolutionMonsterId = evolutionMonsterId;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setEvolutionMonster(com.lvl6.mobsters.info.IMonster)
+	 */
+	@Override
+	public void setEvolutionMonster( IMonster evolutionMonster )
+	{
+		this.evolutionMonster = evolutionMonster;
 	}
-
-	public int getEvolutionCatalystMonsterId() {
-		return evolutionCatalystMonsterId;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getEvolutionCatalystMonster()
+	 */
+	@Override
+	public IMonster getEvolutionCatalystMonster()
+	{
+		return evolutionCatalystMonster;
 	}
-
-	public void setEvolutionCatalystMonsterId(int evolutionCatalystMonsterId) {
-		this.evolutionCatalystMonsterId = evolutionCatalystMonsterId;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setEvolutionCatalystMonster(com.lvl6.mobsters.info.IMonster)
+	 */
+	@Override
+	public void setEvolutionCatalystMonster( IMonster evolutionCatalystMonster )
+	{
+		this.evolutionCatalystMonster = evolutionCatalystMonster;
 	}
-
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getMinutesToEvolve()
+	 */
+	@Override
 	public int getMinutesToEvolve() {
 		return minutesToEvolve;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setMinutesToEvolve(int)
+	 */
+	@Override
 	public void setMinutesToEvolve(int minutesToEvolve) {
 		this.minutesToEvolve = minutesToEvolve;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getNumCatalystsRequired()
+	 */
+	@Override
 	public int getNumCatalystsRequired() {
 		return numCatalystsRequired;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setNumCatalystsRequired(int)
+	 */
+	@Override
 	public void setNumCatalystsRequired(int numCatalystsRequired) {
 		this.numCatalystsRequired = numCatalystsRequired;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getCarrotRecruited()
+	 */
+	@Override
 	public String getCarrotRecruited() {
 		return carrotRecruited;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setCarrotRecruited(java.lang.String)
+	 */
+	@Override
 	public void setCarrotRecruited(String carrotRecruited) {
 		this.carrotRecruited = carrotRecruited;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getCarrotDefeated()
+	 */
+	@Override
 	public String getCarrotDefeated() {
 		return carrotDefeated;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setCarrotDefeated(java.lang.String)
+	 */
+	@Override
 	public void setCarrotDefeated(String carrotDefeated) {
 		this.carrotDefeated = carrotDefeated;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getCarrotEvolved()
+	 */
+	@Override
 	public String getCarrotEvolved() {
 		return carrotEvolved;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setCarrotEvolved(java.lang.String)
+	 */
+	@Override
 	public void setCarrotEvolved(String carrotEvolved) {
 		this.carrotEvolved = carrotEvolved;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getDescription()
+	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setDescription(java.lang.String)
+	 */
+	@Override
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getEvolutionCost()
+	 */
+	@Override
 	public int getEvolutionCost() {
 		return evolutionCost;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setEvolutionCost(int)
+	 */
+	@Override
 	public void setEvolutionCost(int evolutionCost) {
 		this.evolutionCost = evolutionCost;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getAnimationType()
+	 */
+	@Override
 	public String getAnimationType() {
 		return animationType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setAnimationType(java.lang.String)
+	 */
+	@Override
 	public void setAnimationType(String animationType) {
 		this.animationType = animationType;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getVerticalPixelOffset()
+	 */
+	@Override
 	public int getVerticalPixelOffset() {
 		return verticalPixelOffset;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setVerticalPixelOffset(int)
+	 */
+	@Override
 	public void setVerticalPixelOffset(int verticalPixelOffset) {
 		this.verticalPixelOffset = verticalPixelOffset;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getAtkSoundFile()
+	 */
+	@Override
 	public String getAtkSoundFile() {
 		return atkSoundFile;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setAtkSoundFile(java.lang.String)
+	 */
+	@Override
 	public void setAtkSoundFile(String atkSoundFile) {
 		this.atkSoundFile = atkSoundFile;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getAtkSoundAnimationFrame()
+	 */
+	@Override
 	public int getAtkSoundAnimationFrame() {
 		return atkSoundAnimationFrame;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setAtkSoundAnimationFrame(int)
+	 */
+	@Override
 	public void setAtkSoundAnimationFrame(int atkSoundAnimationFrame) {
 		this.atkSoundAnimationFrame = atkSoundAnimationFrame;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getAtkAnimationRepeatedFramesStart()
+	 */
+	@Override
 	public int getAtkAnimationRepeatedFramesStart() {
 		return atkAnimationRepeatedFramesStart;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setAtkAnimationRepeatedFramesStart(int)
+	 */
+	@Override
 	public void setAtkAnimationRepeatedFramesStart(
 			int atkAnimationRepeatedFramesStart) {
 		this.atkAnimationRepeatedFramesStart = atkAnimationRepeatedFramesStart;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getAtkAnimationRepeatedFramesEnd()
+	 */
+	@Override
 	public int getAtkAnimationRepeatedFramesEnd() {
 		return atkAnimationRepeatedFramesEnd;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setAtkAnimationRepeatedFramesEnd(int)
+	 */
+	@Override
 	public void setAtkAnimationRepeatedFramesEnd(int atkAnimationRepeatedFramesEnd) {
 		this.atkAnimationRepeatedFramesEnd = atkAnimationRepeatedFramesEnd;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getShorterName()
+	 */
+	@Override
 	public String getShorterName() {
 		return shorterName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setShorterName(java.lang.String)
+	 */
+	@Override
 	public void setShorterName(String shorterName) {
 		this.shorterName = shorterName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getLvlInfo()
+	 */
+	@Override
+	public List<IMonsterLevelInfo> getLvlInfo()
+	{
+		return lvlInfo;
+	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setLvlInfo(java.util.List)
+	 */
+	@Override
+	public void setLvlInfo( List<IMonsterLevelInfo> lvlInfo )
+	{
+		this.lvlInfo = lvlInfo;
+	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#getBattleDialogue()
+	 */
+	@Override
+	public List<IMonsterBattleDialogue> getBattleDialogue()
+	{
+		return battleDialogue;
+	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonster#setBattleDialogue(java.util.List)
+	 */
+	@Override
+	public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue )
+	{
+		this.battleDialogue = battleDialogue;
+	}
+	
 	@Override
 	public String toString() {
-		return "Monster [id=" + id + ", name=" + name + ", monsterGroup="
+		return "Monster [id=" + id + ", evolutionGroup=" + evolutionGroup + ", monsterGroup="
 				+ monsterGroup + ", quality=" + quality + ", evolutionLevel="
 				+ evolutionLevel + ", displayName=" + displayName
 				+ ", element=" + element + ", imagePrefix=" + imagePrefix
 				+ ", numPuzzlePieces=" + numPuzzlePieces
 				+ ", minutesToCombinePieces=" + minutesToCombinePieces
 				+ ", maxLevel=" + maxLevel + ", evolutionMonsterId="
-				+ evolutionMonsterId + ", evolutionCatalystMonsterId="
-				+ evolutionCatalystMonsterId + ", minutesToEvolve="
+				+ evolutionMonster + ", evolutionCatalystMonsterId="
+				+ evolutionCatalystMonster + ", minutesToEvolve="
 				+ minutesToEvolve + ", numCatalystsRequired="
 				+ numCatalystsRequired + ", carrotRecruited=" + carrotRecruited
 				+ ", carrotDefeated=" + carrotDefeated + ", carrotEvolved="

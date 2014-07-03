@@ -9,11 +9,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="task")
-public class Task extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
-	private static final long serialVersionUID = -520057120226567292L;
+@Entity(name="Task")
+@Table(name="task")
+@Proxy(lazy=true, proxyClass=ITask.class)
+public class Task extends BaseIntPersistentObject implements ITask{
+
+	private static final long serialVersionUID = -8221278285986682349L;
+	
 
 	@Column(name = "good_name")
 	private String goodName;
@@ -21,22 +25,18 @@ public class Task extends BaseIntPersistentObject{
 	@Column(name = "description")
 	private String description;
 
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "city_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private City city;
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Task.class, optional=true)
+	@JoinColumn(
+		name = "prerequisite_task_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private ITask prerequisiteTask;
 
-	// @Column(name = "energy_cost")
-	// private int energyCost;
-
-	@Column(name = "asset_number_within_city")
-	private int assetNumberWithinCity;
-
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "prerequisite_task_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	Task prerequisiteTask;
-
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "prerequisite_quest_id", foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	@OneToOne(fetch=FetchType.LAZY, optional=true)
+	@JoinColumn(
+		name = "prerequisite_quest_id",
+		nullable = true,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private Quest prerequisiteQuest;	
 
 	public Task() {
@@ -44,60 +44,85 @@ public class Task extends BaseIntPersistentObject{
 	}
 
 
-	public Task(final int id, final String goodName, final String description, final City city,
-			final int assetNumberWithinCity, final Task prerequisiteTask, final Quest prerequisiteQuest) {
+	public Task(final int id, final String goodName, final String description,
+			final ITask prerequisiteTask, final Quest prerequisiteQuest) {
 		super(id);
 		this.goodName = goodName;
 		this.description = description;
-		this.city = city;
-		this.assetNumberWithinCity = assetNumberWithinCity;
 		this.prerequisiteTask = prerequisiteTask;
 		this.prerequisiteQuest = prerequisiteQuest;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#getGoodName()
+	 */
+	@Override
 	public String getGoodName() {
 		return goodName;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#setGoodName(java.lang.String)
+	 */
+	@Override
 	public void setGoodName(String goodName) {
 		this.goodName = goodName;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#getDescription()
+	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#setDescription(java.lang.String)
+	 */
+	@Override
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public City getCity() {
-		return city;
-	}
-	public void setCity(City city) {
-		this.city = city;
-	}
-	public int getAssetNumberWithinCity() {
-		return assetNumberWithinCity;
-	}
-	public void setAssetNumberWithinCity(int assetNumberWithinCity) {
-		this.assetNumberWithinCity = assetNumberWithinCity;
-	}
-	public Task getPrerequisiteTask() {
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#getPrerequisiteTask()
+	 */
+	@Override
+	public ITask getPrerequisiteTask() {
 		return prerequisiteTask;
 	}
-	public void setPrerequisiteTask(Task prerequisiteTask) {
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#setPrerequisiteTask(com.lvl6.mobsters.info.ITask)
+	 */
+	@Override
+	public void setPrerequisiteTask(ITask prerequisiteTask) {
 		this.prerequisiteTask = prerequisiteTask;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#getPrerequisiteQuest()
+	 */
+	@Override
 	public Quest getPrerequisiteQuest() {
 		return prerequisiteQuest;
 	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.ITask#setPrerequisiteQuest(com.lvl6.mobsters.info.Quest)
+	 */
+	@Override
 	public void setPrerequisiteQuest(Quest prerequisiteQuest) {
 		this.prerequisiteQuest = prerequisiteQuest;
 	}
+
+
 	@Override
-	public String toString() {
-		return "Task [goodName=" + goodName + ", description=" + description
-				+ ", city=" + city + ", assetNumberWithinCity="
-				+ assetNumberWithinCity + ", prerequisiteTask="
-				+ prerequisiteTask + ", prerequisiteQuest="
-				+ prerequisiteQuest + "]";
+	public String toString()
+	{
+		return "Task [goodName="
+			+ goodName
+			+ ", description="
+			+ description
+			+ ", prerequisiteTask="
+			+ prerequisiteTask
+			+ ", prerequisiteQuest="
+			+ prerequisiteQuest
+			+ "]";
 	}
-	
+
 }

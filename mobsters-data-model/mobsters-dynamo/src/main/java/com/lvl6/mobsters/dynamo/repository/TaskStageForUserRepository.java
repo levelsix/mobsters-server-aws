@@ -1,10 +1,10 @@
 package com.lvl6.mobsters.dynamo.repository;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
-@Component public abstract class TaskStageForUserRepository extends BaseDynamoItemRepositoryImpl<TaskStageForUser>{
-	public TaskStageForUserRepository(){
-		super(TaskStageForUser.class);
-	}
 
+public interface TaskStageForUserRepository extends BaseDynamoCollectionRepository<TaskStageForUser, String>
+{
+	public List<TaskStageForUser> findByTaskForUserId( String taskForUserId );
 }

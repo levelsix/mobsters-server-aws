@@ -4105,6 +4105,10 @@ public final class NoneventStructureProto {
     // optional string occupationName = 6;
     boolean hasOccupationName();
     String getOccupationName();
+    
+    // optional string imgSuffix = 7;
+    boolean hasImgSuffix();
+    String getImgSuffix();
   }
   public static final class ResidenceProto extends
       com.google.protobuf.GeneratedMessage
@@ -4220,6 +4224,38 @@ public final class NoneventStructureProto {
       }
     }
     
+    // optional string imgSuffix = 7;
+    public static final int IMGSUFFIX_FIELD_NUMBER = 7;
+    private java.lang.Object imgSuffix_;
+    public boolean hasImgSuffix() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    public String getImgSuffix() {
+      java.lang.Object ref = imgSuffix_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          imgSuffix_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getImgSuffixBytes() {
+      java.lang.Object ref = imgSuffix_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        imgSuffix_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
       numMonsterSlots_ = 0;
@@ -4227,6 +4263,7 @@ public final class NoneventStructureProto {
       numGemsRequired_ = 0;
       numAcceptedFbInvites_ = 0;
       occupationName_ = "";
+      imgSuffix_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4257,6 +4294,9 @@ public final class NoneventStructureProto {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBytes(6, getOccupationNameBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getImgSuffixBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -4290,6 +4330,10 @@ public final class NoneventStructureProto {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(6, getOccupationNameBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getImgSuffixBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4432,6 +4476,8 @@ public final class NoneventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000010);
         occupationName_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
+        imgSuffix_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
       
@@ -4498,6 +4544,10 @@ public final class NoneventStructureProto {
           to_bitField0_ |= 0x00000020;
         }
         result.occupationName_ = occupationName_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.imgSuffix_ = imgSuffix_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4531,6 +4581,9 @@ public final class NoneventStructureProto {
         }
         if (other.hasOccupationName()) {
           setOccupationName(other.getOccupationName());
+        }
+        if (other.hasImgSuffix()) {
+          setImgSuffix(other.getImgSuffix());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -4595,6 +4648,11 @@ public final class NoneventStructureProto {
             case 50: {
               bitField0_ |= 0x00000020;
               occupationName_ = input.readBytes();
+              break;
+            }
+            case 58: {
+              bitField0_ |= 0x00000040;
+              imgSuffix_ = input.readBytes();
               break;
             }
           }
@@ -4810,6 +4868,42 @@ public final class NoneventStructureProto {
       void setOccupationName(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000020;
         occupationName_ = value;
+        onChanged();
+      }
+      
+      // optional string imgSuffix = 7;
+      private java.lang.Object imgSuffix_ = "";
+      public boolean hasImgSuffix() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      public String getImgSuffix() {
+        java.lang.Object ref = imgSuffix_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          imgSuffix_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setImgSuffix(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        imgSuffix_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearImgSuffix() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        imgSuffix_ = getDefaultInstance().getImgSuffix();
+        onChanged();
+        return this;
+      }
+      void setImgSuffix(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000040;
+        imgSuffix_ = value;
         onChanged();
       }
       
@@ -10882,56 +10976,56 @@ public final class NoneventStructureProto {
       "\n\tqueueSize\030\002 \001(\005\022\027\n\017healthPerSecond\030\003 \001" +
       "(\002\"e\n\010LabProto\022-\n\nstructInfo\030\001 \001(\0132\031.pro" +
       "to.StructureInfoProto\022\021\n\tqueueSize\030\002 \001(\005" +
-      "\022\027\n\017pointsPerSecond\030\003 \001(\002\"\305\001\n\016ResidenceP" +
+      "\022\027\n\017pointsPerSecond\030\003 \001(\002\"\330\001\n\016ResidenceP" +
       "roto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structu" +
       "reInfoProto\022\027\n\017numMonsterSlots\030\002 \001(\005\022\034\n\024" +
       "numBonusMonsterSlots\030\003 \001(\005\022\027\n\017numGemsReq" +
       "uired\030\004 \001(\005\022\034\n\024numAcceptedFbInvites\030\005 \001(" +
-      "\005\022\026\n\016occupationName\030\006 \001(\t\"\315\002\n\rTownHallPr" +
-      "oto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structur",
-      "eInfoProto\022 \n\030numResourceOneGenerators\030\002" +
-      " \001(\005\022\036\n\026numResourceOneStorages\030\003 \001(\005\022 \n\030" +
-      "numResourceTwoGenerators\030\004 \001(\005\022\036\n\026numRes" +
-      "ourceTwoStorages\030\005 \001(\005\022\024\n\014numHospitals\030\006" +
-      " \001(\005\022\025\n\rnumResidences\030\007 \001(\005\022\027\n\017numMonste" +
-      "rSlots\030\010 \001(\005\022\017\n\007numLabs\030\t \001(\005\022\030\n\020pvpQueu" +
-      "eCashCost\030\n \001(\005\022\030\n\020resourceCapacity\030\013 \001(" +
-      "\005\"\201\001\n\022MiniJobCenterProto\022-\n\nstructInfo\030\001" +
-      " \001(\0132\031.proto.StructureInfoProto\022\031\n\021gener" +
-      "atedJobLimit\030\002 \001(\005\022!\n\031hoursBetweenJobGen",
-      "eration\030\003 \001(\005\"\234\002\n\026FullUserStructureProto" +
-      "\022\026\n\016userStructUuid\030\001 \001(\t\022\020\n\010userUuid\030\002 \001" +
-      "(\t\022\020\n\010structId\030\003 \001(\005\022\025\n\rlastRetrieved\030\004 " +
-      "\001(\003\022\024\n\014purchaseTime\030\005 \001(\003\022\022\n\nisComplete\030" +
-      "\006 \001(\010\022+\n\013coordinates\030\007 \001(\0132\026.proto.Coord" +
-      "inateProto\022=\n\013orientation\030\010 \001(\0162\030.proto." +
-      "StructOrientation:\016NO_ORIENTATION\022\031\n\021fbI" +
-      "nviteStructLvl\030\t \001(\005\"\'\n\017CoordinateProto\022" +
-      "\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\"S\n\023TutorialStructP" +
-      "roto\022\020\n\010structId\030\001 \001(\005\022*\n\ncoordinate\030\002 \001",
-      "(\0132\026.proto.CoordinateProto\"\346\002\n\rObstacleP" +
-      "roto\022\022\n\nobstacleId\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\0229" +
-      "\n\017removalCostType\030\003 \001(\0162\023.proto.Resource" +
-      "Type:\013NO_RESOURCE\022\014\n\004cost\030\004 \001(\005\022\027\n\017secon" +
-      "dsToRemove\030\005 \001(\005\022\r\n\005width\030\006 \001(\005\022\016\n\006heigh" +
-      "t\030\007 \001(\005\022\017\n\007imgName\030\010 \001(\t\022\036\n\026imgVerticalP" +
-      "ixelOffset\030\t \001(\002\022\023\n\013description\030\n \001(\t\022\026\n" +
-      "\016chanceToAppear\030\013 \001(\002\022\025\n\rshadowImgName\030\014" +
-      " \001(\t\022\034\n\024shadowVerticalOffset\030\r \001(\002\022\037\n\027sh" +
-      "adowHorizontalOfffset\030\016 \001(\002\"\225\001\n\024MinimumO",
-      "bstacleProto\022\022\n\nobstacleId\030\001 \001(\005\022*\n\ncoor" +
-      "dinate\030\002 \001(\0132\026.proto.CoordinateProto\022=\n\013" +
-      "orientation\030\003 \001(\0162\030.proto.StructOrientat" +
-      "ion:\016NO_ORIENTATION\"\331\001\n\021UserObstacleProt" +
-      "o\022\030\n\020userObstacleUuid\030\001 \001(\t\022\020\n\010userUuid\030" +
-      "\002 \001(\t\022\022\n\nobstacleId\030\003 \001(\005\022+\n\013coordinates" +
-      "\030\004 \001(\0132\026.proto.CoordinateProto\022=\n\013orient" +
-      "ation\030\005 \001(\0162\030.proto.StructOrientation:\016N" +
-      "O_ORIENTATION\022\030\n\020removalStartTime\030\006 \001(\003*" +
-      "G\n\021StructOrientation\022\022\n\016NO_ORIENTATION\020\003",
-      "\022\016\n\nPOSITION_1\020\001\022\016\n\nPOSITION_2\020\002B9\n\037com." +
-      "lvl6.mobsters.noneventprotoB\026NoneventStr" +
-      "uctureProto"
+      "\005\022\026\n\016occupationName\030\006 \001(\t\022\021\n\timgSuffix\030\007" +
+      " \001(\t\"\315\002\n\rTownHallProto\022-\n\nstructInfo\030\001 \001",
+      "(\0132\031.proto.StructureInfoProto\022 \n\030numReso" +
+      "urceOneGenerators\030\002 \001(\005\022\036\n\026numResourceOn" +
+      "eStorages\030\003 \001(\005\022 \n\030numResourceTwoGenerat" +
+      "ors\030\004 \001(\005\022\036\n\026numResourceTwoStorages\030\005 \001(" +
+      "\005\022\024\n\014numHospitals\030\006 \001(\005\022\025\n\rnumResidences" +
+      "\030\007 \001(\005\022\027\n\017numMonsterSlots\030\010 \001(\005\022\017\n\007numLa" +
+      "bs\030\t \001(\005\022\030\n\020pvpQueueCashCost\030\n \001(\005\022\030\n\020re" +
+      "sourceCapacity\030\013 \001(\005\"\201\001\n\022MiniJobCenterPr" +
+      "oto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structur" +
+      "eInfoProto\022\031\n\021generatedJobLimit\030\002 \001(\005\022!\n",
+      "\031hoursBetweenJobGeneration\030\003 \001(\005\"\234\002\n\026Ful" +
+      "lUserStructureProto\022\026\n\016userStructUuid\030\001 " +
+      "\001(\t\022\020\n\010userUuid\030\002 \001(\t\022\020\n\010structId\030\003 \001(\005\022" +
+      "\025\n\rlastRetrieved\030\004 \001(\003\022\024\n\014purchaseTime\030\005" +
+      " \001(\003\022\022\n\nisComplete\030\006 \001(\010\022+\n\013coordinates\030" +
+      "\007 \001(\0132\026.proto.CoordinateProto\022=\n\013orienta" +
+      "tion\030\010 \001(\0162\030.proto.StructOrientation:\016NO" +
+      "_ORIENTATION\022\031\n\021fbInviteStructLvl\030\t \001(\005\"" +
+      "\'\n\017CoordinateProto\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002" +
+      "\"S\n\023TutorialStructProto\022\020\n\010structId\030\001 \001(",
+      "\005\022*\n\ncoordinate\030\002 \001(\0132\026.proto.Coordinate" +
+      "Proto\"\346\002\n\rObstacleProto\022\022\n\nobstacleId\030\001 " +
+      "\001(\005\022\014\n\004name\030\002 \001(\t\0229\n\017removalCostType\030\003 \001" +
+      "(\0162\023.proto.ResourceType:\013NO_RESOURCE\022\014\n\004" +
+      "cost\030\004 \001(\005\022\027\n\017secondsToRemove\030\005 \001(\005\022\r\n\005w" +
+      "idth\030\006 \001(\005\022\016\n\006height\030\007 \001(\005\022\017\n\007imgName\030\010 " +
+      "\001(\t\022\036\n\026imgVerticalPixelOffset\030\t \001(\002\022\023\n\013d" +
+      "escription\030\n \001(\t\022\026\n\016chanceToAppear\030\013 \001(\002" +
+      "\022\025\n\rshadowImgName\030\014 \001(\t\022\034\n\024shadowVertica" +
+      "lOffset\030\r \001(\002\022\037\n\027shadowHorizontalOfffset",
+      "\030\016 \001(\002\"\225\001\n\024MinimumObstacleProto\022\022\n\nobsta" +
+      "cleId\030\001 \001(\005\022*\n\ncoordinate\030\002 \001(\0132\026.proto." +
+      "CoordinateProto\022=\n\013orientation\030\003 \001(\0162\030.p" +
+      "roto.StructOrientation:\016NO_ORIENTATION\"\331" +
+      "\001\n\021UserObstacleProto\022\030\n\020userObstacleUuid" +
+      "\030\001 \001(\t\022\020\n\010userUuid\030\002 \001(\t\022\022\n\nobstacleId\030\003" +
+      " \001(\005\022+\n\013coordinates\030\004 \001(\0132\026.proto.Coordi" +
+      "nateProto\022=\n\013orientation\030\005 \001(\0162\030.proto.S" +
+      "tructOrientation:\016NO_ORIENTATION\022\030\n\020remo" +
+      "valStartTime\030\006 \001(\003*G\n\021StructOrientation\022",
+      "\022\n\016NO_ORIENTATION\020\003\022\016\n\nPOSITION_1\020\001\022\016\n\nP" +
+      "OSITION_2\020\002B9\n\037com.lvl6.mobsters.noneven" +
+      "tprotoB\026NoneventStructureProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -10983,7 +11077,7 @@ public final class NoneventStructureProto {
           internal_static_proto_ResidenceProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_ResidenceProto_descriptor,
-              new java.lang.String[] { "StructInfo", "NumMonsterSlots", "NumBonusMonsterSlots", "NumGemsRequired", "NumAcceptedFbInvites", "OccupationName", },
+              new java.lang.String[] { "StructInfo", "NumMonsterSlots", "NumBonusMonsterSlots", "NumGemsRequired", "NumAcceptedFbInvites", "OccupationName", "ImgSuffix", },
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResidenceProto.class,
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResidenceProto.Builder.class);
           internal_static_proto_TownHallProto_descriptor =

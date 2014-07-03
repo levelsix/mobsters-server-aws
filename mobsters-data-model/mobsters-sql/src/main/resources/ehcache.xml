@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+ 	name="MobstersConfigCache"
+    maxBytesLocalHeap="250M">    
+
+    <defaultCache eternal="true" copyOnRead="true" overflowToDisk="false" />           
+
+<!--     <cache  -->
+<!--     	name="Achievement" -->
+<!--     	eternal="true" -->
+<!-- 		overflowToDisk="false" -->
+<!--     	maxBytesLocalHeap="100M" -->
+<!--     	timeToIdleSeconds="3000" -->
+<!--     	timeToLiveSeconds="6000" />   -->
+	
+ </ehcache>

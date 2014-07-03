@@ -1773,15 +1773,15 @@ public final class EventChatProto {
     public enum SendGroupChatStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      TOO_LONG(1, 2),
-      OTHER_FAIL(2, 3),
-      BANNED(3, 4),
+      FAIL_MSG_TOO_LONG(1, 2),
+      FAIL_OTHER(2, 3),
+      FAIL_BANNED(3, 4),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int TOO_LONG_VALUE = 2;
-      public static final int OTHER_FAIL_VALUE = 3;
-      public static final int BANNED_VALUE = 4;
+      public static final int FAIL_MSG_TOO_LONG_VALUE = 2;
+      public static final int FAIL_OTHER_VALUE = 3;
+      public static final int FAIL_BANNED_VALUE = 4;
       
       
       public final int getNumber() { return value; }
@@ -1789,9 +1789,9 @@ public final class EventChatProto {
       public static SendGroupChatStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return TOO_LONG;
-          case 3: return OTHER_FAIL;
-          case 4: return BANNED;
+          case 2: return FAIL_MSG_TOO_LONG;
+          case 3: return FAIL_OTHER;
+          case 4: return FAIL_BANNED;
           default: return null;
         }
       }
@@ -1822,7 +1822,7 @@ public final class EventChatProto {
       }
       
       private static final SendGroupChatStatus[] VALUES = {
-        SUCCESS, TOO_LONG, OTHER_FAIL, BANNED, 
+        SUCCESS, FAIL_MSG_TOO_LONG, FAIL_OTHER, FAIL_BANNED, 
       };
       
       public static SendGroupChatStatus valueOf(
@@ -3596,17 +3596,17 @@ public final class EventChatProto {
     public enum PrivateChatPostStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      NO_CONTENT_SENT(1, 2),
-      POST_TOO_LARGE(2, 3),
-      OTHER_FAIL(3, 4),
-      BANNED(4, 5),
+      FAIL_EMPTY_MSG(1, 2),
+      FAIL_MSG_TOO_LONG(2, 3),
+      FAIL_OTHER(3, 4),
+      FAIL_BANNED(4, 5),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int NO_CONTENT_SENT_VALUE = 2;
-      public static final int POST_TOO_LARGE_VALUE = 3;
-      public static final int OTHER_FAIL_VALUE = 4;
-      public static final int BANNED_VALUE = 5;
+      public static final int FAIL_EMPTY_MSG_VALUE = 2;
+      public static final int FAIL_MSG_TOO_LONG_VALUE = 3;
+      public static final int FAIL_OTHER_VALUE = 4;
+      public static final int FAIL_BANNED_VALUE = 5;
       
       
       public final int getNumber() { return value; }
@@ -3614,10 +3614,10 @@ public final class EventChatProto {
       public static PrivateChatPostStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return NO_CONTENT_SENT;
-          case 3: return POST_TOO_LARGE;
-          case 4: return OTHER_FAIL;
-          case 5: return BANNED;
+          case 2: return FAIL_EMPTY_MSG;
+          case 3: return FAIL_MSG_TOO_LONG;
+          case 4: return FAIL_OTHER;
+          case 5: return FAIL_BANNED;
           default: return null;
         }
       }
@@ -3648,7 +3648,7 @@ public final class EventChatProto {
       }
       
       private static final PrivateChatPostStatus[] VALUES = {
-        SUCCESS, NO_CONTENT_SENT, POST_TOO_LARGE, OTHER_FAIL, BANNED, 
+        SUCCESS, FAIL_EMPTY_MSG, FAIL_MSG_TOO_LONG, FAIL_OTHER, FAIL_BANNED, 
       };
       
       public static PrivateChatPostStatus valueOf(
@@ -4312,28 +4312,29 @@ public final class EventChatProto {
       "SendGroupChatRequestProto\022\'\n\006sender\030\001 \001(" +
       "\0132\027.proto.MinimumUserProto\022$\n\005scope\030\002 \001(" +
       "\0162\025.proto.GroupChatScope\022\023\n\013chatMessage\030" +
-      "\003 \001(\t\022\022\n\nclientTime\030\004 \001(\003\"\332\001\n\032SendGroupC",
+      "\003 \001(\t\022\022\n\nclientTime\030\004 \001(\003\"\350\001\n\032SendGroupC",
       "hatResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto" +
       ".MinimumUserProto\022E\n\006status\030\002 \001(\01625.prot" +
       "o.SendGroupChatResponseProto.SendGroupCh" +
-      "atStatus\"L\n\023SendGroupChatStatus\022\013\n\007SUCCE" +
-      "SS\020\001\022\014\n\010TOO_LONG\020\002\022\016\n\nOTHER_FAIL\020\003\022\n\n\006BA" +
-      "NNED\020\004\"\233\001\n\036ReceivedGroupChatResponseProt" +
-      "o\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserPro" +
-      "to\022\023\n\013chatMessage\030\002 \001(\t\022*\n\005scope\030\003 \001(\0162\025" +
-      ".proto.GroupChatScope:\004CLAN\022\017\n\007isAdmin\030\004" +
-      " \001(\010\"n\n\033PrivateChatPostRequestProto\022\'\n\006s",
-      "ender\030\001 \001(\0132\027.proto.MinimumUserProto\022\025\n\r" +
-      "recipientUuid\030\002 \001(\t\022\017\n\007content\030\003 \001(\t\"\250\002\n" +
-      "\034PrivateChatPostResponseProto\022\'\n\006sender\030" +
-      "\001 \001(\0132\027.proto.MinimumUserProto\022I\n\006status" +
-      "\030\002 \001(\01629.proto.PrivateChatPostResponsePr" +
-      "oto.PrivateChatPostStatus\022)\n\004post\030\003 \001(\0132" +
-      "\033.proto.PrivateChatPostProto\"i\n\025PrivateC" +
-      "hatPostStatus\022\013\n\007SUCCESS\020\001\022\023\n\017NO_CONTENT" +
-      "_SENT\020\002\022\022\n\016POST_TOO_LARGE\020\003\022\016\n\nOTHER_FAI" +
-      "L\020\004\022\n\n\006BANNED\020\005B.\n\034com.lvl6.mobsters.eve",
-      "ntprotoB\016EventChatProto"
+      "atStatus\"Z\n\023SendGroupChatStatus\022\013\n\007SUCCE" +
+      "SS\020\001\022\025\n\021FAIL_MSG_TOO_LONG\020\002\022\016\n\nFAIL_OTHE" +
+      "R\020\003\022\017\n\013FAIL_BANNED\020\004\"\233\001\n\036ReceivedGroupCh" +
+      "atResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto." +
+      "MinimumUserProto\022\023\n\013chatMessage\030\002 \001(\t\022*\n" +
+      "\005scope\030\003 \001(\0162\025.proto.GroupChatScope:\004CLA" +
+      "N\022\017\n\007isAdmin\030\004 \001(\010\"n\n\033PrivateChatPostReq",
+      "uestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minimu" +
+      "mUserProto\022\025\n\rrecipientUuid\030\002 \001(\t\022\017\n\007con" +
+      "tent\030\003 \001(\t\"\257\002\n\034PrivateChatPostResponsePr" +
+      "oto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserP" +
+      "roto\022I\n\006status\030\002 \001(\01629.proto.PrivateChat" +
+      "PostResponseProto.PrivateChatPostStatus\022" +
+      ")\n\004post\030\003 \001(\0132\033.proto.PrivateChatPostPro" +
+      "to\"p\n\025PrivateChatPostStatus\022\013\n\007SUCCESS\020\001" +
+      "\022\022\n\016FAIL_EMPTY_MSG\020\002\022\025\n\021FAIL_MSG_TOO_LON" +
+      "G\020\003\022\016\n\nFAIL_OTHER\020\004\022\017\n\013FAIL_BANNED\020\005B.\n\034",
+      "com.lvl6.mobsters.eventprotoB\016EventChatP" +
+      "roto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

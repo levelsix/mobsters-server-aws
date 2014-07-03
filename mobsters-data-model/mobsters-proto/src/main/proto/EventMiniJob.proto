@@ -103,6 +103,6 @@ message RedeemMiniJobResponseProto {
           SUCCESS = 1;
           FAIL_OTHER = 2;
           FAIL_NO_MINI_JOB_EXISTS = 3;
-          FAIL_MINI_JOB_INCOMPLETE = 4;
+          //FAIL_MINI_JOB_INCOMPLETE = 4;
      }
 }

@@ -104,7 +104,10 @@ message ReviveInDungeonResponseProto {
 	
 	enum ReviveInDungeonStatus {
 		SUCCESS = 1;
-		FAIL_INSUFFICIENT_FUNDS = 2;
+		
+		//FAIL_INSUFFICIENT_FUNDS = 2;
+		FAIL_INSUFFICIENT_GEMS = 3;
+		
 		FAIL_OTHER = 3;
 	}
 }

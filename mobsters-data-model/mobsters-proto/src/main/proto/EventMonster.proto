@@ -39,8 +39,13 @@ message EvolveMonsterResponseProto {
 		FAIL_INSUFFICIENT_RESOURCES = 3;
 		FAIL_MONSTER_REACHED_EVOLVING_LIMIT = 4;
 		//user is already evolving some number of monsters and reached the limit.
-		FAIL_MAX_NUM_EVOLUTIONS_REACHED = 5;
-		FAIL_NONEXISTENT_MONSTERS = 6;
+		
+		//FAIL_MAX_NUM_EVOLUTIONS_REACHED = 5;
+		FAIL_EVOLUTION_CAPACITY_REACHED = 5;
+		
+		//FAIL_NONEXISTENT_MONSTERS = 6;
+		FAIL_INSUFFICIENT_USER_MONSTERS = 6;
+		
 		FAIL_OTHER = 7;
 	}
 }
@@ -126,9 +131,12 @@ message EnhancementWaitTimeCompleteResponseProto {
 	
 	enum EnhancementWaitTimeCompleteStatus {
 		SUCCESS = 1;
-		FAIL_HEALING_NOT_COMPLETE = 2;
-		FAIL_INSUFFICIENT_FUNDS = 3;
-		FAIL_OTHER = 4;
+		//FAIL_HEALING_NOT_COMPLETE = 2;
+		
+		//FAIL_INSUFFICIENT_FUNDS = 3;
+		FAIL_INSUFFICIENT_GEMS = 2;
+		
+		FAIL_OTHER = 3;
 	}
 }
 
@@ -154,7 +162,7 @@ message UpdateMonsterHealthResponseProto {
 	
 	enum UpdateMonsterHealthStatus {
 		SUCCESS = 1;
-		FAIL_INSUFFICIENT_FUNDS = 2;
+		//FAIL_INSUFFICIENT_FUNDS = 2;
 		FAIL_OTHER = 3;
 	}
 }
@@ -197,12 +205,14 @@ message HealMonsterResponseProto {
 	
 	enum HealMonsterStatus {
 		SUCCESS = 1;
-		FAIL_INSUFFICIENT_FUNDS = 2;
-		FAIL_ALL_MONSTERS_ALREADY_HEALING = 3;
-		FAIL_ALL_MONSTERS_NONEXISTENT = 4;
+		//FAIL_INSUFFICIENT_FUNDS = 2;
+		FAIL_INSUFFICIENT_RESOURCES = 2;
+		
+		//FAIL_ALL_MONSTERS_ALREADY_HEALING = 3;
+		//FAIL_ALL_MONSTERS_NONEXISTENT = 4;
 		FAIL_OTHER = 5;
 		
-		FAIL_HEALING_NOT_COMPLETE = 6;
+		//FAIL_HEALING_NOT_COMPLETE = 6;
 	}
 }
 
@@ -293,7 +303,9 @@ message IncreaseMonsterInventorySlotResponseProto {
 	
 	 enum IncreaseMonsterInventorySlotStatus {
 		SUCCESS = 1;
-		FAIL_INSUFFICIENT_FUNDS = 2;
+		//FAIL_INSUFFICIENT_FUNDS = 2;
+		FAIL_INSUFFICIENT_RESOURCES = 2;
+		
 		FAIL_INSUFFICIENT_FACEBOOK_INVITES = 3;
 		FAIL_OTHER = 4;
 		//user struct id/fb lvl not consistent across invites
@@ -351,8 +363,8 @@ message AcceptAndRejectFbInviteForSlotsResponseProto {
 	
 	enum AcceptAndRejectFbInviteForSlotsStatus {
 		SUCCESS = 1;
-		FAIL_EXPIRED = 2; //3 PEOPLE ALREADY ACCEPTED INVITE
-		FAIL_ALREADY_BEEN_USED = 3;
+		//FAIL_EXPIRED = 2; //3 PEOPLE ALREADY ACCEPTED INVITE
+		//FAIL_ALREADY_BEEN_USED = 3;
 		FAIL_OTHER = 4;
 	}
 }

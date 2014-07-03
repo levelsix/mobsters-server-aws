@@ -78,6 +78,9 @@
 			more verbose output from Hibernate about session boundaries and queries evaluated. -->
 		<hibernate.generate_statistics>false</hibernate.generate_statistics>
 		<hibernate.show_sql>false</hibernate.show_sql>
+		<hibernate.cache.use_second_level_cache>true</hibernate.cache.use_second_level_cache>
+		<hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
+		<hibernate.cache.region.factory_class>org.hibernate.cache.ehcache.EhCacheRegionFactory</hibernate.cache.region.factory_class>
 
 		<!-- Redis/Elasticache -->
 		<lvl6.jedis.host>robot.lvl6.com</lvl6.jedis.host>
@@ -107,7 +110,7 @@
 		<easymock.version>3.2</easymock.version>
 		<guava.version>12.0</guava.version>
 
-		<hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
+		<hibernate-core.version>4.3.5.Final</hibernate-core.version>
 		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
 		<httpclient.version>4.2.1</httpclient.version>
 
@@ -408,8 +411,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>${hibernate-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate-entitymanager.version}</version>
+				<version>${hibernate-core.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>

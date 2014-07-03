@@ -33,8 +33,12 @@ message InAppPurchaseResponseProto {
 	
 	enum InAppPurchaseStatus {
 		SUCCESS = 1;
-		FAIL = 2;
-		DUPLICATE_RECEIPT = 3;
+		
+		//FAIL = 2;
+		FAIL_OTHER = 2;
+		
+		//DUPLICATE_RECEIPT = 3;
+		FAIL_DUPLICATE_RECEIPT = 3;
 	}
 }
 

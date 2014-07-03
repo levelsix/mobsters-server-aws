@@ -56,7 +56,7 @@ public class EnableAPNSController extends EventController {
         // prepare to send response back to client
         EnableAPNSResponseProto.Builder responseBuilder =
             EnableAPNSResponseProto.newBuilder();
-        responseBuilder.setStatus(EnableAPNSStatus.NOT_ENABLED);
+        responseBuilder.setStatus(EnableAPNSStatus.FAIL_OTHER);
         responseBuilder.setSender(senderProto);
         EnableAPNSResponseEvent resEvent = new EnableAPNSResponseEvent(userIdString);
         resEvent.setTag(event.getTag());
@@ -68,9 +68,7 @@ public class EnableAPNSController extends EventController {
         if (StringUtils.hasText(deviceToken) && StringUtils.hasText(userIdString)) {
             modBuilder.setDeviceToken(deviceToken);
 
-            if (null != deviceToken) {
-                responseBuilder.setStatus(EnableAPNSStatus.SUCCESS);
-            }
+            responseBuilder.setStatus(EnableAPNSStatus.SUCCESS);
         }
 
         try {
@@ -79,7 +77,7 @@ public class EnableAPNSController extends EventController {
             LOG.error(
                 "exception in EnableAPNSController processEvent when calling userService",
                 e);
-            responseBuilder.setStatus(EnableAPNSStatus.NOT_ENABLED);
+            responseBuilder.setStatus(EnableAPNSStatus.FAIL_OTHER);
         }
 
         resEvent.setEnableAPNSResponseProto(responseBuilder.build());

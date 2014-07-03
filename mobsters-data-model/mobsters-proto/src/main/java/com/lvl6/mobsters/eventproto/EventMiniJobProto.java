@@ -4835,13 +4835,11 @@ public final class EventMiniJobProto {
       SUCCESS(0, 1),
       FAIL_OTHER(1, 2),
       FAIL_NO_MINI_JOB_EXISTS(2, 3),
-      FAIL_MINI_JOB_INCOMPLETE(3, 4),
       ;
       
       public static final int SUCCESS_VALUE = 1;
       public static final int FAIL_OTHER_VALUE = 2;
       public static final int FAIL_NO_MINI_JOB_EXISTS_VALUE = 3;
-      public static final int FAIL_MINI_JOB_INCOMPLETE_VALUE = 4;
       
       
       public final int getNumber() { return value; }
@@ -4851,7 +4849,6 @@ public final class EventMiniJobProto {
           case 1: return SUCCESS;
           case 2: return FAIL_OTHER;
           case 3: return FAIL_NO_MINI_JOB_EXISTS;
-          case 4: return FAIL_MINI_JOB_INCOMPLETE;
           default: return null;
         }
       }
@@ -4882,7 +4879,7 @@ public final class EventMiniJobProto {
       }
       
       private static final RedeemMiniJobStatus[] VALUES = {
-        SUCCESS, FAIL_OTHER, FAIL_NO_MINI_JOB_EXISTS, FAIL_MINI_JOB_INCOMPLETE, 
+        SUCCESS, FAIL_OTHER, FAIL_NO_MINI_JOB_EXISTS, 
       };
       
       public static RedeemMiniJobStatus valueOf(
@@ -5577,16 +5574,15 @@ public final class EventMiniJobProto {
       "\020\004\"\201\001\n\031RedeemMiniJobRequestProto\0227\n\006send" +
       "er\030\001 \001(\0132\'.proto.MinimumUserProtoWithMax" +
       "Resources\022\022\n\nclientTime\030\002 \001(\003\022\027\n\017userMin" +
-      "iJobUuid\030\003 \001(\t\"\266\002\n\032RedeemMiniJobResponse" +
+      "iJobUuid\030\003 \001(\t\"\230\002\n\032RedeemMiniJobResponse" +
       "Proto\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumUse" +
       "rProtoWithMaxResources\022)\n\004fump\030\002 \001(\0132\033.p" +
       "roto.FullUserMonsterProto\022E\n\006status\030\003 \001(" +
       "\01625.proto.RedeemMiniJobResponseProto.Red",
-      "eemMiniJobStatus\"m\n\023RedeemMiniJobStatus\022" +
+      "eemMiniJobStatus\"O\n\023RedeemMiniJobStatus\022" +
       "\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\022\033\n\027FAIL_NO_" +
-      "MINI_JOB_EXISTS\020\003\022\034\n\030FAIL_MINI_JOB_INCOM" +
-      "PLETE\020\004B1\n\034com.lvl6.mobsters.eventprotoB" +
-      "\021EventMiniJobProto"
+      "MINI_JOB_EXISTS\020\003B1\n\034com.lvl6.mobsters.e" +
+      "ventprotoB\021EventMiniJobProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

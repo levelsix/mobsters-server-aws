@@ -46,9 +46,12 @@ message AchievementRedeemResponseProto {
      
      enum AchievementRedeemStatus {
           SUCCESS = 1;
-          FAIL_NOT_COMPLETE = 2;
+          //FAIL_NOT_COMPLETE = 2;
+          FAIL_ACHIEVEMENT_INCOMPLETE = 2;
+          
           FAIL_OTHER = 3;
-          FAIL_ALREADY_REDEEMED = 4;
+          //FAIL_ALREADY_REDEEMED = 4;
+          FAIL_ACHIEVEMENT_ALREADY_REDEEMED = 4;
      }
 }
 

@@ -35,12 +35,17 @@ message CreateClanResponseProto {
 	enum CreateClanStatus {
 		SUCCESS = 1;
 		FAIL_OTHER = 2;
-		FAIL_NOT_ENOUGH_CASH = 3;
+		
+		//FAIL_NOT_ENOUGH_CASH = 3;
+		FAIL_INSUFFICIENT_CASH = 3;
+		
 		FAIL_NAME_TAKEN = 4;
 		FAIL_ALREADY_IN_CLAN = 5;
 		FAIL_INVALID_TAG_LENGTH = 6;
 		FAIL_TAG_TAKEN = 7;
-		FAIL_INSUFFICIENT_FUNDS = 8;
+		
+		//FAIL_INSUFFICIENT_FUNDS = 8;
+		FAIL_INSUFFICIENT_GEMS = 8;
 	}
 }
 
@@ -112,7 +117,8 @@ message RetractRequestJoinClanResponseProto {
 		SUCCESS = 1;
 		FAIL_OTHER = 2;
 		FAIL_ALREADY_IN_CLAN = 3;
-		FAIL_DID_NOT_REQUEST = 4;
+		//FAIL_DID_NOT_REQUEST = 4;
+		FAIL_NONEXISTENT_JOIN_CLAN_REQUEST = 4;
 	}	
 }	
 
@@ -137,7 +143,9 @@ message ApproveOrRejectRequestToJoinClanResponseProto {
 		SUCCESS = 1;
 		FAIL_OTHER = 2;
 		FAIL_NOT_AUTHORIZED = 3;
-		FAIL_NOT_A_REQUESTER = 4;
+		//FAIL_NOT_A_REQUESTER = 4;
+		FAIL_NONEXISTENT_JOIN_CLAN_REQUEST = 4;
+		
 		FAIL_ALREADY_IN_A_CLAN = 5;
 		FAIL_CLAN_IS_FULL = 6;
 	}	
@@ -175,7 +183,8 @@ message RetrieveClanInfoResponseProto {
 	
 	enum RetrieveClanInfoStatus {
 		SUCCESS = 1;
-		OTHER_FAIL = 2;
+		//OTHER_FAIL = 2;
+		FAIL_OTHER = 2;
 	}	
 }
 
@@ -198,7 +207,9 @@ message TransferClanOwnershipResponseProto {
 		SUCCESS = 1;
 		FAIL_OTHER = 2;
 		FAIL_NOT_AUTHORIZED = 3;
-		FAIL_NEW_OWNER_NOT_IN_CLAN = 4;
+		
+		//FAIL_NEW_OWNER_NOT_IN_CLAN = 4;
+		FAIL_NONEXISTENT_CLAN_MEMBER = 4;
 	}	
 }
 
@@ -218,7 +229,9 @@ message BootPlayerFromClanResponseProto {
      	SUCCESS = 1;
      	FAIL_OTHER = 2;
      	FAIL_NOT_AUTHORIZED = 3;
-     	FAIL_BOOTED_NOT_IN_CLAN = 4;
+     	
+     	//FAIL_BOOTED_NOT_IN_CLAN = 4;
+     	FAIL_NONEXISTENT_CLAN_MEMBER = 4;
      }
 }
 

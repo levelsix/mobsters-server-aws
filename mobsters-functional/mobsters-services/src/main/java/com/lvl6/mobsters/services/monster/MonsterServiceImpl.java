@@ -14,10 +14,17 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
+import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
+import com.lvl6.mobsters.dynamo.repository.MonsterEnhancingForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
+import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
@@ -26,16 +33,50 @@ import com.lvl6.mobsters.info.repository.MonsterRepository;
 public class MonsterServiceImpl implements MonsterService
 {
 	@Autowired
+	private DataServiceTxManager txManager;
+	
+	@Autowired
+	private MonsterRepository monsterRepository;
+	
+	@Autowired
 	private MonsterForUserRepository monsterForUserRepository;
 	
 	@Autowired
 	private MonsterForUserHistoryRepository monsterForUserHistoryRepository;
 
 	@Autowired
-	private MonsterRepository monsterRepository;
-	
+	private MonsterHealingForUserRepository monsterHealingForUserRepository;
+
 	@Autowired
-	private DataServiceTxManager txManager;
+	private MonsterEnhancingForUserRepository monsterEnhancingForUserRepository;
+
+	@Autowired
+	private MonsterEvolvingForUserRepository monsterEvolvingForUserRepository;
+	
+	// BEGIN READ ONLY LOGIC******************************************************************
+	
+	@Override
+	public List<MonsterForUser> getMonstersForUser(String userId) {
+		return monsterForUserRepository.findByUserId(userId);
+	}
+
+	@Override
+	public List<MonsterHealingForUser> getMonstersInHealingForUser( String userId ) {
+		return monsterHealingForUserRepository.findByUserId(userId);
+	}
+	
+	@Override
+	public List<MonsterEnhancingForUser> getMonstersInEnhancingForUser( String userId ) {
+		return monsterEnhancingForUserRepository.findByUserId(userId);
+	}
+	
+	@Override
+	public List<MonsterEvolvingForUser> getMonstersInEvolution( String userId ) {
+		return monsterEvolvingForUserRepository.findByUserId(userId);
+	}
+	
+	// END READ ONLY LOGIC******************************************************************
+		
 	
 	@Override
 	public void addMonsterForUserToTeamSlot(
@@ -49,15 +90,15 @@ public class MonsterServiceImpl implements MonsterService
 			final List<MonsterForUser> monstersForUser =
 				monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId,
 					Collections.singleton(monsterForUserId), teamSlotNum);
-	
-			for (final MonsterForUser mfu : monstersForUser) {
-				if (monsterForUserId == mfu.getMonsterForUserUuid()) {
-					mfu.setTeamSlotNum(teamSlotNum);
-				} else {
-					mfu.setTeamSlotNum(0);
-				}
+
+		for (final MonsterForUser mfu : monstersForUser) {
+			if (monsterForUserId == mfu.getMonsterForUserUuid()) {
+				mfu.setTeamSlotNum(teamSlotNum);
+			} else {
+				mfu.setTeamSlotNum(0);
 			}
-			
+		}
+
 			monsterForUserRepository.saveEach(monstersForUser);
 			success = true;
 		} finally {
@@ -109,31 +150,31 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void modifyMonstersForUser( String userId, ModifyMonstersSpec modifySpec )
 	{
-		txManager.beginTransaction();
 		boolean success = false;
-		try {			
+		txManager.beginTransaction();
+		try {
 			// get whatever we need from the database
 			final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
 			final Set<String> userMonsterIds = specMap.keySet();
-			
+
 			final List<MonsterForUser> existingUserMonsters =
 				monsterForUserRepository.loadEach(userId, userMonsterIds);
 			if ( (userMonsterIds.size() != existingUserMonsters.size())
 				|| CollectionUtils.lacksSubstance(existingUserMonsters)) {
 				throw new IllegalArgumentException("Missing monsters for userId "
-						+ userId
-						+ " and monsterForUserIds: "
-						+ userMonsterIds);
+					+ userId
+					+ " and monsterForUserIds: "
+					+ userMonsterIds);
 			}
-			
+
 			// Mutate the objects
 			for (final MonsterForUser nextMonster : existingUserMonsters) {
 				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserUuid());
 				for (MonsterFunc nextMonsterOp : monsterOps) {
-					nextMonsterOp.apply(nextMonster);
+					
 				}
 			}
-			
+
 			// Write back to the database, then close the transaction by returning
 			monsterForUserRepository.saveEach(existingUserMonsters);
 			success = true;
@@ -257,36 +298,36 @@ public class MonsterServiceImpl implements MonsterService
 		txManager.beginTransaction();
 		boolean success = false;
 		try {
-			List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();			
+		List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
 			List<Monster> monzters = monsterRepository.findAll(monsterIds);
 			int ii=0;
-			
+		
 			for (Monster monzter : monzters) {
 		  		int monsterId = monzter.getId();
 		  		int teamSlotNum = ++ii;
-		  		
-		  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
-		  		
-		  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
-		  		Collections.sort(lvls);
-		  		int firstOne = lvls.get(0);
-		  		MonsterLevelInfo mli = info.get(firstOne);
-		  		
-		  		MonsterForUser mfu = new MonsterForUser();
-		  		mfu.setUserId(userId);
-		  		mfu.setMonsterId(monsterId);
-		  		mfu.setCurrentExp(0);
-		  		mfu.setCurrentLvl(mli.getLevel());
-		  		mfu.setCurrentHealth(mli.getHp());
-		  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
-		  		mfu.setComplete(true);
-		  		mfu.setCombineStartTime(combineStartTime);
-		  		mfu.setTeamSlotNum(teamSlotNum);
-		  	}
-			
+	  		
+	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
+	  		
+	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
+	  		Collections.sort(lvls);
+	  		int firstOne = lvls.get(0);
+	  		IMonsterLevelInfo mli = info.get(firstOne);
+	  		
+	  		MonsterForUser mfu = new MonsterForUser();
+	  		mfu.setUserId(userId);
+	  		mfu.setMonsterId(monsterId);
+	  		mfu.setCurrentExp(0);
+	  		mfu.setCurrentLvl(mli.getLevel());
+	  		mfu.setCurrentHealth(mli.getHp());
+	  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
+	  		mfu.setComplete(true);
+	  		mfu.setCombineStartTime(combineStartTime);
+	  		mfu.setTeamSlotNum(teamSlotNum);
+	  	}
+		
 			monsterForUserRepository.saveEach(mfuList);
-			// TODO: Record into monsterForUserHistory
-			//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+		// TODO: Record into monsterForUserHistory
+		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
 			success = true;
 		} finally {
 			if (success) {
@@ -294,7 +335,7 @@ public class MonsterServiceImpl implements MonsterService
 			} else {
 				txManager.rollback();
 			}
-		}
+	}
 	}
 	
 	/*
@@ -396,4 +437,49 @@ public class MonsterServiceImpl implements MonsterService
 		}
 	}
 	*/
+	
+
+	public MonsterForUserRepository getMonsterForUserRepository()
+	{
+		return monsterForUserRepository;
+	}
+
+	public void setMonsterForUserRepository( MonsterForUserRepository monsterForUserRepository )
+	{
+		this.monsterForUserRepository = monsterForUserRepository;
+	}
+
+	public MonsterForUserHistoryRepository getMonsterForUserHistoryRepository()
+	{
+		return monsterForUserHistoryRepository;
+	}
+
+	public void setMonsterForUserHistoryRepository(
+		MonsterForUserHistoryRepository monsterForUserHistoryRepository )
+	{
+		this.monsterForUserHistoryRepository = monsterForUserHistoryRepository;
+	}
+
+	public MonsterHealingForUserRepository getMonsterHealingForUserRepository()
+	{
+		return monsterHealingForUserRepository;
+	}
+
+	public void setMonsterHealingForUserRepository(
+		MonsterHealingForUserRepository monsterHealingForUserRepository )
+	{
+		this.monsterHealingForUserRepository = monsterHealingForUserRepository;
+	}
+
+	public MonsterEnhancingForUserRepository getMonsterEnhancingForUserRepository()
+	{
+		return monsterEnhancingForUserRepository;
+	}
+
+	public void setMonsterEnhancingForUserRepository(
+		MonsterEnhancingForUserRepository monsterEnhancingForUserRepository )
+	{
+		this.monsterEnhancingForUserRepository = monsterEnhancingForUserRepository;
+	}
+	
 }

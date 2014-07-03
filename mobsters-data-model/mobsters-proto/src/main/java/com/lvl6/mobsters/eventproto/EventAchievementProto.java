@@ -1902,15 +1902,15 @@ public final class EventAchievementProto {
     public enum AchievementRedeemStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      FAIL_NOT_COMPLETE(1, 2),
+      FAIL_ACHIEVEMENT_INCOMPLETE(1, 2),
       FAIL_OTHER(2, 3),
-      FAIL_ALREADY_REDEEMED(3, 4),
+      FAIL_ACHIEVEMENT_ALREADY_REDEEMED(3, 4),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_NOT_COMPLETE_VALUE = 2;
+      public static final int FAIL_ACHIEVEMENT_INCOMPLETE_VALUE = 2;
       public static final int FAIL_OTHER_VALUE = 3;
-      public static final int FAIL_ALREADY_REDEEMED_VALUE = 4;
+      public static final int FAIL_ACHIEVEMENT_ALREADY_REDEEMED_VALUE = 4;
       
       
       public final int getNumber() { return value; }
@@ -1918,9 +1918,9 @@ public final class EventAchievementProto {
       public static AchievementRedeemStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return FAIL_NOT_COMPLETE;
+          case 2: return FAIL_ACHIEVEMENT_INCOMPLETE;
           case 3: return FAIL_OTHER;
-          case 4: return FAIL_ALREADY_REDEEMED;
+          case 4: return FAIL_ACHIEVEMENT_ALREADY_REDEEMED;
           default: return null;
         }
       }
@@ -1951,7 +1951,7 @@ public final class EventAchievementProto {
       }
       
       private static final AchievementRedeemStatus[] VALUES = {
-        SUCCESS, FAIL_NOT_COMPLETE, FAIL_OTHER, FAIL_ALREADY_REDEEMED, 
+        SUCCESS, FAIL_ACHIEVEMENT_INCOMPLETE, FAIL_OTHER, FAIL_ACHIEVEMENT_ALREADY_REDEEMED, 
       };
       
       public static AchievementRedeemStatus valueOf(
@@ -2466,15 +2466,16 @@ public final class EventAchievementProto {
       "gressStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002" +
       "\"s\n\035AchievementRedeemRequestProto\022\'\n\006sen" +
       "der\030\001 \001(\0132\027.proto.MinimumUserProto\022\025\n\rac" +
-      "hievementId\030\002 \001(\005\022\022\n\nclientTime\030\003 \001(\003\"\202\002" +
+      "hievementId\030\002 \001(\005\022\022\n\nclientTime\030\003 \001(\003\"\230\002" +
       "\n\036AchievementRedeemResponseProto\022\'\n\006send" +
       "er\030\001 \001(\0132\027.proto.MinimumUserProto\022M\n\006sta" +
       "tus\030\002 \001(\0162=.proto.AchievementRedeemRespo" +
-      "nseProto.AchievementRedeemStatus\"h\n\027Achi" +
-      "evementRedeemStatus\022\013\n\007SUCCESS\020\001\022\025\n\021FAIL" +
-      "_NOT_COMPLETE\020\002\022\016\n\nFAIL_OTHER\020\003\022\031\n\025FAIL_",
-      "ALREADY_REDEEMED\020\004B5\n\034com.lvl6.mobsters." +
-      "eventprotoB\025EventAchievementProto"
+      "nseProto.AchievementRedeemStatus\"~\n\027Achi" +
+      "evementRedeemStatus\022\013\n\007SUCCESS\020\001\022\037\n\033FAIL" +
+      "_ACHIEVEMENT_INCOMPLETE\020\002\022\016\n\nFAIL_OTHER\020",
+      "\003\022%\n!FAIL_ACHIEVEMENT_ALREADY_REDEEMED\020\004" +
+      "B5\n\034com.lvl6.mobsters.eventprotoB\025EventA" +
+      "chievementProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

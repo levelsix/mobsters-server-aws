@@ -1,10 +1,10 @@
 package com.lvl6.mobsters.dynamo.repository;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
-@Component public abstract class MonsterHealingForUserRepository extends BaseDynamoItemRepositoryImpl<MonsterHealingForUser>{
-	public MonsterHealingForUserRepository(){
-		super(MonsterHealingForUser.class);
-	}
 
+public interface MonsterHealingForUserRepository extends BaseDynamoCollectionRepository<MonsterHealingForUser, String>
+{
+	public List<MonsterHealingForUser> findByUserId( String userId );
 }

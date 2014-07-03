@@ -3,15 +3,30 @@ package com.lvl6.mobsters.info;
 import java.util.Random;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity
-public class MiniJob extends BaseIntPersistentObject{
+import org.hibernate.annotations.Proxy;
 
-    private static final long serialVersionUID = 2845499373585125591L;
+@Entity(name="MiniJob")
+@Table(name="mini_job")
+@Proxy(lazy=true, proxyClass=IMiniJob.class)
+public class MiniJob extends BaseIntPersistentObject implements IMiniJob{
+	
+    private static final long serialVersionUID = 4265353634469388410L;
+    
 
-    @Column(name = "required_struct_id")
-	private int requiredStructId;
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Structure.class)
+	@JoinColumn(
+		name = "required_struct_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+    private IStructure requiredStruct;
 	
 	@Column(name = "name")
 	private String name;
@@ -25,8 +40,12 @@ public class MiniJob extends BaseIntPersistentObject{
 	@Column(name = "gem_reward")
 	private int gemReward;
 	
-	@Column(name = "monster_id_reward")
-	private int monsterIdReward;
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
+	@JoinColumn(
+		name = "monster_id_reward",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private IMonster monsterReward;
 	
 	@Column(name = "quality")
 	private String quality;
@@ -55,17 +74,17 @@ public class MiniJob extends BaseIntPersistentObject{
     @Column(name = "duration_max_minutes")
     private int durationMaxMinutes;
 	
-    private Random rand;
+    private Random rand = new Random();
     
 	public MiniJob(){}
 
     public MiniJob(
-        int requiredStructId,
+        IStructure requiredStruct,
         String name,
         int cashReward,
         int oilReward,
         int gemReward,
-        int monsterIdReward,
+        IMonster monsterReward,
         String quality,
         int maxNumMonstersAllowed,
         float chanceToAppear,
@@ -77,12 +96,12 @@ public class MiniJob extends BaseIntPersistentObject{
         int durationMaxMinutes )
     {
         super();
-        this.requiredStructId = requiredStructId;
+        this.requiredStruct = requiredStruct;
         this.name = name;
         this.cashReward = cashReward;
         this.oilReward = oilReward;
         this.gemReward = gemReward;
-        this.monsterIdReward = monsterIdReward;
+        this.monsterReward = monsterReward;
         this.quality = quality;
         this.maxNumMonstersAllowed = maxNumMonstersAllowed;
         this.chanceToAppear = chanceToAppear;
@@ -126,152 +145,273 @@ public class MiniJob extends BaseIntPersistentObject{
     //end covenience methods--------------------------------------------------------
 
 
-    public int getRequiredStructId()
-    {
-        return requiredStructId;
-    }
 
-    public void setRequiredStructId( int requiredStructId )
-    {
-        this.requiredStructId = requiredStructId;
-    }
-
-    public String getName()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getName()
+	 */
+    @Override
+	public String getName()
     {
         return name;
     }
 
-    public void setName( String name )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getRequiredStruct()
+	 */
+    @Override
+	public IStructure getRequiredStruct()
+	{
+		return requiredStruct;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setRequiredStruct(com.lvl6.mobsters.info.IStructure)
+	 */
+	@Override
+	public void setRequiredStruct( IStructure requiredStruct )
+	{
+		this.requiredStruct = requiredStruct;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setName(java.lang.String)
+	 */
+	@Override
+	public void setName( String name )
     {
         this.name = name;
     }
 
-    public int getCashReward()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getCashReward()
+	 */
+    @Override
+	public int getCashReward()
     {
         return cashReward;
     }
 
-    public void setCashReward( int cashReward )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setCashReward(int)
+	 */
+    @Override
+	public void setCashReward( int cashReward )
     {
         this.cashReward = cashReward;
     }
 
-    public int getOilReward()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getOilReward()
+	 */
+    @Override
+	public int getOilReward()
     {
         return oilReward;
     }
 
-    public void setOilReward( int oilReward )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setOilReward(int)
+	 */
+    @Override
+	public void setOilReward( int oilReward )
     {
         this.oilReward = oilReward;
     }
 
-    public int getGemReward()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getGemReward()
+	 */
+    @Override
+	public int getGemReward()
     {
         return gemReward;
     }
 
-    public void setGemReward( int gemReward )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setGemReward(int)
+	 */
+    @Override
+	public void setGemReward( int gemReward )
     {
         this.gemReward = gemReward;
     }
 
-    public int getMonsterIdReward()
-    {
-        return monsterIdReward;
-    }
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getMonsterReward()
+	 */
+	@Override
+	public IMonster getMonsterReward()
+	{
+		return monsterReward;
+	}
 
-    public void setMonsterIdReward( int monsterIdReward )
-    {
-        this.monsterIdReward = monsterIdReward;
-    }
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setMonsterReward(com.lvl6.mobsters.info.IMonster)
+	 */
+	@Override
+	public void setMonsterReward( IMonster monsterReward )
+	{
+		this.monsterReward = monsterReward;
+	}
 
-    public String getQuality()
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getQuality()
+	 */
+	@Override
+	public String getQuality()
     {
         return quality;
     }
 
-    public void setQuality( String quality )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setQuality(java.lang.String)
+	 */
+    @Override
+	public void setQuality( String quality )
     {
         this.quality = quality;
     }
 
-    public int getMaxNumMonstersAllowed()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getMaxNumMonstersAllowed()
+	 */
+    @Override
+	public int getMaxNumMonstersAllowed()
     {
         return maxNumMonstersAllowed;
     }
 
-    public void setMaxNumMonstersAllowed( int maxNumMonstersAllowed )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setMaxNumMonstersAllowed(int)
+	 */
+    @Override
+	public void setMaxNumMonstersAllowed( int maxNumMonstersAllowed )
     {
         this.maxNumMonstersAllowed = maxNumMonstersAllowed;
     }
 
-    public float getChanceToAppear()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getChanceToAppear()
+	 */
+    @Override
+	public float getChanceToAppear()
     {
         return chanceToAppear;
     }
 
-    public void setChanceToAppear( float chanceToAppear )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setChanceToAppear(float)
+	 */
+    @Override
+	public void setChanceToAppear( float chanceToAppear )
     {
         this.chanceToAppear = chanceToAppear;
     }
 
-    public int getHpRequired()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getHpRequired()
+	 */
+    @Override
+	public int getHpRequired()
     {
         return hpRequired;
     }
 
-    public void setHpRequired( int hpRequired )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setHpRequired(int)
+	 */
+    @Override
+	public void setHpRequired( int hpRequired )
     {
         this.hpRequired = hpRequired;
     }
 
-    public int getAtkRequired()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getAtkRequired()
+	 */
+    @Override
+	public int getAtkRequired()
     {
         return atkRequired;
     }
 
-    public void setAtkRequired( int atkRequired )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setAtkRequired(int)
+	 */
+    @Override
+	public void setAtkRequired( int atkRequired )
     {
         this.atkRequired = atkRequired;
     }
 
-    public int getMinDmgDealt()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getMinDmgDealt()
+	 */
+    @Override
+	public int getMinDmgDealt()
     {
         return minDmgDealt;
     }
 
-    public void setMinDmgDealt( int minDmgDealt )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setMinDmgDealt(int)
+	 */
+    @Override
+	public void setMinDmgDealt( int minDmgDealt )
     {
         this.minDmgDealt = minDmgDealt;
     }
 
-    public int getMaxDmgDealt()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getMaxDmgDealt()
+	 */
+    @Override
+	public int getMaxDmgDealt()
     {
         return maxDmgDealt;
     }
 
-    public void setMaxDmgDealt( int maxDmgDealt )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setMaxDmgDealt(int)
+	 */
+    @Override
+	public void setMaxDmgDealt( int maxDmgDealt )
     {
         this.maxDmgDealt = maxDmgDealt;
     }
 
-    public int getDurationMinMinutes()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getDurationMinMinutes()
+	 */
+    @Override
+	public int getDurationMinMinutes()
     {
         return durationMinMinutes;
     }
 
-    public void setDurationMinMinutes( int durationMinMinutes )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setDurationMinMinutes(int)
+	 */
+    @Override
+	public void setDurationMinMinutes( int durationMinMinutes )
     {
         this.durationMinMinutes = durationMinMinutes;
     }
 
-    public int getDurationMaxMinutes()
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#getDurationMaxMinutes()
+	 */
+    @Override
+	public int getDurationMaxMinutes()
     {
         return durationMaxMinutes;
     }
 
-    public void setDurationMaxMinutes( int durationMaxMinutes )
+    /* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMiniJob#setDurationMaxMinutes(int)
+	 */
+    @Override
+	public void setDurationMaxMinutes( int durationMaxMinutes )
     {
         this.durationMaxMinutes = durationMaxMinutes;
     }
@@ -280,7 +420,7 @@ public class MiniJob extends BaseIntPersistentObject{
     public String toString()
     {
         return "MiniJob [requiredStructId=" +
-            requiredStructId +
+            requiredStruct +
             ", name=" +
             name +
             ", cashReward=" +
@@ -290,7 +430,7 @@ public class MiniJob extends BaseIntPersistentObject{
             ", gemReward=" +
             gemReward +
             ", monsterIdReward=" +
-            monsterIdReward +
+            monsterReward +
             ", quality=" +
             quality +
             ", maxNumMonstersAllowed=" +

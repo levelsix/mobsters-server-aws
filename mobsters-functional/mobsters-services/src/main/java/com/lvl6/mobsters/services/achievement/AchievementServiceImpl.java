@@ -17,9 +17,28 @@ import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
 
 @Component
 public class AchievementServiceImpl implements AchievementService {
+	
     @Autowired
     private AchievementForUserRepository achievementForUserRepository;
 
+
+	//NON CRUD LOGIC
+	
+	/**************************************************************************/
+	//CRUD LOGIC
+    
+    // BEGIN READ ONLY LOGIC
+    @Override
+    public List<AchievementForUser> getAchievementsForUserId( String userId ) {
+    	return achievementForUserRepository.findByUserId(userId);
+    }
+	
+
+	// END READ ONLY LOGIC
+    
+    /**************************************************************************/
+
+   
     @Override
     public void modifyAchievementsForUser( String userId, ModifyUserAchievementsSpec modifySpec ) {
         // txManager.startTransaction();
