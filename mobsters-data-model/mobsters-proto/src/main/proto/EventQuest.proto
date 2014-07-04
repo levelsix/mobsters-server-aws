@@ -24,8 +24,8 @@ message QuestAcceptResponseProto {
 
      enum QuestAcceptStatus {
           SUCCESS = 1;
-          FAIL_NOT_AVAIL_TO_USER = 2; //FAIL_NOT_AVAILABLE_TO_USER
-          FAIL_ALREADY_ACCEPTED = 3;
+          FAIL_QUEST_NOT_AVAILABLE_TO_USER = 2;
+          FAIL_QUEST_ALREADY_ACCEPTED = 3;
           FAIL_OTHER = 4;
      }
 }

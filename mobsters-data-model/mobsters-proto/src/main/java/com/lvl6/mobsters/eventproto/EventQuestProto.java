@@ -532,14 +532,14 @@ public final class EventQuestProto {
     public enum QuestAcceptStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      FAIL_NOT_AVAIL_TO_USER(1, 2),
-      FAIL_ALREADY_ACCEPTED(2, 3),
+      FAIL_QUEST_NOT_AVAILABLE_TO_USER(1, 2),
+      FAIL_QUEST_ALREADY_ACCEPTED(2, 3),
       FAIL_OTHER(3, 4),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int FAIL_NOT_AVAIL_TO_USER_VALUE = 2;
-      public static final int FAIL_ALREADY_ACCEPTED_VALUE = 3;
+      public static final int FAIL_QUEST_NOT_AVAILABLE_TO_USER_VALUE = 2;
+      public static final int FAIL_QUEST_ALREADY_ACCEPTED_VALUE = 3;
       public static final int FAIL_OTHER_VALUE = 4;
       
       
@@ -548,8 +548,8 @@ public final class EventQuestProto {
       public static QuestAcceptStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return FAIL_NOT_AVAIL_TO_USER;
-          case 3: return FAIL_ALREADY_ACCEPTED;
+          case 2: return FAIL_QUEST_NOT_AVAILABLE_TO_USER;
+          case 3: return FAIL_QUEST_ALREADY_ACCEPTED;
           case 4: return FAIL_OTHER;
           default: return null;
         }
@@ -581,7 +581,7 @@ public final class EventQuestProto {
       }
       
       private static final QuestAcceptStatus[] VALUES = {
-        SUCCESS, FAIL_NOT_AVAIL_TO_USER, FAIL_ALREADY_ACCEPTED, FAIL_OTHER, 
+        SUCCESS, FAIL_QUEST_NOT_AVAILABLE_TO_USER, FAIL_QUEST_ALREADY_ACCEPTED, FAIL_OTHER, 
       };
       
       public static QuestAcceptStatus valueOf(
@@ -4106,39 +4106,39 @@ public final class EventQuestProto {
       "er.proto\032\023NoneventQuest.proto\032\022NoneventU" +
       "ser.proto\"S\n\027QuestAcceptRequestProto\022\'\n\006" +
       "sender\030\001 \001(\0132\027.proto.MinimumUserProto\022\017\n" +
-      "\007questId\030\002 \001(\005\"\357\001\n\030QuestAcceptResponsePr" +
+      "\007questId\030\002 \001(\005\"\377\001\n\030QuestAcceptResponsePr" +
       "oto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserP" +
       "roto\022A\n\006status\030\002 \001(\01621.proto.QuestAccept" +
-      "ResponseProto.QuestAcceptStatus\"g\n\021Quest" +
-      "AcceptStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_NOT_AV" +
-      "AIL_TO_USER\020\002\022\031\n\025FAIL_ALREADY_ACCEPTED\020\003",
-      "\022\016\n\nFAIL_OTHER\020\004\"\270\001\n\031QuestProgressReques" +
-      "tProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUs" +
-      "erProto\022\017\n\007questId\030\002 \001(\005\022\022\n\nisComplete\030\003" +
-      " \001(\010\022/\n\ruserQuestJobs\030\004 \003(\0132\030.proto.User" +
-      "QuestJobProto\022\034\n\024deleteUserMonsterIds\030\005 " +
-      "\003(\003\"\356\002\n\032QuestProgressResponseProto\022\'\n\006se" +
-      "nder\030\001 \001(\0132\027.proto.MinimumUserProto\022E\n\006s" +
-      "tatus\030\002 \001(\01625.proto.QuestProgressRespons" +
-      "eProto.QuestProgressStatus\"\337\001\n\023QuestProg" +
-      "ressStatus\022\013\n\007SUCCESS\020\001\022\030\n\024FAIL_NO_QUEST",
-      "_EXISTS\020\002\022+\n\'FAIL_DELETE_AMOUNT_DOES_NOT" +
-      "_MATCH_QUEST\020\003\022\"\n\036FAIL_NONEXISTENT_USER_" +
-      "MONSTERS\020\004\022!\n\035FAIL_INCOMPLETE_USER_MONST" +
-      "ERS\020\005\022\035\n\031FAIL_QUEST_JOB_INCOMPLETE\020\007\022\016\n\n" +
-      "FAIL_OTHER\020\006\"c\n\027QuestRedeemRequestProto\022" +
-      "7\n\006sender\030\001 \001(\0132\'.proto.MinimumUserProto" +
-      "WithMaxResources\022\017\n\007questId\030\002 \001(\005\"\320\002\n\030Qu" +
-      "estRedeemResponseProto\0227\n\006sender\030\001 \001(\0132\'" +
-      ".proto.MinimumUserProtoWithMaxResources\022" +
-      "3\n\024newlyAvailableQuests\030\002 \003(\0132\025.proto.Fu",
-      "llQuestProto\022A\n\006status\030\003 \001(\01621.proto.Que" +
-      "stRedeemResponseProto.QuestRedeemStatus\022" +
-      ")\n\004fump\030\004 \001(\0132\033.proto.FullUserMonsterPro" +
-      "to\022\017\n\007questId\030\005 \001(\005\"G\n\021QuestRedeemStatus" +
-      "\022\013\n\007SUCCESS\020\001\022\025\n\021FAIL_NOT_COMPLETE\020\002\022\016\n\n" +
-      "FAIL_OTHER\020\003B/\n\034com.lvl6.mobsters.eventp" +
-      "rotoB\017EventQuestProto"
+      "ResponseProto.QuestAcceptStatus\"w\n\021Quest" +
+      "AcceptStatus\022\013\n\007SUCCESS\020\001\022$\n FAIL_QUEST_" +
+      "NOT_AVAILABLE_TO_USER\020\002\022\037\n\033FAIL_QUEST_AL",
+      "READY_ACCEPTED\020\003\022\016\n\nFAIL_OTHER\020\004\"\270\001\n\031Que" +
+      "stProgressRequestProto\022\'\n\006sender\030\001 \001(\0132\027" +
+      ".proto.MinimumUserProto\022\017\n\007questId\030\002 \001(\005" +
+      "\022\022\n\nisComplete\030\003 \001(\010\022/\n\ruserQuestJobs\030\004 " +
+      "\003(\0132\030.proto.UserQuestJobProto\022\034\n\024deleteU" +
+      "serMonsterIds\030\005 \003(\003\"\356\002\n\032QuestProgressRes" +
+      "ponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minim" +
+      "umUserProto\022E\n\006status\030\002 \001(\01625.proto.Ques" +
+      "tProgressResponseProto.QuestProgressStat" +
+      "us\"\337\001\n\023QuestProgressStatus\022\013\n\007SUCCESS\020\001\022",
+      "\030\n\024FAIL_NO_QUEST_EXISTS\020\002\022+\n\'FAIL_DELETE" +
+      "_AMOUNT_DOES_NOT_MATCH_QUEST\020\003\022\"\n\036FAIL_N" +
+      "ONEXISTENT_USER_MONSTERS\020\004\022!\n\035FAIL_INCOM" +
+      "PLETE_USER_MONSTERS\020\005\022\035\n\031FAIL_QUEST_JOB_" +
+      "INCOMPLETE\020\007\022\016\n\nFAIL_OTHER\020\006\"c\n\027QuestRed" +
+      "eemRequestProto\0227\n\006sender\030\001 \001(\0132\'.proto." +
+      "MinimumUserProtoWithMaxResources\022\017\n\007ques" +
+      "tId\030\002 \001(\005\"\320\002\n\030QuestRedeemResponseProto\0227" +
+      "\n\006sender\030\001 \001(\0132\'.proto.MinimumUserProtoW" +
+      "ithMaxResources\0223\n\024newlyAvailableQuests\030",
+      "\002 \003(\0132\025.proto.FullQuestProto\022A\n\006status\030\003" +
+      " \001(\01621.proto.QuestRedeemResponseProto.Qu" +
+      "estRedeemStatus\022)\n\004fump\030\004 \001(\0132\033.proto.Fu" +
+      "llUserMonsterProto\022\017\n\007questId\030\005 \001(\005\"G\n\021Q" +
+      "uestRedeemStatus\022\013\n\007SUCCESS\020\001\022\025\n\021FAIL_NO" +
+      "T_COMPLETE\020\002\022\016\n\nFAIL_OTHER\020\003B/\n\034com.lvl6" +
+      ".mobsters.eventprotoB\017EventQuestProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

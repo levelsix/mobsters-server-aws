@@ -20,8 +20,8 @@ public enum Lvl6MobstersStatusCode
 	FAIL_INSUFFICIENT_RESOURCE,
 	FAIL_INSUFFICIENT_RESOURCES,
 	
-	FAIL_NOT_AVAIL_TO_USER, //EventQuest.proto, means the quest is not available to the user
-	FAIL_ALREADY_ACCEPTED, //EventQuest.proto, means the quest is already accepted
+	FAIL_QUEST_NOT_AVAILABLE_TO_USER, //EventQuest.proto
+	FAIL_QUEST_ALREADY_ACCEPTED, //EventQuest.proto
 	FAIL_NO_QUEST_EXISTS,
 	FAIL_DELETE_AMOUNT_DOES_NOT_MATCH_QUEST, //EventQuest.proto, amount of monsters user is deleting inconsistent with quest requirement
 	FAIL_NONEXISTENT_USER_MONSTERS,
