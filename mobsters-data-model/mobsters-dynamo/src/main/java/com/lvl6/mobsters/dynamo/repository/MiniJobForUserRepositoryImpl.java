@@ -33,7 +33,7 @@ public class MiniJobForUserRepositoryImpl extends
 	 * @see com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository#findByUserIdAndId(java.lang.String, java.util.Collection)
 	 */
 	@Override
-	public List<MiniJobForUser> findByUserIdAndId(final String userId,
+	public List<MiniJobForUser> findByUserIdAndMiniJobForUserIdIn(final String userId,
         final Collection<String> userMiniJobIds) {
         final List<AttributeValue> userMiniJobIdz = new ArrayList<>();
         final MiniJobForUser hashKey = new MiniJobForUser();

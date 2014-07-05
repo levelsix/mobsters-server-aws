@@ -16,5 +16,5 @@ public interface AchievementForUserRepository extends BaseDynamoRepository<Achie
 
 	public AchievementForUser findByUserIdAndAchievementId(
 		String userId,
-		int achievementId );
+		Integer achievementId );
 }

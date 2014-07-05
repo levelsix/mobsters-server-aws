@@ -32,7 +32,7 @@ public class UserCredentialRepositoryImpl extends BaseDynamoRepositoryImpl<UserC
 		LoggerFactory.getLogger(UserCredentialRepositoryImpl.class);
 
 	@Override
-	public List<UserCredential> getUserCredentialByFacebook( final String facebookId )
+	public List<UserCredential> findByFacebookId( final String facebookId )
 	{
 		final UserCredential key = new UserCredential();
 		key.setFacebookId(facebookId);
@@ -47,7 +47,7 @@ public class UserCredentialRepositoryImpl extends BaseDynamoRepositoryImpl<UserC
 	}
 
 	@Override
-	public List<UserCredential> getUserCredentialByUdid( final String udid )
+	public List<UserCredential> findByUdid( final String udid )
 	{
 		final UserCredential key = new UserCredential();
 		key.setUdid(udid);

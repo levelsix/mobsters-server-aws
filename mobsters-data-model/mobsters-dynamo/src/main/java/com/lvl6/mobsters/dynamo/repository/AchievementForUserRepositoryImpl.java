@@ -33,7 +33,7 @@ public class AchievementForUserRepositoryImpl extends
 	 * @see com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository#findByUserIdAndId(java.lang.String, java.util.Collection)
 	 */
 	@Override
-	public List<AchievementForUser> findByUserIdAndId(final String userId,
+	public List<AchievementForUser> findByUserIdAndAchievementIdIn(final String userId,
 	    final Collection<Integer> achievementIds) {
 	    final List<AttributeValue> achievementIdz = new ArrayList<>();
 	    final AchievementForUser hashKey = new AchievementForUser();
@@ -71,6 +71,11 @@ public class AchievementForUserRepositoryImpl extends
 	    final PaginatedQueryList<AchievementForUser> achievementsForUser = query(query);
 	    achievementsForUser.loadAllResults();
 	    return achievementsForUser;
+	}
+	
+	@Override
+	public AchievementForUser findByUserIdAndAchievementId(String userId, Integer achievementId) {
+	    return load(userId, achievementId.toString());
 	}
 	
 	/*
