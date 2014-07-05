@@ -43,6 +43,8 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	private int minutesToCombinePieces;
 	@Column(name = "max_level")
 	private int maxLevel; //aka max enhancing level
+	@Column(name = "shadow_scale_factor")
+	private float shadowScaleFactor; //TODO: Use this column
 	
 	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
 	@JoinColumn(

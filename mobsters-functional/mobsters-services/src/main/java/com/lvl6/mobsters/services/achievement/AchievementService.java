@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.AchievementForUser;
+import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.services.achievement.AchievementServiceImpl.ModifyUserAchievementsSpecBuilderImpl;
 
 public interface AchievementService {
@@ -75,4 +76,6 @@ public interface AchievementService {
         }
     }
 
+    
+    public User redeemAchievement( String userId, int achievementId, Date now );
 }
