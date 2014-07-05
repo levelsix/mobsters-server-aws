@@ -117,4 +117,8 @@ public interface IMonster extends IBaseIntPersistentObject
 
 	public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue );
 
+	public abstract void setShadowScaleFactor( float shadowScaleFactor );
+
+	public abstract float getShadowScaleFactor();
+
 }

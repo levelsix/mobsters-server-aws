@@ -43,6 +43,7 @@ import com.lvl6.mobsters.info.Achievement;
 import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.EventPersistent;
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;

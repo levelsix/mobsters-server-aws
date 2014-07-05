@@ -24,8 +24,8 @@ import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 
 @Component
@@ -277,7 +277,7 @@ public class MonsterServiceImpl implements MonsterService
 	  		int monsterId = monsterIds.get(i);
 	  		int teamSlotNum = i + 1;
 	  		
-	  		Monster monzter = null;//MonsterRetrieveUtils.getMonsterForMonsterId(monsterId);
+	  		IMonster monzter = null;//MonsterRetrieveUtils.getMonsterForMonsterId(monsterId);
 	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
 	  		
 	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
