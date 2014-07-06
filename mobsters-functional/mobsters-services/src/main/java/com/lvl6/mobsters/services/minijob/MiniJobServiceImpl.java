@@ -102,7 +102,7 @@ public class MiniJobServiceImpl implements MiniJobService {
         final Multimap<String, UserMiniJobFunc> modSpecMultimap = modifySpec.getModSpecMultimap();
         final Set<String> miniJobIds = modSpecMultimap.keySet();
         
-        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndId(userId, miniJobIds);
+        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndMiniJobForUserIdIn(userId, miniJobIds);
         // Mutate the objects
         
         //update the existing ones

@@ -80,7 +80,7 @@ public class MonsterServiceImpl implements MonsterService
 		Set<String> monsterForUserIds = Collections.singleton(monsterForUserId);
 
 		List<MonsterForUser> monstersForUser =
-			monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId,
+			monsterForUserRepository.findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(userId,
 				monsterForUserIds, teamSlotNum);
 
 		final Map<String, MonsterForUser> userMonsterIdToMfu =
@@ -137,7 +137,7 @@ public class MonsterServiceImpl implements MonsterService
 		final Set<String> userMonsterIds = specMap.keySet();
 
 		List<MonsterForUser> existingUserMonsters =
-			monsterForUserRepository.findByUserIdAndId(userId, userMonsterIds);
+			monsterForUserRepository.findByUserIdAndMonsterForUserIdIn(userId, userMonsterIds);
 		if (CollectionUtils.lacksSubstance(existingUserMonsters)
 			|| (userMonsterIds.size() != existingUserMonsters.size())) {
 			// txManager.rollback();

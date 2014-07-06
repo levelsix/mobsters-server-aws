@@ -64,7 +64,7 @@ public class TestUserCredentials
 	@After
 	public void destroyTestData()
 	{
-		userRepo.emptyTable();
+//		userRepo.emptyTable();
 		/*
 		 * for (final String userId : TestUserCredentials.userIds) { final List<UserCredential> users =
 		 * userRepo.getUserCredentialByUdid(userId); userRepo.delete(users); }
@@ -75,9 +75,9 @@ public class TestUserCredentials
 	public void test()
 	{
 		final List<UserCredential> users =
-			userRepo.getUserCredentialByFacebook(TestUserCredentials.userIds.get(0));
+			userRepo.findByFacebookId(TestUserCredentials.userIds.get(0));
 		final List<UserCredential> userz =
-			userRepo.getUserCredentialByUdid(TestUserCredentials.userIds.get(0));
+			userRepo.findByUdid(TestUserCredentials.userIds.get(0));
 		Assert.assertEquals("Found one user by facebook", users.size(), 1);
 		Assert.assertEquals("Found one user by udid", userz.size(), 1);
 		Assert.assertEquals("Found same", users.get(0), userz.get(0));

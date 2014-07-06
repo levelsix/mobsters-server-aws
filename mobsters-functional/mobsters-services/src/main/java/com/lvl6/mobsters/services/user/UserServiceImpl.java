@@ -508,7 +508,7 @@ public class UserServiceImpl implements UserService
 	@Override
 	public UserCredential getUserCredentialByFacebookIdOrUdid(String facebookId, String udid) {
 		
-		List<UserCredential> ucList = userCredentialRepository.getUserCredentialByFacebook(facebookId);
+		List<UserCredential> ucList = userCredentialRepository.findByFacebookId(facebookId);
 		
 		
 		if (ucList.size() > 1) {
@@ -530,7 +530,7 @@ public class UserServiceImpl implements UserService
 			return ucList.get(0);
 		}
 		
-		ucList = userCredentialRepository.getUserCredentialByUdid(udid);
+		ucList = userCredentialRepository.findByUdid(udid);
 		
 		if (ucList.size() > 1) {
 			LOG.warn("wtf, multiple UserCredentials for udid=" + udid + ". list=" +
@@ -560,7 +560,7 @@ public class UserServiceImpl implements UserService
 		// if facebook id is provided, use that to try creating account, else use udid
 		if (StringUtils.hasText(facebookId)) {
 			List<UserCredential> userCredentials =
-				userCredentialRepository.getUserCredentialByFacebook(facebookId);
+				userCredentialRepository.findByFacebookId(facebookId);
 
 			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
 				"User(s) already exist with facebookId="
@@ -572,7 +572,7 @@ public class UserServiceImpl implements UserService
 
 		} else {
 			List<UserCredential> userCredentials =
-				userCredentialRepository.getUserCredentialByUdid(udid);
+				userCredentialRepository.findByUdid(udid);
 
 			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
 				"User(s) already exist with udid="
