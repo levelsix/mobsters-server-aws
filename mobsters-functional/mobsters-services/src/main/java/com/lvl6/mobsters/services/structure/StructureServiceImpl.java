@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
 import com.lvl6.mobsters.dynamo.StructureForUser;
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository;
 
 @Component
@@ -241,9 +242,9 @@ public class StructureServiceImpl implements StructureService {
         return obstacleForUserRepository;
     }
 
-	public void setObstacleForUserRepository( ObstacleForUserRepository miniJobForUserRepository )
+	public void setObstacleForUserRepository( ObstacleForUserRepository obstacleForUserRepository )
 	{
-		this.obstacleForUserRepository = miniJobForUserRepository;
+		this.obstacleForUserRepository = obstacleForUserRepository;
 	}
 
 	public StructureForUserRepository getStructureForUserRepository()
