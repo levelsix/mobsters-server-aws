@@ -139,9 +139,15 @@ public interface UserService
 
 		public ModifyUserSpecBuilder decrementGems( int gemsDelta );
 		
+		public ModifyUserSpecBuilder incrementGems( int gemsDelta );
+		
 		public ModifyUserSpecBuilder decrementCash( int cashDelta );
 		
+		public ModifyUserSpecBuilder incrementCash( int cashDelta, int maxCash );
+		
 		public ModifyUserSpecBuilder decrementOil( int oilDelta );
+		
+		public ModifyUserSpecBuilder incrementOil( int oilDelta, int maxOil );
 		
 		public ModifyUserSpecBuilder setExpRelative( int expDelta );
 		
