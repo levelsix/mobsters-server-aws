@@ -50,7 +50,7 @@ public class AchievementServiceImpl implements AchievementService {
         final Set<Integer> achievementIds = achievementIdToAfu.keySet();
         
         List<AchievementForUser> existingUserAchievements =
-            achievementForUserRepository.findByUserIdAndId(userId, achievementIds);
+            achievementForUserRepository.findByUserIdAndAchievementId(userId, achievementIds);
         
         // Mutate the objects
         

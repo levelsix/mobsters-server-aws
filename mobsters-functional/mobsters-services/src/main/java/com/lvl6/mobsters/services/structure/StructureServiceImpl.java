@@ -43,7 +43,7 @@ public class StructureServiceImpl implements StructureService {
             ofu.setUserId(userId);
         }
         
-        obstacleForUserRepository.saveAll(userObstacleIdToOfu.values());
+        obstacleForUserRepository.saveEach(userObstacleIdToOfu.values());
     }
     
     // motivation for two separate Builders is because service will only be modifying
@@ -130,7 +130,7 @@ public class StructureServiceImpl implements StructureService {
             ofu.setUserId(userId);
         }
         
-        structureForUserRepository.saveAll(userStructureIdToOfu.values());
+        structureForUserRepository.saveEach(userStructureIdToOfu.values());
     }
     
     static class CreateUserStructuresSpecBuilderImpl implements CreateUserStructuresSpecBuilder

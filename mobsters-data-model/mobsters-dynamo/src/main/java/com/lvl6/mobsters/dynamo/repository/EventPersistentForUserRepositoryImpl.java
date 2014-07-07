@@ -5,37 +5,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
-@Component public class EventPersistentForUserRepositoryImpl extends BaseDynamoRepositoryImpl<EventPersistentForUser>
+@Component 
+public class EventPersistentForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<EventPersistentForUser, Integer>
 	implements
 		EventPersistentForUserRepository
 {
-	public EventPersistentForUserRepositoryImpl(){
-		super(EventPersistentForUser.class);
-	}
-
-
+	@SuppressWarnings("unused")
 	private static final Logger LOG =
 		LoggerFactory.getLogger(EventPersistentForUserRepositoryImpl.class);
-
+	
+	public EventPersistentForUserRepositoryImpl(){
+		super(EventPersistentForUser.class, "eventPersistentId", Integer.TYPE);
+	}
 	
 	@Override
 	public List<EventPersistentForUser> findByUserId( String userId )
 	{
-		final EventPersistentForUser hashKey = new EventPersistentForUser();
-		hashKey.setUserId(userId);
-
-		final DynamoDBQueryExpression<EventPersistentForUser> query =
-			new DynamoDBQueryExpression<EventPersistentForUser>()
-			// .withIndexName("userIdGlobalIndex")
-				.withHashKeyValues(hashKey)
-				.withConsistentRead(true);
-
-		LOG.info("Query: {}", query);
-		final PaginatedQueryList<EventPersistentForUser> eventPersistentForUser = query(query);
-		eventPersistentForUser.loadAllResults();
-		return eventPersistentForUser;
+		return loadAll(userId);
 	}
 }

@@ -18,7 +18,7 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 
 public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 
-	private static Logger log = LoggerFactory.getLogger(new Object() {
+	private static Logger LOG = LoggerFactory.getLogger(new Object() {
 	}.getClass().getEnclosingClass());
 	
 	@Autowired
@@ -40,7 +40,7 @@ public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 	    UpdateClientUserResponseEvent resEvent =
 	    		new UpdateClientUserResponseEvent(userIdStr);
 	    resEvent.setUpdateClientUserResponseProto(ucurpb.build());
-	    
+	    LOG.info("created UpdateClientUserResponseEvent=" + ucurpb.build());
 	    return resEvent;
 	}
 

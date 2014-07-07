@@ -5,37 +5,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
-@Component public class TaskForUserCompletedRepositoryImpl extends BaseDynamoRepositoryImpl<TaskForUserCompleted>
+@Component public class TaskForUserCompletedRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<TaskForUserCompleted, Integer>
 	implements
 		TaskForUserCompletedRepository
 {
-	
+	@SuppressWarnings("unused")
 	private static final Logger LOG =
 		LoggerFactory.getLogger(TaskForUserCompletedRepositoryImpl.class);
 
 	public TaskForUserCompletedRepositoryImpl(){
-		super(TaskForUserCompleted.class);
+		super(TaskForUserCompleted.class, "taskId", Integer.TYPE);
 	}
  
 	@Override
 	public List<TaskForUserCompleted> findByUserId( final String userId )
 	{
-		final TaskForUserCompleted hashKey = new TaskForUserCompleted();
-		hashKey.setUserId(userId);
-
-		final DynamoDBQueryExpression<TaskForUserCompleted> query =
-			new DynamoDBQueryExpression<TaskForUserCompleted>()
-			// .withIndexName("userIdGlobalIndex")
-				.withHashKeyValues(hashKey)
-				.withConsistentRead(true);
-
-		LOG.info("Query: {}", query);
-		final PaginatedQueryList<TaskForUserCompleted> taskForUserCompletedsForUser = query(query);
-		taskForUserCompletedsForUser.loadAllResults();
-		return taskForUserCompletedsForUser;
+		return loadAll(userId);
 	}
 	
 }
