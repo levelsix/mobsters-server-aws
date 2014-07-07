@@ -11,8 +11,7 @@
         http://www.springframework.org/schema/util 
      	http://www.springframework.org/schema/util/spring-util-4.0.xsd
      	http://www.springframework.org/schema/data/jpa
-    	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-		">
+    	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <!--
        This has no effect unless its declared in a Spring context where @Transactional @Components are
