@@ -2,18 +2,19 @@ package com.lvl6.mobsters.services.minijob;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.info.MiniJob;
-import com.lvl6.mobsters.services.minijob.MiniJobServiceImpl.CreateUserMiniJobsSpecBuilderImpl;
 import com.lvl6.mobsters.services.minijob.MiniJobServiceImpl.ModifyUserMiniJobsSpecBuilderImpl;
+
 public interface MiniJobService {
     
-    //NON CRUD LOGIC******************************************************************
+	// NON CRUD
+	// LOGIC******************************************************************
     public abstract List<MiniJob> spawnMiniJobs(int numToSpawn, int structId); 
     
     /**************************************************************************/
@@ -27,20 +28,20 @@ public interface MiniJobService {
 	
  	/**************************************************************************/
      
-     
-    public abstract void modifyMiniJobsForUser( String userId, ModifyUserMiniJobsSpec details );
+
+	public abstract void modifyMiniJobsForUser(String userId,
+			Director<ModifyUserMiniJobsSpecBuilder> modifyDirector);
 
     public interface ModifyUserMiniJobsSpecBuilder {
-        public ModifyUserMiniJobsSpec build();
+		public ModifyUserMiniJobsSpecBuilder startJob(String userMiniJobId,
+			Set<String> userMonsterIds, Date timeStarted);
 
-        public ModifyUserMiniJobsSpecBuilder setUserMonsterIds( String userMiniJobId, Set<String> userMonsterIds );
-
-        public ModifyUserMiniJobsSpecBuilder setTimeStarted( String userMiniJobId, Date timeStarted );
-        
-        public ModifyUserMiniJobsSpecBuilder setTimeCompleted( String userMiniJobId, Date timeCompleted );
+		public ModifyUserMiniJobsSpecBuilder completeJob(String userMiniJobId,
+			Date timeCompleted);
     }
     
-    interface UserMiniJobFunc extends Function<MiniJobForUser> {};
+	interface UserMiniJobFunc extends Function<MiniJobForUser> {
+	};
 
     public class ModifyUserMiniJobsSpec {
         // modification specification map
@@ -61,40 +62,59 @@ public interface MiniJobService {
 
     /**************************************************************************/
     
-    public abstract void createMiniJobsForUser( String userId, CreateUserMiniJobsSpec createSpec );
+	public abstract void createMiniJobsForUser(String userId,
+			Director<CreateUserMiniJobsSpecBuilder> director);
     
+	// TODO: Instead of collecting one mandatory property per call, collect them
+	// all in a single call. If any of these are optional parameters, use a
+	// second Director/Builder indirection and provide two builder methods, one
+	// that includes the second-stage Director, for use when at least one
+	// optional parameter is being set, and a second that excludes it, so there
+	// is no need to provide a no-op director when only mandatory options are
+	// set.
+	//
+	// See AlternateCreateUserMiniJobsSpecBuilder for a likely manifestation of
+	// this TODO note. Observe how consolidating mandatory options into one
+	// method call with optional parameters coming from a second tier allows us
+	// to let the userMiniJobId be DynamoDB-generated as it is meant to be,
+	// providing an even stronger guarantee of uniqueness than UUID.randomUUID()
+	// is capable of.
     public interface CreateUserMiniJobsSpecBuilder {
-        public CreateUserMiniJobsSpec build();
+		public CreateUserMiniJobsSpecBuilder setMiniJobId(String userMiniJobId,
+			int miniJobId);
         
-        public CreateUserMiniJobsSpecBuilder setMiniJobId( String userMiniJobId, int miniJobId);
+		public CreateUserMiniJobsSpecBuilder setBaseDmgReceived(
+			String userMiniJobId, int baseDmgReceived);
         
-        public CreateUserMiniJobsSpecBuilder setBaseDmgReceived( String userMiniJobId, int baseDmgReceived);
+		public CreateUserMiniJobsSpecBuilder setDurationMinutes(
+			String userMiniJobId, int durationMinutes);
 
-        public CreateUserMiniJobsSpecBuilder setDurationMinutes( String userMiniJobId, int durationMinutes);
+		public CreateUserMiniJobsSpecBuilder setUserMonsterIds(
+			String userMiniJobId, Set<String> userMonsterIds);
         
-        public CreateUserMiniJobsSpecBuilder setUserMonsterIds( String userMiniJobId, Set<String> userMonsterIds );
+		public CreateUserMiniJobsSpecBuilder setTimeStarted(
+			String userMiniJobId, Date timeStarted);
         
-        public CreateUserMiniJobsSpecBuilder setTimeStarted( String userMiniJobId, Date timeStarted );
-
-        public CreateUserMiniJobsSpecBuilder setTimeCompleted( String userMiniJobId, Date timeCompleted );
-        
+		public CreateUserMiniJobsSpecBuilder setTimeCompleted(
+			String userMiniJobId, Date timeCompleted);
     }
     
-    public class CreateUserMiniJobsSpec {
-        // the end state: objects to be saved to db
-        final private Map<String, MiniJobForUser> userMiniJobIdToMjfu;
+	public interface AlternateCreateUserMiniJobsSpecBuilder {
+		public AlternateCreateUserMiniJobsSpecBuilder addMiniJob(int miniJobId,
+			int baseDmgRcvd, int durationMins, Set<String> userMonsterIds,
+			Director<OptionalUserMiniJobsSpecBuilder> optionalDirector);
 
-        CreateUserMiniJobsSpec( Map<String, MiniJobForUser> userMiniJobIdToMjfu) {
-            this.userMiniJobIdToMjfu = userMiniJobIdToMjfu;
+		public AlternateCreateUserMiniJobsSpecBuilder addMiniJob(int miniJobId,
+			int baseDmgRcvd, int durationMins, Set<String> userMonsterIds);
         }
         
-        Map<String, MiniJobForUser> getUserMiniJobIdToMjfu() {
-            return userMiniJobIdToMjfu;
-        }
+	public interface OptionalUserMiniJobsSpecBuilder {
+		// Let the default be TimeUtils.createNow()
+		public OptionalUserMiniJobsSpecBuilder timeStarted(Date timeStarted);
 
-        public static CreateUserMiniJobsSpecBuilder builder() {
-            return new CreateUserMiniJobsSpecBuilderImpl();
-        }
+		// Let the default be null for not completed or, in the case of modify,
+		// unchanged.
+		public OptionalUserMiniJobsSpecBuilder timeCompleted(Date timeCompleted);
     }
 
 }

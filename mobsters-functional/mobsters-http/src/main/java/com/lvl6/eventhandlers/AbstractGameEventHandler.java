@@ -39,7 +39,7 @@ public abstract class AbstractGameEventHandler implements MessageHandler {
 		//handleEvent((byte[]) msg.getPayload());
 	}
 
-	public void handleEvent(ByteBuffer bytes, WebSocketSession session) {
+	void handleEvent(ByteBuffer bytes, WebSocketSession session) {
 		Attachment attachment = new Attachment();
 		byte[] payload = (byte[]) bytes.asReadOnlyBuffer().array();
 		attachment.readBuff = bytes;

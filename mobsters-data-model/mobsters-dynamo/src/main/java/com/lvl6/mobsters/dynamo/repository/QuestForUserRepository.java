@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.lvl6.mobsters.dynamo.QuestForUser;
 
-public interface QuestForUserRepository extends BaseDynamoRepository<QuestForUser>
+public interface QuestForUserRepository extends BaseDynamoCollectionRepository<QuestForUser, Integer>
 {
 
 	

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,19 +23,27 @@ import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
-import com.lvl6.mobsters.info.IMonster;
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
+import com.lvl6.mobsters.info.repository.MonsterRepository;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
 {
 	@Autowired
+	private DataServiceTxManager txManager;
+	
+	@Autowired
+	private MonsterRepository monsterRepository;
+	
+	@Autowired
 	private MonsterForUserRepository monsterForUserRepository;
 	
 	@Autowired
 	private MonsterForUserHistoryRepository monsterForUserHistoryRepository;
-	
+
 	@Autowired
 	private MonsterHealingForUserRepository monsterHealingForUserRepository;
 
@@ -77,25 +84,28 @@ public class MonsterServiceImpl implements MonsterService
 		String monsterForUserId,
 		int teamSlotNum )
 	{
-		Set<String> monsterForUserIds = Collections.singleton(monsterForUserId);
-
-		List<MonsterForUser> monstersForUser =
-			monsterForUserRepository.findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(userId,
-				monsterForUserIds, teamSlotNum);
-
-		final Map<String, MonsterForUser> userMonsterIdToMfu =
-			new HashMap<String, MonsterForUser>();
+		txManager.beginTransaction();
+		boolean success = false;
+		try {
+			final List<MonsterForUser> monstersForUser =
+				monsterForUserRepository.findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(userId,
+					Collections.singleton(monsterForUserId), teamSlotNum);
 
 		for (final MonsterForUser mfu : monstersForUser) {
-			userMonsterIdToMfu.put(mfu.getMonsterForUserId(), mfu);
+			if (monsterForUserId == mfu.getMonsterForUserId()) {
+				mfu.setTeamSlotNum(teamSlotNum);
+			} else {
+				mfu.setTeamSlotNum(0);
+			}
 		}
 
-		for (MonsterForUser mfu : userMonsterIdToMfu.values()) {
-			if (monsterForUserIds.contains(mfu.getMonsterForUserId())) {
-				mfu.setTeamSlotNum(teamSlotNum);
-
-			} else if (mfu.getTeamSlotNum() == teamSlotNum) {
-				mfu.setTeamSlotNum(0);
+			monsterForUserRepository.saveEach(monstersForUser);
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
 			}
 		}
 	}
@@ -103,15 +113,25 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
 	{
-//		List<MonsterForUser> monsterList =
-//			monsterForUserRepository.findAll(userId, monsterForUserIds);
-//
-//		for (MonsterForUser mfu : monsterList) {
-//			mfu.setTeamSlotNum(0);
-//		}
-//
-//		monsterForUserRepository.saveAll(monsterList);
+		txManager.beginTransaction();
+		boolean success = false;
+		try {
+			final List<MonsterForUser> monsterList =
+				monsterForUserRepository.loadEach(userId, monsterForUserIds);
 
+			for (final MonsterForUser mfu : monsterList) {
+				mfu.setTeamSlotNum(0);
+			}
+
+			monsterForUserRepository.saveEach(monsterList);
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
+		}
 	}
 
 	/*
@@ -130,37 +150,41 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void modifyMonstersForUser( String userId, ModifyMonstersSpec modifySpec )
 	{
-		// txManager.startTransaction();
+		boolean success = false;
+		txManager.beginTransaction();
+		try {
+			// get whatever we need from the database
+			final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
+			final Set<String> userMonsterIds = specMap.keySet();
 
-		// get whatever we need from the database
-		final Multimap<String, MonsterFunc> specMap = modifySpec.getSpecMultimap();
-		final Set<String> userMonsterIds = specMap.keySet();
+			final List<MonsterForUser> existingUserMonsters =
+				monsterForUserRepository.loadEach(userId, userMonsterIds);
+			if ( (userMonsterIds.size() != existingUserMonsters.size())
+				|| CollectionUtils.lacksSubstance(existingUserMonsters)) {
+				throw new IllegalArgumentException("Missing monsters for userId "
+					+ userId
+					+ " and monsterForUserIds: "
+					+ userMonsterIds);
+			}
 
-		List<MonsterForUser> existingUserMonsters =
-			monsterForUserRepository.findByUserIdAndMonsterForUserIdIn(userId, userMonsterIds);
-		if (CollectionUtils.lacksSubstance(existingUserMonsters)
-			|| (userMonsterIds.size() != existingUserMonsters.size())) {
-			// txManager.rollback();
-			throw new IllegalArgumentException("No monsters for userId "
-				+ userId
-				+ " and userMonsterIds: "
-				+ userMonsterIds);
-		}
+			// Mutate the objects
+			for (final MonsterForUser nextMonster : existingUserMonsters) {
+				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserUuid());
+				for (MonsterFunc nextMonsterOp : monsterOps) {
+					
+				}
+			}
 
-		// Mutate the objects
-
-		// txManager.startTransaction();
-		for (final MonsterForUser nextMonster : existingUserMonsters) {
-			Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserId());
-			for (MonsterFunc nextMonsterOp : monsterOps) {
-				nextMonsterOp.apply(nextMonster);
+			// Write back to the database, then close the transaction by returning
+			monsterForUserRepository.saveEach(existingUserMonsters);
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
 			}
 		}
-
-		// Write back to the database, then close the transaction by returning
-		// TBD: Need to restore a workable save interface.
-		// monsterForUserRepository.save(existingUserMonsters);
-		// txManager.endTransaction();
 	}
 
 	static class ModifyMonstersSpecBuilderImpl implements ModifyMonstersSpecBuilder
@@ -271,13 +295,17 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Override
 	public void createCompleteMonstersForUser( String userId, List<Integer> monsterIds, Date combineStartTime ) {
+		txManager.beginTransaction();
+		boolean success = false;
+		try {
 		List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
+			List<Monster> monzters = monsterRepository.findAll(monsterIds);
+			int ii=0;
 		
-		for (int i = 0; i < monsterIds.size(); i++) {
-	  		int monsterId = monsterIds.get(i);
-	  		int teamSlotNum = i + 1;
+			for (Monster monzter : monzters) {
+		  		int monsterId = monzter.getId();
+		  		int teamSlotNum = ++ii;
 	  		
-	  		IMonster monzter = null;//MonsterRetrieveUtils.getMonsterForMonsterId(monsterId);
 	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
 	  		
 	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
@@ -295,14 +323,21 @@ public class MonsterServiceImpl implements MonsterService
 	  		mfu.setComplete(true);
 	  		mfu.setCombineStartTime(combineStartTime);
 	  		mfu.setTeamSlotNum(teamSlotNum);
-	  		
 	  	}
 		
-		monsterForUserRepository.saveAll(mfuList);
+			monsterForUserRepository.saveEach(mfuList);
 		// TODO: Record into monsterForUserHistory
 		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
 	}
-
+	}
+	
 	/*
 	static class CreateMonstersSpecBuilderImpl implements CreateMonstersSpecBuilder
 	{

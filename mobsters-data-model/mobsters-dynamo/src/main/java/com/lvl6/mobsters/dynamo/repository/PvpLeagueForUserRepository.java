@@ -13,13 +13,12 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
 
 @Component
-public class PvpLeagueForUserRepository extends BaseDynamoRepositoryImpl<PvpLeagueForUser>
+public class PvpLeagueForUserRepository extends BaseDynamoItemRepositoryImpl<PvpLeagueForUser>
 {
 	public PvpLeagueForUserRepository()
 	{
 		super(
 			PvpLeagueForUser.class);
-		isActive = true;
 	}
 
 	private static final Logger log = LoggerFactory.getLogger(PvpLeagueForUserRepository.class);
@@ -59,4 +58,10 @@ public class PvpLeagueForUserRepository extends BaseDynamoRepositoryImpl<PvpLeag
 		return leagues;
 	}
 
+	@Override
+	protected PvpLeagueForUser getHashKeyObject(String hashKey) {
+		final PvpLeagueForUser retVal = new PvpLeagueForUser();
+		retVal.setUserId(hashKey);
+		return retVal;
+	}
 }

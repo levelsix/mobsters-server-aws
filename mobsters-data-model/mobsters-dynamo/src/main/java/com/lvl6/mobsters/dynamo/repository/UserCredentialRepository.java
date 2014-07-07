@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.lvl6.mobsters.dynamo.UserCredential;
 
-public interface UserCredentialRepository extends BaseDynamoRepository<UserCredential>
+public interface UserCredentialRepository extends BaseDynamoItemRepository<UserCredential>
 {
 	public List<UserCredential> findByFacebookId( final String facebookId );
 

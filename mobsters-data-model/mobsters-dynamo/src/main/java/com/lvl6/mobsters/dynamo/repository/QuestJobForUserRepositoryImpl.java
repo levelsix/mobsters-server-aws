@@ -16,7 +16,7 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 
 @Component
-public class QuestJobForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestJobForUser>
+public class QuestJobForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<QuestJobForUser, Integer>
 	implements
 		QuestJobForUserRepository
 {
@@ -25,8 +25,7 @@ public class QuestJobForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Ques
 	
 	public QuestJobForUserRepositoryImpl()
 	{
-		super(QuestJobForUser.class);
-		isActive = true;
+		super(QuestJobForUser.class, "questJobId", Integer.class);
 	}
 
 	@Override

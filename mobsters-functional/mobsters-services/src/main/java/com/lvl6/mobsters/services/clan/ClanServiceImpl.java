@@ -28,8 +28,7 @@ public class ClanServiceImpl implements ClanService
 	@Override
 	public List<ClanForUser> findByUserId( String userId )
 	{
-		// return clanForUserRepository.load
-		return clanForUserRepository.findByUserId(userId);
+		return clanForUserRepository.loadAll(userId);
 	}
 
 	//

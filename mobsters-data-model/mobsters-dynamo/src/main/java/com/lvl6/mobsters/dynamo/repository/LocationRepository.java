@@ -2,7 +2,7 @@ package com.lvl6.mobsters.dynamo.repository;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.Location;
-@Component public class LocationRepository extends BaseDynamoRepositoryImpl<Location>{
+@Component public abstract class LocationRepository extends BaseDynamoItemRepositoryImpl<Location>{
 	public LocationRepository(){
 		super(Location.class);
 	}
