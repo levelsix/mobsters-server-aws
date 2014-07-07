@@ -11,14 +11,16 @@ import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalRequestProto;
 import com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalResponseProto;
 import com.lvl6.mobsters.eventproto.EventStructureProto.BeginObstacleRemovalResponseProto.BeginObstacleRemovalStatus;
+import com.lvl6.mobsters.eventproto.utils.CreateEventProtoUtil;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.BeginObstacleRemovalRequestEvent;
 import com.lvl6.mobsters.events.response.BeginObstacleRemovalResponseEvent;
+import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
-import com.lvl6.mobsters.services.achievement.AchievementService;
+import com.lvl6.mobsters.services.structure.BeginObstacleRemovalService;
 
 @Component
 public class BeginObstacleRemovalController extends EventController {
@@ -26,7 +28,10 @@ public class BeginObstacleRemovalController extends EventController {
     private static Logger LOG = LoggerFactory.getLogger(BeginObstacleRemovalController.class);
 
     @Autowired
-    protected StructureService beginObstacleRemovalService;
+    protected BeginObstacleRemovalService beginObstacleRemovalService;
+    
+    @Autowired
+    protected CreateEventProtoUtil createEventProtoUtil; 
 
     /*
      * @Autowired protected EventWriter eventWriter;
@@ -54,7 +59,7 @@ public class BeginObstacleRemovalController extends EventController {
         final Date clientTime = new Date(reqProto.getCurTime());
         final int gemsSpent = reqProto.getGemsSpent();
         final int resourceChange = reqProto.getResourceChange();
-        String rtStr = reqProto.getResourceType().name();
+        String resourceType = reqProto.getResourceType().name();
         String userObstacleId = reqProto.getUserObstacleUuid();
 
         // prepare to send response back to client
@@ -72,7 +77,14 @@ public class BeginObstacleRemovalController extends EventController {
 
         // call service if syntax is ok
         try {
-        	User u = beginObstacleRemovalService.redeemAchievement(userIdString, beginObstacleRemovalId, clientTime);
+        	User u = beginObstacleRemovalService.initiateRemoveObstacle(
+        		userIdString, userObstacleId, clientTime, gemsSpent,
+        		resourceType, resourceChange);
+        	
+        	UpdateClientUserResponseEvent resEventUpdate =
+            	createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
+            eventWriter.writeEvent(resEventUpdate);
+            
         } catch (Exception e) {
         	LOG.error(
         		"exception in BeginObstacleRemovalController processEvent when calling userService",
@@ -88,12 +100,25 @@ public class BeginObstacleRemovalController extends EventController {
 
     }
 
-    public AchievementService getAchievementService() {
-        return beginObstacleRemovalService;
-    }
+	public BeginObstacleRemovalService getBeginObstacleRemovalService()
+	{
+		return beginObstacleRemovalService;
+	}
 
-    public void setAchievementService( AchievementService beginObstacleRemovalService ) {
-        this.beginObstacleRemovalService = beginObstacleRemovalService;
-    }
+	public void setBeginObstacleRemovalService(
+		BeginObstacleRemovalService beginObstacleRemovalService )
+	{
+		this.beginObstacleRemovalService = beginObstacleRemovalService;
+	}
+
+	public CreateEventProtoUtil getCreateEventProtoUtil()
+	{
+		return createEventProtoUtil;
+	}
+
+	public void setCreateEventProtoUtil( CreateEventProtoUtil createEventProtoUtil )
+	{
+		this.createEventProtoUtil = createEventProtoUtil;
+	}
 
 }

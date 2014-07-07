@@ -38,7 +38,7 @@ public class BeginObstacleRemovalServiceImpl implements BeginObstacleRemovalServ
     /**************************************************************************/
 
 	@Override
-	public void removeObstacle(
+	public User initiateRemoveObstacle(
 		String userId,
 		String userObstacleId,
 		Date clientTime,
@@ -56,6 +56,7 @@ public class BeginObstacleRemovalServiceImpl implements BeginObstacleRemovalServ
 		updateUserCurrency(user, gemsSpent, resourceType, resourceChange);
 		ofu.setRemovalTime(clientTime);
 		
+		return user;
 	}
 
 	private void checkIfUserCanRemoveObstacle(
