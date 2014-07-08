@@ -9,15 +9,12 @@ import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.GameEvent;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.properties.Globals;
 
 @Component
 public abstract class EventController{
-
-
-	
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass().getEnclosingClass());
+	private static Logger log = LoggerFactory.getLogger(EventController.class);
 
 	/**
 	 * GameController subclasses should implement initController in order to do
@@ -60,14 +57,14 @@ public abstract class EventController{
 								reqEvent.getPlayerId(), null));*/
 		log.info("Received event: {}", event.getClass().getSimpleName());
 
-		final long startTime = System.nanoTime();
 		final long endTime;
+		final long startTime = TimeUtils.nanoTime();
 		try {
 			processRequestEvent(reqEvent, eventWriter);
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			endTime = System.nanoTime();
+			endTime = TimeUtils.nanoTime();
 		}
 		double numSeconds = (endTime - startTime) / 1000000;
 
@@ -86,6 +83,11 @@ public abstract class EventController{
 	 */
 	public abstract EventProtocolRequest getEventType();
 
+	 * subclasses must implement to do their processing
+	 * 
+	 * @throws Exception
+	 * @throws Lvl6Exception
+	 */
 	@Async
 	protected abstract void processRequestEvent(RequestEvent event, EventsToDispatch eventWriter) throws Exception;
 

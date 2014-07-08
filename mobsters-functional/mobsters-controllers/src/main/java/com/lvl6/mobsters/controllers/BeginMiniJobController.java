@@ -55,9 +55,9 @@ public class BeginMiniJobController extends EventController {
             ((BeginMiniJobRequestEvent) event).getBeginMiniJobRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        Date clientTime = new Date(reqProto.getClientTime());
         Set<String> userMonsterIds = new HashSet<String>(reqProto.getUserMonsterUuidsList());
         String userMiniJobId = reqProto.getUserMiniJobUuid();
+        final Date clientTime = TimeUtils.createDateFromTime(reqProto.getClientTime());
 
         // prepare to send response back to client
         BeginMiniJobResponseProto.Builder responseBuilder =
