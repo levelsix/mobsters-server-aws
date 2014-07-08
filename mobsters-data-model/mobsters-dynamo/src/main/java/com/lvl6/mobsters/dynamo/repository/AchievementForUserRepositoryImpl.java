@@ -15,6 +15,7 @@ public class AchievementForUserRepositoryImpl extends
 		BaseDynamoCollectionRepositoryImpl<AchievementForUser, Integer> 
 	implements AchievementForUserRepository {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AchievementForUserRepositoryImpl.class);
 
