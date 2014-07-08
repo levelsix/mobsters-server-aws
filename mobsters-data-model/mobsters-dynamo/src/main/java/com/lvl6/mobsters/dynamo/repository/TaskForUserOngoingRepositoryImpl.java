@@ -1,4 +1,6 @@
 package com.lvl6.mobsters.dynamo.repository;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
@@ -13,6 +15,13 @@ import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 	public TaskForUserOngoing findByUserIdTaskForUserId( String userId, String taskForUserId )
 	{
 		return load( userId, taskForUserId );
+	}
+
+	//EXPECTED: should always be one TaskForUserOngoing
+	@Override
+	public List<TaskForUserOngoing> findByUserId( String userId )
+	{
+		return loadAll( userId );
 	}
 
 }

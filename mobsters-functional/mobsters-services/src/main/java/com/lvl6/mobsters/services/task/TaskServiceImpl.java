@@ -1,5 +1,7 @@
 package com.lvl6.mobsters.services.task;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
@@ -45,7 +48,34 @@ public class TaskServiceImpl implements TaskService {
     // BEGIN READ ONLY LOGIC
     @Override
 	public TaskForUserOngoing getUserTaskForUserId( String userId ) {
-    	return taskForUserOngoingRepository.findByUserId( userId );
+    	List<TaskForUserOngoing> tfuoList =
+    		taskForUserOngoingRepository.findByUserId( userId );
+    	if (CollectionUtils.lacksSubstance(tfuoList)) {
+    		return null;
+    	}
+    	
+    	if (tfuoList.size() > 1) {
+    		LOG.warn("User has more than one ongoing task. selecting most recent. userId="
+    			+ userId
+    			+ ", tasks=" + tfuoList);
+    		
+    		Collections.sort(tfuoList, new Comparator<TaskForUserOngoing>() {
+
+				@Override
+				public int compare( TaskForUserOngoing o1, TaskForUserOngoing o2 )
+				{
+					if (o1.getStartDate().getTime() < o2.getStartDate().getTime()) {
+						return -1;
+					} else if (o1.getStartDate().getTime() > o2.getStartDate().getTime()) {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+    			
+    		});
+    	}
+    	return tfuoList.get(0);
     }
 
     @Override

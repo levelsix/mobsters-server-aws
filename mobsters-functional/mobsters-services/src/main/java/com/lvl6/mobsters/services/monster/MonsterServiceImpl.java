@@ -26,6 +26,7 @@ import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.IMonster;
+import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 
@@ -169,7 +170,7 @@ public class MonsterServiceImpl implements MonsterService
 
 			// Mutate the objects
 			for (final MonsterForUser nextMonster : existingUserMonsters) {
-				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserUuid());
+				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserId());
 				for (MonsterFunc nextMonsterOp : monsterOps) {
 					
 				}
