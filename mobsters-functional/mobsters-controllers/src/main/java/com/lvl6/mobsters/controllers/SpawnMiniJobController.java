@@ -22,7 +22,6 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.minijob.MiniJobService;
-import com.lvl6.mobsters.services.minijob.MiniJobService.CreateUserMiniJobsSpec;
 import com.lvl6.mobsters.services.minijob.MiniJobService.CreateUserMiniJobsSpecBuilder;
 
 @Component
@@ -72,27 +71,14 @@ public class SpawnMiniJobController extends EventController {
         // Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
         final CreateUserMiniJobsSpecBuilder modBuilder = CreateUserMiniJobsSpec.builder();
-        
-        List<MiniJob> spawnedMiniJobs = getMiniJobService().spawnMiniJobs(numToSpawn, structId);
-        if (!CollectionUtils.lacksSubstance(spawnedMiniJobs)) {
-            
-            for (MiniJob mj : spawnedMiniJobs) {
-                //TODO: Figure out more efficient way to get key.
-                String userMiniJobId = (new MiniJobForUser()).getMiniJobForUserId();
-                modBuilder.setMiniJobId(userMiniJobId, mj.getId());
-                modBuilder.setBaseDmgReceived(userMiniJobId, mj.getDmgDealt());
-                modBuilder.setDurationMinutes(userMiniJobId, mj.getDurationMinutes());
-            }
-
-            responseBuilder.setStatus(SpawnMiniJobStatus.SUCCESS);
-        }
+        responseBuilder.setStatus(SpawnMiniJobStatus.SUCCESS);
 
         // call service if syntax is ok
         if (responseBuilder.getStatus() == SpawnMiniJobStatus.SUCCESS) {
             try {
                 // TODO: Ensure that the user's lastMiniJobGenerated time is updated to now,
-                //er, clientTime
-                miniJobService.createMiniJobsForUser(userIdString, modBuilder.build());
+                //       er, clientTime
+                miniJobService.createMiniJobsForUser(userIdString, clientTime, numToSpawn, structId);
             } catch (Exception e) {
                 LOG.error(
                     "exception in SpawnMiniJobController processEvent when calling userService",

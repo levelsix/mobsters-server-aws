@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.MiniJob;
+import com.lvl6.mobsters.info.repository.MiniJobRepository;
 
 @Component
 public class MiniJobServiceImpl implements MiniJobService {
@@ -37,53 +39,55 @@ public class MiniJobServiceImpl implements MiniJobService {
 
     @Autowired
     private DataServiceTxManager txManager;
+    
+    @Autowired
+    private MiniJobRepository miniJobRepo;
 
     //NON CRUD LOGIC******************************************************************
-    @Override
-    public List<MiniJob> spawnMiniJobs(int numToSpawn, int structId) {
-        Map<Integer, MiniJob> miniJobIdToMiniJob = null;// someClass..getMiniJobForStructId(structId);
-
-        List<MiniJob> spawnedMiniJobs = new ArrayList<MiniJob>();
+    List<MiniJob> spawnMiniJobs(int numToSpawn, int structId) {
+        final List<MiniJob> miniJobIdToMiniJob = miniJobRepo.findByRequiredStructId(structId);
+        final ArrayList<MiniJob> spawnedMiniJobs = new ArrayList<MiniJob>();
 
         if (0 == numToSpawn) {
             LOG.info("client just reseting the last spawn time");
             return spawnedMiniJobs;
         }
 
-        float probabilitySum = 0;// someClass.getMiniJobProbabilitySumForStructId(structId);
+        float probabilitySum = 0;
+        for( final MiniJob nextCandidate : miniJobIdToMiniJob ) {
+        	probabilitySum += nextCandidate.getChanceToAppear();
+        }
+        
         Random rand = new Random();
         LOG.info("probabilitySum=" + probabilitySum);
         LOG.info("miniJobIdToMiniJob=" + miniJobIdToMiniJob);
 
         int numToSpawnCopy = numToSpawn;
-        while (numToSpawnCopy > 0) {
-            float randFloat = rand.nextFloat();
+        while (numToSpawnCopy-- > 0) {
+            float randFloat = rand.nextFloat() * probabilitySum;
             LOG.info("randFloat=" + randFloat);
 
             float probabilitySoFar = 0;
-            for (MiniJob mj : miniJobIdToMiniJob.values()) {
-                float chanceToAppear = mj.getChanceToAppear();
-
-                probabilitySoFar += chanceToAppear;
-                float normalizedProb = probabilitySoFar / probabilitySum;
-
+            for (final MiniJob mj : miniJobIdToMiniJob) {
+                probabilitySoFar += mj.getChanceToAppear();
+                
                 LOG.info("probabilitySoFar=" + probabilitySoFar);
-                LOG.info("normalizedProb=" + normalizedProb);
-                if (randFloat > normalizedProb) {
+                if (randFloat > probabilitySoFar) {
                     continue;
                 }
 
-                LOG.info("selected MiniJob!: " + mj);
                 //we have a winner
+                LOG.info("selected MiniJob!: " + mj);
                 spawnedMiniJobs.add(mj);
                 break;
             }
-            
-            //regardless of whether or not we find one, prevent it from infinite looping
-            numToSpawnCopy--;
         }
+        
         if (spawnedMiniJobs.size() != numToSpawn) {
-            LOG.error("Could not spawn " + numToSpawn +
+			// TODO: Should this or throw an Exception or just return as it does now?  Does the margin of
+			//        error matter?  Consider a case where the spawned MiniJob list is empty as opposed to
+			//        merely "short a few".
+           LOG.error("Could not spawn " + numToSpawn +
                 " mini jobs. spawned: " + spawnedMiniJobs);
         }
         return spawnedMiniJobs;
@@ -126,18 +130,19 @@ public class MiniJobServiceImpl implements MiniJobService {
 	        }
         
         // Mutate the objects
-        for (final MiniJobForUser nextMiniJob : existingUserMiniJobs) {
-	        	// No null test by design.  The contract of repository classes is to return a smaller list when objects do not exist, not to
-	        	// return null placeholders.  Use unit tests to assert invariants hold true rather than redundant runtime null checks.
-            
-	            for (final UserMiniJobFunc nextMiniJobOp : 
-	            	modSpecMultimap.get(
-	            		nextMiniJob.getMiniJobForUserId()
-	            	)
-	            ) {
-                nextMiniJobOp.apply(nextMiniJob);
-            }
-        }
+			for (final MiniJobForUser nextMiniJob : existingUserMiniJobs) {
+				// No null test by design. The contract of repository classes is
+				// to return a smaller list when objects do not exist, not to
+				// return null placeholders. Use unit tests to assert invariants
+				// hold true rather than redundant runtime null checks.
+
+				for (
+					final UserMiniJobFunc nextMiniJobOp : 
+					modSpecMultimap.get(nextMiniJob.getMiniJobForUserId())
+				) {
+					nextMiniJobOp.apply(nextMiniJob);
+				}
+			}
 
 	        // Write back to the database, then commit the transaction by toggling success to true.
 	        miniJobForUserRepository.saveEach(existingUserMiniJobs);	        
@@ -236,6 +241,26 @@ public class MiniJobServiceImpl implements MiniJobService {
     }
 
     /**************************************************************************/
+	@Override
+	public void spawnMiniJobsForUser(final String userId, final Date clientStartTime, final int numToSpawn, final int structId) {
+		final List<MiniJob> spawnedMiniJobs = spawnMiniJobs(numToSpawn, structId);
+        if (!CollectionUtils.lacksSubstance(spawnedMiniJobs)) {
+        	createMiniJobsForUser(userId, new Director<CreateUserMiniJobsSpecBuilder>() {
+				@Override
+				public void apply(CreateUserMiniJobsSpecBuilder builder) {
+					for (final MiniJob mj : spawnedMiniJobs) {
+						//TODO: Figure out more efficient way to get key (or eliminate the need to have one yet)
+						final String userMiniJobId = UUID.randomUUID().toString();
+						builder
+							.setMiniJobId(userMiniJobId, mj.getId())
+							.setBaseDmgReceived(userMiniJobId, mj.getDmgDealt())
+							.setDurationMinutes(userMiniJobId, mj.getDurationMinutes())
+							.setTimeStarted(userMiniJobId, clientStartTime);
+					}
+				}
+        	});
+        }
+	}
 
     @Override
     public void createMiniJobsForUser( String userId, Director<CreateUserMiniJobsSpecBuilder> director ) {

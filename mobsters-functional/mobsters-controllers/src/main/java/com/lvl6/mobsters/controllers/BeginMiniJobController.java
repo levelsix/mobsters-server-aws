@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.BeginMiniJobRequestProto;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.BeginMiniJobResponseProto;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.BeginMiniJobResponseProto.BeginMiniJobStatus;
@@ -56,9 +57,9 @@ public class BeginMiniJobController extends EventController {
             ((BeginMiniJobRequestEvent) event).getBeginMiniJobRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        Set<String> userMonsterIds = new HashSet<String>(reqProto.getUserMonsterUuidsList());
-        String userMiniJobId = reqProto.getUserMiniJobUuid();
         final Date clientTime = TimeUtils.createDateFromTime(reqProto.getClientTime());
+        final Set<String> userMonsterIds = new HashSet<String>(reqProto.getUserMonsterUuidsList());
+        final String userMiniJobId = reqProto.getUserMiniJobUuid();
 
         // prepare to send response back to client
         BeginMiniJobResponseProto.Builder responseBuilder =
@@ -73,21 +74,26 @@ public class BeginMiniJobController extends EventController {
         // syntax checks out ok; prepare arguments for service
         final ModifyUserMiniJobsSpecBuilder modBuilder = ModifyUserMiniJobsSpec.builder();
         if (!CollectionUtils.lacksSubstance(userMonsterIds)) {
-            // TODO: Consider checking to make sure the userMonsterIds are in fact
-            // the user's monsters
-            
-            // TODO: Consider checking to make sure the user has the specified mini job
-            
-            modBuilder.setUserMonsterIds(userMiniJobId, userMonsterIds);
-            modBuilder.setTimeStarted(userMiniJobId, clientTime);
-
             responseBuilder.setStatus(BeginMiniJobStatus.SUCCESS);
         }
 
         // call service if syntax is ok
         if (responseBuilder.getStatus() == BeginMiniJobStatus.SUCCESS) {
             try {
-                miniJobService.modifyMiniJobsForUser(userIdString, modBuilder.build());
+                miniJobService.modifyMiniJobsForUser(userIdString, new Director<MiniJobService.ModifyUserMiniJobsSpecBuilder>() {
+					@Override
+					public void apply(ModifyUserMiniJobsSpecBuilder builder) {
+						// TODO: Consider checking to make sure the userMonsterIds are in fact
+			            // the user's monsters
+			            // TODO: Consider checking to make sure the user has the specified mini job
+			        	// HINT: Both of the above TODO items are aspects of semantic validation, not
+			        	//       syntax validation.  As such, they are verification checks that belong
+			        	//       encapsulated within a service boundary and should _not_ be addressed 
+			        	//       directly by Controller logic--semantics are not a Controller's 
+			        	//       assigned responsibility.
+			            builder.startJob(userMiniJobId, userMonsterIds, clientTime);
+					}
+				});
             } catch (Exception e) {
                 LOG.error(
                     "exception in BeginMiniJobController processEvent when calling userService",
