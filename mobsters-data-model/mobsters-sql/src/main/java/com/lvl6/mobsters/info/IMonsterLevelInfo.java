@@ -1,8 +1,13 @@
 package com.lvl6.mobsters.info;
 
-public interface IMonsterLevelInfo extends IBaseIntPersistentObject
-{
+import java.io.Serializable;
 
+public interface IMonsterLevelInfo extends Serializable
+{
+	public MonsterLevelInfoPK getId();
+	
+	public void setId(MonsterLevelInfoPK lvlInfo);
+	
 	public IMonster getMonster();
 
 	public void setMonster( IMonster monster );

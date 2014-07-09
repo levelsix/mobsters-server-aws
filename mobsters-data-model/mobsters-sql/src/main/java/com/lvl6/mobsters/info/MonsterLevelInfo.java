@@ -1,33 +1,31 @@
 package com.lvl6.mobsters.info;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
 @Entity(name="MonsterLevelInfo")
 @Table(name="monster_level_info")
+@Cacheable(true)
 @Proxy(lazy=true, proxyClass=IMonsterLevelInfo.class)
-public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonsterLevelInfo{
-
+public class MonsterLevelInfo implements IMonsterLevelInfo{
+	/**
+	 */
 	private static final long serialVersionUID = -7133780689684424323L;
 
-	
-	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
-	@JoinColumn(
-		name = "monster_id",
-		nullable = false,
-		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	@EmbeddedId
+	private MonsterLevelInfoPK id;
+
+	@MapsId("monster")
+	@ManyToOne(targetEntity=Monster.class)
 	private IMonster monster;
 	
-	@Column(name = "level")
-	private int level;
 	@Column(name = "hp")
 	private int hp;
 	@Column(name = "cur_lvl_required_exp")
@@ -66,8 +64,9 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 			int speed, float hpExponentBase, float dmgExponentBase,
 			float expLvlDivisor, float expLvlExponent, int sellAmount) {
 		super();
-		this.monster = monster;
-		this.level = level;
+		this.id = new MonsterLevelInfoPK();
+		this.id.monster = monster;
+		this.id.level = level;
 		this.hp = hp;
 		this.curLvlRequiredExp = curLvlRequiredExp;
 		this.feederExp = feederExp;
@@ -85,6 +84,21 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 		this.sellAmount = sellAmount;
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#getLevel()
+	 */
+	@Override
+	public MonsterLevelInfoPK getId() {
+		return id;
+	}
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#setLevel(int)
+	 */
+	@Override
+	public void setId(MonsterLevelInfoPK id) {
+		this.id = id;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#getMonster()
@@ -92,7 +106,7 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 	@Override
 	public IMonster getMonster()
 	{
-		return monster;
+		return this.id.getMonster();
 	}
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#setMonster(com.lvl6.mobsters.info.Monster)
@@ -100,22 +114,22 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 	@Override
 	public void setMonster( IMonster monster )
 	{
-		this.monster = monster;
+		this.id.setMonster(monster);
 	}
+	
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#getLevel()
 	 */
 	@Override
 	public int getLevel() {
-		return level;
+		return id.getLevel();
 	}
-
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#setLevel(int)
 	 */
 	@Override
 	public void setLevel(int level) {
-		this.level = level;
+		this.id.setLevel(level);
 	}
 
 	/* (non-Javadoc)
@@ -354,8 +368,32 @@ public class MonsterLevelInfo extends BaseIntPersistentObject implements IMonste
 	}
 	
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MonsterLevelInfo other = (MonsterLevelInfo) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	@Override
 	public String toString() {
-		return "MonsterLevelInfo [monsterId=" + monster + ", level=" + level
+		return "MonsterLevelInfo [monsterId=" + id.getMonster().getId() 
+				+ ", level=" + id.getLevel()
 				+ ", hp=" + hp + ", curLvlRequiredExp=" + curLvlRequiredExp
 				+ ", feederExp=" + feederExp + ", fireDmg=" + fireDmg
 				+ ", grassDmg=" + grassDmg + ", waterDmg=" + waterDmg
