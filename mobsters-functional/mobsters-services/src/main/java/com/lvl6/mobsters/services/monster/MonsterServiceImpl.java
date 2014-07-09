@@ -1,5 +1,6 @@
 package com.lvl6.mobsters.services.monster;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,21 +21,29 @@ import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
+import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.repository.MonsterEnhancingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
+import com.lvl6.mobsters.services.common.Lvl6MobstersException;
+import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
 {
+
+	private static Logger LOG =
+	    LoggerFactory.getLogger(MonsterServiceImpl.class);
+
+	
 	@Autowired
 	private DataServiceTxManager txManager;
 	
@@ -53,6 +64,9 @@ public class MonsterServiceImpl implements MonsterService
 
 	@Autowired
 	private MonsterEvolvingForUserRepository monsterEvolvingForUserRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	// BEGIN READ ONLY LOGIC******************************************************************
 	
@@ -78,6 +92,78 @@ public class MonsterServiceImpl implements MonsterService
 	
 	// END READ ONLY LOGIC******************************************************************
 		
+	@Override
+	public User combineMonsterForUser( String userIdString, List<String> userMonsterIds,
+		int gemCost, Date curDate ) {
+		
+		final User u = userRepository.load(userIdString);
+		final List<MonsterForUser> userMonsters = monsterForUserRepository.loadEach(userIdString, userMonsterIds);
+		
+		checkIfUserCanCombineMonsters(u, userIdString, userMonsters, gemCost);
+		
+		// TODO: Write to user currency history
+		
+		u.setGems( u.getGems() - gemCost );
+		
+		for (MonsterForUser mfu : userMonsters) {
+			mfu.setComplete(true);
+		}
+		
+		userRepository.save(u);
+		monsterForUserRepository.saveEach(userMonsters);
+		
+		return u;
+	}
+	
+	void checkIfUserCanCombineMonsters(User u, String userId,
+		List<MonsterForUser> userMonsters, int gemCost) {
+		if (null == u) {
+			LOG.error("user is null. no user exists with id="
+			    + userId
+			    + "");
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+		}
+		
+		if (CollectionUtils.lacksSubstance(userMonsters)) {
+			LOG.error("no user monsters exist. userMonsters="
+			    + userMonsters);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+		}
+		
+		// TODO: Consider doing the complete check in the query
+		filterOutCompletedNonWholeMonsters(userMonsters);
+		
+		int userGems = u.getGems();
+		if (userGems < gemCost) {
+			LOG.error("user doesn't have enough gems to speed up combining. userGems=" +
+  				userGems + "\t gemCost=" + gemCost + "\t userMonster=" + userMonsters);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
+		}
+	}
+	
+	void filterOutCompletedNonWholeMonsters(List<MonsterForUser> mfuList) {
+		for (int index = mfuList.size() - 1; index < 0; index--) {
+			MonsterForUser mfu = mfuList.get(index);
+			if (mfu.isComplete()) {
+				//want only incomplete monsters that are whole
+				//(all pieces haven't been combined yet)
+				mfuList.remove(index);
+				continue;
+			}
+			
+			Monster monzter = monsterRepository.findOne(mfu.getMonsterId());
+			int numPiecesToBeWhole = monzter.getNumPuzzlePieces();
+	  		int userMonsterPieces = mfu.getNumPieces();
+	  		if (userMonsterPieces > numPiecesToBeWhole) {
+	  			LOG.warn("userMonster has more than the max num pieces. userMonster=" +
+	  					mfu + "\t monster=" + monzter);
+	  		} else if (userMonsterPieces < numPiecesToBeWhole) {
+	  			LOG.warn("userMonster has less than the max num pieces. userMonster=" +
+  					mfu + "\t monster=" + monzter);
+	  			mfuList.remove(index);
+	  		}
+		}
+	}
 	
 	@Override
 	public void addMonsterForUserToTeamSlot(
@@ -481,6 +567,16 @@ public class MonsterServiceImpl implements MonsterService
 		MonsterEnhancingForUserRepository monsterEnhancingForUserRepository )
 	{
 		this.monsterEnhancingForUserRepository = monsterEnhancingForUserRepository;
+	}
+
+	public UserRepository getUserRepository()
+	{
+		return userRepository;
+	}
+
+	public void setUserRepository( UserRepository userRepository )
+	{
+		this.userRepository = userRepository;
 	}
 	
 }

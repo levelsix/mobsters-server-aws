@@ -17267,13 +17267,13 @@ public final class EventMonsterProto {
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
       FAIL_INSUFFUCIENT_GEMS(1, 2),
-      FAIL_MORE_THAN_ONE_MONSTER_FOR_SPEEDUP(2, 3),
+      FAIL_MORE_THAN_ONE_MONSTER_FOR_COMBINE_SPEEDUP(2, 3),
       FAIL_OTHER(3, 4),
       ;
       
       public static final int SUCCESS_VALUE = 1;
       public static final int FAIL_INSUFFUCIENT_GEMS_VALUE = 2;
-      public static final int FAIL_MORE_THAN_ONE_MONSTER_FOR_SPEEDUP_VALUE = 3;
+      public static final int FAIL_MORE_THAN_ONE_MONSTER_FOR_COMBINE_SPEEDUP_VALUE = 3;
       public static final int FAIL_OTHER_VALUE = 4;
       
       
@@ -17283,7 +17283,7 @@ public final class EventMonsterProto {
         switch (value) {
           case 1: return SUCCESS;
           case 2: return FAIL_INSUFFUCIENT_GEMS;
-          case 3: return FAIL_MORE_THAN_ONE_MONSTER_FOR_SPEEDUP;
+          case 3: return FAIL_MORE_THAN_ONE_MONSTER_FOR_COMBINE_SPEEDUP;
           case 4: return FAIL_OTHER;
           default: return null;
         }
@@ -17315,7 +17315,7 @@ public final class EventMonsterProto {
       }
       
       private static final CombineUserMonsterPiecesStatus[] VALUES = {
-        SUCCESS, FAIL_INSUFFUCIENT_GEMS, FAIL_MORE_THAN_ONE_MONSTER_FOR_SPEEDUP, FAIL_OTHER, 
+        SUCCESS, FAIL_INSUFFUCIENT_GEMS, FAIL_MORE_THAN_ONE_MONSTER_FOR_COMBINE_SPEEDUP, FAIL_OTHER, 
       };
       
       public static CombineUserMonsterPiecesStatus valueOf(
@@ -19332,25 +19332,25 @@ public final class EventMonsterProto {
       "THER\020\004\"z\n$CombineUserMonsterPiecesReques" +
       "tProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUs" +
       "erProto\022\030\n\020userMonsterUuids\030\002 \003(\t\022\017\n\007gem" +
-      "Cost\030\003 \001(\005\"\265\002\n%CombineUserMonsterPiecesR" +
+      "Cost\030\003 \001(\005\"\275\002\n%CombineUserMonsterPiecesR" +
       "esponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min" +
       "imumUserProto\022[\n\006status\030\002 \001(\0162K.proto.Co" +
       "mbineUserMonsterPiecesResponseProto.Comb" +
-      "ineUserMonsterPiecesStatus\"\205\001\n\036CombineUs" +
+      "ineUserMonsterPiecesStatus\"\215\001\n\036CombineUs" +
       "erMonsterPiecesStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FA",
-      "IL_INSUFFUCIENT_GEMS\020\002\022*\n&FAIL_MORE_THAN" +
-      "_ONE_MONSTER_FOR_SPEEDUP\020\003\022\016\n\nFAIL_OTHER" +
-      "\020\004\"\211\001\n\033SellUserMonsterRequestProto\0227\n\006se" +
-      "nder\030\001 \001(\0132\'.proto.MinimumUserProtoWithM" +
-      "axResources\0221\n\005sales\030\002 \003(\0132\".proto.Minim" +
-      "umUserMonsterSellProto\"\330\001\n\034SellUserMonst" +
-      "erResponseProto\0227\n\006sender\030\001 \001(\0132\'.proto." +
-      "MinimumUserProtoWithMaxResources\022I\n\006stat" +
-      "us\030\002 \001(\01629.proto.SellUserMonsterResponse" +
-      "Proto.SellUserMonsterStatus\"4\n\025SellUserM",
-      "onsterStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020" +
-      "\002B1\n\034com.lvl6.mobsters.eventprotoB\021Event" +
-      "MonsterProto"
+      "IL_INSUFFUCIENT_GEMS\020\002\0222\n.FAIL_MORE_THAN" +
+      "_ONE_MONSTER_FOR_COMBINE_SPEEDUP\020\003\022\016\n\nFA" +
+      "IL_OTHER\020\004\"\211\001\n\033SellUserMonsterRequestPro" +
+      "to\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumUserPr" +
+      "otoWithMaxResources\0221\n\005sales\030\002 \003(\0132\".pro" +
+      "to.MinimumUserMonsterSellProto\"\330\001\n\034SellU" +
+      "serMonsterResponseProto\0227\n\006sender\030\001 \001(\0132" +
+      "\'.proto.MinimumUserProtoWithMaxResources" +
+      "\022I\n\006status\030\002 \001(\01629.proto.SellUserMonster" +
+      "ResponseProto.SellUserMonsterStatus\"4\n\025S",
+      "ellUserMonsterStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAI" +
+      "L_OTHER\020\002B1\n\034com.lvl6.mobsters.eventprot" +
+      "oB\021EventMonsterProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

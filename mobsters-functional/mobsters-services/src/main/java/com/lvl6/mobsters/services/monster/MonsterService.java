@@ -10,6 +10,7 @@ import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
+import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecBuilderImpl;
 public interface MonsterService
 {
@@ -25,6 +26,8 @@ public interface MonsterService
 	
 	// END READ ONLY LOGIC******************************************************************
 		
+	public User combineMonsterForUser(String userIdString, List<String> userMonsterIds,
+		int gemCost, Date curDate);
 	
 	/**
 	 * The monsterForUserId will have its teamSlotNum property set to the given teamSlotNum. All
