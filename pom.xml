@@ -181,6 +181,7 @@
 					</executions>
 					<configuration>
 						<outputDirectory>${project.build.directory}/generated-sources/xtend-gen</outputDirectory>
+						<testOutputDirectory>${project.build.directory}/generated-test-sources/xtend-gen</testOutputDirectory>
 					</configuration>
 				</plugin>
 				
@@ -210,6 +211,7 @@
 								<outputConfigurations>
 									<outputConfiguration>
 										<outputDirectory>${project.build.directory}/generated-sources/xtext-gen/</outputDirectory>
+										<testOutputDirectory>${project.build.directory}/generated-test-sources/xtext-gen/</testOutputDirectory>
 									</outputConfiguration>
 								</outputConfigurations>
 							</language>
