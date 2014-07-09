@@ -54,6 +54,4 @@ public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 	{
 		this.noneventUserProtoSerializer = noneventUserProtoSerializer;
 	}
-	
-	
 }
