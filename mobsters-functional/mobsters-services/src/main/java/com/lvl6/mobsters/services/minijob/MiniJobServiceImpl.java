@@ -29,7 +29,10 @@ import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.MiniJob;
 import com.lvl6.mobsters.info.repository.MiniJobRepository;
 
-@Component
+/**
+ * Deprecated service implementation that has been ported to MiniJobService2Impl.xtend
+ */
+@Deprecated
 public class MiniJobServiceImpl implements MiniJobService {
     
     private static Logger LOG = LoggerFactory.getLogger(MiniJobServiceImpl.class);
