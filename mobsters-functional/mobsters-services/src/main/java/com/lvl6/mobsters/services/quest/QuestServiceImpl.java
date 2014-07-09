@@ -118,7 +118,7 @@ public class QuestServiceImpl implements QuestService {
 			qjfuList.add(qjfu);
 		}
 		
-		questJobForUserRepository.saveAll(qjfuList);
+		questJobForUserRepository.saveEach(qjfuList);
 	}
 
 	protected void checkIfUserCanAcceptQuest( String userIdString, int questId ) {

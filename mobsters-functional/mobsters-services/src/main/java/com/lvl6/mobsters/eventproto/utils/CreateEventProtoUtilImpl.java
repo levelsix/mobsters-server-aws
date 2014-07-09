@@ -17,8 +17,7 @@ import com.lvl6.mobsters.services.common.TimeUtils;
 
 public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 
-	private static Logger LOG = LoggerFactory.getLogger(new Object() {
-	}.getClass().getEnclosingClass());
+	private static Logger LOG = LoggerFactory.getLogger(CreateEventProtoUtilImpl.class);
 	
 	@Autowired
 	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
@@ -28,17 +27,18 @@ public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 			User u, UserCredential uc, UserDataRarelyAccessed udra, Clan clan,
 			PvpLeagueForUser plfu) {
 	    UpdateClientUserResponseProto.Builder ucurpb =
-	    		UpdateClientUserResponseProto.newBuilder();
-	    FullUserProto fup = noneventUserProtoSerializer.createFullUserProto(
+	    	UpdateClientUserResponseProto.newBuilder();
+	    FullUserProto fup = 
+	    	noneventUserProtoSerializer.createFullUserProto(
 	    		u, uc, udra, clan, plfu); 
 	    ucurpb.setSender(fup);
 	    ucurpb.setTimeOfUserUpdate(
 	    	TimeUtils.currentTimeMillis()
 	    ).build();
 	    
-	    String userIdStr = u.getId().toString();
+	    String userIdStr = u.getId();
 	    UpdateClientUserResponseEvent resEvent =
-	    		new UpdateClientUserResponseEvent(userIdStr);
+	    	new UpdateClientUserResponseEvent(userIdStr);
 	    resEvent.setUpdateClientUserResponseProto(ucurpb.build());
 	    LOG.info("created UpdateClientUserResponseEvent=" + ucurpb.build());
 	    return resEvent;
