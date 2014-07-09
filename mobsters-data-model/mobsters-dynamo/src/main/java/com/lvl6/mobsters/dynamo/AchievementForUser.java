@@ -84,10 +84,6 @@ public class AchievementForUser {
         this.version = version;
     }
 
-    public void setAchievementId( Integer achievementId ) {
-        this.achievementId = achievementId.intValue();
-    }
-
     public int getProgress() {
         return progress;
     }

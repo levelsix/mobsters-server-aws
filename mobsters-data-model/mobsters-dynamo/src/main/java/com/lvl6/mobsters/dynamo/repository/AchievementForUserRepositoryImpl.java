@@ -20,7 +20,7 @@ public class AchievementForUserRepositoryImpl extends
 			.getLogger(AchievementForUserRepositoryImpl.class);
 
 	public AchievementForUserRepositoryImpl() {
-		super(AchievementForUser.class, "achievementId", Integer.class);
+		super(AchievementForUser.class, "achievementId", Integer.TYPE);
 	}
 
 	/* (non-Javadoc)
