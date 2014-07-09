@@ -23,10 +23,10 @@ public class MiniJobForUserRepositoryImpl extends
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository#findByUserIdAndId(java.lang.String, java.util.Iterable)
+	 * @see com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository#findByUserIdAndMiniJobForUserIdIn(java.lang.String, java.util.Iterable)
 	 */
 	@Override
-	public List<MiniJobForUser> findByUserIdAndId(final String userId,
+	public List<MiniJobForUser> findByUserIdAndMiniJobForUserIdIn(final String userId,
         final Iterable<String> userMiniJobIds) {
         return loadEach(userId, userMiniJobIds);
     }

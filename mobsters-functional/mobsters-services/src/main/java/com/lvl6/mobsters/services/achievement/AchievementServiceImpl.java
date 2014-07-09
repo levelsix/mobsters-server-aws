@@ -7,21 +7,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.dynamo.AchievementForUser;
+import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.UserRepository;
+import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.repository.AchievementRepository;
+import com.lvl6.mobsters.services.common.Lvl6MobstersException;
+import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
 
 @Component
 public class AchievementServiceImpl implements AchievementService {
 	
+    private static Logger LOG = LoggerFactory.getLogger(AchievementServiceImpl.class);
+
     @Autowired
     private AchievementForUserRepository achievementForUserRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
+    @Autowired
+    private AchievementRepository achievementRepository;
+    
 	//NON CRUD LOGIC
 	
 	/**************************************************************************/
@@ -50,7 +65,7 @@ public class AchievementServiceImpl implements AchievementService {
         final Set<Integer> achievementIds = achievementIdToAfu.keySet();
         
         List<AchievementForUser> existingUserAchievements =
-            achievementForUserRepository.findByUserIdAndAchievementId(userId, achievementIds);
+            achievementForUserRepository.findByUserIdAndAchievementIdIn(userId, achievementIds);
         
         // Mutate the objects
         
@@ -208,5 +223,66 @@ public class AchievementServiceImpl implements AchievementService {
     {
         this.achievementForUserRepository = achievementForUserRepository;
     }
+
+
+	@Override
+	public User redeemAchievement( String userId, int achievementId, Date now )
+	{
+		// TODO: TRANSACTIONIFY
+		User u = userRepository.load(userId);
+		AchievementForUser afu = achievementForUserRepository
+			.findByUserIdAndAchievementId(userId, achievementId);
+		
+		checkIfUserCanRedeemAchievement(achievementId, u, afu);
+		
+		Achievement a = achievementRepository.findOne(achievementId);
+		int gemReward = Math.max(
+			0,
+			a.getGemReward()
+		);
+		// TODO: Write to currency history
+		u.setGems(
+			u.getGems()
+			+ gemReward
+		);
+		userRepository.save(u);
+		
+		afu.setRedeemed(true);
+		afu.setTimeRedeemed(now);
+		achievementForUserRepository.save(afu);
+		
+		return null;
+	}
+
+
+	private void checkIfUserCanRedeemAchievement(
+		int achievementId,
+		User u,
+		AchievementForUser afu )
+	{
+		if (null == afu) {
+			LOG.error("no achievementForUser. user=" 
+				+ u
+				+ ", achievementId="
+				+ achievementId);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+		}
+		
+		if (!afu.isComplete()) {
+			LOG.error("user trying to redeem incomplete achievement. user="
+				+ u
+				+ ", userAchievement="
+				+ afu);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_ACHIEVEMENT_INCOMPLETE);
+		}
+		
+		if (afu.isRedeemed()) {
+			LOG.error("user trying to redeem already redeemed achievement. user="
+				+ u
+				+ ", userAchievement="
+				+ afu);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_ACHIEVEMENT_ALREADY_REDEEMED);
+		}
+	}
 
 }

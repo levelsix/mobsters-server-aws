@@ -20,8 +20,7 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=IMonster.class)
 public class Monster extends BaseIntPersistentObject implements IMonster{	
 
-	private static final long serialVersionUID = -6165082176139667297L;
-	
+	private static final long serialVersionUID = -229728137457368621L;
 	
 	@Column(name = "evolution_group")
 	private String evolutionGroup;
@@ -102,6 +101,9 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		orphanRemoval=true,
 		targetEntity=MonsterBattleDialogue.class)
 	private List<IMonsterBattleDialogue> battleDialogue;
+
+	@Column(name = "shadow_scale_factor")
+	private float shadowScaleFactor; //TODO: Use this column
 	
 	public Monster() { }
 	public Monster(int id, String name, String monsterGroup, String quality,
@@ -116,7 +118,8 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 			int atkAnimationRepeatedFramesStart,
 			int atkAnimationRepeatedFramesEnd, String shorterName,
 			List<IMonsterLevelInfo> lvlInfo,
-			List<IMonsterBattleDialogue> battleDialogue) {
+			List<IMonsterBattleDialogue> battleDialogue,
+			float shadowScaleFactor) {
 		super(id);
 		this.evolutionGroup = name;
 		this.monsterGroup = monsterGroup;
@@ -146,6 +149,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		this.shorterName = shorterName;
 		this.lvlInfo = lvlInfo;
 		this.battleDialogue = battleDialogue;
+		this.shadowScaleFactor = shadowScaleFactor;
 	}
 
 
@@ -599,31 +603,79 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	{
 		this.battleDialogue = battleDialogue;
 	}
-	
+
 	@Override
-	public String toString() {
-		return "Monster [id=" + id + ", evolutionGroup=" + evolutionGroup + ", monsterGroup="
-				+ monsterGroup + ", quality=" + quality + ", evolutionLevel="
-				+ evolutionLevel + ", displayName=" + displayName
-				+ ", element=" + element + ", imagePrefix=" + imagePrefix
-				+ ", numPuzzlePieces=" + numPuzzlePieces
-				+ ", minutesToCombinePieces=" + minutesToCombinePieces
-				+ ", maxLevel=" + maxLevel + ", evolutionMonsterId="
-				+ evolutionMonster + ", evolutionCatalystMonsterId="
-				+ evolutionCatalystMonster + ", minutesToEvolve="
-				+ minutesToEvolve + ", numCatalystsRequired="
-				+ numCatalystsRequired + ", carrotRecruited=" + carrotRecruited
-				+ ", carrotDefeated=" + carrotDefeated + ", carrotEvolved="
-				+ carrotEvolved + ", description=" + description
-				+ ", evolutionCost=" + evolutionCost + ", animationType="
-				+ animationType + ", verticalPixelOffset="
-				+ verticalPixelOffset + ", atkSoundFile=" + atkSoundFile
-				+ ", atkSoundAnimationFrame=" + atkSoundAnimationFrame
-				+ ", atkAnimationRepeatedFramesStart="
-				+ atkAnimationRepeatedFramesStart
-				+ ", atkAnimationRepeatedFramesEnd="
-				+ atkAnimationRepeatedFramesEnd + ", shorterName="
-				+ shorterName + "]";
+	public float getShadowScaleFactor()
+	{
+		return shadowScaleFactor;
+	}
+	@Override
+	public void setShadowScaleFactor( float shadowScaleFactor )
+	{
+		this.shadowScaleFactor = shadowScaleFactor;
+	}
+	@Override
+	public String toString()
+	{
+		return "Monster [evolutionGroup="
+			+ evolutionGroup
+			+ ", monsterGroup="
+			+ monsterGroup
+			+ ", quality="
+			+ quality
+			+ ", evolutionLevel="
+			+ evolutionLevel
+			+ ", displayName="
+			+ displayName
+			+ ", element="
+			+ element
+			+ ", imagePrefix="
+			+ imagePrefix
+			+ ", numPuzzlePieces="
+			+ numPuzzlePieces
+			+ ", minutesToCombinePieces="
+			+ minutesToCombinePieces
+			+ ", maxLevel="
+			+ maxLevel
+			+ ", evolutionMonster="
+			+ evolutionMonster
+			+ ", evolutionCatalystMonster="
+			+ evolutionCatalystMonster
+			+ ", minutesToEvolve="
+			+ minutesToEvolve
+			+ ", numCatalystsRequired="
+			+ numCatalystsRequired
+			+ ", carrotRecruited="
+			+ carrotRecruited
+			+ ", carrotDefeated="
+			+ carrotDefeated
+			+ ", carrotEvolved="
+			+ carrotEvolved
+			+ ", description="
+			+ description
+			+ ", evolutionCost="
+			+ evolutionCost
+			+ ", animationType="
+			+ animationType
+			+ ", verticalPixelOffset="
+			+ verticalPixelOffset
+			+ ", atkSoundFile="
+			+ atkSoundFile
+			+ ", atkSoundAnimationFrame="
+			+ atkSoundAnimationFrame
+			+ ", atkAnimationRepeatedFramesStart="
+			+ atkAnimationRepeatedFramesStart
+			+ ", atkAnimationRepeatedFramesEnd="
+			+ atkAnimationRepeatedFramesEnd
+			+ ", shorterName="
+			+ shorterName
+			+ ", lvlInfo="
+			+ lvlInfo
+			+ ", battleDialogue="
+			+ battleDialogue
+			+ ", shadowScaleFactor="
+			+ shadowScaleFactor
+			+ "]";
 	}
 	
 }

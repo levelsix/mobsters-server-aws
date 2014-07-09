@@ -25,7 +25,7 @@ import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.Monster;
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 
@@ -88,11 +88,11 @@ public class MonsterServiceImpl implements MonsterService
 		boolean success = false;
 		try {
 			final List<MonsterForUser> monstersForUser =
-				monsterForUserRepository.findByUserIdAndIdOrTeamSlotNumAndUserId(userId,
+				monsterForUserRepository.findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(userId,
 					Collections.singleton(monsterForUserId), teamSlotNum);
 
 		for (final MonsterForUser mfu : monstersForUser) {
-			if (monsterForUserId == mfu.getMonsterForUserUuid()) {
+			if (monsterForUserId == mfu.getMonsterForUserId()) {
 				mfu.setTeamSlotNum(teamSlotNum);
 			} else {
 				mfu.setTeamSlotNum(0);

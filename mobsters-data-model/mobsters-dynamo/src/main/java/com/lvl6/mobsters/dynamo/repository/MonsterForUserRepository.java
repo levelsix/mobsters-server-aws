@@ -12,9 +12,9 @@ public interface MonsterForUserRepository extends BaseDynamoCollectionRepository
 {
 	List<MonsterForUser> findByUserId( String userId );
 	
-	List<MonsterForUser> findByUserIdAndId( String userId, Iterable<String> monsterForUserIds );
+	List<MonsterForUser> findByUserIdAndMonsterForUserIdIn( String userId, Iterable<String> monsterForUserIds );
 
-	List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
+	List<MonsterForUser> findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(
 		String userId,
 		Collection<String> monsterForUserIds,
 		Integer teamSlotNum );

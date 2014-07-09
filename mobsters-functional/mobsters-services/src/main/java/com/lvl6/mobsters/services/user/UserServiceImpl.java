@@ -217,34 +217,55 @@ public class UserServiceImpl implements UserService
 		@Override
 		public ModifyUserSpec build()
 		{
-			return new ModifyUserSpec(usersModificationsSet);
+			return new ModifyUserSpec( usersModificationsSet );
 		}
 
 		@Override
 		public ModifyUserSpecBuilder decrementGems( int gemsDelta )
 		{
-			usersModificationsSet.add(new DecrementGems(gemsDelta));
+			usersModificationsSet.add( new DecrementGems( gemsDelta ));
+			return this;
+		}
+		
+		@Override
+		public ModifyUserSpecBuilder incrementGems( int gemsDelta )
+		{
+			usersModificationsSet.add( new IncrementGems( gemsDelta ));
 			return this;
 		}
 
 		@Override
 		public ModifyUserSpecBuilder decrementCash( int cashDelta )
 		{
-			usersModificationsSet.add(new DecrementCash(cashDelta));
+			usersModificationsSet.add( new DecrementCash( cashDelta ) );
+			return this;
+		}
+		
+		@Override
+		public ModifyUserSpecBuilder incrementCash( int cashDelta, int maxCash )
+		{
+			usersModificationsSet.add( new IncrementCash( cashDelta, maxCash ));
 			return this;
 		}
 
 		@Override
 		public ModifyUserSpecBuilder decrementOil( int oilDelta )
 		{
-			usersModificationsSet.add(new DecrementOil(oilDelta));
+			usersModificationsSet.add( new DecrementOil( oilDelta ));
+			return this;
+		}
+		
+		@Override
+		public ModifyUserSpecBuilder incrementOil( int oilDelta, int maxOil )
+		{
+			usersModificationsSet.add( new IncrementOil( oilDelta, maxOil ));
 			return this;
 		}
 
 		@Override
 		public ModifyUserSpecBuilder setExpRelative( int expDelta )
 		{
-			usersModificationsSet.add(new SetExpRelative(expDelta));
+			usersModificationsSet.add( new SetExpRelative( expDelta ));
 			return this;
 		}
 
@@ -268,19 +289,52 @@ public class UserServiceImpl implements UserService
 					+ ", user="
 					+ u);
 			} else {
+				LOG.error("gemsDelta is illegally negative. gemsDelta="
+					+ gemsDelta
+					+ ", user="
+					+ u);
 				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
 			}
 			
 			int newGems = u.getGems() - gemsDelta;
 			
 			if (0 > newGems) {
+				LOG.error("user does not have enough gems to spend. gemsDelta="
+					+ gemsDelta
+					+ ", user="
+					+ u);
 				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
 			}
 			
 			u.setGems(newGems);
 		}
-		
 	}
+	
+	static class IncrementGems implements UserFunc {
+		private int gemsDelta; //should be a positive number
+		
+		public IncrementGems( int gemsDelta )
+		{
+			super();
+			this.gemsDelta = gemsDelta;
+		}
+		
+		@Override
+		public void apply( User u )
+		{
+			if ( 0 > gemsDelta )
+			{
+				LOG.error("gemsDelta is illegally negative. gemsDelta="
+					+ gemsDelta
+					+ ", user="
+					+ u);
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			}
+			
+			u.setGems( u.getGems() + gemsDelta );
+		}
+	}
+	
 
 	static class DecrementCash implements UserFunc {
 		private int cashDelta; //should be a positive number
@@ -311,7 +365,44 @@ public class UserServiceImpl implements UserService
 			
 			u.setCash(newCash);
 		}
+	}
+	
+	static class IncrementCash implements UserFunc {
+		private int cashDelta; //should be a positive number
+		private int maxCash;
 		
+		public IncrementCash( int cashDelta, int maxCash )
+		{
+			super();
+			this.cashDelta = cashDelta;
+			this.maxCash = maxCash;
+		}
+		
+		@Override
+		public void apply( User u )
+		{
+			if (0 > cashDelta) {
+				LOG.error("cashDelta is illegally negative. cashDelta="
+					+ cashDelta
+					+ ", user="
+					+ u);
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			}
+			
+			int newCash = u.getCash() + cashDelta;
+			
+			if ( newCash > maxCash ) {
+				LOG.warn("cashDelta gives user more than maxCash. limiting to maxCash. cashDelta="
+					+ cashDelta
+					+ ", user="
+					+ u
+					+ ", maxCash="
+					+ maxCash);
+				newCash = maxCash;
+			}
+			
+			u.setCash(newCash);
+		}
 	}
 	
 	static class DecrementOil implements UserFunc {
@@ -343,7 +434,44 @@ public class UserServiceImpl implements UserService
 			
 			u.setOil(newOil);
 		}
+	}
+	
+	static class IncrementOil implements UserFunc {
+		private int oilDelta; //should be a positive number
+		private int maxOil;
 		
+		public IncrementOil( int oilDelta, int maxOil )
+		{
+			super();
+			this.oilDelta = oilDelta;
+			this.maxOil = maxOil;
+		}
+		
+		@Override
+		public void apply( User u )
+		{
+			if (0 > oilDelta) {
+				LOG.error("oilDelta is illegally negative. oilDelta="
+					+ oilDelta
+					+ ", user="
+					+ u);
+				throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			}
+			
+			int newOil = u.getOil() + oilDelta;
+			
+			if ( newOil > maxOil ) {
+				LOG.warn("oilDelta gives user more than maxOil. limiting to maxOil. oilDelta="
+					+ oilDelta
+					+ ", user="
+					+ u
+					+ ", maxOil="
+					+ maxOil);
+				newOil = maxOil;
+			}
+			
+			u.setOil(newOil);
+		}
 	}
 	
 	static class SetExpRelative implements UserFunc {
@@ -508,7 +636,7 @@ public class UserServiceImpl implements UserService
 	@Override
 	public UserCredential getUserCredentialByFacebookIdOrUdid(String facebookId, String udid) {
 		
-		List<UserCredential> ucList = userCredentialRepository.getUserCredentialByFacebook(facebookId);
+		List<UserCredential> ucList = userCredentialRepository.findByFacebookId(facebookId);
 		
 		
 		if (ucList.size() > 1) {
@@ -530,7 +658,7 @@ public class UserServiceImpl implements UserService
 			return ucList.get(0);
 		}
 		
-		ucList = userCredentialRepository.getUserCredentialByUdid(udid);
+		ucList = userCredentialRepository.findByUdid(udid);
 		
 		if (ucList.size() > 1) {
 			LOG.warn("wtf, multiple UserCredentials for udid=" + udid + ". list=" +
@@ -560,7 +688,7 @@ public class UserServiceImpl implements UserService
 		// if facebook id is provided, use that to try creating account, else use udid
 		if (StringUtils.hasText(facebookId)) {
 			List<UserCredential> userCredentials =
-				userCredentialRepository.getUserCredentialByFacebook(facebookId);
+				userCredentialRepository.findByFacebookId(facebookId);
 
 			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
 				"User(s) already exist with facebookId="
@@ -572,7 +700,7 @@ public class UserServiceImpl implements UserService
 
 		} else {
 			List<UserCredential> userCredentials =
-				userCredentialRepository.getUserCredentialByUdid(udid);
+				userCredentialRepository.findByUdid(udid);
 
 			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
 				"User(s) already exist with udid="

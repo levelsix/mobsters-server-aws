@@ -93,11 +93,15 @@ public class MiniJobServiceImpl implements MiniJobService {
         return spawnedMiniJobs;
     }
     
-    //READ-ONLY CRUD LOGIC******************************************************
-
+    /**************************************************************************/
+	//CRUD LOGIC
+    
+    // BEGIN READ ONLY LOGIC
+    @Override
     public List<MiniJobForUser> getMiniJobForUserId( String userId ) {
     	return miniJobForUserRepository.findByUserId(userId);
     }
+    // END READ ONLY LOGIC
 	
  	//TRANSACTIONAL CRUD LOGIC**************************************************
      

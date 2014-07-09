@@ -31,7 +31,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoCollectionRepository
 	}
 
 	@Override
-	public List<MonsterForUser> findByUserIdAndId(
+	public List<MonsterForUser> findByUserIdAndMonsterForUserIdIn(
 		final String userId,
 		final Iterable<String> monsterForUserIds )
 	{
@@ -57,7 +57,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoCollectionRepository
 	}
 
 	@Override
-	public List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
+	public List<MonsterForUser> findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(
 		final String userId,
 		final Collection<String> monsterForUserIds,
 		final Integer teamSlotNum )

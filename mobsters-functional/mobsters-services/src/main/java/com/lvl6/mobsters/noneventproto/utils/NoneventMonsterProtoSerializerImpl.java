@@ -16,7 +16,6 @@ import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality;
@@ -38,7 +37,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 		.getEnclosingClass());
 
 	@Override
-	public MonsterProto createMonsterProto(Monster aMonster) {
+	public MonsterProto createMonsterProto(IMonster aMonster) {
 		MonsterProto.Builder mpb = MonsterProto.newBuilder();
 		
 		mpb.setMonsterId(aMonster.getId());
@@ -143,6 +142,8 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	    if (null != shorterName) {
 	    	mpb.setShorterName(shorterName);
 	    }
+	    
+	    mpb.setShadowScaleFactor(aMonster.getShadowScaleFactor());
 	    
 		return mpb.build();
 	}
