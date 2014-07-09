@@ -21,7 +21,14 @@ abstract class AbstractCacheManager<T> {
 	
 	final protected Class<T> type;
 	
+	// Ascii encoding for "ex", used to set a Jedis set() parameter indicating that TTL 
+	// argument measures time in seconds.  If the first byte were 0x70, TTL times would be
+	// measured in milliseconds.
     byte[] bex = { 0x65, 0x78 };
+    
+    // Placeholder for an unused Jedis set() argument.  If set to {0x6e, 0x78}, Jedis
+    // will only update the cache if the given key doesn't already exist.  If set to
+    // {0x78, 0x78}, Jedis will only update the cache if the given key already exists.
     byte[] binaryValue;
 	
 	public AbstractCacheManager(final Class<T> type) {
@@ -48,8 +55,7 @@ abstract class AbstractCacheManager<T> {
 		new JedisPutTask(jedisPool) {
 			@Override
 			public void task(Jedis jedis) {
-				jedis.hset(toCollection.getBytes(), withKey.getBytes(), kryoPool.toBytesWithClass(entity));
-				
+				jedis.hset(toCollection.getBytes(), withKey.getBytes(), kryoPool.toBytesWithClass(entity) );				
 			}
 		}.put();
 	}
