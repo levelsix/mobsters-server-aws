@@ -13,7 +13,7 @@ public class TaskStageForUser {
 
 //	private String id;
 	private String taskForUserId;
-	private String taskStageForUserId;
+	// private String taskStageForUserId;
 	private Long version;
 
 	
@@ -56,6 +56,19 @@ public class TaskStageForUser {
 	}
 	
 	public void setTaskForUserId(String taskForUserId) {
+		this.taskForUserId = taskForUserId;
+	}
+	
+	/**
+	 * TEMPORARY HACK!
+	 * 
+	 * The type templated base repository classes embed a simplifying assumption that
+	 * all hash key properties are named "userId".  There is a plan to reconcile this, but
+	 * until its implemented, this duplicate and misleadingly named setter method is a 
+	 * temporary hack-around to avoid impeding progress.
+	 * @param taskForUserId
+	 */
+	public void setUserId(String taskForUserId) {
 		this.taskForUserId = taskForUserId;
 	}
 	
