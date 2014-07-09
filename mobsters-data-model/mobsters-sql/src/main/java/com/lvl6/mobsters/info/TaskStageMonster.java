@@ -18,9 +18,8 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=ITaskStageMonster.class)
 public class TaskStageMonster extends BaseIntPersistentObject implements ITaskStageMonster{
 
-	private static final long serialVersionUID = -1173954752765668247L;
+	private static final long serialVersionUID = -6321506459007617514L;
 
-	
 	@ManyToOne(fetch=FetchType.LAZY, targetEntity=TaskStage.class)
 	@JoinColumn(
 		name = "stage_id",
@@ -54,13 +53,16 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 	@Column(name = "chance_to_appear")
 	private float chanceToAppear;  
 
+	@Column(name = "dmg_multiplier")
+	private float dmgMultiplier;
+	
 	private Random rand = new Random();
 	
 	public TaskStageMonster(){}
 	public TaskStageMonster(int id, ITaskStage stage, IMonster monster, String monsterType,
 		int expReward, int minCashDrop, int maxCashDrop, int minOilDrop,
 		int maxOilDrop, float puzzlePieceDropRate, int level,
-		float chanceToAppear) {
+		float chanceToAppear, float dmgMultiplier) {
 	super(id);
 	this.stage= stage;
 	this.monster = monster;
@@ -73,6 +75,7 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 	this.puzzlePieceDropRate = puzzlePieceDropRate;
 	this.level = level;
 	this.chanceToAppear = chanceToAppear;
+	this.dmgMultiplier = dmgMultiplier;
 	}
 
 //covenience methods--------------------------------------------------------
@@ -296,14 +299,43 @@ public void setChanceToAppear(float chanceToAppear) {
   }
 
   @Override
-  public String toString() {
-	  return "TaskStageMonster [id=" + id + ", stageId=" + stage
-			  + ", monsterId=" + monster + ", monsterType=" + monsterType
-			  + ", expReward=" + expReward + ", minCashDrop=" + minCashDrop
-			  + ", maxCashDrop=" + maxCashDrop + ", minOilDrop=" + minOilDrop
-			  + ", maxOilDrop=" + maxOilDrop + ", puzzlePieceDropRate="
-			  + puzzlePieceDropRate + ", level=" + level + ", chanceToAppear="
-			  + chanceToAppear + "]";
-  }
+public float getDmgMultiplier()
+{
+	return dmgMultiplier;
+}
+@Override
+public void setDmgMultiplier( float dmgMultiplier )
+{
+	this.dmgMultiplier = dmgMultiplier;
+}
+@Override
+public String toString()
+{
+	return "TaskStageMonster [stage="
+		+ stage
+		+ ", monster="
+		+ monster
+		+ ", monsterType="
+		+ monsterType
+		+ ", expReward="
+		+ expReward
+		+ ", minCashDrop="
+		+ minCashDrop
+		+ ", maxCashDrop="
+		+ maxCashDrop
+		+ ", minOilDrop="
+		+ minOilDrop
+		+ ", maxOilDrop="
+		+ maxOilDrop
+		+ ", puzzlePieceDropRate="
+		+ puzzlePieceDropRate
+		+ ", level="
+		+ level
+		+ ", chanceToAppear="
+		+ chanceToAppear
+		+ ", dmgMultiplier="
+		+ dmgMultiplier
+		+ "]";
+}
 
 }
