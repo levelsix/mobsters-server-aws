@@ -11,10 +11,12 @@ import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementRedeemRequestProto;
 import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementRedeemResponseProto;
 import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementRedeemResponseProto.AchievementRedeemStatus;
+import com.lvl6.mobsters.eventproto.utils.CreateEventProtoUtil;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.AchievementRedeemRequestEvent;
 import com.lvl6.mobsters.events.response.AchievementRedeemResponseEvent;
+import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
@@ -28,6 +30,9 @@ public class AchievementRedeemController extends EventController {
 
     @Autowired
     protected AchievementService achievementService;
+
+    @Autowired
+    protected CreateEventProtoUtil createEventProtoUtil; 
 
     /*
      * @Autowired protected EventWriter eventWriter;
@@ -71,8 +76,13 @@ public class AchievementRedeemController extends EventController {
         // syntax checks out ok; prepare arguments for service
 
         // call service if syntax is ok
+        boolean successful = false;
+        User u = null; 
         try {
-        	User u = achievementService.redeemAchievement(userIdString, achievementId, clientTime);
+        	u = achievementService.redeemAchievement(userIdString, achievementId, clientTime);
+        	// TODO: Keep track of the user currency history somehow
+        	
+            successful = true;
         } catch (Exception e) {
         	LOG.error(
         		"exception in AchievementRedeemController processEvent when calling userService",
@@ -85,6 +95,12 @@ public class AchievementRedeemController extends EventController {
         // write to client
         LOG.info("Writing event: " + resEvent);
         eventWriter.writeEvent(resEvent);
+        
+        if (successful) {
+        	UpdateClientUserResponseEvent resEventUpdate =
+            	createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
+            eventWriter.writeEvent(resEventUpdate);
+        }
 
     }
 

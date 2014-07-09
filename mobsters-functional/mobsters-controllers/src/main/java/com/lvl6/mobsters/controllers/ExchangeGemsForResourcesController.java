@@ -105,14 +105,14 @@ public class ExchangeGemsForResourcesController extends EventController {
         }
 
         // call service if syntax is ok
+        boolean successful = false;
+        User u = null;
         if (responseBuilder.getStatus() == ExchangeGemsForResourcesStatus.SUCCESS) {
             try {
-                User u = userService.modifyUser(userIdString, modBuilder.build());
+                u = userService.modifyUser(userIdString, modBuilder.build());
                 // TODO: Keep track of the user currency history somehow
                 
-                UpdateClientUserResponseEvent resEventUpdate =
-                	createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
-                eventWriter.writeEvent(resEventUpdate);
+                successful = true;
             } catch(Lvl6MobstersException lvl6E) {
             	//TODO: Figure out if catching exception here and doing something or let it bubble up
             } catch (Exception e) {
@@ -129,6 +129,12 @@ public class ExchangeGemsForResourcesController extends EventController {
         LOG.info("Writing event: " + resEvent);
         eventWriter.writeEvent(resEvent);
 
+        if (successful) {
+            UpdateClientUserResponseEvent resEventUpdate =
+            	createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
+            eventWriter.writeEvent(resEventUpdate);
+        }
+        
     }
 
     public UserService getUserService() {

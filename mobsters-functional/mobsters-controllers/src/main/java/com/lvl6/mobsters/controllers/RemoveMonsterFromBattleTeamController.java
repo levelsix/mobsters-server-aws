@@ -91,37 +91,9 @@ public class RemoveMonsterFromBattleTeamController extends EventController
 		// write to client
 		LOG.info("Writing event: "
 			+ resEvent);
-		try {
-			eventWriter.writeEvent(resEvent);
-		} catch (Exception e) {
-			LOG.error(
-				"fatal exception in RemoveMonsterFromBattleTeamController processRequestEvent",
-				e);
-		}
-
-		// TODO: FIGURE OUT IF THIS IS STILL NEEDED
-		// game center id might have changed
-		// null PvpLeagueFromUser means will pull from a cache instead
-		// UpdateClientUserResponseEvent resEventUpdate =
-		// CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-		// resEventUpdate.setTag(event.getTag());
-		// eventWriter.writeEvent(resEventUpdate);
+		eventWriter.writeEvent(resEvent);
+		
 	}
-
-	// private void failureCase(
-	// RequestEvent event,
-	// EventsToDispatch eventWriter,
-	// String userId,
-	// RemoveMonsterFromBattleTeamResponseProto.Builder resBuilder )
-	// {
-	// eventWriter.clearResponses();
-	// resBuilder.setStatus(RemoveMonsterFromBattleTeamStatus.FAIL_OTHER);
-	// RemoveMonsterFromBattleTeamResponseEvent resEvent = new
-	// RemoveMonsterFromBattleTeamResponseEvent(userId);
-	// resEvent.setTag(event.getTag());
-	// resEvent.setRemoveMonsterFromBattleTeamResponseProto(resBuilder.build());
-	// eventWriter.writeEvent(resEvent);
-	// }
 
 	public MonsterService getMonsterService()
 	{

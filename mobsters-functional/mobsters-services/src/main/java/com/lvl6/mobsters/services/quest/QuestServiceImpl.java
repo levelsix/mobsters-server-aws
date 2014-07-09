@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,7 @@ import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
 
 @Component
-public class QuestServiceImpl implements QuestService {
+public class QuestServiceImpl implements QuestService, InitializingBean {
     
     private static Logger LOG = LoggerFactory.getLogger(QuestServiceImpl.class);
     
@@ -46,8 +47,17 @@ public class QuestServiceImpl implements QuestService {
 
     //NON CRUD LOGIC******************************************************************
     List<Integer> getAvailableQuestIdsFromQuests(List<Integer> redeemedQuestIds, List<Integer> inProgressQuestIds) {
-    	QuestGraph graph = getQuestGraph();
-    	return graph.getQuestsAvailable(redeemedQuestIds, inProgressQuestIds);
+    	
+    	if (null == questGraph) {
+    		try {
+				afterPropertiesSet();
+			} catch (Exception e) {
+				LOG.error("error when initializing static QuestGraph");
+			}
+    		return new ArrayList<Integer>();
+    	} else {
+    		return questGraph.getQuestsAvailable(redeemedQuestIds, inProgressQuestIds);
+    	}
     }
     
     //CRUD LOGIC******************************************************************
@@ -161,6 +171,12 @@ public class QuestServiceImpl implements QuestService {
 	    	+ questId);
 	}
 	
+	//InitializingBean, so the private static map can be initialized
+    @Override
+    public void afterPropertiesSet() throws Exception {
+    	questGraph = new QuestGraph(questRepository.findAll());
+    }
+	
 	public QuestForUserRepository getQuestForUserRepository()
 	{
 		return questForUserRepository;
@@ -197,10 +213,6 @@ public class QuestServiceImpl implements QuestService {
 
 	public QuestGraph getQuestGraph()
 	{
-		// TODO: Is initializing static property via instance getter allowed?
-		if (null == questGraph) {
-			questGraph = new QuestGraph(questRepository.findAll());
-		}
 		return questGraph;
 	}
 

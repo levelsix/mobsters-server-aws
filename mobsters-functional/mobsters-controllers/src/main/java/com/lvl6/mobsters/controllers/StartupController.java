@@ -44,6 +44,7 @@ import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.EventPersistent;
 import com.lvl6.mobsters.info.IMonster;
+import com.lvl6.mobsters.info.ITask;
 import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
@@ -601,7 +602,7 @@ public class StartupController extends EventController
 	
 	private void setTasks(StaticDataProto.Builder sdpb) {
 		List<Task> tasks = taskRepository.findAll();
-		for (Task aTask : tasks) {
+		for (ITask aTask : tasks) {
 			sdpb.addAllTasks(
 				noneventTaskProtoSerializer.createFullTaskProtoFromTask(aTask));
 		}

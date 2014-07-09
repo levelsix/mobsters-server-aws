@@ -6,7 +6,9 @@ import com.lvl6.mobsters.dynamo.ObstacleForUser;
 @Component 
 public class ObstacleForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<ObstacleForUser, String>
 	implements
-		ObstacleForUserRepository {
+		ObstacleForUserRepository
+{
+	
 	public ObstacleForUserRepositoryImpl(){
 		super(ObstacleForUser.class, "obstacleForUserId", String.class);
 	}

@@ -79,14 +79,14 @@ public class BeginObstacleRemovalController extends EventController {
         // syntax checks out ok; prepare arguments for service
 
         // call service if syntax is ok
+        boolean successful = false;
+        User u = null;
         try {
-        	User u = beginObstacleRemovalService.initiateRemoveObstacle(
+        	u = beginObstacleRemovalService.initiateRemoveObstacle(
         		userIdString, userObstacleId, clientTime, gemsSpent,
         		resourceType, resourceChange);
         	
-        	UpdateClientUserResponseEvent resEventUpdate =
-            	createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
-            eventWriter.writeEvent(resEventUpdate);
+            successful = true;
             
         } catch (Exception e) {
         	LOG.error(
@@ -100,6 +100,12 @@ public class BeginObstacleRemovalController extends EventController {
         // write to client
         LOG.info("Writing event: " + resEvent);
         eventWriter.writeEvent(resEvent);
+        
+        if (successful) {
+        	UpdateClientUserResponseEvent resEventUpdate =
+        		createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
+        	eventWriter.writeEvent(resEventUpdate);
+        }
 
     }
 

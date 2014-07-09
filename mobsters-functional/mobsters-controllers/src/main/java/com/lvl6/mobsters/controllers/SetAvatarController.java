@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import com.lvl6.mobsters.eventproto.EventUserProto.SetAvatarMonsterRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetAvatarMonsterResponseProto;
@@ -84,34 +83,9 @@ public class SetAvatarController extends EventController {
 
         // write to client
         LOG.info("Writing event: " + resEvent);
-        try {
-            eventWriter.writeEvent(resEvent);
-        } catch (Exception e) {
-            LOG.error("fatal exception in SetAvatarMonsterController processRequestEvent", e);
-        }
+        eventWriter.writeEvent(resEvent);
 
-        // TODO: FIGURE OUT IF THIS IS STILL NEEDED
-        // game center id might have changed
-        // null PvpLeagueFromUser means will pull from a cache instead
-        // UpdateClientUserResponseEvent resEventUpdate =
-        // CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-        // resEventUpdate.setTag(event.getTag());
-        // eventWriter.writeEvent(resEventUpdate);
     }
-
-    // private void failureCase(
-    // RequestEvent event,
-    // EventsToDispatch eventWriter,
-    // String userId,
-    // SetAvatarMonsterResponseProto.Builder resBuilder )
-    // {
-    // eventWriter.clearResponses();
-    // resBuilder.setStatus(SetAvatarMonsterStatus.FAIL_OTHER);
-    // SetAvatarMonsterResponseEvent resEvent = new SetAvatarMonsterResponseEvent(userId);
-    // resEvent.setTag(event.getTag());
-    // resEvent.setSetAvatarMonsterResponseProto(resBuilder.build());
-    // eventWriter.writeEvent(resEvent);
-    // }
 
     public UserService getUserService() {
         return userService;

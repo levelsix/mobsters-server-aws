@@ -16,7 +16,7 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=ITask.class)
 public class Task extends BaseIntPersistentObject implements ITask{
 
-	private static final long serialVersionUID = -1373482423852411024L;
+	private static final long serialVersionUID = -5841712902617988030L;
 
 	@Column(name = "name")
 	private String name;
@@ -31,17 +31,26 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private ITask prerequisiteTask;
 
+	@Column(name = "board_width")
+	private int boardWidth;
+	
+	@Column(name = "board_height")
+	private int boardHeight;
+	
 	public Task() {
 		super();
 	}
 
-
 	public Task(final int id, final String name, final String description,
-			final ITask prerequisiteTask) {
+			final ITask prerequisiteTask, final int boardWidth,
+			final int boardHeight)
+	{
 		super(id);
 		this.name = name;
 		this.description = description;
 		this.prerequisiteTask = prerequisiteTask;
+		this.boardWidth = boardWidth;
+		this.boardHeight = boardHeight;
 	}
 	
 	/* (non-Javadoc)
@@ -88,14 +97,42 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	}
 
 	@Override
+	public int getBoardWidth()
+	{
+		return boardWidth;
+	}
+
+	@Override
+	public void setBoardWidth( int boardWidth )
+	{
+		this.boardWidth = boardWidth;
+	}
+
+	@Override
+	public int getBoardHeight()
+	{
+		return boardHeight;
+	}
+
+	@Override
+	public void setBoardHeight( int boardHeight )
+	{
+		this.boardHeight = boardHeight;
+	}
+
+	@Override
 	public String toString()
 	{
-		return "Task [goodName="
+		return "Task [name="
 			+ name
 			+ ", description="
 			+ description
 			+ ", prerequisiteTask="
 			+ prerequisiteTask
+			+ ", boardWidth="
+			+ boardWidth
+			+ ", boardHeight="
+			+ boardHeight
 			+ "]";
 	}
 

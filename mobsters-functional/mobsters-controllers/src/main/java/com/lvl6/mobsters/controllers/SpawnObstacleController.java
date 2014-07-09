@@ -109,34 +109,9 @@ public class SpawnObstacleController extends EventController {
 
         // write to client
         LOG.info("Writing event: " + resEvent);
-        try {
-            eventWriter.writeEvent(resEvent);
-        } catch (Exception e) {
-            LOG.error("fatal exception in SpawnObstacleController processRequestEvent", e);
-        }
+        eventWriter.writeEvent(resEvent);
 
-        // TODO: FIGURE OUT IF THIS IS STILL NEEDED
-        // game center id might have changed
-        // null PvpLeagueFromUser means will pull from a cache instead
-        // UpdateClientUserResponseEvent resEventUpdate =
-        // CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-        // resEventUpdate.setTag(event.getTag());
-        // eventWriter.writeEvent(resEventUpdate);
     }
-
-    // private void failureCase(
-    // RequestEvent event,
-    // EventsToDispatch eventWriter,
-    // String userId,
-    // SpawnObstacleResponseProto.Builder resBuilder )
-    // {
-    // eventWriter.clearResponses();
-    // resBuilder.setStatus(SpawnObstacleStatus.FAIL_OTHER);
-    // SpawnObstacleResponseEvent resEvent = new SpawnObstacleResponseEvent(userId);
-    // resEvent.setTag(event.getTag());
-    // resEvent.setSpawnObstacleResponseProto(resBuilder.build());
-    // eventWriter.writeEvent(resEvent);
-    // }
 
     public StructureService getStructureService() {
         return structureService;

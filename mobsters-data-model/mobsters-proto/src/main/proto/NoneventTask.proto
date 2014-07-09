@@ -1,4 +1,4 @@
-//ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
+	//ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
 //DO NO START PROPERTY METHODS WITH THE WORDS NEW OR COPY
 
 import "NoneventMonster.proto";
@@ -23,6 +23,8 @@ message FullTaskProto {
 	optional string description = 3;
 	optional int32 prerequisiteTaskId = 4;
 	optional int32 prerequisiteQuestId = 5;
+	optional int32 boardWidth = 6;
+	optional int32 boardHeight = 7;
 }
 
 //------------------------------------------------------------------------------------------
@@ -52,6 +54,8 @@ message TaskStageMonsterProto {
     optional int32 itemId = 7;
 	
 	//optional int32 oilReward = 8; //defined above
+	optional float dmgMultiplier = 9;
+	
 	enum MonsterType {
 		REGULAR = 1;
 		MINI_BOSS = 2;
