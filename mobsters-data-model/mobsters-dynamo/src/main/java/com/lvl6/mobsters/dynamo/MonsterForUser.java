@@ -169,8 +169,8 @@ public class MonsterForUser {
     {
     	return "MonsterForUser [userId="
     		+ userId
-    		+ ", monsterForUserId="
-    		+ monsterForUserId
+    		+ ", monsterForUserUuid="
+    		+ monsterForUserUuid
     		+ ", monsterId="
     		+ monsterId
     		+ ", currentExp="
@@ -194,7 +194,7 @@ public class MonsterForUser {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((monsterForUserId == null) ? 0 : monsterForUserId.hashCode());
+        result = prime * result + ((monsterForUserUuid == null) ? 0 : monsterForUserUuid.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
         return result;
     }
@@ -208,10 +208,10 @@ public class MonsterForUser {
         if (getClass() != obj.getClass())
             return false;
         MonsterForUser other = (MonsterForUser) obj;
-        if (monsterForUserId == null) {
-            if (other.monsterForUserId != null)
+        if (monsterForUserUuid == null) {
+            if (other.monsterForUserUuid != null)
                 return false;
-        } else if (!monsterForUserId.equals(other.monsterForUserId))
+        } else if (!monsterForUserUuid.equals(other.monsterForUserUuid))
             return false;
         if (userId == null) {
             if (other.userId != null)

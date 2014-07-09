@@ -21,7 +21,6 @@ public class Achievement extends BaseIntPersistentObject implements IAchievement
 
 	private static final long serialVersionUID = 873467535443000372L;
 	
-	
 	@Column(name = "achievement_name")
 	private String achievementName;
 	@Column(name = "description")
