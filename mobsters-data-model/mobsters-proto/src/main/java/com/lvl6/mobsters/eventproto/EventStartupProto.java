@@ -5456,6 +5456,10 @@ public final class EventStartupProto {
         // optional int32 questIdForCombiningPowerUps = 8;
         boolean hasQuestIdForCombiningPowerUps();
         int getQuestIdForCombiningPowerUps();
+        
+        // optional int32 guideMonsterId = 9;
+        boolean hasGuideMonsterId();
+        int getGuideMonsterId();
       }
       public static final class MiniTutorialConstants extends
           com.google.protobuf.GeneratedMessage
@@ -5566,6 +5570,16 @@ public final class EventStartupProto {
           return questIdForCombiningPowerUps_;
         }
         
+        // optional int32 guideMonsterId = 9;
+        public static final int GUIDEMONSTERID_FIELD_NUMBER = 9;
+        private int guideMonsterId_;
+        public boolean hasGuideMonsterId() {
+          return ((bitField0_ & 0x00000100) == 0x00000100);
+        }
+        public int getGuideMonsterId() {
+          return guideMonsterId_;
+        }
+        
         private void initFields() {
           matchThreeTutorialAssetId_ = 0;
           firstPowerUpAssetId_ = 0;
@@ -5575,6 +5589,7 @@ public final class EventStartupProto {
           elementTutorialAssetId_ = 0;
           cityId_ = 0;
           questIdForCombiningPowerUps_ = 0;
+          guideMonsterId_ = 0;
         }
         private byte memoizedIsInitialized = -1;
         public final boolean isInitialized() {
@@ -5611,6 +5626,9 @@ public final class EventStartupProto {
           }
           if (((bitField0_ & 0x00000080) == 0x00000080)) {
             output.writeInt32(8, questIdForCombiningPowerUps_);
+          }
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            output.writeInt32(9, guideMonsterId_);
           }
           getUnknownFields().writeTo(output);
         }
@@ -5652,6 +5670,10 @@ public final class EventStartupProto {
           if (((bitField0_ & 0x00000080) == 0x00000080)) {
             size += com.google.protobuf.CodedOutputStream
               .computeInt32Size(8, questIdForCombiningPowerUps_);
+          }
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(9, guideMonsterId_);
           }
           size += getUnknownFields().getSerializedSize();
           memoizedSerializedSize = size;
@@ -5793,6 +5815,8 @@ public final class EventStartupProto {
             bitField0_ = (bitField0_ & ~0x00000040);
             questIdForCombiningPowerUps_ = 0;
             bitField0_ = (bitField0_ & ~0x00000080);
+            guideMonsterId_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000100);
             return this;
           }
           
@@ -5863,6 +5887,10 @@ public final class EventStartupProto {
               to_bitField0_ |= 0x00000080;
             }
             result.questIdForCombiningPowerUps_ = questIdForCombiningPowerUps_;
+            if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+              to_bitField0_ |= 0x00000100;
+            }
+            result.guideMonsterId_ = guideMonsterId_;
             result.bitField0_ = to_bitField0_;
             onBuilt();
             return result;
@@ -5902,6 +5930,9 @@ public final class EventStartupProto {
             }
             if (other.hasQuestIdForCombiningPowerUps()) {
               setQuestIdForCombiningPowerUps(other.getQuestIdForCombiningPowerUps());
+            }
+            if (other.hasGuideMonsterId()) {
+              setGuideMonsterId(other.getGuideMonsterId());
             }
             this.mergeUnknownFields(other.getUnknownFields());
             return this;
@@ -5972,6 +6003,11 @@ public final class EventStartupProto {
                 case 64: {
                   bitField0_ |= 0x00000080;
                   questIdForCombiningPowerUps_ = input.readInt32();
+                  break;
+                }
+                case 72: {
+                  bitField0_ |= 0x00000100;
+                  guideMonsterId_ = input.readInt32();
                   break;
                 }
               }
@@ -6144,6 +6180,27 @@ public final class EventStartupProto {
           public Builder clearQuestIdForCombiningPowerUps() {
             bitField0_ = (bitField0_ & ~0x00000080);
             questIdForCombiningPowerUps_ = 0;
+            onChanged();
+            return this;
+          }
+          
+          // optional int32 guideMonsterId = 9;
+          private int guideMonsterId_ ;
+          public boolean hasGuideMonsterId() {
+            return ((bitField0_ & 0x00000100) == 0x00000100);
+          }
+          public int getGuideMonsterId() {
+            return guideMonsterId_;
+          }
+          public Builder setGuideMonsterId(int value) {
+            bitField0_ |= 0x00000100;
+            guideMonsterId_ = value;
+            onChanged();
+            return this;
+          }
+          public Builder clearGuideMonsterId() {
+            bitField0_ = (bitField0_ & ~0x00000100);
+            guideMonsterId_ = 0;
             onChanged();
             return this;
           }
@@ -17904,7 +17961,7 @@ public final class EventStartupProto {
       "r.proto\"s\n\023StartupRequestProto\022\014\n\004udid\030\001" +
       " \001(\t\022\022\n\nversionNum\030\002 \001(\002\022\024\n\014advertiserId",
       "\030\003 \001(\t\022\014\n\004fbId\030\004 \001(\t\022\026\n\016isFreshRestart\030\005" +
-      " \001(\010\"\366&\n\024StartupResponseProto\022\030\n\020serverT" +
+      " \001(\010\"\216\'\n\024StartupResponseProto\022\030\n\020serverT" +
       "imeMillis\030\001 \001(\003\022$\n\006sender\030\002 \001(\0132\024.proto." +
       "FullUserProto\022@\n\rstartupStatus\030\003 \001(\0162).p" +
       "roto.StartupResponseProto.StartupStatus\022" +
@@ -17958,7 +18015,7 @@ public final class EventStartupProto {
       "\002 \001(\003\022\023\n\013coinsStolen\030\003 \001(\005\032y\n\031ReferralNo" +
       "tificationProto\022)\n\010referred\030\001 \001(\0132\027.prot" +
       "o.MinimumUserProto\022\023\n\013recruitTime\030\002 \001(\003\022" +
-      "\034\n\024coinsGivenToReferrer\030\003 \001(\005\032\345\021\n\020Startu" +
+      "\034\n\024coinsGivenToReferrer\030\003 \001(\005\032\375\021\n\020Startu" +
       "pConstants\022?\n\025inAppPurchasePackages\030\001 \003(" +
       "\0132 .proto.InAppPurchasePackageProto\022\027\n\017m" +
       "axLevelForUser\030\002 \001(\005\022\034\n\024maxNumOfSingleSt" +
@@ -18008,30 +18065,31 @@ public final class EventStartupProto {
       "mit\030\002 \001(\005\032\211\001\n\020MonsterConstants\022\032\n\022cashPe" +
       "rHealthPoint\030\001 \001(\002\022#\n\033secondsToHealPerHe" +
       "althPoint\030\002 \001(\002\022\031\n\021elementalStrength\030\003 \001" +
-      "(\002\022\031\n\021elementalWeakness\030\004 \001(\002\032\225\002\n\025MiniTu" +
+      "(\002\022\031\n\021elementalWeakness\030\004 \001(\002\032\255\002\n\025MiniTu" +
       "torialConstants\022!\n\031matchThreeTutorialAss" +
       "etId\030\001 \001(\005\022\033\n\023firstPowerUpAssetId\030\002 \001(\005\022" +
       "\036\n\026rainbowTutorialAssetId\030\003 \001(\005\022#\n\033power" +
       "UpComboTutorialAssetId\030\004 \001(\005\022\"\n\032monsterD",
       "ropTutorialAssetId\030\005 \001(\005\022\036\n\026elementTutor" +
       "ialAssetId\030\006 \001(\005\022\016\n\006cityId\030\007 \001(\005\022#\n\033ques" +
-      "tIdForCombiningPowerUps\030\010 \001(\005\032\362\002\n\021Tutori" +
-      "alConstants\022\031\n\021startingMonsterId\030\001 \001(\005\022\026" +
-      "\n\016guideMonsterId\030\020 \001(\005\022\026\n\016enemyMonsterId" +
-      "\030\002 \001(\005\022\031\n\021enemyMonsterIdTwo\030\017 \001(\005\022\032\n\022ene" +
-      "myBossMonsterId\030\t \001(\005\022\026\n\016markZMonsterId\030" +
-      "\n \001(\005\0226\n\022tutorialStructures\030\003 \003(\0132\032.prot" +
-      "o.TutorialStructProto\022\036\n\026structureIdsToB" +
-      "eBuillt\030\004 \003(\005\022\020\n\010cashInit\030\013 \001(\005\022\017\n\007oilIn",
-      "it\030\014 \001(\005\022\020\n\010gemsInit\030\r \001(\005\0226\n\021tutorialOb" +
-      "stacles\030\016 \003(\0132\033.proto.MinimumObstaclePro" +
-      "to\"A\n\014UpdateStatus\022\r\n\tNO_UPDATE\020\001\022\020\n\014MIN" +
-      "OR_UPDATE\020\002\022\020\n\014MAJOR_UPDATE\020\003\"N\n\rStartup" +
-      "Status\022\016\n\nUSER_IN_DB\020\001\022\022\n\016USER_NOT_IN_DB" +
-      "\020\002\022\031\n\025SERVER_IN_MAINTENANCE\020\003\"C\n\030ForceLo" +
-      "goutResponseProto\022\031\n\021previousLoginTime\030\001" +
-      " \001(\003\022\014\n\004udid\030\002 \001(\tB1\n\034com.lvl6.mobsters." +
-      "eventprotoB\021EventStartupProto"
+      "tIdForCombiningPowerUps\030\010 \001(\005\022\026\n\016guideMo" +
+      "nsterId\030\t \001(\005\032\362\002\n\021TutorialConstants\022\031\n\021s" +
+      "tartingMonsterId\030\001 \001(\005\022\026\n\016guideMonsterId" +
+      "\030\020 \001(\005\022\026\n\016enemyMonsterId\030\002 \001(\005\022\031\n\021enemyM" +
+      "onsterIdTwo\030\017 \001(\005\022\032\n\022enemyBossMonsterId\030" +
+      "\t \001(\005\022\026\n\016markZMonsterId\030\n \001(\005\0226\n\022tutoria" +
+      "lStructures\030\003 \003(\0132\032.proto.TutorialStruct" +
+      "Proto\022\036\n\026structureIdsToBeBuillt\030\004 \003(\005\022\020\n",
+      "\010cashInit\030\013 \001(\005\022\017\n\007oilInit\030\014 \001(\005\022\020\n\010gems" +
+      "Init\030\r \001(\005\0226\n\021tutorialObstacles\030\016 \003(\0132\033." +
+      "proto.MinimumObstacleProto\"A\n\014UpdateStat" +
+      "us\022\r\n\tNO_UPDATE\020\001\022\020\n\014MINOR_UPDATE\020\002\022\020\n\014M" +
+      "AJOR_UPDATE\020\003\"N\n\rStartupStatus\022\016\n\nUSER_I" +
+      "N_DB\020\001\022\022\n\016USER_NOT_IN_DB\020\002\022\031\n\025SERVER_IN_" +
+      "MAINTENANCE\020\003\"C\n\030ForceLogoutResponseProt" +
+      "o\022\031\n\021previousLoginTime\030\001 \001(\003\022\014\n\004udid\030\002 \001" +
+      "(\tB1\n\034com.lvl6.mobsters.eventprotoB\021Even" +
+      "tStartupProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -18131,7 +18189,7 @@ public final class EventStartupProto {
           internal_static_proto_StartupResponseProto_StartupConstants_MiniTutorialConstants_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_StartupResponseProto_StartupConstants_MiniTutorialConstants_descriptor,
-              new java.lang.String[] { "MatchThreeTutorialAssetId", "FirstPowerUpAssetId", "RainbowTutorialAssetId", "PowerUpComboTutorialAssetId", "MonsterDropTutorialAssetId", "ElementTutorialAssetId", "CityId", "QuestIdForCombiningPowerUps", },
+              new java.lang.String[] { "MatchThreeTutorialAssetId", "FirstPowerUpAssetId", "RainbowTutorialAssetId", "PowerUpComboTutorialAssetId", "MonsterDropTutorialAssetId", "ElementTutorialAssetId", "CityId", "QuestIdForCombiningPowerUps", "GuideMonsterId", },
               com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.MiniTutorialConstants.class,
               com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.MiniTutorialConstants.Builder.class);
           internal_static_proto_StartupResponseProto_TutorialConstants_descriptor =
