@@ -113,11 +113,10 @@ public class MiniJobService2Impl implements MiniJobService
 		txManager.beginTransaction()
 		try
 		{
-			val List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.
-				findByUserIdAndId(userId, miniJobIds)
+			val List<MiniJobForUser> existingUserMiniJobs = 
+				miniJobForUserRepository.findByUserIdAndMiniJobForUserIdIn(userId, miniJobIds)
 			if (existingUserMiniJobs.nullOrEmpty)
 			{
-
 				val String message = "User has none of the required mini jobs.  userId=" +
 					userId + ", miniJobIds=" + miniJobIds.toString()
 				LOG.error(message)
@@ -127,7 +126,6 @@ public class MiniJobService2Impl implements MiniJobService
 			}
 			else if (existingUserMiniJobs.size() != miniJobIds.size())
 			{
-
 				val String message = "User lacks some of the required mini jobs.  userId=" +
 					userId + ", miniJobIds=" + miniJobIds.toString()
 				LOG.error(message)

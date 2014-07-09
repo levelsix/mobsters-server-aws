@@ -118,7 +118,8 @@ public class MiniJobServiceImpl implements MiniJobService {
         boolean success = false;
         txManager.beginTransaction();
         try {
-        List<MiniJobForUser> existingUserMiniJobs = miniJobForUserRepository.findByUserIdAndId(userId, miniJobIds);
+        	final List<MiniJobForUser> existingUserMiniJobs = 
+        		miniJobForUserRepository.findByUserIdAndMiniJobForUserIdIn(userId, miniJobIds);
 	        if (CollectionUtils.isEmptyOrNull(existingUserMiniJobs)) {
 	            final String message = "User has none of the required mini jobs. user=" + userId + ", miniJobIds=" + miniJobIds.toString();
 				Log.error(message);
