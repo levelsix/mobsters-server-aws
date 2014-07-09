@@ -8,36 +8,31 @@ import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
-import com.lvl6.mobsters.info.MiniJob;
 import com.lvl6.mobsters.services.minijob.MiniJobServiceImpl.ModifyUserMiniJobsSpecBuilderImpl;
 
 public interface MiniJobService {
     
-	// NON CRUD
-	// LOGIC******************************************************************
-    public abstract List<MiniJob> spawnMiniJobs(int numToSpawn, int structId); 
-    
-    /**************************************************************************/
-	//CRUD LOGIC
+	/** NON-CRUD LOGIC ********************************************************/
+
+	/** CRUD LOGIC ************************************************************/
     
     // BEGIN READ ONLY LOGIC
 
-    public List<MiniJobForUser> getMiniJobForUserId( String userId );
+    List<MiniJobForUser> getMiniJobForUserId( String userId );
 
     // END READ ONLY LOGIC
 	
  	/**************************************************************************/
-     
 
-	public abstract void modifyMiniJobsForUser(String userId,
-			Director<ModifyUserMiniJobsSpecBuilder> modifyDirector);
+    void modifyMiniJobsForUser(
+    	String userId, Director<ModifyUserMiniJobsSpecBuilder> modifyDirector);
 
     public interface ModifyUserMiniJobsSpecBuilder {
-		public ModifyUserMiniJobsSpecBuilder startJob(String userMiniJobId,
-			Set<String> userMonsterIds, Date timeStarted);
+    	ModifyUserMiniJobsSpecBuilder startJob(
+    		String userMiniJobId, Set<String> userMonsterIds, Date timeStarted);
 
-		public ModifyUserMiniJobsSpecBuilder completeJob(String userMiniJobId,
-			Date timeCompleted);
+		ModifyUserMiniJobsSpecBuilder completeJob(
+			String userMiniJobId, Date timeCompleted);
     }
     
 	interface UserMiniJobFunc extends Function<MiniJobForUser> {
@@ -62,7 +57,9 @@ public interface MiniJobService {
 
     /**************************************************************************/
     
-	public abstract void createMiniJobsForUser(String userId,
+    void spawnMiniJobsForUser(String userId, Date clientStartTime, int numToSpawn, int structId);
+    
+	void createMiniJobsForUser(String userId,
 			Director<CreateUserMiniJobsSpecBuilder> director);
     
 	// TODO: Instead of collecting one mandatory property per call, collect them
@@ -80,41 +77,39 @@ public interface MiniJobService {
 	// providing an even stronger guarantee of uniqueness than UUID.randomUUID()
 	// is capable of.
     public interface CreateUserMiniJobsSpecBuilder {
-		public CreateUserMiniJobsSpecBuilder setMiniJobId(String userMiniJobId,
-			int miniJobId);
+		CreateUserMiniJobsSpecBuilder setMiniJobId(
+			String userMiniJobId, int miniJobId);
         
-		public CreateUserMiniJobsSpecBuilder setBaseDmgReceived(
+		CreateUserMiniJobsSpecBuilder setBaseDmgReceived(
 			String userMiniJobId, int baseDmgReceived);
         
-		public CreateUserMiniJobsSpecBuilder setDurationMinutes(
+		CreateUserMiniJobsSpecBuilder setDurationMinutes(
 			String userMiniJobId, int durationMinutes);
 
-		public CreateUserMiniJobsSpecBuilder setUserMonsterIds(
+		CreateUserMiniJobsSpecBuilder setUserMonsterIds(
 			String userMiniJobId, Set<String> userMonsterIds);
         
-		public CreateUserMiniJobsSpecBuilder setTimeStarted(
+		CreateUserMiniJobsSpecBuilder setTimeStarted(
 			String userMiniJobId, Date timeStarted);
         
-		public CreateUserMiniJobsSpecBuilder setTimeCompleted(
+		CreateUserMiniJobsSpecBuilder setTimeCompleted(
 			String userMiniJobId, Date timeCompleted);
     }
     
 	public interface AlternateCreateUserMiniJobsSpecBuilder {
-		public AlternateCreateUserMiniJobsSpecBuilder addMiniJob(int miniJobId,
-			int baseDmgRcvd, int durationMins, Set<String> userMonsterIds,
+		AlternateCreateUserMiniJobsSpecBuilder addMiniJob(
+			int miniJobId, int baseDmgRcvd, int durationMins,
 			Director<OptionalUserMiniJobsSpecBuilder> optionalDirector);
 
-		public AlternateCreateUserMiniJobsSpecBuilder addMiniJob(int miniJobId,
-			int baseDmgRcvd, int durationMins, Set<String> userMonsterIds);
-        }
+		AlternateCreateUserMiniJobsSpecBuilder addMiniJob(
+			int miniJobId, int baseDmgRcvd, int durationMins);
+    }
         
 	public interface OptionalUserMiniJobsSpecBuilder {
-		// Let the default be TimeUtils.createNow()
-		public OptionalUserMiniJobsSpecBuilder timeStarted(Date timeStarted);
+		// Let the default be TimeUtils.createNow().
+		OptionalUserMiniJobsSpecBuilder started(Set<String> userMonsterIds, Date timeStarted);
 
-		// Let the default be null for not completed or, in the case of modify,
-		// unchanged.
-		public OptionalUserMiniJobsSpecBuilder timeCompleted(Date timeCompleted);
+		// Let the default be null for not completed.
+		OptionalUserMiniJobsSpecBuilder completed(Date timeCompleted);
     }
-
 }

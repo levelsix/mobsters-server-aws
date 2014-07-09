@@ -84,7 +84,7 @@ public class UserCreateController extends EventController
 		final String name = reqProto.getName();
 		final String deviceToken = reqProto.getDeviceToken();
 		final String facebookId = reqProto.getFacebookId();
-		final Date createTime = new Date();
+		final Date createTime = TimeUtils.createNow();
 		final List<TutorialStructProto> structsJustBuilt = reqProto.getStructsJustBuiltList();
 
 		// in case user tries hacking, don't let the amount go over tutorial default values

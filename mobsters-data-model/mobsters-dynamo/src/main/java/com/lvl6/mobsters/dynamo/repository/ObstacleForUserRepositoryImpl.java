@@ -2,7 +2,9 @@ package com.lvl6.mobsters.dynamo.repository;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
-@Component public class ObstacleForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<ObstacleForUser, String>
+
+@Component 
+public class ObstacleForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<ObstacleForUser, String>
 	implements
 		ObstacleForUserRepository
 {
@@ -10,5 +12,4 @@ import com.lvl6.mobsters.dynamo.ObstacleForUser;
 	public ObstacleForUserRepositoryImpl(){
 		super(ObstacleForUser.class, "obstacleForUserId", String.class);
 	}
-
 }

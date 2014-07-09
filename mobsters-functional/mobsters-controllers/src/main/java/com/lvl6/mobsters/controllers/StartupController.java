@@ -97,6 +97,7 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.clan.ClanService;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.minijob.MiniJobService;
 import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.quest.QuestService;
@@ -108,7 +109,6 @@ import com.lvl6.properties.MDCKeys;
 @Component
 public class StartupController extends EventController
 {
-
 	private static Logger LOG = LoggerFactory.getLogger(StartupController.class);
 
 	@Autowired
@@ -282,7 +282,7 @@ public class StartupController extends EventController
 
 		// Don't fill in other fields if it is a major update
 		StartupStatus startupStatus = StartupStatus.USER_NOT_IN_DB;
-		Date now = new Date();
+		Date now = TimeUtils.createNow();
 		UserCredential user = null;
 
 		try {
@@ -309,7 +309,7 @@ public class StartupController extends EventController
 			
 		}
 
-		resBuilder.setServerTimeMillis((new Date()).getTime());
+		resBuilder.setServerTimeMillis(now.getTime());
 		resEvent.setStartupResponseProto(resBuilder.build());
 
 		// write to client

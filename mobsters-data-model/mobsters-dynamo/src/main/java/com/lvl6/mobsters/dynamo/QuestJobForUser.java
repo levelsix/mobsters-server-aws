@@ -57,10 +57,6 @@ public class QuestJobForUser {
 		this.questJobId = questJobId;
 	}
 	
-	public void setQuestJobId(Integer questJobId) {
-		this.questJobId = questJobId.intValue();
-	}
-	
 	@DynamoDBVersionAttribute
 	public Long getVersion(){return version;}
 	public void setVersion(Long version){this.version = version;}

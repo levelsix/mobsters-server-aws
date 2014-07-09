@@ -57,9 +57,11 @@ public interface IMonster extends IBaseIntPersistentObject
 
 	public void setMinutesToEvolve( int minutesToEvolve );
 
+	/*
 	public int getNumCatalystsRequired();
 
 	public void setNumCatalystsRequired( int numCatalystsRequired );
+	*/
 
 	public String getCarrotRecruited();
 
@@ -105,17 +107,19 @@ public interface IMonster extends IBaseIntPersistentObject
 
 	public void setAtkAnimationRepeatedFramesEnd( int atkAnimationRepeatedFramesEnd );
 
+	/*
 	public String getShorterName();
 
 	public void setShorterName( String shorterName );
+	*/
 
 	public List<IMonsterLevelInfo> getLvlInfo();
 
-	public void setLvlInfo( List<IMonsterLevelInfo> lvlInfo );
+	// public void setLvlInfo( List<IMonsterLevelInfo> lvlInfo );
 
 	public List<IMonsterBattleDialogue> getBattleDialogue();
 
-	public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue );
+	// public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue );
 
 	public abstract void setShadowScaleFactor( float shadowScaleFactor );
 

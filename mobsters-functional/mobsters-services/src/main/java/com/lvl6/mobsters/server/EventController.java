@@ -9,15 +9,13 @@ import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.GameEvent;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.services.common.Lvl6MobstersException;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.properties.Globals;
 
 @Component
 public abstract class EventController{
-
-
-	
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass().getEnclosingClass());
+	private static Logger log = LoggerFactory.getLogger(EventController.class);
 
 	/**
 	 * GameController subclasses should implement initController in order to do
@@ -32,23 +30,29 @@ public abstract class EventController{
 	public abstract RequestEvent createRequestEvent();
 
 	/**
-	 * subclasses must implement to do their processing
+	 * TBD Factory method for acquiring response builders where cross-cutting
+	 * reply envelope properties can be set without knowledge of the specific
+	 * response payload type.
 	 * 
-	 * @throws Exception
+	 * Primarily to be used to set status code information in common exception
+	 * handling.
+	 * 
+	 * NOTE: DO NOT DO THIS! Instead, use an annotation to facilitate reflective
+	 *       access to the appropriate Protobuf builder and, if necessary, its
+	 *       setStatus( ) method as well as the enum to name match against.
 	 */
-
-	public EventsToDispatch handleEvent(GameEvent event) {
-		try {
-			EventsToDispatch cre = new EventsToDispatch();
-			processEvent(event, cre);
-			return cre;
-		} catch (Exception e) {
-			log.error("Error handling game event: {}", event, e);
-		}
-		return new EventsToDispatch();
+	// public abstract Object createResponseBuilder();
+	
+	public final EventsToDispatch handleEvent(GameEvent event) {
+		final EventsToDispatch cre = new EventsToDispatch();
+		// Exception handling is addressed by processEvent itself.
+		// try {
+		processEvent(event, cre);
+		// }
+		return cre;
 	}
 	
-	protected void processEvent(GameEvent event, EventsToDispatch eventWriter) throws Exception {
+	protected void processEvent(GameEvent event, EventsToDispatch eventWriter) {
 		final RequestEvent reqEvent = (RequestEvent) event;
 		
 		//TODO: fix this
@@ -60,14 +64,17 @@ public abstract class EventController{
 								reqEvent.getPlayerId(), null));*/
 		log.info("Received event: {}", event.getClass().getSimpleName());
 
-		final long startTime = System.nanoTime();
 		final long endTime;
+		final long startTime = TimeUtils.nanoTime();
 		try {
 			processRequestEvent(reqEvent, eventWriter);
-		} catch (Exception e) {
-			throw e;
+		} catch (Lvl6MobstersException e) {
+			// TODO: 
+			log.error("Error handling game event: {}", event, e);
+		} catch (Throwable e) {
+			log.error("Error handling game event: {}", event, e);
 		} finally {
-			endTime = System.nanoTime();
+			endTime = TimeUtils.nanoTime();
 		}
 		double numSeconds = (endTime - startTime) / 1000000;
 
@@ -86,6 +93,12 @@ public abstract class EventController{
 	 */
 	public abstract EventProtocolRequest getEventType();
 
+	/**
+	 * subclasses must implement to do their processing
+	 * 
+	 * @throws Exception
+	 * @throws Lvl6Exception
+	 */
 	@Async
 	protected abstract void processRequestEvent(RequestEvent event, EventsToDispatch eventWriter) throws Exception;
 

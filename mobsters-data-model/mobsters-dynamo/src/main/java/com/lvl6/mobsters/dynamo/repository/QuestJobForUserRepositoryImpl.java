@@ -25,7 +25,7 @@ public class QuestJobForUserRepositoryImpl extends BaseDynamoCollectionRepositor
 	
 	public QuestJobForUserRepositoryImpl()
 	{
-		super(QuestJobForUser.class, "questJobId", Integer.class);
+		super(QuestJobForUser.class, "questJobId", Integer.TYPE);
 	}
 
 	@Override

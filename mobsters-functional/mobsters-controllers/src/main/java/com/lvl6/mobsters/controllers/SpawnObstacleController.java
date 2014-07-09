@@ -21,6 +21,7 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.MinimumObstacleProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.structure.StructureService;
 import com.lvl6.mobsters.services.structure.StructureService.CreateUserObstaclesSpec;
 import com.lvl6.mobsters.services.structure.StructureService.CreateUserObstaclesSpecBuilder;
@@ -57,7 +58,9 @@ public class SpawnObstacleController extends EventController {
             ((SpawnObstacleRequestEvent) event).getSpawnObstacleRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        final Date clientTime = new Date(reqProto.getCurTime());
+        final Date clientTime = 
+            TimeUtils.createDateFromTime(
+            	reqProto.getCurTime());
         final List<MinimumObstacleProto> mopList = reqProto.getProspectiveObstaclesList();
 
         // prepare to send response back to client

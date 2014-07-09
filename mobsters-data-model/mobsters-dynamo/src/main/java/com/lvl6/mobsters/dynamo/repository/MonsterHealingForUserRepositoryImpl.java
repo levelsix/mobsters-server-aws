@@ -10,6 +10,7 @@ import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 	implements
 		MonsterHealingForUserRepository
 {
+	@SuppressWarnings("unused")
 	private static final Logger LOG =
 		LoggerFactory.getLogger(MonsterHealingForUserRepositoryImpl.class);
 

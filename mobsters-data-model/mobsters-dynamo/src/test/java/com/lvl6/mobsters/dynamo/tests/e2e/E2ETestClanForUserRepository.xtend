@@ -26,8 +26,6 @@ public class E2ETestClanForUserRepository
 {
 	private static val Logger LOG = LoggerFactory.getLogger(E2ETestClanForUserRepository);
 
-	extension ListExtensions
-	
 	@Autowired
 	var SetupDynamoDB setup;
 

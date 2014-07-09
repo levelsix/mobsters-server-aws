@@ -15,7 +15,7 @@ import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 		LoggerFactory.getLogger(MonsterEvolvingForUserRepositoryImpl.class);
 
 	public MonsterEvolvingForUserRepositoryImpl(){
-		super(MonsterEvolvingForUser.class, "monsterForUserId", String.class);
+		super(MonsterEvolvingForUser.class, "catalystMonsterForUserId", String.class);
 	}
  
 	@Override

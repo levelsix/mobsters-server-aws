@@ -6,8 +6,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,10 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
-import com.lvl6.mobsters.info.MonsterLevelInfo;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
+import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
@@ -49,6 +50,9 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Autowired
 	private MonsterRepository monsterRepository;
+	
+	// @Autowired
+	// private MonsterLevelInfoRepository monsterLevelInfoRepository;
 	
 	@Autowired
 	private MonsterForUserRepository monsterForUserRepository;
@@ -67,6 +71,10 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	// Temporary workaround until this service is ported to XTend
+	@Inject
+	private ConfigExtensions configExtensions;
 	
 	// BEGIN READ ONLY LOGIC******************************************************************
 	
@@ -95,7 +103,7 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public User combineMonsterForUser( String userIdString, List<String> userMonsterIds,
 		int gemCost, Date curDate ) {
-		
+	
 		final User u = userRepository.load(userIdString);
 		final List<MonsterForUser> userMonsters = monsterForUserRepository.loadEach(userIdString, userMonsterIds);
 		
@@ -179,7 +187,7 @@ public class MonsterServiceImpl implements MonsterService
 					Collections.singleton(monsterForUserId), teamSlotNum);
 
 		for (final MonsterForUser mfu : monstersForUser) {
-			if (monsterForUserId == mfu.getMonsterForUserId()) {
+			if (monsterForUserId == mfu.getMonsterForUserUuid()) {
 				mfu.setTeamSlotNum(teamSlotNum);
 			} else {
 				mfu.setTeamSlotNum(0);
@@ -256,9 +264,8 @@ public class MonsterServiceImpl implements MonsterService
 
 			// Mutate the objects
 			for (final MonsterForUser nextMonster : existingUserMonsters) {
-				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserId());
-				for (MonsterFunc nextMonsterOp : monsterOps) {
-					
+				for (final MonsterFunc nextMonsterOp : specMap.get(nextMonster.getMonsterForUserUuid())) {
+					nextMonsterOp.apply(nextMonster);
 				}
 			}
 
@@ -387,29 +394,23 @@ public class MonsterServiceImpl implements MonsterService
 		try {
 		List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
 			List<Monster> monzters = monsterRepository.findAll(monsterIds);
-			int ii=0;
+			int teamSlotNum=1;
 		
-			for (Monster monzter : monzters) {
-		  		int monsterId = monzter.getId();
-		  		int teamSlotNum = ++ii;
+			for (final Monster monzter : monzters) {
 	  		
-	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
-	  		
-	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
-	  		Collections.sort(lvls);
-	  		int firstOne = lvls.get(0);
-	  		IMonsterLevelInfo mli = info.get(firstOne);
+		  		/* XTend: monzter.firstLevelInfo */
+		  		final IMonsterLevelInfo mli = configExtensions.getFirstLevelInfo(monzter);
 	  		
 	  		MonsterForUser mfu = new MonsterForUser();
 	  		mfu.setUserId(userId);
-	  		mfu.setMonsterId(monsterId);
+	  		mfu.setMonsterId(monzter.getId());
 	  		mfu.setCurrentExp(0);
 	  		mfu.setCurrentLvl(mli.getLevel());
 	  		mfu.setCurrentHealth(mli.getHp());
 	  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
 	  		mfu.setComplete(true);
 	  		mfu.setCombineStartTime(combineStartTime);
-	  		mfu.setTeamSlotNum(teamSlotNum);
+	  		mfu.setTeamSlotNum(teamSlotNum++);
 	  	}
 		
 			monsterForUserRepository.saveEach(mfuList);
@@ -443,7 +444,6 @@ public class MonsterServiceImpl implements MonsterService
             }
             return mfu;
         }
-
 
 		@Override
 		public CreateMonstersSpec build()
@@ -525,20 +525,9 @@ public class MonsterServiceImpl implements MonsterService
 	}
 	*/
 	
-
-	public MonsterForUserRepository getMonsterForUserRepository()
-	{
-		return monsterForUserRepository;
-	}
-
 	public void setMonsterForUserRepository( MonsterForUserRepository monsterForUserRepository )
 	{
 		this.monsterForUserRepository = monsterForUserRepository;
-	}
-
-	public MonsterForUserHistoryRepository getMonsterForUserHistoryRepository()
-	{
-		return monsterForUserHistoryRepository;
 	}
 
 	public void setMonsterForUserHistoryRepository(
@@ -547,20 +536,10 @@ public class MonsterServiceImpl implements MonsterService
 		this.monsterForUserHistoryRepository = monsterForUserHistoryRepository;
 	}
 
-	public MonsterHealingForUserRepository getMonsterHealingForUserRepository()
-	{
-		return monsterHealingForUserRepository;
-	}
-
 	public void setMonsterHealingForUserRepository(
 		MonsterHealingForUserRepository monsterHealingForUserRepository )
 	{
 		this.monsterHealingForUserRepository = monsterHealingForUserRepository;
-	}
-
-	public MonsterEnhancingForUserRepository getMonsterEnhancingForUserRepository()
-	{
-		return monsterEnhancingForUserRepository;
 	}
 
 	public void setMonsterEnhancingForUserRepository(
@@ -568,12 +547,7 @@ public class MonsterServiceImpl implements MonsterService
 	{
 		this.monsterEnhancingForUserRepository = monsterEnhancingForUserRepository;
 	}
-
-	public UserRepository getUserRepository()
-	{
-		return userRepository;
-	}
-
+	
 	public void setUserRepository( UserRepository userRepository )
 	{
 		this.userRepository = userRepository;

@@ -226,7 +226,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	@Override
 	public FullUserMonsterProto createFullUserMonsterProtoFromUserMonster(MonsterForUser mfu) {
 		FullUserMonsterProto.Builder fumpb = FullUserMonsterProto.newBuilder();
-	    fumpb.setUserMonsterUuid(mfu.getMonsterForUserId());
+	    fumpb.setUserMonsterUuid(mfu.getMonsterForUserUuid());
 	    fumpb.setUserUuid(mfu.getUserId());
 	    fumpb.setMonsterId(mfu.getMonsterId());
 	    fumpb.setCurrentExp(mfu.getCurrentExp());

@@ -15,11 +15,12 @@ public class AchievementForUserRepositoryImpl extends
 		BaseDynamoCollectionRepositoryImpl<AchievementForUser, Integer> 
 	implements AchievementForUserRepository {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AchievementForUserRepositoryImpl.class);
 
 	public AchievementForUserRepositoryImpl() {
-		super(AchievementForUser.class, "achievementId", Integer.class);
+		super(AchievementForUser.class, "achievementId", Integer.TYPE);
 	}
 
 	/* (non-Javadoc)
@@ -29,7 +30,7 @@ public class AchievementForUserRepositoryImpl extends
 	public List<AchievementForUser> findByUserIdAndAchievementIdIn(final String userId,
 	    final Iterable<Integer> achievementIds) {
 	    return loadEach(userId, achievementIds);
-	}
+	    }
 
 	@Override
 	public List<AchievementForUser> findByUserId( final String userId ) {
@@ -41,8 +42,6 @@ public class AchievementForUserRepositoryImpl extends
 	    return load(userId, achievementId);
 	}
 	
-	
-
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes() {
 		return null;
@@ -52,5 +51,4 @@ public class AchievementForUserRepositoryImpl extends
 	public List<GlobalSecondaryIndex> getGlobalIndexes() {
 		return null;
 	}
-
 }

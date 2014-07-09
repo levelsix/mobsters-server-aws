@@ -7,7 +7,6 @@ import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.Period;
@@ -200,6 +199,10 @@ public class TimeUtils
 
 		return createdDate;
 	}
+
+	public static Date createDateFromTime(long clientTime) {
+		return new Date(clientTime);
+	}
     
     public static Calendar createToday() {
     	return new GregorianCalendar();
@@ -207,5 +210,9 @@ public class TimeUtils
     
     public static long currentTimeMillis() {
     	return System.currentTimeMillis();
+    }
+    
+    public static long nanoTime() {
+    	return System.nanoTime();
     }
 }
