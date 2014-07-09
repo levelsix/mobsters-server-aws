@@ -1,6 +1,3 @@
-import java.util.Date;
-
-import com.lvl6.mobsters.services.common.TimeUtils;
 
 // package com.lvl6.mobsters.controllers;
 //
@@ -36,6 +33,7 @@ import com.lvl6.mobsters.services.common.TimeUtils;
 // import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 // import com.lvl6.mobsters.server.EventController;
 // import com.lvl6.mobsters.services.taskforuserongoing.TaskForUserOngoingService;
+// import com.lvl6.mobsters.services.common.TimeUtils;
 // import com.lvl6.mobsters.services.user.UserService;
 //
 // @Component
