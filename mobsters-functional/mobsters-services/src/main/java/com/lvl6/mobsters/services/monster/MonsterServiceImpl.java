@@ -92,7 +92,7 @@ public class MonsterServiceImpl implements MonsterService
 					Collections.singleton(monsterForUserId), teamSlotNum);
 
 		for (final MonsterForUser mfu : monstersForUser) {
-			if (monsterForUserId == mfu.getMonsterForUserId()) {
+			if (monsterForUserId == mfu.getMonsterForUserUuid()) {
 				mfu.setTeamSlotNum(teamSlotNum);
 			} else {
 				mfu.setTeamSlotNum(0);
@@ -171,7 +171,7 @@ public class MonsterServiceImpl implements MonsterService
 			for (final MonsterForUser nextMonster : existingUserMonsters) {
 				Collection<MonsterFunc> monsterOps = specMap.get(nextMonster.getMonsterForUserUuid());
 				for (MonsterFunc nextMonsterOp : monsterOps) {
-					
+					nextMonsterOp.apply(nextMonster);
 				}
 			}
 
