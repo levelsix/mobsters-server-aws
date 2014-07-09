@@ -2,10 +2,10 @@
 
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
- 	name="MobstersConfigCache"
-    maxBytesLocalHeap="250M">    
+ 	name="MobstersConfigCache" maxBytesLocalHeap="250M" >    
 
-    <defaultCache eternal="true" copyOnRead="true" overflowToDisk="false" />           
+    <defaultCache eternal="true" copyOnRead="true" diskPersistent="false" 
+    	maxElementsInMemory="0" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" />           
 
 <!--     <cache  -->
 <!--     	name="Achievement" -->
@@ -14,5 +14,12 @@
 <!--     	maxBytesLocalHeap="100M" -->
 <!--     	timeToIdleSeconds="3000" -->
 <!--     	timeToLiveSeconds="6000" />   -->
-	
+
+	<!-- NO: maxEntriesLocalHeap="150" maxEntriesInCache="150" --> 
+	<cache name="com.lvl6.mobsters.info.Achievement" 
+	    eternal="true" copyOnRead="false" copyOnWrite="true"
+		diskPersistent="false" 
+		overflowToDisk="false" overflowToOffHeap="false" 
+		maxElementsInMemory="0" maxMemoryOffHeap="150M"
+		timeToIdleSeconds="3" timeToLiveSeconds="6" />	
  </ehcache>
