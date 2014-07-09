@@ -23,6 +23,7 @@ import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.achievement.AchievementService.ModifyUserAchievementsSpec;
 import com.lvl6.mobsters.services.achievement.AchievementService.ModifyUserAchievementsSpecBuilder;
+import com.lvl6.mobsters.services.common.TimeUtils;
 
 @Component
 public class AchievementProgressController extends EventController {
@@ -55,8 +56,10 @@ public class AchievementProgressController extends EventController {
             ((AchievementProgressRequestEvent) event).getAchievementProgressRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        List<UserAchievementProto> uapList = reqProto.getUapListList();
-        Date clientTime = new Date(reqProto.getClientTime());
+        final List<UserAchievementProto> uapList = reqProto.getUapListList();
+        final Date clientTime = 
+            TimeUtils.createDateFromTime(
+            	reqProto.getClientTime());
 
         // prepare to send response back to client
         AchievementProgressResponseProto.Builder responseBuilder =

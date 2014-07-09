@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.eventproto.utils;
 
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import com.lvl6.mobsters.eventproto.EventUserProto.UpdateClientUserResponseProto
 import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
+import com.lvl6.mobsters.services.common.TimeUtils;
 
 public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 
@@ -33,8 +32,9 @@ public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 	    FullUserProto fup = noneventUserProtoSerializer.createFullUserProto(
 	    		u, uc, udra, clan, plfu); 
 	    ucurpb.setSender(fup);
-	    ucurpb.setTimeOfUserUpdate(new Date().getTime()).build();
-	    
+	    ucurpb.setTimeOfUserUpdate(
+	    	TimeUtils.currentTimeMillis()
+	    ).build();
 	    
 	    String userIdStr = u.getId().toString();
 	    UpdateClientUserResponseEvent resEvent =

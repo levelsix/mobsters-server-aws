@@ -55,7 +55,9 @@ public class SpawnMiniJobController extends EventController {
             ((SpawnMiniJobRequestEvent) event).getSpawnMiniJobRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        Date clientTime = new Date(reqProto.getClientTime());
+        final Date clientTime = 
+            TimeUtils.createDateFromTime(
+            	reqProto.getClientTime());
         int numToSpawn = reqProto.getNumToSpawn();
         int structId = reqProto.getStructId();
 

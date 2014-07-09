@@ -1,3 +1,7 @@
+import java.util.Date;
+
+import com.lvl6.mobsters.services.common.TimeUtils;
+
 // package com.lvl6.mobsters.controllers;
 //
 // import java.sql.Timestamp;
@@ -70,7 +74,9 @@
 //
 // MinimumUserProto senderProto = reqProto.getSender();
 // String userId = senderProto.getUserUuid();
-// Date curTime = new Date(reqProto.getClientTime());
+//        final Date clientTime = 
+//        	TimeUtils.createDateFromTime(
+//        		reqProto.getClientTime());
 // int taskId = reqProto.getTaskId();
 //
 // //if is event, start the cool down timer in event_persistent_for_user

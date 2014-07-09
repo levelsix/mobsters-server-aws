@@ -20,6 +20,7 @@ import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.structure.BeginObstacleRemovalService;
 
 @Component
@@ -56,7 +57,9 @@ public class BeginObstacleRemovalController extends EventController {
             ((BeginObstacleRemovalRequestEvent) event).getBeginObstacleRemovalRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        final Date clientTime = new Date(reqProto.getCurTime());
+        final Date clientTime = 
+            TimeUtils.createDateFromTime(
+            	reqProto.getCurTime());
         final int gemsSpent = reqProto.getGemsSpent();
         final int resourceChange = reqProto.getResourceChange();
         String resourceType = reqProto.getResourceType().name();
