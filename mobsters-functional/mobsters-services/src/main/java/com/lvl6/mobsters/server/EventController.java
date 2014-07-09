@@ -9,6 +9,7 @@ import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.GameEvent;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.properties.Globals;
 
@@ -67,7 +68,7 @@ public abstract class EventController{
 		final long startTime = TimeUtils.nanoTime();
 		try {
 			processRequestEvent(reqEvent, eventWriter);
-		} catch (Lvl6Exception e) {
+		} catch (Lvl6MobstersException e) {
 			// TODO: 
 			log.error("Error handling game event: {}", event, e);
 		} catch (Throwable e) {
