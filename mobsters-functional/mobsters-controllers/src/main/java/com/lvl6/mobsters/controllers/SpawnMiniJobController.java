@@ -1,15 +1,12 @@
 package com.lvl6.mobsters.controllers;
 
 import java.util.Date;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.common.utils.CollectionUtils;
-import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.SpawnMiniJobRequestProto;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.SpawnMiniJobResponseProto;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.SpawnMiniJobResponseProto.SpawnMiniJobStatus;
@@ -17,12 +14,11 @@ import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.SpawnMiniJobRequestEvent;
 import com.lvl6.mobsters.events.response.SpawnMiniJobResponseEvent;
-import com.lvl6.mobsters.info.MiniJob;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.minijob.MiniJobService;
-import com.lvl6.mobsters.services.minijob.MiniJobService.CreateUserMiniJobsSpecBuilder;
 
 @Component
 public class SpawnMiniJobController extends EventController {
@@ -31,10 +27,6 @@ public class SpawnMiniJobController extends EventController {
 
     @Autowired
     protected MiniJobService miniJobService;
-
-    /*
-     * @Autowired protected EventWriter eventWriter;
-     */
 
     public SpawnMiniJobController() {}
 
@@ -72,18 +64,19 @@ public class SpawnMiniJobController extends EventController {
 
         // Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
-        final CreateUserMiniJobsSpecBuilder modBuilder = CreateUserMiniJobsSpec.builder();
         responseBuilder.setStatus(SpawnMiniJobStatus.SUCCESS);
 
         // call service if syntax is ok
         if (responseBuilder.getStatus() == SpawnMiniJobStatus.SUCCESS) {
             try {
+                // TODO: Ensure that the user's lastMiniJobGenerated time is updated to "now",
+                //       a.k.a. clientTime
+                miniJobService.spawnMiniJobsForUser(userIdString, clientTime, numToSpawn, structId);
                 // TODO: Ensure that the user's lastMiniJobGenerated time is updated to now,
                 //       er, clientTime
-                miniJobService.createMiniJobsForUser(userIdString, clientTime, numToSpawn, structId);
             } catch (Exception e) {
                 LOG.error(
-                    "exception in SpawnMiniJobController processEvent when calling userService",
+                    "exception in SpawnMiniJobController processEvent when calling miniJobService",
                     e);
                 responseBuilder.setStatus(SpawnMiniJobStatus.FAIL_OTHER);
             }
@@ -92,12 +85,8 @@ public class SpawnMiniJobController extends EventController {
         resEvent.setSpawnMiniJobResponseProto(responseBuilder.build());
 
         // write to client
-        LOG.info("Writing event: " + resEvent);
-        try {
-            eventWriter.writeEvent(resEvent);
-        } catch (Exception e) {
-            LOG.error("fatal exception in SpawnMiniJobController processRequestEvent", e);
-        }
+        LOG.info("Writing event: %s", resEvent);
+        eventWriter.writeEvent(resEvent);
 
         // TODO: FIGURE OUT IF THIS IS STILL NEEDED
         // game center id might have changed
@@ -127,7 +116,6 @@ public class SpawnMiniJobController extends EventController {
     }
 
     public void setMiniJobService( MiniJobService miniJobService ) {
-        this.miniJobService = miniJobService;
     }
 
 }
