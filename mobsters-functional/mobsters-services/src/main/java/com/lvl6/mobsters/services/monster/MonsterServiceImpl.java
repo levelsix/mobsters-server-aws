@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,9 +26,9 @@ import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.IMonster;
-import com.lvl6.mobsters.info.MonsterLevelInfo;
+import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
+import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
@@ -37,6 +38,9 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Autowired
 	private MonsterRepository monsterRepository;
+	
+	// @Autowired
+	// private MonsterLevelInfoRepository monsterLevelInfoRepository;
 	
 	@Autowired
 	private MonsterForUserRepository monsterForUserRepository;
@@ -52,6 +56,10 @@ public class MonsterServiceImpl implements MonsterService
 
 	@Autowired
 	private MonsterEvolvingForUserRepository monsterEvolvingForUserRepository;
+	
+	// Temporary workaround until this service is ported to XTend
+	@Inject
+	private ConfigExtensions configExtensions;
 	
 	// BEGIN READ ONLY LOGIC******************************************************************
 	
@@ -302,28 +310,24 @@ public class MonsterServiceImpl implements MonsterService
 			List<Monster> monzters = monsterRepository.findAll(monsterIds);
 			int ii=0;
 		
-			for (Monster monzter : monzters) {
+			for (final Monster monzter : monzters) {
 		  		int monsterId = monzter.getId();
 		  		int teamSlotNum = ++ii;
-	  		
-	  		Map<Integer, MonsterLevelInfo> info = null;//MonsterLevelInfoRetrieveUtils.getMonsterLevelInfoForMonsterId(monsterId);
-	  		
-	  		List<Integer> lvls = new ArrayList<Integer>(info.keySet());
-	  		Collections.sort(lvls);
-	  		int firstOne = lvls.get(0);
-	  		IMonsterLevelInfo mli = info.get(firstOne);
-	  		
-	  		MonsterForUser mfu = new MonsterForUser();
-	  		mfu.setUserId(userId);
-	  		mfu.setMonsterId(monsterId);
-	  		mfu.setCurrentExp(0);
-	  		mfu.setCurrentLvl(mli.getLevel());
-	  		mfu.setCurrentHealth(mli.getHp());
-	  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
-	  		mfu.setComplete(true);
-	  		mfu.setCombineStartTime(combineStartTime);
-	  		mfu.setTeamSlotNum(teamSlotNum);
-	  	}
+		  		
+		  		/* XTend: monzter.firstLevelInfo */
+		  		final IMonsterLevelInfo mli = configExtensions.getFirstLevelInfo(monzter);
+		  		
+		  		MonsterForUser mfu = new MonsterForUser();
+		  		mfu.setUserId(userId);
+		  		mfu.setMonsterId(monsterId);
+		  		mfu.setCurrentExp(0);
+		  		mfu.setCurrentLvl(mli.getLevel());
+		  		mfu.setCurrentHealth(mli.getHp());
+		  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
+		  		mfu.setComplete(true);
+		  		mfu.setCombineStartTime(combineStartTime);
+		  		mfu.setTeamSlotNum(teamSlotNum);
+		  	}
 		
 			monsterForUserRepository.saveEach(mfuList);
 		// TODO: Record into monsterForUserHistory
