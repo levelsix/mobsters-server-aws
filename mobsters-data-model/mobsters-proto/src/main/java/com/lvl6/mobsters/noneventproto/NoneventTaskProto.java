@@ -641,6 +641,14 @@ public final class NoneventTaskProto {
     // optional int32 prerequisiteQuestId = 5;
     boolean hasPrerequisiteQuestId();
     int getPrerequisiteQuestId();
+    
+    // optional int32 boardWidth = 6;
+    boolean hasBoardWidth();
+    int getBoardWidth();
+    
+    // optional int32 boardHeight = 7;
+    boolean hasBoardHeight();
+    int getBoardHeight();
   }
   public static final class FullTaskProto extends
       com.google.protobuf.GeneratedMessage
@@ -765,12 +773,34 @@ public final class NoneventTaskProto {
       return prerequisiteQuestId_;
     }
     
+    // optional int32 boardWidth = 6;
+    public static final int BOARDWIDTH_FIELD_NUMBER = 6;
+    private int boardWidth_;
+    public boolean hasBoardWidth() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public int getBoardWidth() {
+      return boardWidth_;
+    }
+    
+    // optional int32 boardHeight = 7;
+    public static final int BOARDHEIGHT_FIELD_NUMBER = 7;
+    private int boardHeight_;
+    public boolean hasBoardHeight() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    public int getBoardHeight() {
+      return boardHeight_;
+    }
+    
     private void initFields() {
       taskId_ = 0;
       name_ = "";
       description_ = "";
       prerequisiteTaskId_ = 0;
       prerequisiteQuestId_ = 0;
+      boardWidth_ = 0;
+      boardHeight_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -798,6 +828,12 @@ public final class NoneventTaskProto {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(5, prerequisiteQuestId_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(6, boardWidth_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeInt32(7, boardHeight_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -827,6 +863,14 @@ public final class NoneventTaskProto {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(5, prerequisiteQuestId_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, boardWidth_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(7, boardHeight_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -962,6 +1006,10 @@ public final class NoneventTaskProto {
         bitField0_ = (bitField0_ & ~0x00000008);
         prerequisiteQuestId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        boardWidth_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        boardHeight_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
       
@@ -1020,6 +1068,14 @@ public final class NoneventTaskProto {
           to_bitField0_ |= 0x00000010;
         }
         result.prerequisiteQuestId_ = prerequisiteQuestId_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.boardWidth_ = boardWidth_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.boardHeight_ = boardHeight_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1050,6 +1106,12 @@ public final class NoneventTaskProto {
         }
         if (other.hasPrerequisiteQuestId()) {
           setPrerequisiteQuestId(other.getPrerequisiteQuestId());
+        }
+        if (other.hasBoardWidth()) {
+          setBoardWidth(other.getBoardWidth());
+        }
+        if (other.hasBoardHeight()) {
+          setBoardHeight(other.getBoardHeight());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1105,6 +1167,16 @@ public final class NoneventTaskProto {
             case 40: {
               bitField0_ |= 0x00000010;
               prerequisiteQuestId_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              boardWidth_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              boardHeight_ = input.readInt32();
               break;
             }
           }
@@ -1244,6 +1316,48 @@ public final class NoneventTaskProto {
       public Builder clearPrerequisiteQuestId() {
         bitField0_ = (bitField0_ & ~0x00000010);
         prerequisiteQuestId_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 boardWidth = 6;
+      private int boardWidth_ ;
+      public boolean hasBoardWidth() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public int getBoardWidth() {
+        return boardWidth_;
+      }
+      public Builder setBoardWidth(int value) {
+        bitField0_ |= 0x00000020;
+        boardWidth_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearBoardWidth() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        boardWidth_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 boardHeight = 7;
+      private int boardHeight_ ;
+      public boolean hasBoardHeight() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      public int getBoardHeight() {
+        return boardHeight_;
+      }
+      public Builder setBoardHeight(int value) {
+        bitField0_ |= 0x00000040;
+        boardHeight_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearBoardHeight() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        boardHeight_ = 0;
         onChanged();
         return this;
       }
@@ -4085,33 +4199,34 @@ public final class NoneventTaskProto {
       "ster.proto\032\036ConfigNoneventSharedEnum.pro" +
       "to\"V\n\016TaskStageProto\022\017\n\007stageId\030\001 \001(\005\0223\n" +
       "\rstageMonsters\030\002 \003(\0132\034.proto.TaskStageMo" +
-      "nsterProto\"{\n\rFullTaskProto\022\016\n\006taskId\030\001 " +
-      "\001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\032" +
-      "\n\022prerequisiteTaskId\030\004 \001(\005\022\033\n\023prerequisi" +
-      "teQuestId\030\005 \001(\005\"f\n\024MinimumUserTaskProto\022" +
-      "\020\n\010userUuid\030\001 \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026\n\016cur" +
-      "TaskStageId\030\003 \001(\005\022\024\n\014userTaskUuid\030\004 \001(\t\"",
-      "\252\002\n\025TaskStageMonsterProto\022\021\n\tmonsterId\030\001" +
-      " \001(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.TaskSt" +
-      "ageMonsterProto.MonsterType\022\021\n\texpReward" +
-      "\030\003 \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilReward\030" +
-      "\010 \001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005lev" +
-      "el\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\022\025\n\rdmgMultiplie" +
-      "r\030\t \001(\002\"3\n\013MonsterType\022\013\n\007REGULAR\020\001\022\r\n\tM" +
-      "INI_BOSS\020\002\022\010\n\004BOSS\020\003\"\370\002\n\024PersistentEvent" +
-      "Proto\022\017\n\007eventId\030\001 \001(\005\022+\n\tdayOfWeek\030\002 \001(" +
-      "\0162\020.proto.DayOfWeek:\006MONDAY\022\021\n\tstartHour",
-      "\030\003 \001(\005\022\034\n\024eventDurationMinutes\030\004 \001(\005\022\016\n\006" +
-      "taskId\030\005 \001(\005\022\027\n\017cooldownMinutes\030\006 \001(\005\022M\n" +
-      "\004type\030\007 \001(\0162%.proto.PersistentEventProto" +
-      ".EventType:\030NO_PERSISTENT_EVENT_TYPE\0222\n\016" +
-      "monsterElement\030\010 \001(\0162\016.proto.Element:\nNO" +
-      "_ELEMENT\"E\n\tEventType\022\013\n\007ENHANCE\020\001\022\r\n\tEV" +
-      "OLUTION\020\002\022\034\n\030NO_PERSISTENT_EVENT_TYPE\020\003\"" +
-      "X\n\030UserPersistentEventProto\022\020\n\010userUuid\030" +
-      "\001 \001(\t\022\017\n\007eventId\030\002 \001(\005\022\031\n\021coolDownStartT" +
-      "ime\030\003 \001(\003B4\n\037com.lvl6.mobsters.noneventp",
-      "rotoB\021NoneventTaskProto"
+      "nsterProto\"\244\001\n\rFullTaskProto\022\016\n\006taskId\030\001" +
+      " \001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022" +
+      "\032\n\022prerequisiteTaskId\030\004 \001(\005\022\033\n\023prerequis" +
+      "iteQuestId\030\005 \001(\005\022\022\n\nboardWidth\030\006 \001(\005\022\023\n\013" +
+      "boardHeight\030\007 \001(\005\"f\n\024MinimumUserTaskProt" +
+      "o\022\020\n\010userUuid\030\001 \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026\n\016c",
+      "urTaskStageId\030\003 \001(\005\022\024\n\014userTaskUuid\030\004 \001(" +
+      "\t\"\252\002\n\025TaskStageMonsterProto\022\021\n\tmonsterId" +
+      "\030\001 \001(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.Task" +
+      "StageMonsterProto.MonsterType\022\021\n\texpRewa" +
+      "rd\030\003 \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilRewar" +
+      "d\030\010 \001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005l" +
+      "evel\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\022\025\n\rdmgMultipl" +
+      "ier\030\t \001(\002\"3\n\013MonsterType\022\013\n\007REGULAR\020\001\022\r\n" +
+      "\tMINI_BOSS\020\002\022\010\n\004BOSS\020\003\"\370\002\n\024PersistentEve" +
+      "ntProto\022\017\n\007eventId\030\001 \001(\005\022+\n\tdayOfWeek\030\002 ",
+      "\001(\0162\020.proto.DayOfWeek:\006MONDAY\022\021\n\tstartHo" +
+      "ur\030\003 \001(\005\022\034\n\024eventDurationMinutes\030\004 \001(\005\022\016" +
+      "\n\006taskId\030\005 \001(\005\022\027\n\017cooldownMinutes\030\006 \001(\005\022" +
+      "M\n\004type\030\007 \001(\0162%.proto.PersistentEventPro" +
+      "to.EventType:\030NO_PERSISTENT_EVENT_TYPE\0222" +
+      "\n\016monsterElement\030\010 \001(\0162\016.proto.Element:\n" +
+      "NO_ELEMENT\"E\n\tEventType\022\013\n\007ENHANCE\020\001\022\r\n\t" +
+      "EVOLUTION\020\002\022\034\n\030NO_PERSISTENT_EVENT_TYPE\020" +
+      "\003\"X\n\030UserPersistentEventProto\022\020\n\010userUui" +
+      "d\030\001 \001(\t\022\017\n\007eventId\030\002 \001(\005\022\031\n\021coolDownStar",
+      "tTime\030\003 \001(\003B4\n\037com.lvl6.mobsters.noneven" +
+      "tprotoB\021NoneventTaskProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4131,7 +4246,7 @@ public final class NoneventTaskProto {
           internal_static_proto_FullTaskProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FullTaskProto_descriptor,
-              new java.lang.String[] { "TaskId", "Name", "Description", "PrerequisiteTaskId", "PrerequisiteQuestId", },
+              new java.lang.String[] { "TaskId", "Name", "Description", "PrerequisiteTaskId", "PrerequisiteQuestId", "BoardWidth", "BoardHeight", },
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto.class,
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto.Builder.class);
           internal_static_proto_MinimumUserTaskProto_descriptor =

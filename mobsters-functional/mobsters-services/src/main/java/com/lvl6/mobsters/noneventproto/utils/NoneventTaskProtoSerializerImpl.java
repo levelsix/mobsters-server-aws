@@ -59,6 +59,9 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		if (null != prerequisiteTask) {
 			builder.setPrerequisiteTaskId(prerequisiteTask.getId());
 		}
+		
+		builder.setBoardHeight(task.getBoardHeight());
+		builder.setBoardWidth(task.getBoardWidth());
 
 		return builder.build();
 	}

@@ -23,6 +23,8 @@ message FullTaskProto {
 	optional string description = 3;
 	optional int32 prerequisiteTaskId = 4;
 	optional int32 prerequisiteQuestId = 5;
+	optional int32 boardWidth = 6;
+	optional int32 boardHeight = 7;
 }
 
 //------------------------------------------------------------------------------------------

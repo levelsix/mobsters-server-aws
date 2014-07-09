@@ -15,4 +15,12 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public void setPrerequisiteTask( ITask prerequisiteTask );
 
+	public abstract void setBoardHeight( int boardHeight );
+
+	public abstract int getBoardHeight();
+
+	public abstract void setBoardWidth( int boardWidth );
+
+	public abstract int getBoardWidth();
+
 }
