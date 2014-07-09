@@ -41,21 +41,7 @@ public class AchievementForUserRepositoryImpl extends
 	public AchievementForUser findByUserIdAndAchievementId(String userId, Integer achievementId) {
 	    return load(userId, achievementId);
 	}
-	protected void createTable() {
-		try {
-			log.info("Creating Dynamo table {}", getTableName());
-			ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
-			attributeDefinitions.add(new AttributeDefinition()
-					.withAttributeName("userId").withAttributeType("S"));
-			attributeDefinitions.add(new AttributeDefinition()
-					.withAttributeName("achievementId").withAttributeType("N"));
-
-			ArrayList<KeySchemaElement> ks = new ArrayList<KeySchemaElement>();
-			ks.add(new KeySchemaElement().withAttributeName("userId")
-					.withKeyType(KeyType.HASH));
-			ks.add(new KeySchemaElement().withAttributeName("achievementId")
-					.withKeyType(KeyType.RANGE));	
-
+	
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes() {
 		return null;
