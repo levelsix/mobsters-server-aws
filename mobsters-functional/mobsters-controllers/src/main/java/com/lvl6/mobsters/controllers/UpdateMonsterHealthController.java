@@ -103,12 +103,7 @@ public class UpdateMonsterHealthController extends EventController
 		// write to client
 		LOG.info("Writing event: "
 			+ resEvent);
-		try {
-			eventWriter.writeEvent(resEvent);
-		} catch (final Exception exp) {
-			LOG.error("fatal exception in UpdateMonsterHealthController processRequestEvent",
-				exp);
-		}
+		eventWriter.writeEvent(resEvent);
 	}
 
 	public MonsterService getMonsterService()

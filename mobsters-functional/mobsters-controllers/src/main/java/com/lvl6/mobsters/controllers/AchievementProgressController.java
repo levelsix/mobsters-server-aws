@@ -108,34 +108,9 @@ public class AchievementProgressController extends EventController {
 
         // write to client
         LOG.info("Writing event: " + resEvent);
-        try {
-            eventWriter.writeEvent(resEvent);
-        } catch (Exception e) {
-            LOG.error("fatal exception in AchievementProgressController processRequestEvent", e);
-        }
+        eventWriter.writeEvent(resEvent);
 
-        // TODO: FIGURE OUT IF THIS IS STILL NEEDED
-        // game center id might have changed
-        // null PvpLeagueFromUser means will pull from a cache instead
-        // UpdateClientUserResponseEvent resEventUpdate =
-        // CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-        // resEventUpdate.setTag(event.getTag());
-        // eventWriter.writeEvent(resEventUpdate);
     }
-
-    // private void failureCase(
-    // RequestEvent event,
-    // EventsToDispatch eventWriter,
-    // String userId,
-    // AchievementProgressResponseProto.Builder resBuilder )
-    // {
-    // eventWriter.clearResponses();
-    // resBuilder.setStatus(AchievementProgressStatus.FAIL_OTHER);
-    // AchievementProgressResponseEvent resEvent = new AchievementProgressResponseEvent(userId);
-    // resEvent.setTag(event.getTag());
-    // resEvent.setAchievementProgressResponseProto(resBuilder.build());
-    // eventWriter.writeEvent(resEvent);
-    // }
 
     public AchievementService getAchievementService() {
         return achievementService;

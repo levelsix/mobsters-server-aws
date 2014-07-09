@@ -68,12 +68,12 @@ public class LevelUpController extends EventController {
         LevelUpResponseEvent resEvent = new LevelUpResponseEvent(userIdString);
         resEvent.setTag(event.getTag());
 
+        boolean successful = false;
+        User u = null;
         try {
-        	User u = userService.levelUpUser(userIdString, newLevel);
+        	u = userService.levelUpUser(userIdString, newLevel);
 
-        	UpdateClientUserResponseEvent resEventUpdate =
-        		createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
-        	eventWriter.writeEvent(resEventUpdate);
+        	successful = true;
         } catch(Lvl6MobstersException lvl6E) {
         	//TODO: Figure out if catching exception here and doing something or let it bubble up
         } catch (Exception e) {
@@ -89,6 +89,11 @@ public class LevelUpController extends EventController {
         LOG.info("Writing event: " + resEvent);
         eventWriter.writeEvent(resEvent);
 
+        if (successful) {
+        	UpdateClientUserResponseEvent resEventUpdate =
+        		createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
+        	eventWriter.writeEvent(resEventUpdate);
+        }
     }
 
     public UserService getUserService() {

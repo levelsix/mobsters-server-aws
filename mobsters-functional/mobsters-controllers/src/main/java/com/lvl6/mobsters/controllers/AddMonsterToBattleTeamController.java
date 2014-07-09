@@ -90,35 +90,9 @@ public class AddMonsterToBattleTeamController extends EventController
 		// write to client
 		LOG.info("Writing event: "
 			+ resEvent);
-		try {
-			eventWriter.writeEvent(resEvent);
-		} catch (Exception e) {
-			LOG.error(
-				"fatal exception in AddMonsterToBattleTeamController processRequestEvent", e);
-		}
+		eventWriter.writeEvent(resEvent);
 
-		// TODO: FIGURE OUT IF THIS IS STILL NEEDED
-		// game center id might have changed
-		// null PvpLeagueFromUser means will pull from a cache instead
-		// UpdateClientUserResponseEvent resEventUpdate =
-		// CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-		// resEventUpdate.setTag(event.getTag());
-		// eventWriter.writeEvent(resEventUpdate);
 	}
-
-	// private void failureCase(
-	// RequestEvent event,
-	// EventsToDispatch eventWriter,
-	// String userId,
-	// AddMonsterToBattleTeamResponseProto.Builder resBuilder )
-	// {
-	// eventWriter.clearResponses();
-	// resBuilder.setStatus(AddMonsterToBattleTeamStatus.FAIL_OTHER);
-	// AddMonsterToBattleTeamResponseEvent resEvent = new AddMonsterToBattleTeamResponseEvent(userId);
-	// resEvent.setTag(event.getTag());
-	// resEvent.setAddMonsterToBattleTeamResponseProto(resBuilder.build());
-	// eventWriter.writeEvent(resEvent);
-	// }
 
 	public MonsterService getMonsterService()
 	{
