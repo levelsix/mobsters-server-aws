@@ -48,6 +48,10 @@ public final class EventDungeonProto {
     // optional bool forceEnemyElem = 10;
     boolean hasForceEnemyElem();
     boolean getForceEnemyElem();
+    
+    // optional bool alreadyCompletedMiniTutorialTask = 11;
+    boolean hasAlreadyCompletedMiniTutorialTask();
+    boolean getAlreadyCompletedMiniTutorialTask();
   }
   public static final class BeginDungeonRequestProto extends
       com.google.protobuf.GeneratedMessage
@@ -175,6 +179,16 @@ public final class EventDungeonProto {
       return forceEnemyElem_;
     }
     
+    // optional bool alreadyCompletedMiniTutorialTask = 11;
+    public static final int ALREADYCOMPLETEDMINITUTORIALTASK_FIELD_NUMBER = 11;
+    private boolean alreadyCompletedMiniTutorialTask_;
+    public boolean hasAlreadyCompletedMiniTutorialTask() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    public boolean getAlreadyCompletedMiniTutorialTask() {
+      return alreadyCompletedMiniTutorialTask_;
+    }
+    
     private void initFields() {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
       clientTime_ = 0L;
@@ -185,6 +199,7 @@ public final class EventDungeonProto {
       questIds_ = java.util.Collections.emptyList();;
       elem_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.NO_ELEMENT;
       forceEnemyElem_ = false;
+      alreadyCompletedMiniTutorialTask_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -224,6 +239,9 @@ public final class EventDungeonProto {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeBool(10, forceEnemyElem_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBool(11, alreadyCompletedMiniTutorialTask_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -274,6 +292,10 @@ public final class EventDungeonProto {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(10, forceEnemyElem_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(11, alreadyCompletedMiniTutorialTask_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -422,6 +444,8 @@ public final class EventDungeonProto {
         bitField0_ = (bitField0_ & ~0x00000080);
         forceEnemyElem_ = false;
         bitField0_ = (bitField0_ & ~0x00000100);
+        alreadyCompletedMiniTutorialTask_ = false;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       
@@ -501,6 +525,10 @@ public final class EventDungeonProto {
           to_bitField0_ |= 0x00000080;
         }
         result.forceEnemyElem_ = forceEnemyElem_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.alreadyCompletedMiniTutorialTask_ = alreadyCompletedMiniTutorialTask_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -550,6 +578,9 @@ public final class EventDungeonProto {
         }
         if (other.hasForceEnemyElem()) {
           setForceEnemyElem(other.getForceEnemyElem());
+        }
+        if (other.hasAlreadyCompletedMiniTutorialTask()) {
+          setAlreadyCompletedMiniTutorialTask(other.getAlreadyCompletedMiniTutorialTask());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -644,6 +675,11 @@ public final class EventDungeonProto {
             case 80: {
               bitField0_ |= 0x00000100;
               forceEnemyElem_ = input.readBool();
+              break;
+            }
+            case 88: {
+              bitField0_ |= 0x00000200;
+              alreadyCompletedMiniTutorialTask_ = input.readBool();
               break;
             }
           }
@@ -933,6 +969,27 @@ public final class EventDungeonProto {
       public Builder clearForceEnemyElem() {
         bitField0_ = (bitField0_ & ~0x00000100);
         forceEnemyElem_ = false;
+        onChanged();
+        return this;
+      }
+      
+      // optional bool alreadyCompletedMiniTutorialTask = 11;
+      private boolean alreadyCompletedMiniTutorialTask_ ;
+      public boolean hasAlreadyCompletedMiniTutorialTask() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      public boolean getAlreadyCompletedMiniTutorialTask() {
+        return alreadyCompletedMiniTutorialTask_;
+      }
+      public Builder setAlreadyCompletedMiniTutorialTask(boolean value) {
+        bitField0_ |= 0x00000200;
+        alreadyCompletedMiniTutorialTask_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearAlreadyCompletedMiniTutorialTask() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        alreadyCompletedMiniTutorialTask_ = false;
         onChanged();
         return this;
       }
@@ -5131,43 +5188,44 @@ public final class EventDungeonProto {
       "\n\022EventDungeon.proto\022\005proto\032\036ConfigNonev" +
       "entSharedEnum.proto\032\025NoneventMonster.pro" +
       "to\032\022NoneventTask.proto\032\022NoneventUser.pro" +
-      "to\"\372\001\n\030BeginDungeonRequestProto\022\'\n\006sende" +
+      "to\"\244\002\n\030BeginDungeonRequestProto\022\'\n\006sende" +
       "r\030\001 \001(\0132\027.proto.MinimumUserProto\022\022\n\nclie" +
       "ntTime\030\002 \001(\003\022\016\n\006taskId\030\003 \001(\005\022\017\n\007isEvent\030" +
       "\005 \001(\010\022\031\n\021persistentEventId\030\006 \001(\005\022\021\n\tgems" +
       "Spent\030\007 \001(\005\022\020\n\010questIds\030\010 \003(\005\022(\n\004elem\030\t " +
       "\001(\0162\016.proto.Element:\nNO_ELEMENT\022\026\n\016force" +
-      "EnemyElem\030\n \001(\010\"\206\002\n\031BeginDungeonResponse",
-      "Proto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUse" +
-      "rProto\022\"\n\003tsp\030\002 \003(\0132\025.proto.TaskStagePro" +
-      "to\022\024\n\014userTaskUuid\030\003 \001(\t\022\016\n\006taskId\030\004 \001(\005" +
-      "\022C\n\006status\030\005 \001(\01623.proto.BeginDungeonRes" +
-      "ponseProto.BeginDungeonStatus\"1\n\022BeginDu" +
-      "ngeonStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002" +
-      "\"\310\001\n\026EndDungeonRequestProto\0227\n\006sender\030\001 " +
-      "\001(\0132\'.proto.MinimumUserProtoWithMaxResou" +
-      "rces\022\024\n\014userTaskUuid\030\002 \001(\t\022\017\n\007userWon\030\003 " +
-      "\001(\010\022\022\n\nclientTime\030\004 \001(\003\022\034\n\024firstTimeUser",
-      "WonTask\030\005 \001(\010\022\034\n\024userBeatAllCityTasks\030\006 " +
-      "\001(\010\"\230\002\n\027EndDungeonResponseProto\0227\n\006sende" +
-      "r\030\001 \001(\0132\'.proto.MinimumUserProtoWithMaxR" +
-      "esources\022?\n\006status\030\002 \001(\0162/.proto.EndDung" +
-      "eonResponseProto.EndDungeonStatus\0221\n\014upd" +
-      "atedOrNew\030\003 \003(\0132\033.proto.FullUserMonsterP" +
-      "roto\022\016\n\006taskId\030\004 \001(\005\022\017\n\007userWon\030\005 \001(\010\"/\n" +
-      "\020EndDungeonStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_O" +
-      "THER\020\002\"\273\001\n\033ReviveInDungeonRequestProto\022\'" +
-      "\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022",
-      "\024\n\014userTaskUuid\030\002 \001(\t\022\022\n\nclientTime\030\003 \001(" +
-      "\003\0226\n\010reviveMe\030\004 \003(\0132$.proto.UserMonsterC" +
-      "urrentHealthProto\022\021\n\tgemsSpent\030\005 \001(\005\"\344\001\n" +
-      "\034ReviveInDungeonResponseProto\022\'\n\006sender\030" +
-      "\001 \001(\0132\027.proto.MinimumUserProto\022I\n\006status" +
-      "\030\002 \001(\01629.proto.ReviveInDungeonResponsePr" +
-      "oto.ReviveInDungeonStatus\"P\n\025ReviveInDun" +
-      "geonStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFIC" +
-      "IENT_GEMS\020\003\022\016\n\nFAIL_OTHER\020\003B1\n\034com.lvl6." +
-      "mobsters.eventprotoB\021EventDungeonProto"
+      "EnemyElem\030\n \001(\010\022(\n alreadyCompletedMiniT",
+      "utorialTask\030\013 \001(\010\"\206\002\n\031BeginDungeonRespon" +
+      "seProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumU" +
+      "serProto\022\"\n\003tsp\030\002 \003(\0132\025.proto.TaskStageP" +
+      "roto\022\024\n\014userTaskUuid\030\003 \001(\t\022\016\n\006taskId\030\004 \001" +
+      "(\005\022C\n\006status\030\005 \001(\01623.proto.BeginDungeonR" +
+      "esponseProto.BeginDungeonStatus\"1\n\022Begin" +
+      "DungeonStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER" +
+      "\020\002\"\310\001\n\026EndDungeonRequestProto\0227\n\006sender\030" +
+      "\001 \001(\0132\'.proto.MinimumUserProtoWithMaxRes" +
+      "ources\022\024\n\014userTaskUuid\030\002 \001(\t\022\017\n\007userWon\030",
+      "\003 \001(\010\022\022\n\nclientTime\030\004 \001(\003\022\034\n\024firstTimeUs" +
+      "erWonTask\030\005 \001(\010\022\034\n\024userBeatAllCityTasks\030" +
+      "\006 \001(\010\"\230\002\n\027EndDungeonResponseProto\0227\n\006sen" +
+      "der\030\001 \001(\0132\'.proto.MinimumUserProtoWithMa" +
+      "xResources\022?\n\006status\030\002 \001(\0162/.proto.EndDu" +
+      "ngeonResponseProto.EndDungeonStatus\0221\n\014u" +
+      "pdatedOrNew\030\003 \003(\0132\033.proto.FullUserMonste" +
+      "rProto\022\016\n\006taskId\030\004 \001(\005\022\017\n\007userWon\030\005 \001(\010\"" +
+      "/\n\020EndDungeonStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL" +
+      "_OTHER\020\002\"\273\001\n\033ReviveInDungeonRequestProto",
+      "\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProt" +
+      "o\022\024\n\014userTaskUuid\030\002 \001(\t\022\022\n\nclientTime\030\003 " +
+      "\001(\003\0226\n\010reviveMe\030\004 \003(\0132$.proto.UserMonste" +
+      "rCurrentHealthProto\022\021\n\tgemsSpent\030\005 \001(\005\"\344" +
+      "\001\n\034ReviveInDungeonResponseProto\022\'\n\006sende" +
+      "r\030\001 \001(\0132\027.proto.MinimumUserProto\022I\n\006stat" +
+      "us\030\002 \001(\01629.proto.ReviveInDungeonResponse" +
+      "Proto.ReviveInDungeonStatus\"P\n\025ReviveInD" +
+      "ungeonStatus\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFF" +
+      "ICIENT_GEMS\020\003\022\016\n\nFAIL_OTHER\020\003B1\n\034com.lvl",
+      "6.mobsters.eventprotoB\021EventDungeonProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -5179,7 +5237,7 @@ public final class EventDungeonProto {
           internal_static_proto_BeginDungeonRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_BeginDungeonRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "ClientTime", "TaskId", "IsEvent", "PersistentEventId", "GemsSpent", "QuestIds", "Elem", "ForceEnemyElem", },
+              new java.lang.String[] { "Sender", "ClientTime", "TaskId", "IsEvent", "PersistentEventId", "GemsSpent", "QuestIds", "Elem", "ForceEnemyElem", "AlreadyCompletedMiniTutorialTask", },
               com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonRequestProto.class,
               com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonRequestProto.Builder.class);
           internal_static_proto_BeginDungeonResponseProto_descriptor =
