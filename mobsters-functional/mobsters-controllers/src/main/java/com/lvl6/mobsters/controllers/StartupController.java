@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,17 +34,25 @@ import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.Builder;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.ClanConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.DownloadableNibConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.MiniTutorialConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.MonsterConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.TaskMapConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.UserMonsterConstants;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupStatus;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.TutorialConstants;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.UpdateStatus;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.StartupRequestEvent;
 import com.lvl6.mobsters.events.response.StartupResponseEvent;
 import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.AnimatedSpriteOffset;
 import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.EventPersistent;
-import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.ITask;
 import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Monster;
@@ -78,9 +87,12 @@ import com.lvl6.mobsters.info.repository.StructureResourceStorageRepository;
 import com.lvl6.mobsters.info.repository.StructureTownHallRepository;
 import com.lvl6.mobsters.info.repository.TaskRepository;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.NoneventInAppPurchaseProto.InAppPurchasePackageProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventStaticDataProto.StaticDataProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.MinimumObstacleProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
@@ -91,9 +103,11 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventMiniJobProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventMonsterProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventPvpProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventQuestProtoSerializer;
+import com.lvl6.mobsters.noneventproto.utils.NoneventStartupProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventStructureProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventTaskProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
+import com.lvl6.mobsters.server.ControllerConstants;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.clan.ClanService;
@@ -104,6 +118,7 @@ import com.lvl6.mobsters.services.quest.QuestService;
 import com.lvl6.mobsters.services.task.TaskService;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.properties.Globals;
+import com.lvl6.properties.IAPValues;
 import com.lvl6.properties.MDCKeys;
 
 @Component
@@ -111,6 +126,9 @@ public class StartupController extends EventController
 {
 	private static Logger LOG = LoggerFactory.getLogger(StartupController.class);
 
+	@Autowired
+	protected Globals globals;
+	
 	@Autowired
 	protected UserService userService;
 	
@@ -219,6 +237,9 @@ public class StartupController extends EventController
 	@Autowired
 	protected NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer;
 	
+	@Autowired
+	protected NoneventStartupProtoSerializer noneventStartupProtoSerializer;
+	
 	// TODO
 	/*
 	 * @Autowired protected EventWriter eventWriter;
@@ -296,10 +317,12 @@ public class StartupController extends EventController
 				} else {
 					LOG.info("no user id: tutorial(?) player with udid "
 						+ udid);
+					// TODO: setAllStaticData 
+					setAllStaticData(resBuilder, null, false);
 				}
 
 				resBuilder.setStartupStatus(startupStatus);
-//				setConstants(resBuilder, startupStatus);
+				setConstants(resBuilder, startupStatus);
 			}
 			//startup time
 
@@ -782,6 +805,166 @@ public class StartupController extends EventController
 		
 	}
 	
+	
+	private void setConstants( Builder resBuilder,
+		StartupStatus startupStatus )
+	{
+		setStartupConstants();
+		
+		if (StartupStatus.USER_NOT_IN_DB == startupStatus) {
+			setTutorialConstants( resBuilder );
+		}
+	}
+	
+	private void setStartupConstants() {
+		StartupConstants.Builder cb = StartupConstants.newBuilder();
+
+		for (String id : IAPValues.iapPackageNames)
+		{
+			InAppPurchasePackageProto.Builder iapb = InAppPurchasePackageProto.newBuilder();
+			iapb.setImageName(IAPValues.getImageNameForPackageName(id));
+			iapb.setIapPackageId(id);
+
+			int diamondAmt = IAPValues.getDiamondsForPackageName(id);
+			if (diamondAmt > 0) {
+				iapb.setCurrencyAmount(diamondAmt);
+			} else {
+				int coinAmt = IAPValues.getCoinsForPackageName(id);
+				iapb.setCurrencyAmount(coinAmt);
+			}
+			cb.addInAppPurchasePackages(iapb.build());
+		}
+		
+	    cb.setMaxLevelForUser(ControllerConstants.USER__MAX_LEVEL);
+	    cb.setMaxNumOfSingleStruct(ControllerConstants.PURCHASE_NORM_STRUCTURE__MAX_NUM_OF_CERTAIN_STRUCTURE);
+	    
+	    if (ControllerConstants.STARTUP__ANIMATED_SPRITE_OFFSETS != null)
+	    {
+	    	for (int i = 0; i < ControllerConstants.STARTUP__ANIMATED_SPRITE_OFFSETS.length; i++) {
+	    		AnimatedSpriteOffset aso = ControllerConstants.STARTUP__ANIMATED_SPRITE_OFFSETS[i];
+	    		cb.addAnimatedSpriteOffsets(
+	    			noneventStartupProtoSerializer
+	    			.createAnimatedSpriteOffsetProtoFromAnimatedSpriteOffset(aso));
+	    	}
+	    }
+
+	    cb.setMinNameLength(ControllerConstants.USER_CREATE__MIN_NAME_LENGTH);
+	    cb.setMaxNameLength(ControllerConstants.USER_CREATE__MAX_NAME_LENGTH);
+	    cb.setMaxLengthOfChatString(ControllerConstants.SEND_GROUP_CHAT__MAX_LENGTH_OF_CHAT_STRING);
+
+	    ClanConstants.Builder clanConstantsBuilder = ClanConstants.newBuilder();
+	    clanConstantsBuilder.setMaxCharLengthForClanDescription(ControllerConstants.CREATE_CLAN__MAX_CHAR_LENGTH_FOR_CLAN_DESCRIPTION);
+	    clanConstantsBuilder.setMaxCharLengthForClanName(ControllerConstants.CREATE_CLAN__MAX_CHAR_LENGTH_FOR_CLAN_NAME);
+	    clanConstantsBuilder.setCoinPriceToCreateClan(ControllerConstants.CREATE_CLAN__COIN_PRICE_TO_CREATE_CLAN);
+	    clanConstantsBuilder.setMaxCharLengthForClanTag(ControllerConstants.CREATE_CLAN__MAX_CHAR_LENGTH_FOR_CLAN_TAG);
+	    clanConstantsBuilder.setMaxClanSize(ControllerConstants.CLAN__MAX_NUM_MEMBERS);
+	    cb.setClanConstants(clanConstantsBuilder.build());
+
+
+	    DownloadableNibConstants.Builder dncb = DownloadableNibConstants.newBuilder();
+//	    dncb.setMapNibName(ControllerConstants.NIB_NAME__TRAVELING_MAP);
+//	    dncb.setExpansionNibName(ControllerConstants.NIB_NAME__EXPANSION);
+//	    dncb.setGoldShoppeNibName(ControllerConstants.NIB_NAME__GOLD_SHOPPE);
+	    cb.setDownloadableNibConstants(dncb.build());
+	    cb.setLevelToShowRateUsPopup(ControllerConstants.USER__LEVEL_TO_DISPLAY_RATE_US_POPUP);
+	    
+	    UserMonsterConstants.Builder umcb = UserMonsterConstants.newBuilder();
+	    umcb.setMaxNumTeamSlots(ControllerConstants.MONSTER_FOR_USER__MAX_TEAM_SIZE);
+	    umcb.setInitialMaxNumMonsterLimit(ControllerConstants.MONSTER_FOR_USER__INITIAL_MAX_NUM_MONSTER_LIMIT);
+	    cb.setUserMonsterConstants(umcb.build());
+	    
+	    MonsterConstants.Builder mcb = MonsterConstants.newBuilder();
+	    mcb.setCashPerHealthPoint(ControllerConstants.MONSTER__CASH_PER_HEALTH_POINT);
+	    mcb.setSecondsToHealPerHealthPoint(ControllerConstants.MONSTER__SECONDS_TO_HEAL_PER_HEALTH_POINT);
+	    mcb.setElementalStrength(ControllerConstants.MONSTER__ELEMENTAL_STRENGTH);
+	    mcb.setElementalWeakness(ControllerConstants.MONSTER__ELEMENTAL_WEAKNESS);
+	    mcb.setOilPerMonsterLevel(ControllerConstants.MONSTER__OIL_PER_MONSTER_LEVEL);
+	    cb.setMonsterConstants(mcb.build());
+
+	    cb.setMinutesPerGem(ControllerConstants.MINUTES_PER_GEM);
+	    cb.setPvpRequiredMinLvl(ControllerConstants.PVP__REQUIRED_MIN_LEVEL);
+	    cb.setGemsPerResource(ControllerConstants.GEMS_PER_RESOURCE);
+	    cb.setContinueBattleGemCostMultiplier(ControllerConstants.BATTLE__CONTINUE_GEM_COST_MULTIPLIER);
+	    cb.setBattleRunAwayBasePercent(ControllerConstants.BATTLE__RUN_AWAY_BASE_PERCENT);
+	    cb.setBattleRunAwayIncrement(ControllerConstants.BATTLE__RUN_AWAY_INCREMENT);
+
+	    cb.setAddAllFbFriends(globals.isAddAllFbFriends());
+	    
+	    cb.setMiniTuts(
+	    	createMiniTutorialConstantsProto()
+	    );
+
+	    cb.setMaxObstacles(ControllerConstants.OBSTACLE__MAX_OBSTACLES);
+	    cb.setMinutesPerObstacle(ControllerConstants.OBSTACLE__MINUTES_PER_OBSTACLE);
+	    
+	    cb.setTaskMapConstants(createTaskMapConstants());
+	}
+
+	private MiniTutorialConstants createMiniTutorialConstantsProto()
+	{
+		MiniTutorialConstants.Builder mtcb = MiniTutorialConstants.newBuilder();
+		mtcb.setMiniTutorialTaskId(ControllerConstants.MINI_TUTORIAL__GUARANTEED_MONSTER_DROP_TASK_ID);
+		mtcb.setGuideMonsterId(ControllerConstants.TUTORIAL__GUIDE_MONSTER_ID);
+
+		return mtcb.build();
+	}
+	
+	private TaskMapConstants createTaskMapConstants() {
+		TaskMapConstants.Builder mapConstants = TaskMapConstants.newBuilder();
+	    mapConstants.setMapSectionImagePrefix(ControllerConstants.TASK_MAP__SECTION_IMAGE_PREFIX);
+	    mapConstants.setMapNumberOfSections(ControllerConstants.TASK_MAP__NUMBER_OF_SECTIONS);
+	    mapConstants.setMapSectionHeight(ControllerConstants.TASK_MAP__SECTION_HEIGHT);
+	    mapConstants.setMapTotalHeight(ControllerConstants.TASK_MAP__TOTAL_HEIGHT);
+	    mapConstants.setMapTotalWidth(ControllerConstants.TASK_MAP__TOTAL_WIDTH);
+	    
+	    return mapConstants.build();
+	}
+
+	private void setTutorialConstants( Builder resBuilder ) {
+		TutorialConstants.Builder tcb = TutorialConstants.newBuilder();
+
+	    tcb.setStartingMonsterId(ControllerConstants.TUTORIAL__STARTING_MONSTER_ID);
+	    tcb.setGuideMonsterId(ControllerConstants.TUTORIAL__GUIDE_MONSTER_ID);
+	    tcb.setEnemyMonsterId(ControllerConstants.TUTORIAL__ENEMY_MONSTER_ID_ONE);
+	    tcb.setEnemyMonsterIdTwo(ControllerConstants.TUTORIAL__ENEMY_MONSTER_ID_TWO);
+	    tcb.setEnemyBossMonsterId(ControllerConstants.TUTORIAL__ENEMY_BOSS_MONSTER_ID);
+	    tcb.setMarkZMonsterId(ControllerConstants.TUTORIAL__MARK_Z_MONSTER_ID);
+
+	    for (int i = 0; i < ControllerConstants.TUTORIAL__EXISTING_BUILDING_IDS.length; i++)
+	    {
+	    	int structId = ControllerConstants.TUTORIAL__EXISTING_BUILDING_IDS[i];
+	    	float posX = ControllerConstants.TUTORIAL__EXISTING_BUILDING_X_POS[i];
+	    	float posY = ControllerConstants.TUTORIAL__EXISTING_BUILDING_Y_POS[i];
+
+	    	TutorialStructProto tsp = noneventStructureProtoSerializer
+	    		.createTutorialStructProto(structId, posX, posY);
+	    	tcb.addTutorialStructures(tsp);
+	    }
+
+	    List<Integer> structureIdsToBeBuilt = 
+	        Arrays.asList(ControllerConstants.TUTORIAL__STRUCTURE_IDS_TO_BUILD);
+	    tcb.addAllStructureIdsToBeBuillt(structureIdsToBeBuilt);
+
+	    tcb.setCashInit(ControllerConstants.TUTORIAL__INIT_CASH);
+	    tcb.setOilInit(ControllerConstants.TUTORIAL__INIT_OIL);
+	    tcb.setGemsInit(ControllerConstants.TUTORIAL__INIT_GEMS);
+	    
+	    int orientation = 1;
+	    for (int i = 0; i < ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID.length; i++) {
+	    	int obstacleId = ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID[i];
+	    	float posX = ControllerConstants.TUTORIAL__INIT_OBSTACLE_X[i];
+	    	float posY = ControllerConstants.TUTORIAL__INIT_OBSTACLE_Y[i];
+	    	
+	    	MinimumObstacleProto mopb = noneventStructureProtoSerializer
+	    		.createMinimumObstacleProto(
+	    			obstacleId, posX, posY, orientation);
+	    	tcb.addTutorialObstacles(mopb);
+//	    	log.info("mopb=" + mopb);
+	    }
+	    
+	    resBuilder.setTutorialConstants(tcb.build());
+	}
+	
 	//TODO: Generate the getters and setters for the autowired properties 
 
 	public UserService getUserService()
@@ -1159,6 +1342,17 @@ public class StartupController extends EventController
 		NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer )
 	{
 		this.noneventMiniJobProtoSerializer = noneventMiniJobProtoSerializer;
+	}
+
+	public NoneventStartupProtoSerializer getNoneventStartupProtoSerializer()
+	{
+		return noneventStartupProtoSerializer;
+	}
+
+	public void setNoneventStartupProtoSerializer(
+		NoneventStartupProtoSerializer noneventStartupProtoSerializer )
+	{
+		this.noneventStartupProtoSerializer = noneventStartupProtoSerializer;
 	}
 
 }
