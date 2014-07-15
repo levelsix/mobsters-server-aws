@@ -109,8 +109,6 @@ message StartupResponseProto {
 	repeated UserAchievementProto userAchievements = 38;
 	repeated UserMiniJobProto userMiniJobProtos = 39;
 	
-	
-
 	message AttackedNotificationProto {
 		optional MinimumUserProto attacker = 1;
 		optional int64 battleCompleteTime = 2;
@@ -136,13 +134,13 @@ message StartupResponseProto {
 		optional ClanConstants clanConstants = 8;
 		optional DownloadableNibConstants downloadableNibConstants = 9;
 		
-		optional int32 numHoursBeforeReshowingGoldSale = 10;
+		optional int32 numHoursBeforeReshowingGoldSale = 10; //TODO: get rid of?
 		optional int32 levelToShowRateUsPopup = 11;
-		optional TournamentConstants touramentConstants = 12;
+		optional TournamentConstants touramentConstants = 12; //TODO: get rid of?
 		optional int32 fbConnectRewardDiamonds = 13;
 		optional string faqFileName = 14;
 		optional MinimumUserProto adminChatMinimumUserProto = 15;
-		optional int32 numBeginnerSalesAllowed = 16;
+		optional int32 numBeginnerSalesAllowed = 16; //TODO: get rid of?
 		
 		optional UserMonsterConstants userMonsterConstants = 17;
 		optional MonsterConstants monsterConstants = 18;
@@ -152,12 +150,19 @@ message StartupResponseProto {
 		optional float gemsPerResource = 21;
 		//(multiplies with cost to heal all battle team monsters while in dungeon)
 		optional float continueBattleGemCostMultiplier = 22;
+		optional float battleRunAwayBasePercent = 28;
+		optional float battleRunAwayIncrement = 29;
 		
 		optional bool addAllFbFriends = 23;
 		optional MiniTutorialConstants miniTuts = 24;
 		
 		optional int32 maxObstacles = 25;
 		optional int32 minutesPerObstacle = 26; //minutes it takes to spawn obstacles
+		
+		optional TaskMapConstants taskMapConstants = 27;
+		
+		//optional float battleRunAwayBasePercent = 28; defined above
+		//optional float battleRunAwayIncrement = 29; defined above
 		
 		message AnimatedSpriteOffsetProto {
 			optional string imageName = 1;
@@ -197,6 +202,15 @@ message StartupResponseProto {
 			
 			optional float elementalStrength = 3;
 			optional float elementalWeakness = 4;
+			
+			optional float oilPerMonsterLevel = 5;
+		}
+		message TaskMapConstants {
+			optional string mapSectionImagePrefix = 1;
+			optional int32 mapNumberOfSections = 2;
+			optional float mapSectionHeight = 3;
+			optional float mapTotalWidth = 4;
+			optional float mapTotalHeight = 5;
 		}
 		message MiniTutorialConstants {
 			optional int32 miniTutorialTaskId = 1;
