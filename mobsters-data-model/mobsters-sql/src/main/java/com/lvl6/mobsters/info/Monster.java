@@ -62,8 +62,8 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	
 	@Column(name = "minutes_to_evolve")
 	private int minutesToEvolve;
-	// @Column(name = "num_catalysts_required")
-	// private int numCatalystsRequired; //will most likely be 1
+	 @Column(name = "num_catalysts_required")
+	 private int numCatalystsRequired; //will most likely be 1
 	@Column(name = "carrot_recruited")
 	private String carrotRecruited;
 	@Column(name = "carrot_defeated")
@@ -86,8 +86,8 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	private int atkAnimationRepeatedFramesStart;
 	@Column(name = "atk_animation_repeated_frames_end")
 	private int atkAnimationRepeatedFramesEnd;
-	//@Column(name = "shorter_name")
-	//private String shorterName;	
+	@Column(name = "short_name")
+	private String shortName;	
 	
 	@OneToMany(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -118,12 +118,12 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 			String imagePrefix, int numPuzzlePieces,
 			int minutesToCombinePieces, int maxLevel, IMonster evolutionMonster,
 			IMonster evolutionCatalystMonster, int minutesToEvolve,
-			/*int numCatalystsRequired,*/ String carrotRecruited,
+			int numCatalystsRequired, String carrotRecruited,
 			String carrotDefeated, String carrotEvolved, String description,
 			int evolutionCost, String animationType, int verticalPixelOffset,
 			String atkSoundFile, int atkSoundAnimationFrame,
 			int atkAnimationRepeatedFramesStart,
-			int atkAnimationRepeatedFramesEnd, /*String shorterName,*/
+			int atkAnimationRepeatedFramesEnd, String shortName,
 			List<IMonsterLevelInfo> lvlInfo,
 			List<IMonsterBattleDialogue> battleDialogue,
 			float shadowScaleFactor) {
@@ -141,7 +141,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		this.evolutionMonster = evolutionMonster;
 		this.evolutionCatalystMonster = evolutionCatalystMonster;
 		this.minutesToEvolve = minutesToEvolve;
-		// this.numCatalystsRequired = numCatalystsRequired;
+		this.numCatalystsRequired = numCatalystsRequired;
 		this.carrotRecruited = carrotRecruited;
 		this.carrotDefeated = carrotDefeated;
 		this.carrotEvolved = carrotEvolved;
@@ -153,7 +153,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		this.atkSoundAnimationFrame = atkSoundAnimationFrame;
 		this.atkAnimationRepeatedFramesStart = atkAnimationRepeatedFramesStart;
 		this.atkAnimationRepeatedFramesEnd = atkAnimationRepeatedFramesEnd;
-		// this.shorterName = shorterName;
+		this.shortName = shortName;
 		this.lvlInfo = lvlInfo;
 		this.battleDialogue = battleDialogue;
 		this.shadowScaleFactor = shadowScaleFactor;
@@ -371,19 +371,19 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getNumCatalystsRequired()
+	 */
 	@Override
 	public int getNumCatalystsRequired() {
 		return numCatalystsRequired;
 	}
-	 */
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#setNumCatalystsRequired(int)
+	 */
 	@Override
 	public void setNumCatalystsRequired(int numCatalystsRequired) {
 		this.numCatalystsRequired = numCatalystsRequired;
 	}
-	 */
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getCarrotRecruited()
@@ -563,20 +563,20 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#getShorterName()
-	@Override
-	public String getShorterName() {
-		return shorterName;
-	}
+	 * @see com.lvl6.mobsters.info.IMonster#getShortName()
 	 */
+	@Override
+	public String getShortName() {
+		return shortName;
+	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#setShorterName(java.lang.String)
-	@Override
-	public void setShorterName(String shorterName) {
-		this.shorterName = shorterName;
-	}
+	 * @see com.lvl6.mobsters.info.IMonster#setShortName(java.lang.String)
 	 */
+	@Override
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getLvlInfo()

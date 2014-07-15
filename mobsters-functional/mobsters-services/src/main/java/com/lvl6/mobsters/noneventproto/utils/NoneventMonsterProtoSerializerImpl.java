@@ -138,7 +138,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	    
 	    mpb.setAtkAnimationRepeatedFramesEnd(aMonster.getAtkAnimationRepeatedFramesEnd());
 	    
-	    String shorterName = aMonster.getShorterName();
+	    String shorterName = aMonster.getShortName();
 	    if (null != shorterName) {
 	    	mpb.setShorterName(shorterName);
 	    }
