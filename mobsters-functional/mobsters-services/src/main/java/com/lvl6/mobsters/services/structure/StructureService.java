@@ -11,12 +11,18 @@ import com.lvl6.mobsters.services.structure.StructureServiceImpl.CreateUserStruc
 public interface StructureService
 {
 
-	// NON CRUD LOGIC******************************************************************
-
-	// CRUD LOGIC******************************************************************
+	// NON CRUD LOGIC
 
 	/**************************************************************************/
 
+	// BEGIN READ ONLY LOGIC
+//	public StructureForUser getStructureForUserIdAndId(String userId, String structureForUserId);
+
+	// END READ ONLY LOGIC
+	/**************************************************************************/
+
+	// TRANSACTIONAL LOGIC
+	
 	public abstract void createObstaclesForUser(
 		String userId,
 		CreateUserObstaclesSpec createSpec );
@@ -116,5 +122,9 @@ public interface StructureService
 			return new CreateUserStructuresSpecBuilderImpl();
 		}
 	}
+
+	/**************************************************************************/
+
+	public void beginUpgradingUserStruct( StructureForUser sfu, Date upgradeTime );
 
 }

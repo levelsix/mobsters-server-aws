@@ -204,6 +204,21 @@ public class UserServiceImpl implements UserService
 			userRepo.save(user);
 			return user;
 	 }
+	 
+	 @Override
+	 public User modifyUser( User user, ModifyUserSpec modifySpec ) {
+		 final Set<UserFunc> userOps =
+			 modifySpec.getUserModificationsSet();
+	
+			// Mutate the object
+
+			for (UserFunc userOp : userOps) {
+				userOp.apply(user);
+			}
+
+			userRepo.save(user);
+			return user;
+	 }
 	
 	static class ModifyUserSpecBuilderImpl implements ModifyUserSpecBuilder
 	{

@@ -130,6 +130,8 @@ public interface UserService
 	public User levelUpUser( String userId, int newLevel );
 	
 	public abstract User modifyUser( String userId, ModifyUserSpec modifySpec );
+	
+	public abstract User modifyUser( User user, ModifyUserSpec modifySpec );
 
 	public interface ModifyUserSpecBuilder
 	{

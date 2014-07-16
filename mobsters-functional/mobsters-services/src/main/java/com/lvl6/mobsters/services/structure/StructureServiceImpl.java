@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
 import com.lvl6.mobsters.dynamo.StructureForUser;
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository;
-import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository;
+import com.lvl6.mobsters.info.Structure;
+import com.lvl6.mobsters.info.repository.StructureRepository;
 
 @Component
 public class StructureServiceImpl implements StructureService {
@@ -26,13 +27,22 @@ public class StructureServiceImpl implements StructureService {
     @Autowired
     private StructureForUserRepository structureForUserRepository;
 
-    //NON CRUD LOGIC******************************************************************
-    
-    
-    //CRUD LOGIC******************************************************************
+    @Autowired
+    private StructureRepository structureRepository;
 
-    /**************************************************************************/
+	// NON CRUD LOGIC
 
+	/**************************************************************************/
+
+	// BEGIN READ ONLY LOGIC
+//    public StructureForUser getStructureForUserIdAndId(String userId, String structureForUserId) {
+//    	return structureForUserRepository.findByUserIdAndStructureForUserId(userId, structureForUserId);
+//    }
+
+	// END READ ONLY LOGIC
+	/**************************************************************************/
+
+	// TRANSACTIONAL LOGIC
     @Override
     public void createObstaclesForUser( String userId, CreateUserObstaclesSpec createSpec ) {
         // txManager.startTransaction();
@@ -236,6 +246,20 @@ public class StructureServiceImpl implements StructureService {
         }
     }
     
+    /**************************************************************************/
+    
+	@Override
+	public void beginUpgradingUserStruct(StructureForUser sfu, Date upgradeTime) {
+		Structure currentStruct = structureRepository.findOne(sfu.getStructId());
+		int nextLevelStructId = currentStruct.getSuccessorStruct().getId(); 
+		
+		sfu.setStructId(nextLevelStructId);
+		sfu.setPurchaseTime(upgradeTime);
+		sfu.setComplete(false);
+		structureForUserRepository.save(sfu);
+	}
+
+    
     //for the dependency injection
     public ObstacleForUserRepository getObstacleForUserRepository()
     {
@@ -258,4 +282,12 @@ public class StructureServiceImpl implements StructureService {
 		this.structureForUserRepository = structureForUserRepository;
 	}
 
+	public StructureRepository getStructureRepository() {
+		return structureRepository;
+	}
+
+	public void setStructureRepository(StructureRepository structureRepository) {
+		this.structureRepository = structureRepository;
+	}
+	
 }
