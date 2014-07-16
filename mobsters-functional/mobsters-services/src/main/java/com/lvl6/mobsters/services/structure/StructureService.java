@@ -9,15 +9,26 @@ import com.lvl6.mobsters.dynamo.StructureForUser;
 
 public interface StructureService {
 
-	// NON CRUD LOGIC******************************************************************
-
-	// CRUD LOGIC******************************************************************
+	// NON CRUD LOGIC
 
 	/**************************************************************************/
 
+	// BEGIN READ ONLY LOGIC
+//	public StructureForUser getStructureForUserIdAndId(String userId, String structureForUserId);
+
+	// END READ ONLY LOGIC
+	/**************************************************************************/
+
+	// TRANSACTIONAL LOGIC
+	
 	public void createObstaclesForUser(
+		CreateObstaclesReplyBuilder replyBuilder,
 		String userId,
 		Director<CreateObstacleCollectionBuilder> director);
+	
+	public interface CreateObstaclesReplyBuilder {
+		public CreateObstaclesReplyBuilder resultOk();
+	}
 	
 	public interface CreateObstacleCollectionBuilder {
 		public CreateObstacleCollectionBuilder addStructure(
@@ -26,8 +37,14 @@ public interface StructureService {
 
 	/**************************************************************************/
 
-	public void createStructuresForUser(String userId,
+	public void createStructuresForUser(
+		CreateStructuresReplyBuilder replyBuilder,
+		String userId,
 		Director<CreateStructureCollectionBuilder> director);
+
+	public interface CreateStructuresReplyBuilder {	
+		public CreateStructuresReplyBuilder resultOk();
+	}
 
 	public enum ConstructionStatusKind {
 		INCOMPLETE,
@@ -49,7 +66,7 @@ public interface StructureService {
 		 * @param status
 		 */
 		CreateStructureOptionsBuilder constructionStatus(ConstructionStatusKind status);
-		
+
 		/**
 		 * ???
 		 * 
@@ -57,7 +74,7 @@ public interface StructureService {
 		 */
 		CreateStructureOptionsBuilder fbInviteStructLvl(int fbInviteStructLvl);
 	}
-	
+
 	public interface CreateStructureCollectionBuilder {
 		public CreateStructureCollectionBuilder addStructure(
 			int structureId, float xCoord, float yCoord);
@@ -66,4 +83,8 @@ public interface StructureService {
 			int structureId, float xCoord, float yCoord,
 			Director<CreateStructureOptionsBuilder> director);
 	}
+	/**************************************************************************/
+
+	public void beginUpgradingUserStruct( StructureForUser sfu, Date upgradeTime );
+
 }

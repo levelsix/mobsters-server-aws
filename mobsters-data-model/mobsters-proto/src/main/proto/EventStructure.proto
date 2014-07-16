@@ -108,7 +108,7 @@ message UpgradeNormStructureResponseProto {
 		//FAIL_ANOTHER_STRUCT_STILL_UPGRADING = 7; 
 		
 		//FAIL_AT_MAX_LEVEL_ALREADY = 8;
-		FAIL_AT_MAX_LEVEL = 8;
+		FAIL_STRUCTURE_AT_MAX_LEVEL = 8;
 		
 		FAIL_OTHER = 9;
 	}

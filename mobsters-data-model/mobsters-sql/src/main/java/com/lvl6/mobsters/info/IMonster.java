@@ -57,9 +57,9 @@ public interface IMonster extends IBaseIntPersistentObject
 
 	public void setMinutesToEvolve( int minutesToEvolve );
 
-	public int getNumEvolutionCatalysts();
+	public int getNumCatalystsRequired();
 
-	public void setNumEvolutionCatalysts( int numEvolutionCatalysts );
+	public void setNumCatalystsRequired( int numCatalystsRequired );
 
 	public String getCarrotRecruited();
 

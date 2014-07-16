@@ -57,11 +57,11 @@ public interface UserService
 	);
 	
 	/*
-		public User findById( String id );
+	public User findById( String id );
 
-		public User findByIdWithClan( String id );
+	public User findByIdWithClan( String id );
 
-		/**
+	/**
 	 * Update identified resource counters by incrementing/decrementing the appropriate amounts.
 	 * 
 	 * This method bypasses optimistic locking conflicts, but does so by reading, modifying, and then
@@ -166,11 +166,13 @@ public interface UserService
 			return oilDelta;
 		}
 	}
-	 */
+	*/
 
 	public User levelUpUser( String userId, int newLevel );
 	
 	public User modifyUser( String userId, ModifyUserSpec modifySpec );
+
+	public abstract User modifyUser( User user, ModifyUserSpec modifySpec );
 
 	public interface ModifyUserSpecBuilder
 	{
@@ -221,7 +223,7 @@ public interface UserService
 	}
 
 	/**************************************************************************/
-
+	
 	public void modifyUserDataRarelyAccessed(
 		String userId,
 		ModifyUserDataRarelyAccessedSpec modifySpec );
@@ -284,9 +286,6 @@ public interface UserService
 			return builder;
 		}
 	}
-	
-	/**
-	 * @throws Exception
-	 */
+
 	public String getUserCredentialByFacebookIdOrUdid( String facebookId, String udid );
 }

@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,21 +31,28 @@ import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.Builder;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.ClanConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.DownloadableNibConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.MiniTutorialConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.MonsterConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.TaskMapConstants;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupConstants.UserMonsterConstants;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.StartupStatus;
+import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.TutorialConstants;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.UpdateStatus;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.StartupRequestEvent;
 import com.lvl6.mobsters.events.response.StartupResponseEvent;
 import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.AnimatedSpriteOffset;
 import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.EventPersistent;
-import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.ITask;
 import com.lvl6.mobsters.info.Item;
 import com.lvl6.mobsters.info.Monster;
@@ -79,9 +87,12 @@ import com.lvl6.mobsters.info.repository.StructureResourceStorageRepository;
 import com.lvl6.mobsters.info.repository.StructureTownHallRepository;
 import com.lvl6.mobsters.info.repository.TaskRepository;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.NoneventInAppPurchaseProto.InAppPurchasePackageProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventStaticDataProto.StaticDataProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.MinimumObstacleProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
@@ -92,9 +103,11 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventMiniJobProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventMonsterProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventPvpProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventQuestProtoSerializer;
+import com.lvl6.mobsters.noneventproto.utils.NoneventStartupProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventStructureProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventTaskProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
+import com.lvl6.mobsters.server.ControllerConstants;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.clan.ClanService;
@@ -105,6 +118,7 @@ import com.lvl6.mobsters.services.quest.QuestService;
 import com.lvl6.mobsters.services.task.TaskService;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.properties.Globals;
+import com.lvl6.properties.IAPValues;
 import com.lvl6.properties.MDCKeys;
 
 @Component
@@ -112,6 +126,9 @@ public class StartupController extends EventController
 {
 	private static Logger LOG = LoggerFactory.getLogger(StartupController.class);
 
+	@Autowired
+	protected Globals globals;
+	
 	@Autowired
 	protected UserService userService;
 	
@@ -220,6 +237,9 @@ public class StartupController extends EventController
 	@Autowired
 	protected NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer;
 	
+	@Autowired
+	protected NoneventStartupProtoSerializer noneventStartupProtoSerializer;
+	
 	// TODO
 	/*
 	 * @Autowired protected EventWriter eventWriter;
@@ -284,7 +304,6 @@ public class StartupController extends EventController
 		// Don't fill in other fields if it is a major update
 		StartupStatus startupStatus = StartupStatus.USER_NOT_IN_DB;
 		Date now = TimeUtils.createNow();
-		UserCredential user = null;
 
 		try {
 			if (!UpdateStatus.MAJOR_UPDATE.equals(updateStatus)) {
@@ -292,14 +311,15 @@ public class StartupController extends EventController
 				if (StringUtils.hasText(userId)) {
 					startupStatus = StartupStatus.USER_IN_DB;
 					LOG.info("No major update... getting user info");
-					loginExistingUser(resBuilder, userId);
+					loginExistingUser(resBuilder, userId, now);
 				} else {
 					LOG.info("no user id: tutorial(?) player with udid "
 						+ udid);
+					setAllStaticData(resBuilder, null, false);
 				}
 
 				resBuilder.setStartupStatus(startupStatus);
-//				setConstants(resBuilder, startupStatus);
+				setConstants(resBuilder, startupStatus);
 			}
 			//startup time
 
@@ -343,7 +363,7 @@ public class StartupController extends EventController
 			MDC.put(MDCKeys.PLAYER_ID.toString(), playerId);
 	}
 	
-	private void loginExistingUser(Builder resBuilder, String userId) {
+	private void loginExistingUser(Builder resBuilder, String userId, Date now) {
 		// TODO: Account for forcelogout
 //		StopWatch stopWatch = new StopWatch();
 //		stopWatch.start();
@@ -383,6 +403,9 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at achivementStuff", stopWatch.getTime());
 		setMiniJob(resBuilder, userId);
 //		LOG.info("{}ms at miniJobStuff", stopWatch.getTime());
+		
+		//TODO: update the user's last login
+		//send this updated user back to the client
 	}
 	
 	private void setInProgressAndAvailableQuests(Builder resBuilder, String userId) {
@@ -611,8 +634,7 @@ public class StartupController extends EventController
 	private void setMonsters(StaticDataProto.Builder sdpb) {
 		List<Monster> monsterList = monsterRepository.findAll();
 		for (Monster monster : monsterList) {
-			sdpb.addAllMonsters(
-				noneventMonsterProtoSerializer.createMonsterProto(monster));
+			noneventMonsterProtoSerializer.createMonsterProto(monster);
 		}
 	}
 	
@@ -782,383 +804,367 @@ public class StartupController extends EventController
 		
 	}
 	
-	//TODO: Generate the getters and setters for the autowired properties 
-
-	public UserService getUserService()
+	
+	private void setConstants( Builder resBuilder,
+		StartupStatus startupStatus )
 	{
-		return userService;
+		setStartupConstants();
+		
+		if (StartupStatus.USER_NOT_IN_DB == startupStatus) {
+			setTutorialConstants( resBuilder );
+		}
+	}
+	
+	private void setStartupConstants() {
+		StartupConstants.Builder cb = StartupConstants.newBuilder();
+
+		for (String id : IAPValues.iapPackageNames)
+		{
+			InAppPurchasePackageProto.Builder iapb = InAppPurchasePackageProto.newBuilder();
+			iapb.setImageName(IAPValues.getImageNameForPackageName(id));
+			iapb.setIapPackageId(id);
+
+			int diamondAmt = IAPValues.getDiamondsForPackageName(id);
+			if (diamondAmt > 0) {
+				iapb.setCurrencyAmount(diamondAmt);
+			} else {
+				int coinAmt = IAPValues.getCoinsForPackageName(id);
+				iapb.setCurrencyAmount(coinAmt);
+			}
+			cb.addInAppPurchasePackages(iapb.build());
+		}
+		
+	    cb.setMaxLevelForUser(ControllerConstants.USER__MAX_LEVEL);
+	    cb.setMaxNumOfSingleStruct(ControllerConstants.PURCHASE_NORM_STRUCTURE__MAX_NUM_OF_CERTAIN_STRUCTURE);
+	    
+	    if (ControllerConstants.STARTUP__ANIMATED_SPRITE_OFFSETS != null)
+	    {
+	    	for (int i = 0; i < ControllerConstants.STARTUP__ANIMATED_SPRITE_OFFSETS.length; i++) {
+	    		AnimatedSpriteOffset aso = ControllerConstants.STARTUP__ANIMATED_SPRITE_OFFSETS[i];
+	    		cb.addAnimatedSpriteOffsets(
+	    			noneventStartupProtoSerializer
+	    			.createAnimatedSpriteOffsetProtoFromAnimatedSpriteOffset(aso));
+	    	}
+	    }
+
+	    cb.setMinNameLength(ControllerConstants.USER_CREATE__MIN_NAME_LENGTH);
+	    cb.setMaxNameLength(ControllerConstants.USER_CREATE__MAX_NAME_LENGTH);
+	    cb.setMaxLengthOfChatString(ControllerConstants.SEND_GROUP_CHAT__MAX_LENGTH_OF_CHAT_STRING);
+
+	    ClanConstants.Builder clanConstantsBuilder = ClanConstants.newBuilder();
+	    clanConstantsBuilder.setMaxCharLengthForClanDescription(ControllerConstants.CREATE_CLAN__MAX_CHAR_LENGTH_FOR_CLAN_DESCRIPTION);
+	    clanConstantsBuilder.setMaxCharLengthForClanName(ControllerConstants.CREATE_CLAN__MAX_CHAR_LENGTH_FOR_CLAN_NAME);
+	    clanConstantsBuilder.setCoinPriceToCreateClan(ControllerConstants.CREATE_CLAN__COIN_PRICE_TO_CREATE_CLAN);
+	    clanConstantsBuilder.setMaxCharLengthForClanTag(ControllerConstants.CREATE_CLAN__MAX_CHAR_LENGTH_FOR_CLAN_TAG);
+	    clanConstantsBuilder.setMaxClanSize(ControllerConstants.CLAN__MAX_NUM_MEMBERS);
+	    cb.setClanConstants(clanConstantsBuilder.build());
+
+
+	    DownloadableNibConstants.Builder dncb = DownloadableNibConstants.newBuilder();
+//	    dncb.setMapNibName(ControllerConstants.NIB_NAME__TRAVELING_MAP);
+//	    dncb.setExpansionNibName(ControllerConstants.NIB_NAME__EXPANSION);
+//	    dncb.setGoldShoppeNibName(ControllerConstants.NIB_NAME__GOLD_SHOPPE);
+	    cb.setDownloadableNibConstants(dncb.build());
+	    cb.setLevelToShowRateUsPopup(ControllerConstants.USER__LEVEL_TO_DISPLAY_RATE_US_POPUP);
+	    
+	    UserMonsterConstants.Builder umcb = UserMonsterConstants.newBuilder();
+	    umcb.setMaxNumTeamSlots(ControllerConstants.MONSTER_FOR_USER__MAX_TEAM_SIZE);
+	    umcb.setInitialMaxNumMonsterLimit(ControllerConstants.MONSTER_FOR_USER__INITIAL_MAX_NUM_MONSTER_LIMIT);
+	    cb.setUserMonsterConstants(umcb.build());
+	    
+	    MonsterConstants.Builder mcb = MonsterConstants.newBuilder();
+	    mcb.setCashPerHealthPoint(ControllerConstants.MONSTER__CASH_PER_HEALTH_POINT);
+	    mcb.setSecondsToHealPerHealthPoint(ControllerConstants.MONSTER__SECONDS_TO_HEAL_PER_HEALTH_POINT);
+	    mcb.setElementalStrength(ControllerConstants.MONSTER__ELEMENTAL_STRENGTH);
+	    mcb.setElementalWeakness(ControllerConstants.MONSTER__ELEMENTAL_WEAKNESS);
+	    mcb.setOilPerMonsterLevel(ControllerConstants.MONSTER__OIL_PER_MONSTER_LEVEL);
+	    cb.setMonsterConstants(mcb.build());
+
+	    cb.setMinutesPerGem(ControllerConstants.MINUTES_PER_GEM);
+	    cb.setPvpRequiredMinLvl(ControllerConstants.PVP__REQUIRED_MIN_LEVEL);
+	    cb.setGemsPerResource(ControllerConstants.GEMS_PER_RESOURCE);
+	    cb.setContinueBattleGemCostMultiplier(ControllerConstants.BATTLE__CONTINUE_GEM_COST_MULTIPLIER);
+	    cb.setBattleRunAwayBasePercent(ControllerConstants.BATTLE__RUN_AWAY_BASE_PERCENT);
+	    cb.setBattleRunAwayIncrement(ControllerConstants.BATTLE__RUN_AWAY_INCREMENT);
+
+	    cb.setAddAllFbFriends(globals.isAddAllFbFriends());
+	    
+	    cb.setMiniTuts(
+	    	createMiniTutorialConstantsProto()
+	    );
+
+	    cb.setMaxObstacles(ControllerConstants.OBSTACLE__MAX_OBSTACLES);
+	    cb.setMinutesPerObstacle(ControllerConstants.OBSTACLE__MINUTES_PER_OBSTACLE);
+	    
+	    cb.setTaskMapConstants(createTaskMapConstants());
 	}
 
-	public void setUserService( UserService userService )
+	private MiniTutorialConstants createMiniTutorialConstantsProto()
+	{
+		MiniTutorialConstants.Builder mtcb = MiniTutorialConstants.newBuilder();
+		mtcb.setMiniTutorialTaskId(ControllerConstants.MINI_TUTORIAL__GUARANTEED_MONSTER_DROP_TASK_ID);
+		mtcb.setGuideMonsterId(ControllerConstants.TUTORIAL__GUIDE_MONSTER_ID);
+
+		return mtcb.build();
+	}
+	
+	private TaskMapConstants createTaskMapConstants() {
+		TaskMapConstants.Builder mapConstants = TaskMapConstants.newBuilder();
+	    mapConstants.setMapSectionImagePrefix(ControllerConstants.TASK_MAP__SECTION_IMAGE_PREFIX);
+	    mapConstants.setMapNumberOfSections(ControllerConstants.TASK_MAP__NUMBER_OF_SECTIONS);
+	    mapConstants.setMapSectionHeight(ControllerConstants.TASK_MAP__SECTION_HEIGHT);
+	    mapConstants.setMapTotalHeight(ControllerConstants.TASK_MAP__TOTAL_HEIGHT);
+	    mapConstants.setMapTotalWidth(ControllerConstants.TASK_MAP__TOTAL_WIDTH);
+	    
+	    return mapConstants.build();
+	}
+
+	private void setTutorialConstants( Builder resBuilder ) {
+		TutorialConstants.Builder tcb = TutorialConstants.newBuilder();
+
+	    tcb.setStartingMonsterId(ControllerConstants.TUTORIAL__STARTING_MONSTER_ID);
+	    tcb.setGuideMonsterId(ControllerConstants.TUTORIAL__GUIDE_MONSTER_ID);
+	    tcb.setEnemyMonsterId(ControllerConstants.TUTORIAL__ENEMY_MONSTER_ID_ONE);
+	    tcb.setEnemyMonsterIdTwo(ControllerConstants.TUTORIAL__ENEMY_MONSTER_ID_TWO);
+	    tcb.setEnemyBossMonsterId(ControllerConstants.TUTORIAL__ENEMY_BOSS_MONSTER_ID);
+	    tcb.setMarkZMonsterId(ControllerConstants.TUTORIAL__MARK_Z_MONSTER_ID);
+
+	    for (int i = 0; i < ControllerConstants.TUTORIAL__EXISTING_BUILDING_IDS.length; i++)
+	    {
+	    	int structId = ControllerConstants.TUTORIAL__EXISTING_BUILDING_IDS[i];
+	    	float posX = ControllerConstants.TUTORIAL__EXISTING_BUILDING_X_POS[i];
+	    	float posY = ControllerConstants.TUTORIAL__EXISTING_BUILDING_Y_POS[i];
+
+	    	TutorialStructProto tsp = noneventStructureProtoSerializer
+	    		.createTutorialStructProto(structId, posX, posY);
+	    	tcb.addTutorialStructures(tsp);
+	    }
+
+	    List<Integer> structureIdsToBeBuilt = 
+	        Arrays.asList(ControllerConstants.TUTORIAL__STRUCTURE_IDS_TO_BUILD);
+	    tcb.addAllStructureIdsToBeBuillt(structureIdsToBeBuilt);
+
+	    tcb.setCashInit(ControllerConstants.TUTORIAL__INIT_CASH);
+	    tcb.setOilInit(ControllerConstants.TUTORIAL__INIT_OIL);
+	    tcb.setGemsInit(ControllerConstants.TUTORIAL__INIT_GEMS);
+	    
+	    int orientation = 1;
+	    for (int i = 0; i < ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID.length; i++) {
+	    	int obstacleId = ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID[i];
+	    	float posX = ControllerConstants.TUTORIAL__INIT_OBSTACLE_X[i];
+	    	float posY = ControllerConstants.TUTORIAL__INIT_OBSTACLE_Y[i];
+	    	
+	    	MinimumObstacleProto mopb = noneventStructureProtoSerializer
+	    		.createMinimumObstacleProto(
+	    			obstacleId, posX, posY, orientation);
+	    	tcb.addTutorialObstacles(mopb);
+//	    	log.info("mopb=" + mopb);
+	    }
+	    
+	    resBuilder.setTutorialConstants(tcb.build());
+	}
+	
+	void setUserService( UserService userService )
 	{
 		this.userService = userService;
 	}
 
-	public NoneventUserProtoSerializer getNoneventUserProtoSerializer()
-	{
-		return noneventUserProtoSerializer;
-	}
-
-	public void setNoneventUserProtoSerializer(
+	void setNoneventUserProtoSerializer(
 		NoneventUserProtoSerializer noneventUserProtoSerializer )
 	{
 		this.noneventUserProtoSerializer = noneventUserProtoSerializer;
 	}
 
-	public QuestService getQuestService()
-	{
-		return questService;
-	}
-
-	public void setQuestService( QuestService questService )
+	void setQuestService( QuestService questService )
 	{
 		this.questService = questService;
 	}
 
-	public QuestRepository getQuestRepository()
-	{
-		return questRepository;
-	}
-
-	public void setQuestRepository( QuestRepository questRepository )
+	void setQuestRepository( QuestRepository questRepository )
 	{
 		this.questRepository = questRepository;
 	}
 
-	public NoneventQuestProtoSerializer getNoneventQuestProtoSerializer()
-	{
-		return noneventQuestProtoSerializer;
-	}
-
-	public void setNoneventQuestProtoSerializer(
+	void setNoneventQuestProtoSerializer(
 		NoneventQuestProtoSerializer noneventQuestProtoSerializer )
 	{
 		this.noneventQuestProtoSerializer = noneventQuestProtoSerializer;
 	}
 
-	public ClanService getClanService()
-	{
-		return clanService;
-	}
-
-	public void setClanService( ClanService clanService )
+	void setClanService( ClanService clanService )
 	{
 		this.clanService = clanService;
 	}
 
-	public NoneventClanProtoSerializer getNoneventClanProtoSerializer()
-	{
-		return noneventClanProtoSerializer;
-	}
-
-	public void setNoneventClanProtoSerializer(
+	void setNoneventClanProtoSerializer(
 		NoneventClanProtoSerializer noneventClanProtoSerializer )
 	{
 		this.noneventClanProtoSerializer = noneventClanProtoSerializer;
 	}
 
-	public MonsterService getMonsterService()
-	{
-		return monsterService;
-	}
-
-	public void setMonsterService( MonsterService monsterService )
+	void setMonsterService( MonsterService monsterService )
 	{
 		this.monsterService = monsterService;
 	}
 
-	public TaskRepository getTaskRepository()
-	{
-		return taskRepository;
-	}
-
-	public void setTaskRepository( TaskRepository taskRepository )
+	void setTaskRepository( TaskRepository taskRepository )
 	{
 		this.taskRepository = taskRepository;
 	}
 
-	public NoneventTaskProtoSerializer getNoneventTaskProtoSerializer()
-	{
-		return noneventTaskProtoSerializer;
-	}
-
-	public void setNoneventTaskProtoSerializer(
+	void setNoneventTaskProtoSerializer(
 		NoneventTaskProtoSerializer noneventTaskProtoSerializer )
 	{
 		this.noneventTaskProtoSerializer = noneventTaskProtoSerializer;
 	}
 
-	public MonsterRepository getMonsterRepository()
-	{
-		return monsterRepository;
-	}
-
-	public void setMonsterRepository( MonsterRepository monsterRepository )
+	void setMonsterRepository( MonsterRepository monsterRepository )
 	{
 		this.monsterRepository = monsterRepository;
 	}
 
-	public NoneventMonsterProtoSerializer getNoneventMonsterProtoSerializer()
-	{
-		return noneventMonsterProtoSerializer;
-	}
-
-	public void setNoneventMonsterProtoSerializer(
+	void setNoneventMonsterProtoSerializer(
 		NoneventMonsterProtoSerializer noneventMonsterProtoSerializer )
 	{
 		this.noneventMonsterProtoSerializer = noneventMonsterProtoSerializer;
 	}
 
-	public StaticUserLevelInfoRepository getStaticUserLevelInfoRepository()
-	{
-		return staticUserLevelInfoRepository;
-	}
-
-	public void setStaticUserLevelInfoRepository(
+	void setStaticUserLevelInfoRepository(
 		StaticUserLevelInfoRepository staticUserLevelInfoRepository )
 	{
 		this.staticUserLevelInfoRepository = staticUserLevelInfoRepository;
 	}
 
-	public BoosterPackRepository getBoosterPackRepository()
-	{
-		return boosterPackRepository;
-	}
-
-	public void setBoosterPackRepository( BoosterPackRepository boosterPackRepository )
+	void setBoosterPackRepository( BoosterPackRepository boosterPackRepository )
 	{
 		this.boosterPackRepository = boosterPackRepository;
 	}
 
-	public NoneventBoosterPackProtoSerializer getNoneventBoosterPackProtoSerializer()
-	{
-		return noneventBoosterPackProtoSerializer;
-	}
-
-	public void setNoneventBoosterPackProtoSerializer(
+	void setNoneventBoosterPackProtoSerializer(
 		NoneventBoosterPackProtoSerializer noneventBoosterPackProtoSerializer )
 	{
 		this.noneventBoosterPackProtoSerializer = noneventBoosterPackProtoSerializer;
 	}
 
-	public NoneventStructureProtoSerializer getNoneventStructureProtoSerializer()
-	{
-		return noneventStructureProtoSerializer;
-	}
-
-	public void setNoneventStructureProtoSerializer(
+	void setNoneventStructureProtoSerializer(
 		NoneventStructureProtoSerializer noneventStructureProtoSerializer )
 	{
 		this.noneventStructureProtoSerializer = noneventStructureProtoSerializer;
 	}
 
-	public StructureResourceGeneratorRepository getStructureResourceGeneratorRepository()
-	{
-		return structureResourceGeneratorRepository;
-	}
-
-	public void setStructureResourceGeneratorRepository(
+	void setStructureResourceGeneratorRepository(
 		StructureResourceGeneratorRepository structureResourceGeneratorRepository )
 	{
 		this.structureResourceGeneratorRepository = structureResourceGeneratorRepository;
 	}
 
-	public StructureResourceStorageRepository getStructureResourceStorageRepository()
-	{
-		return structureResourceStorageRepository;
-	}
-
-	public void setStructureResourceStorageRepository(
+	void setStructureResourceStorageRepository(
 		StructureResourceStorageRepository structureResourceStorageRepository )
 	{
 		this.structureResourceStorageRepository = structureResourceStorageRepository;
 	}
 
-	public StructureHospitalRepository getStructureHospitalRepository()
-	{
-		return structureHospitalRepository;
-	}
-
-	public void setStructureHospitalRepository(
+	void setStructureHospitalRepository(
 		StructureHospitalRepository structureHospitalRepository )
 	{
 		this.structureHospitalRepository = structureHospitalRepository;
 	}
 
-	public StructureResidenceRepository getStructureResidenceRepository()
-	{
-		return structureResidenceRepository;
-	}
-
-	public void setStructureResidenceRepository(
+	void setStructureResidenceRepository(
 		StructureResidenceRepository structureResidenceRepository )
 	{
 		this.structureResidenceRepository = structureResidenceRepository;
 	}
 
-	public StructureTownHallRepository getStructureTownHallRepository()
-	{
-		return structureTownHallRepository;
-	}
-
-	public void setStructureTownHallRepository(
+	void setStructureTownHallRepository(
 		StructureTownHallRepository structureTownHallRepository )
 	{
 		this.structureTownHallRepository = structureTownHallRepository;
 	}
 
-	public StructureLabRepository getStructureLabRepository()
-	{
-		return structureLabRepository;
-	}
-
-	public void setStructureLabRepository( StructureLabRepository structureLabRepository )
+	void setStructureLabRepository( StructureLabRepository structureLabRepository )
 	{
 		this.structureLabRepository = structureLabRepository;
 	}
 
-	public StructureMiniJobRepository getStructureMiniJobRepository()
-	{
-		return structureMiniJobRepository;
-	}
-
-	public void setStructureMiniJobRepository( StructureMiniJobRepository structureMiniJobRepository )
+	void setStructureMiniJobRepository( StructureMiniJobRepository structureMiniJobRepository )
 	{
 		this.structureMiniJobRepository = structureMiniJobRepository;
 	}
 
-	public EventPersistentRepository getEventPersistentRepository()
-	{
-		return eventPersistentRepository;
-	}
-
-	public void setEventPersistentRepository( EventPersistentRepository eventPersistentRepository )
+	void setEventPersistentRepository( EventPersistentRepository eventPersistentRepository )
 	{
 		this.eventPersistentRepository = eventPersistentRepository;
 	}
 
-	public NoneventEventPersistentProtoSerializer getEventPersistentProtoSerializer()
-	{
-		return eventPersistentProtoSerializer;
-	}
-
-	public void setEventPersistentProtoSerializer(
+	void setEventPersistentProtoSerializer(
 		NoneventEventPersistentProtoSerializer eventPersistentProtoSerializer )
 	{
 		this.eventPersistentProtoSerializer = eventPersistentProtoSerializer;
 	}
 
-	public MonsterBattleDialogueRepository getMonsterBattleDialogueRepository()
-	{
-		return monsterBattleDialogueRepository;
-	}
-
-	public void setMonsterBattleDialogueRepository(
+	void setMonsterBattleDialogueRepository(
 		MonsterBattleDialogueRepository monsterBattleDialogueRepository )
 	{
 		this.monsterBattleDialogueRepository = monsterBattleDialogueRepository;
 	}
 
-	public ItemRepository getItemRepository()
-	{
-		return itemRepository;
-	}
-
-	public void setItemRepository( ItemRepository itemRepository )
+	void setItemRepository( ItemRepository itemRepository )
 	{
 		this.itemRepository = itemRepository;
 	}
 
-	public ObstacleRepository getObstacleRepository()
-	{
-		return obstacleRepository;
-	}
-
-	public void setObstacleRepository( ObstacleRepository obstacleRepository )
+	void setObstacleRepository( ObstacleRepository obstacleRepository )
 	{
 		this.obstacleRepository = obstacleRepository;
 	}
 
-	public PvpLeagueRepository getPvpLeagueRepository()
-	{
-		return pvpLeagueRepository;
-	}
-
-	public void setPvpLeagueRepository( PvpLeagueRepository pvpLeagueRepository )
+	void setPvpLeagueRepository( PvpLeagueRepository pvpLeagueRepository )
 	{
 		this.pvpLeagueRepository = pvpLeagueRepository;
 	}
 
-	public NoneventPvpProtoSerializer getNoneventPvpProtoSerializer()
-	{
-		return noneventPvpProtoSerializer;
-	}
-
-	public void setNoneventPvpProtoSerializer( NoneventPvpProtoSerializer noneventPvpProtoSerializer )
+	void setNoneventPvpProtoSerializer( NoneventPvpProtoSerializer noneventPvpProtoSerializer )
 	{
 		this.noneventPvpProtoSerializer = noneventPvpProtoSerializer;
 	}
 
-	public AchievementRepository getAchievementRepository()
-	{
-		return achievementRepository;
-	}
-
-	public void setAchievementRepository( AchievementRepository achievementRepository )
+	void setAchievementRepository( AchievementRepository achievementRepository )
 	{
 		this.achievementRepository = achievementRepository;
 	}
 
-	public NoneventAchievementProtoSerializer getNoneventAchievementProtoSerializer()
-	{
-		return noneventAchievementProtoSerializer;
-	}
-
-	public void setNoneventAchievementProtoSerializer(
+	void setNoneventAchievementProtoSerializer(
 		NoneventAchievementProtoSerializer noneventAchievementProtoSerializer )
 	{
 		this.noneventAchievementProtoSerializer = noneventAchievementProtoSerializer;
 	}
 
-	public TaskService getTaskService()
-	{
-		return taskService;
-	}
-
-	public void setTaskService( TaskService taskService )
+	void setTaskService( TaskService taskService )
 	{
 		this.taskService = taskService;
 	}
 
-	public AchievementService getAchievementService()
-	{
-		return achievementService;
-	}
-
-	public void setAchievementService( AchievementService achievementService )
+	void setAchievementService( AchievementService achievementService )
 	{
 		this.achievementService = achievementService;
 	}
 
-	public MiniJobService getMiniJobService()
-	{
-		return miniJobService;
-	}
-
-	public void setMiniJobService( MiniJobService miniJobService )
+	void setMiniJobService( MiniJobService miniJobService )
 	{
 		this.miniJobService = miniJobService;
 	}
 
-	public NoneventMiniJobProtoSerializer getNoneventMiniJobProtoSerializer()
-	{
-		return noneventMiniJobProtoSerializer;
-	}
-
-	public void setNoneventMiniJobProtoSerializer(
+	void setNoneventMiniJobProtoSerializer(
 		NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer )
 	{
 		this.noneventMiniJobProtoSerializer = noneventMiniJobProtoSerializer;
+	}
+
+	void setNoneventStartupProtoSerializer(
+		NoneventStartupProtoSerializer noneventStartupProtoSerializer )
+	{
+		this.noneventStartupProtoSerializer = noneventStartupProtoSerializer;
 	}
 
 }
