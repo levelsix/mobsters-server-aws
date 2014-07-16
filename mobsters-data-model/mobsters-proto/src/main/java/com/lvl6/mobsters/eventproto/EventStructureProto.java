@@ -3715,7 +3715,7 @@ public final class EventStructureProto {
       FAIL_INSUFFICIENT_OIL(3, 4),
       FAIL_CONSTRUCTION_INCOMPLETE(4, 5),
       FAIL_NOT_USERS_STRUCT(5, 6),
-      FAIL_AT_MAX_LEVEL(6, 8),
+      FAIL_STRUCTURE_AT_MAX_LEVEL(6, 8),
       FAIL_OTHER(7, 9),
       ;
       
@@ -3725,7 +3725,7 @@ public final class EventStructureProto {
       public static final int FAIL_INSUFFICIENT_OIL_VALUE = 4;
       public static final int FAIL_CONSTRUCTION_INCOMPLETE_VALUE = 5;
       public static final int FAIL_NOT_USERS_STRUCT_VALUE = 6;
-      public static final int FAIL_AT_MAX_LEVEL_VALUE = 8;
+      public static final int FAIL_STRUCTURE_AT_MAX_LEVEL_VALUE = 8;
       public static final int FAIL_OTHER_VALUE = 9;
       
       
@@ -3739,7 +3739,7 @@ public final class EventStructureProto {
           case 4: return FAIL_INSUFFICIENT_OIL;
           case 5: return FAIL_CONSTRUCTION_INCOMPLETE;
           case 6: return FAIL_NOT_USERS_STRUCT;
-          case 8: return FAIL_AT_MAX_LEVEL;
+          case 8: return FAIL_STRUCTURE_AT_MAX_LEVEL;
           case 9: return FAIL_OTHER;
           default: return null;
         }
@@ -3771,7 +3771,7 @@ public final class EventStructureProto {
       }
       
       private static final UpgradeNormStructureStatus[] VALUES = {
-        SUCCESS, FAIL_INSUFFICIENT_CASH, FAIL_INSUFFICENT_GEMS, FAIL_INSUFFICIENT_OIL, FAIL_CONSTRUCTION_INCOMPLETE, FAIL_NOT_USERS_STRUCT, FAIL_AT_MAX_LEVEL, FAIL_OTHER, 
+        SUCCESS, FAIL_INSUFFICIENT_CASH, FAIL_INSUFFICENT_GEMS, FAIL_INSUFFICIENT_OIL, FAIL_CONSTRUCTION_INCOMPLETE, FAIL_NOT_USERS_STRUCT, FAIL_STRUCTURE_AT_MAX_LEVEL, FAIL_OTHER, 
       };
       
       public static UpgradeNormStructureStatus valueOf(
@@ -12929,88 +12929,88 @@ public final class EventStructureProto {
       " \001(\t\022\025\n\rtimeOfUpgrade\030\003 \001(\003\022\021\n\tgemsSpent" +
       "\030\004 \001(\005\022\026\n\016resourceChange\030\005 \001(\021\022/\n\014resour" +
       "ceType\030\006 \001(\0162\023.proto.ResourceType:\004CASH\"" +
-      "\203\003\n!UpgradeNormStructureResponseProto\022\'\n" +
+      "\215\003\n!UpgradeNormStructureResponseProto\022\'\n" +
       "\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022S",
       "\n\006status\030\002 \001(\0162C.proto.UpgradeNormStruct" +
       "ureResponseProto.UpgradeNormStructureSta" +
-      "tus\"\337\001\n\032UpgradeNormStructureStatus\022\013\n\007SU" +
+      "tus\"\351\001\n\032UpgradeNormStructureStatus\022\013\n\007SU" +
       "CCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_CASH\020\002\022\031\n\025F" +
       "AIL_INSUFFICENT_GEMS\020\003\022\031\n\025FAIL_INSUFFICI" +
       "ENT_OIL\020\004\022 \n\034FAIL_CONSTRUCTION_INCOMPLET" +
-      "E\020\005\022\031\n\025FAIL_NOT_USERS_STRUCT\020\006\022\025\n\021FAIL_A" +
-      "T_MAX_LEVEL\020\010\022\016\n\nFAIL_OTHER\020\t\"\244\001\n0Finish" +
-      "NormStructWaittimeWithDiamondsRequestPro" +
-      "to\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserPr",
-      "oto\022\026\n\016userStructUuid\030\002 \001(\t\022\025\n\rtimeOfSpe" +
-      "edup\030\003 \001(\003\022\030\n\020gemCostToSpeedup\030\004 \001(\005\"\237\002\n" +
-      "1FinishNormStructWaittimeWithDiamondsRes" +
-      "ponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minim" +
-      "umUserProto\022g\n\006status\030\002 \001(\0162W.proto.Fini" +
-      "shNormStructWaittimeWithDiamondsResponse" +
-      "Proto.FinishNormStructWaittimeStatus\"X\n\036" +
-      "FinishNormStructWaittimeStatus\022\013\n\007SUCCES" +
-      "S\020\001\022\031\n\025FAIL_INSUFFICENT_GEMS\020\002\022\016\n\nFAIL_O" +
-      "THER\020\003\"v\n\"NormStructWaitCompleteRequestP",
-      "roto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUser" +
-      "Proto\022\026\n\016userStructUuid\030\002 \003(\t\022\017\n\007curTime" +
-      "\030\003 \001(\003\"\271\002\n#NormStructWaitCompleteRespons" +
-      "eProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUs" +
-      "erProto\022W\n\006status\030\002 \001(\0162G.proto.NormStru" +
-      "ctWaitCompleteResponseProto.NormStructWa" +
-      "itCompleteStatus\0221\n\nuserStruct\030\003 \003(\0132\035.p" +
-      "roto.FullUserStructureProto\"]\n\034NormStruc" +
-      "tWaitCompleteStatus\022\013\n\007SUCCESS\020\001\022 \n\034FAIL" +
-      "_CONSTRUCTION_INCOMPLETE\020\002\022\016\n\nFAIL_OTHER",
-      "\020\003\"\243\002\n-RetrieveCurrencyFromNormStructure" +
-      "RequestProto\0227\n\006sender\030\001 \001(\0132\'.proto.Min" +
-      "imumUserProtoWithMaxResources\022^\n\020structR" +
-      "etrievals\030\002 \003(\0132D.proto.RetrieveCurrency" +
-      "FromNormStructureRequestProto.StructRetr" +
-      "ieval\032Y\n\017StructRetrieval\022\024\n\014userStructId" +
-      "\030\001 \001(\005\022\027\n\017timeOfRetrieval\030\002 \001(\003\022\027\n\017amoun" +
-      "tCollected\030\003 \001(\005\"\240\002\n.RetrieveCurrencyFro" +
-      "mNormStructureResponseProto\0227\n\006sender\030\001 " +
-      "\001(\0132\'.proto.MinimumUserProtoWithMaxResou",
-      "rces\022m\n\006status\030\002 \001(\0162].proto.RetrieveCur" +
-      "rencyFromNormStructureResponseProto.Retr" +
-      "ieveCurrencyFromNormStructureStatus\"F\n\'R" +
-      "etrieveCurrencyFromNormStructureStatus\022\013" +
-      "\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\220\001\n\031SpawnObs" +
-      "tacleRequestProto\022\'\n\006sender\030\001 \001(\0132\027.prot" +
-      "o.MinimumUserProto\0229\n\024prospectiveObstacl" +
-      "es\030\002 \003(\0132\033.proto.MinimumObstacleProto\022\017\n" +
-      "\007curTime\030\003 \001(\003\"\364\001\n\032SpawnObstacleResponse" +
-      "Proto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUse",
-      "rProto\0222\n\020spawnedObstacles\030\002 \003(\0132\030.proto" +
-      ".UserObstacleProto\022E\n\006status\030\003 \001(\01625.pro" +
-      "to.SpawnObstacleResponseProto.SpawnObsta" +
-      "cleStatus\"2\n\023SpawnObstacleStatus\022\013\n\007SUCC" +
-      "ESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\322\001\n BeginObstacleR" +
-      "emovalRequestProto\022\'\n\006sender\030\001 \001(\0132\027.pro" +
-      "to.MinimumUserProto\022\017\n\007curTime\030\002 \001(\003\022\021\n\t" +
-      "gemsSpent\030\003 \001(\005\022\026\n\016resourceChange\030\004 \001(\021\022" +
-      "/\n\014resourceType\030\005 \001(\0162\023.proto.ResourceTy" +
-      "pe:\004CASH\022\030\n\020userObstacleUuid\030\006 \001(\t\"\230\002\n!B",
-      "eginObstacleRemovalResponseProto\022\'\n\006send" +
-      "er\030\001 \001(\0132\027.proto.MinimumUserProto\022S\n\006sta" +
-      "tus\030\002 \001(\0162C.proto.BeginObstacleRemovalRe" +
-      "sponseProto.BeginObstacleRemovalStatus\"u" +
-      "\n\032BeginObstacleRemovalStatus\022\013\n\007SUCCESS\020" +
-      "\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\036\n\032FAIL_IN" +
-      "SUFFICIENT_RESOURCE\020\003\022\016\n\nFAIL_OTHER\020\004\"\265\001" +
-      "\n#ObstacleRemovalCompleteRequestProto\022\'\n" +
-      "\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022\017" +
-      "\n\007curTime\030\002 \001(\003\022\017\n\007speedUp\030\003 \001(\010\022\021\n\tgems",
-      "Spent\030\004 \001(\005\022\030\n\020userObstacleUuid\030\005 \001(\t\022\026\n" +
-      "\016atMaxObstacles\030\006 \001(\010\"\204\002\n$ObstacleRemova" +
-      "lCompleteResponseProto\022\'\n\006sender\030\001 \001(\0132\027" +
-      ".proto.MinimumUserProto\022Y\n\006status\030\002 \001(\0162" +
-      "I.proto.ObstacleRemovalCompleteResponseP" +
-      "roto.ObstacleRemovalCompleteStatus\"X\n\035Ob" +
-      "stacleRemovalCompleteStatus\022\013\n\007SUCCESS\020\001" +
-      "\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\016\n\nFAIL_OTH" +
-      "ER\020\003B3\n\034com.lvl6.mobsters.eventprotoB\023Ev" +
-      "entStructureProto"
+      "E\020\005\022\031\n\025FAIL_NOT_USERS_STRUCT\020\006\022\037\n\033FAIL_S" +
+      "TRUCTURE_AT_MAX_LEVEL\020\010\022\016\n\nFAIL_OTHER\020\t\"" +
+      "\244\001\n0FinishNormStructWaittimeWithDiamonds" +
+      "RequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min",
+      "imumUserProto\022\026\n\016userStructUuid\030\002 \001(\t\022\025\n" +
+      "\rtimeOfSpeedup\030\003 \001(\003\022\030\n\020gemCostToSpeedup" +
+      "\030\004 \001(\005\"\237\002\n1FinishNormStructWaittimeWithD" +
+      "iamondsResponseProto\022\'\n\006sender\030\001 \001(\0132\027.p" +
+      "roto.MinimumUserProto\022g\n\006status\030\002 \001(\0162W." +
+      "proto.FinishNormStructWaittimeWithDiamon" +
+      "dsResponseProto.FinishNormStructWaittime" +
+      "Status\"X\n\036FinishNormStructWaittimeStatus" +
+      "\022\013\n\007SUCCESS\020\001\022\031\n\025FAIL_INSUFFICENT_GEMS\020\002" +
+      "\022\016\n\nFAIL_OTHER\020\003\"v\n\"NormStructWaitComple",
+      "teRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.M" +
+      "inimumUserProto\022\026\n\016userStructUuid\030\002 \003(\t\022" +
+      "\017\n\007curTime\030\003 \001(\003\"\271\002\n#NormStructWaitCompl" +
+      "eteResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto" +
+      ".MinimumUserProto\022W\n\006status\030\002 \001(\0162G.prot" +
+      "o.NormStructWaitCompleteResponseProto.No" +
+      "rmStructWaitCompleteStatus\0221\n\nuserStruct" +
+      "\030\003 \003(\0132\035.proto.FullUserStructureProto\"]\n" +
+      "\034NormStructWaitCompleteStatus\022\013\n\007SUCCESS" +
+      "\020\001\022 \n\034FAIL_CONSTRUCTION_INCOMPLETE\020\002\022\016\n\n",
+      "FAIL_OTHER\020\003\"\243\002\n-RetrieveCurrencyFromNor" +
+      "mStructureRequestProto\0227\n\006sender\030\001 \001(\0132\'" +
+      ".proto.MinimumUserProtoWithMaxResources\022" +
+      "^\n\020structRetrievals\030\002 \003(\0132D.proto.Retrie" +
+      "veCurrencyFromNormStructureRequestProto." +
+      "StructRetrieval\032Y\n\017StructRetrieval\022\024\n\014us" +
+      "erStructId\030\001 \001(\005\022\027\n\017timeOfRetrieval\030\002 \001(" +
+      "\003\022\027\n\017amountCollected\030\003 \001(\005\"\240\002\n.RetrieveC" +
+      "urrencyFromNormStructureResponseProto\0227\n" +
+      "\006sender\030\001 \001(\0132\'.proto.MinimumUserProtoWi",
+      "thMaxResources\022m\n\006status\030\002 \001(\0162].proto.R" +
+      "etrieveCurrencyFromNormStructureResponse" +
+      "Proto.RetrieveCurrencyFromNormStructureS" +
+      "tatus\"F\n\'RetrieveCurrencyFromNormStructu" +
+      "reStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\220\001" +
+      "\n\031SpawnObstacleRequestProto\022\'\n\006sender\030\001 " +
+      "\001(\0132\027.proto.MinimumUserProto\0229\n\024prospect" +
+      "iveObstacles\030\002 \003(\0132\033.proto.MinimumObstac" +
+      "leProto\022\017\n\007curTime\030\003 \001(\003\"\364\001\n\032SpawnObstac" +
+      "leResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.",
+      "MinimumUserProto\0222\n\020spawnedObstacles\030\002 \003" +
+      "(\0132\030.proto.UserObstacleProto\022E\n\006status\030\003" +
+      " \001(\01625.proto.SpawnObstacleResponseProto." +
+      "SpawnObstacleStatus\"2\n\023SpawnObstacleStat" +
+      "us\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\322\001\n Begi" +
+      "nObstacleRemovalRequestProto\022\'\n\006sender\030\001" +
+      " \001(\0132\027.proto.MinimumUserProto\022\017\n\007curTime" +
+      "\030\002 \001(\003\022\021\n\tgemsSpent\030\003 \001(\005\022\026\n\016resourceCha" +
+      "nge\030\004 \001(\021\022/\n\014resourceType\030\005 \001(\0162\023.proto." +
+      "ResourceType:\004CASH\022\030\n\020userObstacleUuid\030\006",
+      " \001(\t\"\230\002\n!BeginObstacleRemovalResponsePro" +
+      "to\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserPr" +
+      "oto\022S\n\006status\030\002 \001(\0162C.proto.BeginObstacl" +
+      "eRemovalResponseProto.BeginObstacleRemov" +
+      "alStatus\"u\n\032BeginObstacleRemovalStatus\022\013" +
+      "\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022" +
+      "\036\n\032FAIL_INSUFFICIENT_RESOURCE\020\003\022\016\n\nFAIL_" +
+      "OTHER\020\004\"\265\001\n#ObstacleRemovalCompleteReque" +
+      "stProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumU" +
+      "serProto\022\017\n\007curTime\030\002 \001(\003\022\017\n\007speedUp\030\003 \001",
+      "(\010\022\021\n\tgemsSpent\030\004 \001(\005\022\030\n\020userObstacleUui" +
+      "d\030\005 \001(\t\022\026\n\016atMaxObstacles\030\006 \001(\010\"\204\002\n$Obst" +
+      "acleRemovalCompleteResponseProto\022\'\n\006send" +
+      "er\030\001 \001(\0132\027.proto.MinimumUserProto\022Y\n\006sta" +
+      "tus\030\002 \001(\0162I.proto.ObstacleRemovalComplet" +
+      "eResponseProto.ObstacleRemovalCompleteSt" +
+      "atus\"X\n\035ObstacleRemovalCompleteStatus\022\013\n" +
+      "\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002\022\016" +
+      "\n\nFAIL_OTHER\020\003B3\n\034com.lvl6.mobsters.even" +
+      "tprotoB\023EventStructureProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
