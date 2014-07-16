@@ -3,6 +3,7 @@ package com.lvl6.mobsters.services.user;
 import java.util.Date;
 import java.util.Set;
 
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
@@ -12,12 +13,55 @@ import com.lvl6.mobsters.services.user.UserServiceImpl.ModifyUserSpecBuilderImpl
 
 public interface UserService
 {
-	/*
-	public User findById( String id );
-
-	public User findByIdWithClan( String id );
 
 	/**
+	 * Builder for collecting optional parameters and parameters with N-ary cardinality.
+	 * 
+	 * In this case, the list of structures has N-ary cardinality, but it is required,
+	 * so there is no createXXXUser() method without a Director<CreateUserOptionsBuilder>.
+	 * 
+	 * @author jheinnic
+	 */
+	public interface CreateUserOptionsBuilder {
+		CreateUserOptionsBuilder withStructure( int structureId, float xPosition, float yPosition );
+	}
+	
+	// No methods because there is no data to
+	// return and there is no need for a "status"
+	// collector method since all non-happy trail 
+	// end conditions are handled by Lvl6Exceptions.
+	public interface CreateUserReplyBuilder {
+	}	
+	
+	public void createFacebookUser(
+		CreateUserReplyBuilder replyBuilder,
+		String facebookId,
+		String udid,
+		String name, 
+		String deviceToken, 
+		int cash, 
+		int oil, 
+		int gems,
+		Director<CreateUserOptionsBuilder> options
+	);
+	
+	public void createUdidUser(
+		CreateUserReplyBuilder replyBuilder,
+		String udid,
+		String name, 
+		String deviceToken, 
+		int cash, 
+		int oil, 
+		int gems,
+		Director<CreateUserOptionsBuilder> options
+	);
+	
+	/*
+		public User findById( String id );
+
+		public User findByIdWithClan( String id );
+
+		/**
 	 * Update identified resource counters by incrementing/decrementing the appropriate amounts.
 	 * 
 	 * This method bypasses optimistic locking conflicts, but does so by reading, modifying, and then
@@ -122,14 +166,11 @@ public interface UserService
 			return oilDelta;
 		}
 	}
-	*/
+	 */
 
-	public void createUser( String userId, String name, int cash,
-		int oil, int gems );
-	
 	public User levelUpUser( String userId, int newLevel );
 	
-	public abstract User modifyUser( String userId, ModifyUserSpec modifySpec );
+	public User modifyUser( String userId, ModifyUserSpec modifySpec );
 
 	public interface ModifyUserSpecBuilder
 	{
@@ -180,9 +221,6 @@ public interface UserService
 	}
 
 	/**************************************************************************/
-	
-	public void createUserDataRarelyAccessed( String userId, String udidForHistory,
-		Date createTime, String deviceToken, boolean fbIdSetOnUserCreate);
 
 	public void modifyUserDataRarelyAccessed(
 		String userId,
@@ -246,14 +284,9 @@ public interface UserService
 			return builder;
 		}
 	}
-
 	
-	public UserCredential getUserCredentialByFacebookIdOrUdid( String facebookId, String udid );
 	/**
 	 * @throws Exception
 	 */
-
-	public UserCredential createUserCredential( String facebookId, String udid ) throws Exception;
-
-
+	public String getUserCredentialByFacebookIdOrUdid( String facebookId, String udid );
 }

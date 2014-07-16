@@ -1,22 +1,25 @@
 package com.lvl6.mobsters.services.user;
 
+import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.lvl6Precondition;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.common.utils.Director;
+import com.lvl6.mobsters.dynamo.ObstacleForUser;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed;
@@ -24,15 +27,23 @@ import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepositoryImpl;
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProto;
 import com.lvl6.mobsters.server.ControllerConstants;
 import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
+import com.lvl6.mobsters.services.common.TimeUtils;
+import com.lvl6.mobsters.services.monster.MonsterService;
+import com.lvl6.mobsters.services.structure.StructureService;
+import com.lvl6.mobsters.services.task.TaskService;
+import com.lvl6.mobsters.services.task.TaskService.CreateUserTasksCompletedSpec;
+import com.lvl6.mobsters.services.task.TaskService.CreateUserTasksCompletedSpecBuilder;
 
 @Component
-@Transactional
+// @Transactional
 public class UserServiceImpl implements UserService
 {
-	
 	private static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	@Autowired
@@ -43,6 +54,18 @@ public class UserServiceImpl implements UserService
 
 	@Autowired
 	UserCredentialRepository userCredentialRepository;
+	
+	@Autowired
+	DataServiceTxManager txManager;
+	
+	@Autowired
+	StructureService structureService;
+	
+	@Autowired
+	MonsterService monsterService;
+	
+	@Autowired
+	TaskService taskService;
 
 	/*
 	@Override
@@ -148,11 +171,89 @@ public class UserServiceImpl implements UserService
 		return retVal;
 	}
 	 */
-	
+
 	@Override
-	public void createUser( String userId, String name, int cash,
-		int oil, int gems ) {
-		User u = new User();
+	public void createFacebookUser(
+		CreateUserReplyBuilder replyBuilder, String facebookId, 
+		String udid, String name, String deviceToken, 
+		int cash, int oil, int gems,
+		Director<CreateUserOptionsBuilder> options)
+	{
+		lvl6Precondition(
+			CollectionUtils.isEmptyOrNull(
+				userCredentialRepository.findByFacebookId(facebookId)
+			),
+			Lvl6MobstersStatusCode.FAIL_USER_WITH_FACEBOOK_ID_EXISTS,
+			"User(s) already exist with facebookId=%s", 
+			facebookId
+		);
+		
+		final UserCredential uc = new UserCredential();
+		uc.setFacebookId(facebookId);
+		
+		// TODO Common other stuff
+		doFacebookAgnosticWork(
+			uc, facebookId, udid, 
+			name, deviceToken, 
+			cash, oil, gems, options);
+	}
+
+	@Override
+	/**
+	 * At the moment, only UserCreateController uses this. No checks are made before
+	 * saving this data to the db.
+	 */
+	public void createUdidUser(
+		CreateUserReplyBuilder replyBuilder, 
+		String udid, String name, String deviceToken, 
+		int cash, int oil, int gems,
+		Director<CreateUserOptionsBuilder> options) {
+		lvl6Precondition(
+			CollectionUtils.isEmptyOrNull(
+				userCredentialRepository.findByUdid(udid)
+			),
+			Lvl6MobstersStatusCode.FAIL_USER_WITH_UDID_ALREADY_EXISTS,
+			"User(s) already exist with udid=%s", 
+			udid
+		);
+		
+		final UserCredential uc = new UserCredential();
+		uc.setUdid(udid);
+		
+		doFacebookAgnosticWork(
+			uc, null, udid, 
+			name, deviceToken, 
+			cash, oil, gems, options);
+	}
+
+	private void doFacebookAgnosticWork(
+		final UserCredential uc, 
+		final String facebookId, final String udid,
+		final String name, final String deviceToken, 
+		final int cash, final int oil, final int gems,
+		final Director<CreateUserOptionsBuilder> director ) 
+	{
+		userCredentialRepository.save(uc);
+		final String userId = uc.getUserId();
+
+		final Date createTime = TimeUtils.createNow();
+		final CreateUserOptionsBuilderImpl optionsBldr =
+			new CreateUserOptionsBuilderImpl();
+		director.apply(optionsBldr);
+		
+		createUser(userId, name, cash, oil, gems);
+		createUserDataRarelyAccessed(userId, udid, createTime, deviceToken, facebookId!=null);
+		writeStructs(userId, createTime, optionsBldr);
+		writeObstacles(userId);
+		writeTaskCompleted(userId, createTime);
+		writeMonsters(userId, createTime, facebookId);
+	}
+	
+	private void createUser(
+		String userId, String name, int cash, int oil, int gems
+	) {
+		final User u = new User();
+		
 		u.setId(userId);
 		u.setName(name);
 		u.setAdmin(false);
@@ -161,10 +262,134 @@ public class UserServiceImpl implements UserService
 		u.setOil(oil);
 		
 		// TODO: Figure out correct amount
-		u.setExperience((new Random()).nextInt(10));
+		// u.setExperience((new Random()).nextInt(10));
+		u.setExperience(0);
 		u.setLevel(ControllerConstants.USER_CREATE__START_LEVEL);
 		
 		userRepo.save(u);
+	}
+
+	private void createUserDataRarelyAccessed(
+		String userId,
+		String udidForHistory,
+		Date createTime,
+		String deviceToken,
+		boolean fbIdSetOnUserCreate )
+	{
+		UserDataRarelyAccessed udra = new UserDataRarelyAccessed();
+		udra.setUserId(userId);
+		udra.setUdidForHistory(udidForHistory);
+		udra.setLastLogin(createTime);
+		udra.setDeviceToken(deviceToken);
+		udra.setCreateTime(createTime);
+		udra.setFbIdSetOnUserCreate(fbIdSetOnUserCreate);
+		udra.setLastObstacleSpawnTime(createTime);
+		
+		userDraRepo.save(udra);
+	}
+	
+	private void writeStructs(
+		final String userId,
+		final Date purchaseTime,
+		final CreateUserOptionsBuilderImpl optionsBldr )
+	{
+		final Date lastRetrievedTime = TimeUtils.createDateAddDays(purchaseTime, -7);
+		int[] buildingIds = ControllerConstants.TUTORIAL__EXISTING_BUILDING_IDS;
+		float[] xPositions = ControllerConstants.TUTORIAL__EXISTING_BUILDING_X_POS;
+		float[] yPositions = ControllerConstants.TUTORIAL__EXISTING_BUILDING_Y_POS;
+		LOG.info("giving user buildings");
+		final int numBuildings = buildingIds.length;
+
+		// upon creation, the user should be able to retrieve from these buildings
+		for (int index = 0; index < numBuildings; index++ ) {
+//			structureService.createStructuresForUser(userId);
+//			createBuilder.setStructureId(userStructureId, buildingIds[index]);
+//			createBuilder.setXCoord(userStructureId, xPositions[index]);
+//			createBuilder.setYCoord(userStructureId, yPositions[index]);
+//			createBuilder.setPurchaseTime(userStructureId, purchaseTime);
+//			createBuilder.setLastRetrievedTime(userStructureId, lastRetrievedTime);
+//			createBuilder.setComplete(userStructureId, true);
+		}
+
+		// upon creation, the user should NOT be able to retrieve from these buildings
+//		for (int index = 0; index < optionsBldr.size(); index++ ) {
+//			// TODO: Perhaps find more efficient way to get an id.
+//			String userStructureId = UUID.randomUUID().toString();
+//
+//			TutorialStructProto tsp = optionsBldr.get(index);
+//
+//			createBuilder.setStructureId(userStructureId, tsp.getStructId());
+//			createBuilder.setXCoord(userStructureId, tsp.getCoordinate()
+//				.getX());
+//			createBuilder.setYCoord(userStructureId, tsp.getCoordinate()
+//				.getY());
+//			createBuilder.setPurchaseTime(userStructureId, purchaseTime);
+//			createBuilder.setLastRetrievedTime(userStructureId, purchaseTime);
+//			createBuilder.setComplete(userStructureId, true);
+//		}
+
+		LOG.info("gave user buildings");
+	}
+
+	private void writeObstacles( final String userId )
+	{
+		LOG.info("giving user obstacles");
+		String orientation = StructOrientation.POSITION_1.name();
+
+//		final CreateUserObstaclesSpecBuilder createBuilder = CreateUserObstaclesSpec.builder();
+//		for (int index = 0; index < ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID.length; index++ ) {
+//			// TODO: Perhaps find more efficient way to get an id.
+//			final String obstacleForUserId = (new ObstacleForUser()).getObstacleForUserId();
+//			final int obstacleId = ControllerConstants.TUTORIAL__INIT_OBSTACLE_ID[index];
+//			createBuilder.setObstacleId(obstacleForUserId, obstacleId);
+//
+//			final int posX = ControllerConstants.TUTORIAL__INIT_OBSTACLE_X[index];
+//			createBuilder.setXCoord(obstacleForUserId, posX);
+//
+//			final int posY = ControllerConstants.TUTORIAL__INIT_OBSTACLE_Y[index];
+//			createBuilder.setYCoord(obstacleForUserId, posY);
+//			createBuilder.setOrientation(obstacleForUserId, orientation);
+//		}
+//
+//		structureService.createObstaclesForUser(userId, createBuilder.build());
+		LOG.info("gave user obstacles");
+	}
+
+	private void writeTaskCompleted( String userId, Date createTime )
+	{
+		LOG.info("giving user completed tasks");
+		CreateUserTasksCompletedSpecBuilder createBuilder = CreateUserTasksCompletedSpec.builder();
+		int cityId = ControllerConstants.TUTORIAL__CITY_ONE_ID;
+	  	int assetIdOne = ControllerConstants.TUTORIAL__CITY_ONE_ASSET_NUM_FOR_FIRST_DUNGEON;
+	  	// TODO: Create the configuration data class that returns the correct value
+	  	int taskIdOne = 0; //TaskRetrieveUtils.getTaskIdForCityElement(cityId, assetIdOne);
+	  	createBuilder.setTimeOfEntry(taskIdOne, createTime);
+	  	
+	  	int assetIdTwo = ControllerConstants.TUTORIAL__CITY_ONE_ASSET_NUM_FOR_SECOND_DUNGEON;
+	  	// TODO: Create the configuration data class that returns the correct value
+	  	int taskIdTwo = 0; //TaskRetrieveUtils.getTaskIdForCityElement(cityId, assetIdTwo);
+	  	createBuilder.setTimeOfEntry(taskIdTwo, createTime);
+	  	
+	  	taskService.createTasksForUserCompleted(userId, createBuilder.build());
+	  	LOG.info("gave user completed tasks");
+	  	
+	}
+	
+	private void writeMonsters(String userId, Date createDate, String fbId) {
+		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+		
+		//so the user will get monsters that are completed already, thus usable
+		Date combineStartDate = TimeUtils.createDateAddDays(createDate, -7);
+	  	
+		List<Integer> monsterIds = new ArrayList<Integer>();
+	  	monsterIds.add(ControllerConstants.TUTORIAL__STARTING_MONSTER_ID);
+	  	
+	  	if (StringUtils.hasText(fbId)) {
+	  		LOG.info("awarding facebook zucker mucker burger.");
+	  		monsterIds.add(ControllerConstants.TUTORIAL__MARK_Z_MONSTER_ID);
+	  	}
+	  	
+	  	monsterService.createCompleteMonstersForUser(userId, monsterIds, combineStartDate);
 	}
 
 	@Override
@@ -492,30 +717,6 @@ public class UserServiceImpl implements UserService
 	}	
 	
 	/**************************************************************************/
-
-	/**
-	 * At the moment, only UserCreateController uses this. No checks are made before
-	 * saving this data to the db.
-	 */
-	@Override
-	public void createUserDataRarelyAccessed(
-		String userId,
-		String udidForHistory,
-		Date createTime,
-		String deviceToken,
-		boolean fbIdSetOnUserCreate )
-	{
-		UserDataRarelyAccessed udra = new UserDataRarelyAccessed();
-		udra.setUserId(userId);
-		udra.setUdidForHistory(udidForHistory);
-		udra.setLastLogin(createTime);
-		udra.setDeviceToken(deviceToken);
-		udra.setCreateTime(createTime);
-		udra.setFbIdSetOnUserCreate(fbIdSetOnUserCreate);
-		udra.setLastObstacleSpawnTime(createTime);
-		
-		userDraRepo.save(udra);
-	}
 	
 	@Override
 	public void modifyUserDataRarelyAccessed(
@@ -634,15 +835,16 @@ public class UserServiceImpl implements UserService
 	 * saving this data to the db.
 	 */
 	@Override
-	public UserCredential getUserCredentialByFacebookIdOrUdid(String facebookId, String udid) {
-		
+	public String getUserCredentialByFacebookIdOrUdid(String facebookId, String udid)
+	{
 		List<UserCredential> ucList = userCredentialRepository.findByFacebookId(facebookId);
-		
-		
+		final String userId;
+
 		if (ucList.size() > 1) {
 			ucList = new ArrayList<UserCredential>(ucList);
-			LOG.warn("multiple UserCredentials for facebookId=" + facebookId + ". list=" +
-				ucList + " choosing the one with the lowest userId.");
+			LOG.warn(
+				"Found multiple UserCredentials for facebookId=%s.  Choosing the one with the lowest userId.  ucList=%s.",
+				facebookId, ucList);
 			
 			// TODO: Figure out if sorting is necessary.
 			Collections.sort(ucList, new Comparator<UserCredential>() {
@@ -652,67 +854,34 @@ public class UserServiceImpl implements UserService
 				}
 			});
 			
-			return ucList.get(0);
+			userId = ucList.get(0).getUserId();
+		} else if (ucList.size() == 1) {
+			userId = ucList.get(0).getUserId();
+		} else {		
+			ucList = userCredentialRepository.findByUdid(udid);
 			
-		} else if (ucList.size() == 1) {
-			return ucList.get(0);
-		}
-		
-		ucList = userCredentialRepository.findByUdid(udid);
-		
-		if (ucList.size() > 1) {
-			LOG.warn("wtf, multiple UserCredentials for udid=" + udid + ". list=" +
-				ucList + ", consider making client generate another udid.");
-
-			// TODO: Figure out if sorting is necessary.
-			Collections.sort(ucList, new Comparator<UserCredential>() {
-				@Override
-				public int compare(UserCredential o1, UserCredential o2) {
-					return o1.getUserId().compareTo(o2.getUserId());
-				}
-			});
-
-			return ucList.get(0);
-		} else if (ucList.size() == 1) {
-			return ucList.get(0);
+			if (ucList.size() > 1) {
+				LOG.warn(
+					"Found multiple UserCredentials for udid=%s.  Choosing the one with the lowest userId.  ucList=%s.",
+					udid, ucList);
+	
+				// TODO: Figure out if sorting is necessary.
+				Collections.sort(ucList, new Comparator<UserCredential>() {
+					@Override
+					public int compare(UserCredential o1, UserCredential o2) {
+						return o1.getUserId().compareTo(o2.getUserId());
+					}
+				});
+	
+				userId = ucList.get(0).getUserId();
+			} else if (ucList.size() == 1) {
+				userId = ucList.get(0).getUserId();
+			} else {
+				userId = null;
+			}
 		}
 		
 		return null;
-	}
-
-	@Override
-	public UserCredential createUserCredential( String facebookId, String udid ) throws Exception
-	{
-		UserCredential uc = new UserCredential();
-
-		// if facebook id is provided, use that to try creating account, else use udid
-		if (StringUtils.hasText(facebookId)) {
-			List<UserCredential> userCredentials =
-				userCredentialRepository.findByFacebookId(facebookId);
-
-			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
-				"User(s) already exist with facebookId="
-					+ facebookId
-					+ " users="
-					+ userCredentials); }
-
-			uc.setFacebookId(facebookId);
-
-		} else {
-			List<UserCredential> userCredentials =
-				userCredentialRepository.findByUdid(udid);
-
-			if (!CollectionUtils.lacksSubstance(userCredentials)) { throw new Exception(
-				"User(s) already exist with udid="
-					+ udid
-					+ " users="
-					+ userCredentials); }
-
-			uc.setUdid(udid);
-		}
-
-		userCredentialRepository.save(uc);
-		return uc;
 	}
 
 	// for the dependency injection

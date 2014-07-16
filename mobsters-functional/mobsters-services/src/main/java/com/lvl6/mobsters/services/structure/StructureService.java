@@ -3,13 +3,11 @@ package com.lvl6.mobsters.services.structure;
 import java.util.Date;
 import java.util.Map;
 
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
 import com.lvl6.mobsters.dynamo.StructureForUser;
-import com.lvl6.mobsters.services.structure.StructureServiceImpl.CreateUserObstaclesSpecBuilderImpl;
-import com.lvl6.mobsters.services.structure.StructureServiceImpl.CreateUserStructuresSpecBuilderImpl;
 
-public interface StructureService
-{
+public interface StructureService {
 
 	// NON CRUD LOGIC******************************************************************
 
@@ -17,104 +15,55 @@ public interface StructureService
 
 	/**************************************************************************/
 
-	public abstract void createObstaclesForUser(
+	public void createObstaclesForUser(
 		String userId,
-		CreateUserObstaclesSpec createSpec );
-
-	public interface CreateUserObstaclesSpecBuilder
-	{
-		public CreateUserObstaclesSpec build();
-
-		public CreateUserObstaclesSpecBuilder setObstacleId(
-			String userObstacleId,
-			int obstacleId );
-
-		public CreateUserObstaclesSpecBuilder setXCoord( String userObstacleId, int xCoord );
-
-		public CreateUserObstaclesSpecBuilder setYCoord( String userObstacleId, int yCoord );
-
-		public CreateUserObstaclesSpecBuilder setOrientation(
-			String userObstacleId,
-			String orientation );
-
-	}
-
-	public class CreateUserObstaclesSpec
-	{
-		// the end state: objects to be saved to db
-		final private Map<String, ObstacleForUser> userObstacleIdToOfu;
-
-		CreateUserObstaclesSpec( Map<String, ObstacleForUser> userObstacleIdToOfu )
-		{
-			this.userObstacleIdToOfu = userObstacleIdToOfu;
-		}
-
-		Map<String, ObstacleForUser> getUserObstacleIdToOfu()
-		{
-			return userObstacleIdToOfu;
-		}
-
-		public static CreateUserObstaclesSpecBuilder builder()
-		{
-			return new CreateUserObstaclesSpecBuilderImpl();
-		}
+		Director<CreateObstacleCollectionBuilder> director);
+	
+	public interface CreateObstacleCollectionBuilder {
+		public CreateObstacleCollectionBuilder addStructure(
+			int obstacleId, float xCoord, float yCoord, String orientation);
 	}
 
 	/**************************************************************************/
 
-	public abstract void createStructuresForUser(
-		String userId,
-		CreateUserStructuresSpec createSpec );
+	public void createStructuresForUser(String userId,
+		Director<CreateStructureCollectionBuilder> director);
 
-	public interface CreateUserStructuresSpecBuilder
-	{
-		public CreateUserStructuresSpec build();
-
-		public CreateUserStructuresSpecBuilder setStructureId(
-			String userStructureId,
-			int obstacleId );
-
-		public CreateUserStructuresSpecBuilder setXCoord( String userStructureId, float xCoord );
-
-		public CreateUserStructuresSpecBuilder setYCoord( String userStructureId, float yCoord );
-
-		public CreateUserStructuresSpecBuilder setLastRetrievedTime(
-			String userStructureId,
-			Date lastRetrieved );
-
-		public CreateUserStructuresSpecBuilder setPurchaseTime(
-			String userStructureId,
-			Date purchaseTime );
-
-		public CreateUserStructuresSpecBuilder setComplete(
-			String userStructureId,
-			boolean isComplete );
-
-		public CreateUserStructuresSpecBuilder setFbInviteStructLvl(
-			String userStructureId,
-			int fbInviteStructLvl );
-
+	public enum ConstructionStatusKind {
+		INCOMPLETE,
+		COMPLETE_AS_EMPTY,
+		COMPLETE_AS_FULL
 	}
 
-	public class CreateUserStructuresSpec
-	{
-		// the end state: objects to be saved to db
-		final private Map<String, StructureForUser> userStructureIdToOfu;
+	public interface CreateStructureOptionsBuilder {
+		/**
+		 * Purchase timestamp.  Defaults to TimeUtils.createNow().
+		 * 
+		 * @param purchaseTime
+		 */
+		CreateStructureOptionsBuilder purchaseTime(Date purchaseTime);
 
-		CreateUserStructuresSpec( Map<String, StructureForUser> userStructureIdToOfu )
-		{
-			this.userStructureIdToOfu = userStructureIdToOfu;
-		}
-
-		Map<String, StructureForUser> getUserStructureIdToOfu()
-		{
-			return userStructureIdToOfu;
-		}
-
-		public static CreateUserStructuresSpecBuilder builder()
-		{
-			return new CreateUserStructuresSpecBuilderImpl();
-		}
+		/**
+		 * Construction progress.  Defaults to INCOMPLETE.
+		 * 
+		 * @param status
+		 */
+		CreateStructureOptionsBuilder constructionStatus(ConstructionStatusKind status);
+		
+		/**
+		 * ???
+		 * 
+		 * @param fbInviteStructLvl
+		 */
+		CreateStructureOptionsBuilder fbInviteStructLvl(int fbInviteStructLvl);
 	}
+	
+	public interface CreateStructureCollectionBuilder {
+		public CreateStructureCollectionBuilder addStructure(
+			int structureId, float xCoord, float yCoord);
 
+		public CreateStructureCollectionBuilder addStructure(
+			int structureId, float xCoord, float yCoord,
+			Director<CreateStructureOptionsBuilder> director);
+	}
 }

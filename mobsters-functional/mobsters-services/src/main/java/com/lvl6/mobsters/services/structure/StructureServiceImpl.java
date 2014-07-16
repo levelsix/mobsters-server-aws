@@ -1,19 +1,17 @@
 package com.lvl6.mobsters.services.structure;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
-import com.lvl6.mobsters.dynamo.StructureForUser;
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository;
-import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository;
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 
 @Component
 public class StructureServiceImpl implements StructureService {
@@ -25,6 +23,9 @@ public class StructureServiceImpl implements StructureService {
     
     @Autowired
     private StructureForUserRepository structureForUserRepository;
+    
+    @Autowired
+    private DataServiceTxManager txManager;
 
     //NON CRUD LOGIC******************************************************************
     
@@ -34,225 +35,87 @@ public class StructureServiceImpl implements StructureService {
     /**************************************************************************/
 
     @Override
-    public void createObstaclesForUser( String userId, CreateUserObstaclesSpec createSpec ) {
-        // txManager.startTransaction();
+    public void createObstaclesForUser( 
+    	final String userId, 
+    	final Director<CreateObstacleCollectionBuilder> director ) 
+    {
+    	final CreateObstacleCollectionBuilderImpl builder =
+    		new CreateObstacleCollectionBuilderImpl(userId);
+    	director.apply(builder);
         
-        // get whatever we need from the database, which is nothing
-        final Map<String, ObstacleForUser> userObstacleIdToOfu = createSpec.getUserObstacleIdToOfu();
-        
-        for ( ObstacleForUser ofu : userObstacleIdToOfu.values()) {
-            ofu.setUserId(userId);
-        }
-        
-        obstacleForUserRepository.saveEach(userObstacleIdToOfu.values());
+    	boolean success = false;
+    	txManager.requireTransaction();
+    	try {
+	        // save whatever the callback created through the builder
+	        obstacleForUserRepository.saveEach(
+	        	builder.build());
+    	} finally {
+    		if(success) {
+    			txManager.commit();
+    		} else {
+    			txManager.rollback();
+    		}
+    	}
     }
     
     // motivation for two separate Builders is because service will only be modifying
     // existing objects or creating new ones
-    static class CreateUserObstaclesSpecBuilderImpl implements CreateUserObstaclesSpecBuilder
+    static class CreateObstacleCollectionBuilderImpl implements CreateObstacleCollectionBuilder
     {
         // the end state: objects to be saved to db
-        final Map<String, ObstacleForUser> userObstacleIdToOfu;
+        private final ArrayList<ObstacleForUser> retVal;
+		private final String userId;
         
-        CreateUserObstaclesSpecBuilderImpl() {
-            this.userObstacleIdToOfu = new HashMap<String, ObstacleForUser>();
+        CreateObstacleCollectionBuilderImpl(final String userId) {
+        	this.userId = userId;
+            this.retVal = new ArrayList<ObstacleForUser>();
         }
 
-        private ObstacleForUser getTarget( String userObstacleId ) {
-            ObstacleForUser afu = userObstacleIdToOfu.get(userObstacleId);
-            if (null == afu) {
-                afu = new ObstacleForUser();
-                userObstacleIdToOfu.put(userObstacleId, afu);
-            }
-            return afu;
-        }
+		@Override
+		public CreateObstacleCollectionBuilder addStructure(
+			int obstacleId, float xCoord, float yCoord, String orientation) {
+			return this;
+		}
 
-        @Override
-        public CreateUserObstaclesSpecBuilder setObstacleId(
-            String userObstacleId,
-            int miniJobId)
-        {
-            ObstacleForUser afu = getTarget(userObstacleId);
-            afu.setObstacleId(miniJobId);
-            
-            return this;
-        }
-
-        @Override
-        public CreateUserObstaclesSpecBuilder setXCoord(
-            String userObstacleId,
-            int xCoord)
-        {
-            ObstacleForUser afu = getTarget(userObstacleId);
-            afu.setXcoord(xCoord);
-            
-            return this;
-        }
-
-        @Override
-        public CreateUserObstaclesSpecBuilder setYCoord(
-            String userObstacleId,
-            int yCoord)
-        {
-            ObstacleForUser afu = getTarget(userObstacleId);
-            afu.setYcoord(yCoord);
-            
-            return this;
-        }
-        
-        @Override
-        public CreateUserObstaclesSpecBuilder setOrientation(
-            String userObstacleId,
-            String orientation )
-        {
-            ObstacleForUser afu = getTarget(userObstacleId);
-            afu.setOrientation(orientation);
-            
-            return this;
-        }
-
-        @Override
-        public CreateUserObstaclesSpec build() {
-
-            return new CreateUserObstaclesSpec(userObstacleIdToOfu);
+        ArrayList<ObstacleForUser> build() {
+            return retVal;
         }
     }
 
     /**************************************************************************/
 
     @Override
-    public void createStructuresForUser( String userId, CreateUserStructuresSpec createSpec ) {
-        // txManager.startTransaction();
-        
-        // get whatever we need from the database, which is nothing
-        final Map<String, StructureForUser> userStructureIdToOfu = createSpec.getUserStructureIdToOfu();
-        
-        for ( StructureForUser ofu : userStructureIdToOfu.values()) {
-            ofu.setUserId(userId);
-        }
-        
-        structureForUserRepository.saveEach(userStructureIdToOfu.values());
-    }
-    
-    static class CreateUserStructuresSpecBuilderImpl implements CreateUserStructuresSpecBuilder
+    public void createStructuresForUser( 
+    	final String userId, 
+    	Director<CreateStructureCollectionBuilder> director ) 
     {
-        // the end state: objects to be saved to db
-        final Map<String, StructureForUser> userStructureIdToOfu;
+    	final CreateStructureCollectionBuilderImpl builder =
+    		new CreateStructureCollectionBuilderImpl(userId);
+    	director.apply(builder);
         
-        CreateUserStructuresSpecBuilderImpl() {
-            this.userStructureIdToOfu = new HashMap<String, StructureForUser>();
-        }
-
-        private StructureForUser getTarget( String userStructureId ) {
-            StructureForUser afu = userStructureIdToOfu.get(userStructureId);
-            if (null == afu) {
-                afu = new StructureForUser();
-                userStructureIdToOfu.put(userStructureId, afu);
-            }
-            return afu;
-        }
-
-        @Override
-        public CreateUserStructuresSpecBuilder setStructureId(
-            String userStructureId,
-            int structureId)
-        {
-            StructureForUser sfu = getTarget(userStructureId);
-            sfu.setStructId(structureId);
-            
-            return this;
-        }
-
-        @Override
-        public CreateUserStructuresSpecBuilder setXCoord(
-            String userStructureId,
-            float xCoord)
-        {
-            StructureForUser afu = getTarget(userStructureId);
-            afu.setxCoord(xCoord);
-            
-            return this;
-        }
-
-        @Override
-        public CreateUserStructuresSpecBuilder setYCoord(
-            String userStructureId,
-            float yCoord)
-        {
-            StructureForUser afu = getTarget(userStructureId);
-            afu.setyCoord(yCoord);
-            
-            return this;
-        }
-        
-        @Override
-        public CreateUserStructuresSpecBuilder setLastRetrievedTime(
-            String userStructureId,
-            Date lastRetrieved )
-        {
-            StructureForUser afu = getTarget(userStructureId);
-            afu.setLastRetrieved(lastRetrieved);
-            
-            return this;
-        }
-        
-        @Override
-        public CreateUserStructuresSpecBuilder setPurchaseTime(
-            String userStructureId,
-            Date purchaseTime )
-        {
-            StructureForUser afu = getTarget(userStructureId);
-            afu.setPurchaseTime(purchaseTime);
-            
-            return this;
-        }
-        
-        @Override
-        public CreateUserStructuresSpecBuilder setComplete(
-            String userStructureId,
-            boolean isComplete )
-        {
-            StructureForUser afu = getTarget(userStructureId);
-            afu.setComplete(isComplete);
-            
-            return this;
-        }
-        
-        @Override
-        public CreateUserStructuresSpecBuilder setFbInviteStructLvl(
-            String userStructureId,
-            int fbInviteStructLvl )
-        {
-            StructureForUser afu = getTarget(userStructureId);
-            afu.setFbInviteStructLvl(fbInviteStructLvl);
-            
-            return this;
-        }
-
-        @Override
-        public CreateUserStructuresSpec build() {
-
-            return new CreateUserStructuresSpec(userStructureIdToOfu);
-        }
+    	boolean success = false;
+    	txManager.requireTransaction();
+    	try {
+	        // save whatever the callback created through the builder
+    		structureForUserRepository.saveEach(
+	        	builder.build());
+    	} finally {
+    		if(success) {
+    			txManager.commit();
+    		} else {
+    			txManager.rollback();
+    		}
+    	}
     }
-    
+      
     //for the dependency injection
-    public ObstacleForUserRepository getObstacleForUserRepository()
-    {
-        return obstacleForUserRepository;
-    }
-
-	public void setObstacleForUserRepository( ObstacleForUserRepository obstacleForUserRepository )
+	void setObstacleForUserRepository(
+		ObstacleForUserRepository obstacleForUserRepository )
 	{
 		this.obstacleForUserRepository = obstacleForUserRepository;
 	}
 
-	public StructureForUserRepository getStructureForUserRepository()
-	{
-		return structureForUserRepository;
-	}
-
-	public void setStructureForUserRepository(
+	void setStructureForUserRepository(
 		StructureForUserRepository structureForUserRepository )
 	{
 		this.structureForUserRepository = structureForUserRepository;
