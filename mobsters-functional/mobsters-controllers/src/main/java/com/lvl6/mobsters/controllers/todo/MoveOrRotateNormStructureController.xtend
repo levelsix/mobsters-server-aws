@@ -1,145 +1,134 @@
-package com.lvl6.mobsters.controllers.todo;
+package com.lvl6.mobsters.controllers.todo
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.dynamo.CoordinatePair;
-import com.lvl6.mobsters.dynamo.StructureForUser;
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto;
-import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType;
-import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureResponseProto;
-import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureResponseProto.MoveOrRotateNormStructureStatus;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.MoveOrRotateNormStructureRequestEvent;
-import com.lvl6.mobsters.events.response.MoveOrRotateNormStructureResponseEvent;
-import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
-import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.dynamo.CoordinatePair
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType
+import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureResponseProto
+import com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureResponseProto.MoveOrRotateNormStructureStatus
+import com.lvl6.mobsters.events.EventsToDispatch
+import com.lvl6.mobsters.events.RequestEvent
+import com.lvl6.mobsters.events.request.MoveOrRotateNormStructureRequestEvent
+import com.lvl6.mobsters.events.response.MoveOrRotateNormStructureResponseEvent
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation
+import com.lvl6.mobsters.server.EventController
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.DependsOn
+import org.springframework.stereotype.Component
 
 @Component
-@DependsOn("gameServer")
-public class MoveOrRotateNormStructureController extends EventController
+@DependsOn('gameServer')
+class MoveOrRotateNormStructureController extends EventController
 {
-
-	private static Logger LOG =
-	    LoggerFactory.getLogger(MoveOrRotateNormStructureController.class);
-
+	static var LOG = LoggerFactory::getLogger(typeof(MoveOrRotateNormStructureController))
 	@Autowired
-	protected DataServiceTxManager svcTxManager;
+	protected var DataServiceTxManager svcTxManager
 
-	public MoveOrRotateNormStructureController()
+	new()
 	{
-		numAllocatedThreads = 3;
+		numAllocatedThreads = 3
 	}
 
-	@Override
-	public RequestEvent createRequestEvent()
+	override createRequestEvent()
 	{
-		return new MoveOrRotateNormStructureRequestEvent();
+		new MoveOrRotateNormStructureRequestEvent()
 	}
 
-	@Override
-	public EventProtocolRequest getEventType()
+	override getEventType()
 	{
-		return EventProtocolRequest.C_MOVE_OR_ROTATE_NORM_STRUCTURE_EVENT;
+		EventProtocolRequest.C_MOVE_OR_ROTATE_NORM_STRUCTURE_EVENT
 	}
 
-	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter ) throws Exception
-	{
-		final MoveOrRotateNormStructureRequestProto reqProto =
-		    ((MoveOrRotateNormStructureRequestEvent) event).getMoveOrRotateNormStructureRequestProto();
-
-		// get stuff client sent
-		final MinimumUserProto senderProto = reqProto.getSender();
-		final int userStructId = reqProto.getUserStructUuid();
-		final MoveOrRotateNormStructType type = reqProto.getType();
-
-		CoordinatePair newCoords = null;
-		final StructOrientation orientation = null;
-		if (type == MoveOrRotateNormStructType.MOVE) {
-			newCoords = new CoordinatePair(reqProto.getCurStructCoordinates()
-			    .getX(), reqProto.getCurStructCoordinates()
-			    .getY());
+	protected override processRequestEvent(RequestEvent event, EventsToDispatch eventWriter)
+	throws Exception {
+		val reqProto = ((event as MoveOrRotateNormStructureRequestEvent)).
+			moveOrRotateNormStructureRequestProto
+		val senderProto = reqProto.sender
+		val userStructId = reqProto.userStructUuid
+		val type = reqProto.type
+		var CoordinatePair newCoords = null
+		val StructOrientation orientation = null
+		if (type === MoveOrRotateNormStructType::MOVE)
+		{
+			newCoords = new CoordinatePair(reqProto.curStructCoordinates.x,
+				reqProto.curStructCoordinates.y)
 		}
-
-		final MoveOrRotateNormStructureResponseProto.Builder resBuilder =
-		    MoveOrRotateNormStructureResponseProto.newBuilder();
-		resBuilder.setSender(senderProto);
-
-		// only locking so you cant moveOrRotate it hella times
-		svcTxManager.beginTransaction();
-		try {
-			boolean legit = true;
-			resBuilder.setStatus(MoveOrRotateNormStructureStatus.SUCCESS);
-
-			final StructureForUser userStruct = RetrieveUtils.userStructRetrieveUtils()
-			    .getSpecificUserStruct(userStructId);
-			if (userStruct == null) {
-				legit = false;
-				resBuilder.setStatus(MoveOrRotateNormStructureStatus.SUCCESS);
+		val resBuilder = MoveOrRotateNormStructureResponseProto::newBuilder
+		resBuilder.sender = senderProto
+		svcTxManager.beginTransaction
+		try
+		{
+			var legit = true
+			resBuilder.status = MoveOrRotateNormStructureStatus.SUCCESS
+			val userStruct = RetrieveUtils::userStructRetrieveUtils.
+				getSpecificUserStruct(userStructId)
+			if (userStruct === null)
+			{
+				legit = false
+				resBuilder.status = MoveOrRotateNormStructureStatus.SUCCESS
 			}
-
-			if ((type == MoveOrRotateNormStructType.MOVE)
-			    && (newCoords == null)) {
-				legit = false;
-				resBuilder.setStatus(MoveOrRotateNormStructureStatus.OTHER_FAIL);
-				LOG.error("asked to move, but the coordinates supplied in are null. reqProto's newStructCoordinates="
-				    + reqProto.getCurStructCoordinates());
+			if ((type === MoveOrRotateNormStructType::MOVE) && (newCoords === null))
+			{
+				legit = false
+				resBuilder.status = MoveOrRotateNormStructureStatus.OTHER_FAIL
+				LOG.error(
+					"asked to move, but the coordinates supplied in are null. reqProto's newStructCoordinates=" +
+						reqProto.curStructCoordinates)
 			}
-
-			if (legit) {
-				if (type == MoveOrRotateNormStructType.MOVE) {
-					if (!UpdateUtils.get()
-					    .updateUserStructCoord(userStructId, newCoords)) {
-						resBuilder.setStatus(MoveOrRotateNormStructureStatus.OTHER_FAIL);
-						LOG.error("problem with updating coordinates to "
-						    + newCoords
-						    + " for user struct "
-						    + userStructId);
-					} else {
-						resBuilder.setStatus(MoveOrRotateNormStructureStatus.SUCCESS);
+			if (legit)
+			{
+				if (type === MoveOrRotateNormStructType::MOVE)
+				{
+					if (!UpdateUtils::get.updateUserStructCoord(userStructId, newCoords))
+					{
+						resBuilder.status = MoveOrRotateNormStructureStatus.OTHER_FAIL
+						LOG.error(
+							'problem with updating coordinates to ' + newCoords +
+								' for user struct ' + userStructId)
 					}
-				} else {
-					if (!UpdateUtils.get()
-					    .updateUserStructOrientation(userStructId, orientation)) {
-						resBuilder.setStatus(MoveOrRotateNormStructureStatus.OTHER_FAIL);
-						LOG.error("problem with updating orientation to "
-						    + orientation
-						    + " for user struct "
-						    + userStructId);
-					} else {
-						resBuilder.setStatus(MoveOrRotateNormStructureStatus.SUCCESS);
+					else
+					{
+						resBuilder.status = MoveOrRotateNormStructureStatus.SUCCESS
+					}
+				}
+				else
+				{
+					if (!UpdateUtils::get.updateUserStructOrientation(userStructId, orientation))
+					{
+						resBuilder.status = MoveOrRotateNormStructureStatus.OTHER_FAIL
+						LOG.error(
+							'problem with updating orientation to ' + orientation +
+								' for user struct ' + userStructId)
+					}
+					else
+					{
+						resBuilder.status = MoveOrRotateNormStructureStatus.SUCCESS
 					}
 				}
 			}
-			final MoveOrRotateNormStructureResponseEvent resEvent =
-			    new MoveOrRotateNormStructureResponseEvent(senderProto.getUserUuid());
-			resEvent.setTag(event.getTag());
-			resEvent.setMoveOrRotateNormStructureResponseProto(resBuilder.build());
-			// write to client
-			LOG.info("Writing event: "
-			    + resEvent);
-			try {
-				eventWriter.writeEvent(resEvent);
-			} catch (final Throwable e) {
-				LOG.error(
-				    "fatal exception in MoveOrRotateNormStructureController.processRequestEvent",
-				    e);
+			val resEvent = new MoveOrRotateNormStructureResponseEvent(senderProto.userUuid)
+			resEvent.tag = event.tag
+			resEvent.moveOrRotateNormStructureResponseProto = resBuilder.build
+			LOG.info('Writing event: ' + resEvent)
+			try
+			{
+				eventWriter.writeEvent(resEvent)
 			}
-
-		} catch (final Exception e) {
-			LOG.error("exception in MoveOrRotateNormStructure processEvent", e);
-		} finally {
-			svcTxManager.commit();
+			catch (Throwable e)
+			{
+				LOG.error(
+					'fatal exception in MoveOrRotateNormStructureController.processRequestEvent',
+					e)
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error('exception in MoveOrRotateNormStructure processEvent', e)
+		}
+		finally
+		{
+			svcTxManager.commit
 		}
 	}
-
 }

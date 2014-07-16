@@ -1,356 +1,305 @@
-package com.lvl6.mobsters.controllers.todo;
+package com.lvl6.mobsters.controllers.todo
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.dynamo.QuestForUser;
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemRequestProto;
-import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemResponseProto;
-import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemResponseProto.Builder;
-import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemResponseProto.QuestRedeemStatus;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.QuestRedeemRequestEvent;
-import com.lvl6.mobsters.events.response.QuestRedeemResponseEvent;
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
-import com.lvl6.mobsters.info.Quest;
-import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.FullUserMonsterProto;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithMaxResources;
-import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.dynamo.QuestForUser
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemResponseProto
+import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemResponseProto.Builder
+import com.lvl6.mobsters.eventproto.EventQuestProto.QuestRedeemResponseProto.QuestRedeemStatus
+import com.lvl6.mobsters.events.EventsToDispatch
+import com.lvl6.mobsters.events.RequestEvent
+import com.lvl6.mobsters.events.request.QuestRedeemRequestEvent
+import com.lvl6.mobsters.events.response.QuestRedeemResponseEvent
+import com.lvl6.mobsters.info.Quest
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
+import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
+import com.lvl6.mobsters.server.ControllerConstants
+import com.lvl6.mobsters.server.EventController
+import java.sql.Timestamp
+import java.util.ArrayList
+import java.util.Date
+import java.util.HashMap
+import java.util.Map
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.DependsOn
+import org.springframework.stereotype.Component
 
 @Component
-@DependsOn("gameServer")
-public class QuestRedeemController extends EventController
+@DependsOn('gameServer')
+class QuestRedeemController extends EventController
 {
-
-	private static Logger LOG = LoggerFactory.getLogger(QuestRedeemController.class);
-
+	static var LOG = LoggerFactory::getLogger(typeof(QuestRedeemController))
 	@Autowired
-	protected DataServiceTxManager svcTxManager;
+	protected var DataServiceTxManager svcTxManager
 
-	public QuestRedeemController()
+	new()
 	{
-		numAllocatedThreads = 4;
+		numAllocatedThreads = 4
 	}
 
-	@Override
-	public RequestEvent createRequestEvent()
+	override createRequestEvent()
 	{
-		return new QuestRedeemRequestEvent();
+		new QuestRedeemRequestEvent()
 	}
 
-	@Override
-	public EventProtocolRequest getEventType()
+	override getEventType()
 	{
-		return EventProtocolRequest.C_QUEST_REDEEM_EVENT;
+		EventProtocolRequest.C_QUEST_REDEEM_EVENT
 	}
 
-	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter ) throws Exception
-	{
-		final QuestRedeemRequestProto reqProto =
-		    ((QuestRedeemRequestEvent) event).getQuestRedeemRequestProto();
-
-		final MinimumUserProtoWithMaxResources senderResourcesProto = reqProto.getSender();
-		final MinimumUserProto senderProto = senderResourcesProto.getMinUserProto();
-		final String userUuid = senderProto.getUserUuid();
-		final int questId = reqProto.getQuestUuid();
-		final Date currentDate = new Date();
-		final Timestamp now = new Timestamp(currentDate.getTime());
-		final int maxCash = senderResourcesProto.getMaxCash();
-		final int maxOil = senderResourcesProto.getMaxOil();
-
-		final QuestRedeemResponseProto.Builder resBuilder =
-		    QuestRedeemResponseProto.newBuilder();
-		resBuilder.setSender(senderResourcesProto);
-		resBuilder.setStatus(QuestRedeemStatus.FAIL_OTHER);
-		resBuilder.setQuestId(questId);
-
-		svcTxManager.beginTransaction();
-		try {
-			// retrieve whatever is necessary from the db
-
-			final QuestForUser userQuest = RetrieveUtils.questForUserRetrieveUtils()
-			    .getSpecificUnredeemedUserQuest(userUuid, questId);
-			final Quest quest = QuestRetrieveUtils.getQuestForQuestId(questId);
-			boolean legitRedeem = checkLegitRedeem(resBuilder, userQuest, quest);
-
-			if (legitRedeem) {
-
-				// calculate the available quests for this user
-				setAvailableQuests(userUuid, questId, resBuilder);
-
-				// give user the monster reward, if any, and send this to the
-				// client
-				legitRedeem =
-				    awardMonsterReward(resBuilder, userUuid, quest, questId, currentDate);
+	protected override processRequestEvent(RequestEvent event, EventsToDispatch eventWriter)
+	throws Exception {
+		val reqProto = ((event as QuestRedeemRequestEvent)).questRedeemRequestProto
+		val senderResourcesProto = reqProto.sender
+		val senderProto = senderResourcesProto.minUserProto
+		val userUuid = senderProto.userUuid
+		val questId = reqProto.questUuid
+		val currentDate = new Date()
+		val now = new Timestamp(currentDate.time)
+		val maxCash = senderResourcesProto.maxCash
+		val maxOil = senderResourcesProto.maxOil
+		val resBuilder = QuestRedeemResponseProto::newBuilder
+		resBuilder.sender = senderResourcesProto
+		resBuilder.status = QuestRedeemStatus.FAIL_OTHER
+		resBuilder.questId = questId
+		svcTxManager.beginTransaction
+		try
+		{
+			val userQuest = RetrieveUtils::questForUserRetrieveUtils.
+				getSpecificUnredeemedUserQuest(userUuid, questId)
+			val quest = QuestRetrieveUtils::getQuestForQuestId(questId)
+			var legitRedeem = checkLegitRedeem(resBuilder, userQuest, quest)
+			if (legitRedeem)
+			{
+				setAvailableQuests(userUuid, questId, resBuilder)
+				legitRedeem = awardMonsterReward(resBuilder, userUuid, quest, questId,
+					currentDate)
 			}
-
-			final QuestRedeemResponseEvent resEvent =
-			    new QuestRedeemResponseEvent(senderProto.getUserUuid());
-			resEvent.setTag(event.getTag());
-			resEvent.setQuestRedeemResponseProto(resBuilder.build());
-			// write to client
-			LOG.info("Writing event: "
-			    + resEvent);
-			try {
-				eventWriter.writeEvent(resEvent);
-			} catch (final Throwable e) {
-				LOG.error("fatal exception in QuestRedeemController.processRequestEvent", e);
+			val resEvent = new QuestRedeemResponseEvent(senderProto.userUuid)
+			resEvent.tag = event.tag
+			resEvent.questRedeemResponseProto = resBuilder.build
+			LOG.info('Writing event: ' + resEvent)
+			try
+			{
+				eventWriter.writeEvent(resEvent)
 			}
-
-			if (legitRedeem) {
-				final User user = RetrieveUtils.userRetrieveUtils()
-				    .getUserById(senderProto.getUserUuid());
-
-				final Map<String, Integer> previousCurrency = new HashMap<String, Integer>();
-				final Map<String, Integer> currencyChange = new HashMap<String, Integer>();
+			catch (Throwable e)
+			{
+				LOG.error('fatal exception in QuestRedeemController.processRequestEvent', e)
+			}
+			if (legitRedeem)
+			{
+				val user = RetrieveUtils::userRetrieveUtils.getUserById(senderProto.userUuid)
+				val previousCurrency = new HashMap<String, Integer>()
+				val currencyChange = new HashMap<String, Integer>()
 				writeChangesToDB(userQuest, quest, user, senderProto, maxCash, maxOil,
-				    previousCurrency, currencyChange);
-				// null PvpLeagueFromUser means will pull from hazelcast instead
-				final UpdateClientUserResponseEvent resEventUpdate =
-				    MiscMethods.createUpdateClientUserResponseEventAndUpdateLeaderboard(user,
-				        null);
-				resEventUpdate.setTag(event.getTag());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEventUpdate);
-				try {
-					eventWriter.writeEvent(resEventUpdate);
-				} catch (final Throwable e) {
-					LOG.error("fatal exception in QuestRedeemController.processRequestEvent", e);
+					previousCurrency, currencyChange)
+				val resEventUpdate = MiscMethods::
+					createUpdateClientUserResponseEventAndUpdateLeaderboard(user, null)
+				resEventUpdate.tag = event.tag
+				LOG.info('Writing event: ' + resEventUpdate)
+				try
+				{
+					eventWriter.writeEvent(resEventUpdate)
 				}
-
+				catch (Throwable e)
+				{
+					LOG.error('fatal exception in QuestRedeemController.processRequestEvent', e)
+				}
 				writeToUserCurrencyHistory(user, userUuid, questId, currencyChange,
-				    previousCurrency, now);
+					previousCurrency, now)
 			}
-		} catch (final Exception e) {
-			LOG.error("exception in QuestRedeem processEvent", e);
-			// don't let the client hang
-			try {
-				resBuilder.setStatus(QuestRedeemStatus.FAIL_OTHER);
-				final QuestRedeemResponseEvent resEvent =
-				    new QuestRedeemResponseEvent(userUuid);
-				resEvent.setTag(event.getTag());
-				resEvent.setQuestRedeemResponseProto(resBuilder.build());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEvent);
-				try {
-					eventWriter.writeEvent(resEvent);
-				} catch (final Throwable e) {
-					LOG.error("fatal exception in QuestRedeemController.processRequestEvent", e);
+		}
+		catch (Exception e)
+		{
+			LOG.error('exception in QuestRedeem processEvent', e)
+			try
+			{
+				resBuilder.status = QuestRedeemStatus.FAIL_OTHER
+				val resEvent = new QuestRedeemResponseEvent(userUuid)
+				resEvent.tag = event.tag
+				resEvent.questRedeemResponseProto = resBuilder.build
+				LOG.info('Writing event: ' + resEvent)
+				try
+				{
+					eventWriter.writeEvent(resEvent)
 				}
-			} catch (final Exception e2) {
-				LOG.error("exception2 in QuestRedeem processEvent", e);
+				catch (Throwable e)
+				{
+					LOG.error('fatal exception in QuestRedeemController.processRequestEvent', e)
+				}
 			}
-		} finally {
-			svcTxManager.commit();
+			catch (Exception e2)
+			{
+				LOG.error('exception2 in QuestRedeem processEvent', e)
+			}
+		}
+		finally
+		{
+			svcTxManager.commit
 		}
 	}
 
-	private boolean checkLegitRedeem( final Builder resBuilder, final QuestForUser userQuest,
-	    final Quest quest )
+	private def checkLegitRedeem(Builder resBuilder, QuestForUser userQuest, Quest quest)
 	{
-		if ((userQuest == null)
-		    || userQuest.isRedeemed()) {
-			resBuilder.setStatus(QuestRedeemStatus.FAIL_OTHER);
-			LOG.error("user quest is null or redeemed already. userQuest="
-			    + userQuest);
+		if ((userQuest === null) || userQuest.redeemed)
+		{
+			resBuilder.status = QuestRedeemStatus.FAIL_OTHER
+			LOG.error('user quest is null or redeemed already. userQuest=' + userQuest)
 			return false;
 		}
-		if (!userQuest.isComplete()) {
-			resBuilder.setStatus(QuestRedeemStatus.FAIL_NOT_COMPLETE);
-			LOG.error("user quest is not complete");
+		if (!userQuest.complete)
+		{
+			resBuilder.status = QuestRedeemStatus.FAIL_NOT_COMPLETE
+			LOG.error('user quest is not complete')
 			return false;
 		}
-		resBuilder.setStatus(QuestRedeemStatus.SUCCESS);
-		return true;
+		resBuilder.status = QuestRedeemStatus.SUCCESS
+		true
 	}
 
-	private void setAvailableQuests( final String userUuid, final int questId,
-	    final Builder resBuilder )
+	private def setAvailableQuests(String userUuid, int questId, Builder resBuilder)
 	{
-		final List<QuestForUser> inProgressAndRedeemedQuestForUsers =
-		    RetrieveUtils.questForUserRetrieveUtils()
-		        .getUserQuestsForUser(userUuid);
-		final List<Integer> inProgressQuestUuids = new ArrayList<Integer>();
-		final List<Integer> redeemedQuestUuids = new ArrayList<Integer>();
-
-		if (inProgressAndRedeemedQuestForUsers != null) {
-			// group things into redeemed and unredeemed
-			for (final QuestForUser uq : inProgressAndRedeemedQuestForUsers) {
-				if (uq.isRedeemed()
-				    || (uq.getQuestId() == questId)) {
-					redeemedQuestUuids.add(uq.getQuestId());
-				} else {
-					inProgressQuestUuids.add(uq.getQuestId());
+		val inProgressAndRedeemedQuestForUsers = RetrieveUtils::questForUserRetrieveUtils.
+			getUserQuestsForUser(userUuid)
+		val inProgressQuestUuids = new ArrayList<Integer>()
+		val redeemedQuestUuids = new ArrayList<Integer>()
+		if (inProgressAndRedeemedQuestForUsers !== null)
+		{
+			for (uq : inProgressAndRedeemedQuestForUsers)
+			{
+				if (uq.redeemed || (uq.questId === questId))
+				{
+					redeemedQuestUuids.add(uq.questId)
+				}
+				else
+				{
+					inProgressQuestUuids.add(uq.questId)
 				}
 			}
-			final List<Integer> availableQuestUuids =
-			    QuestUtils.getAvailableQuestsForUser(redeemedQuestUuids, inProgressQuestUuids);
-
-			// from the available quests, create protos out of the quests that
-			// had
-			// the quest user just redeemed as a prerequisite
-			final Map<Integer, Quest> questUuidsToQuests =
-			    QuestRetrieveUtils.getQuestUuidsToQuests();
-			for (final Integer availableQuestId : availableQuestUuids) {
-				final Quest q = questUuidsToQuests.get(availableQuestId);
-				if (q.getQuestsRequiredForThis()
-				    .contains(questId)) {
-					resBuilder.addNewlyAvailableQuests(CreateInfoProtoUtils.createFullQuestProtoFromQuest(q));
+			val availableQuestUuids = QuestUtils::
+				getAvailableQuestsForUser(redeemedQuestUuids, inProgressQuestUuids)
+			val questUuidsToQuests = QuestRetrieveUtils::questUuidsToQuests
+			for (availableQuestId : availableQuestUuids)
+			{
+				val q = questUuidsToQuests.get(availableQuestId)
+				if (q.questsRequiredForThis.contains(questId))
+				{
+					resBuilder.addNewlyAvailableQuests(
+						CreateInfoProtoUtils::createFullQuestProtoFromQuest(q))
 				}
 			}
 		}
 	}
 
-	private boolean awardMonsterReward( final Builder resBuilder, final String userUuid,
-	    final Quest quest, final int questId, final Date combineStartDate )
+	private def awardMonsterReward(Builder resBuilder, String userUuid, Quest quest,
+		int questId, Date combineStartDate)
 	{
-		boolean legitRedeem = true;
-
-		final int monsterIdReward = quest.getMonsterIdReward();
-		if (monsterIdReward > 0) {
-			// WHEN GIVING USER A MONSTER, CALL
-			// MonsterStuffUtils.updateUserMonsters(...)
-			final Map<Integer, Integer> monsterIdToNumPieces = new HashMap<Integer, Integer>();
-			monsterIdToNumPieces.put(monsterIdReward, 1);
-
-			final String mfusop = ControllerConstants.MFUSOP__QUEST
-			    + questId;
-			final List<FullUserMonsterProto> reward =
-			    MonsterStuffUtils.updateUserMonsters(userUuid, monsterIdToNumPieces, mfusop,
-			        combineStartDate);
-
-			if (reward.isEmpty()) {
-				resBuilder.setStatus(QuestRedeemStatus.FAIL_OTHER);
-				LOG.error("problem with giving user 1 monster after completing the quest, monsterId="
-				    + monsterIdReward
-				    + ", quest= "
-				    + quest);
-				legitRedeem = false;
-			} else {
-				final FullUserMonsterProto fump = reward.get(0);
-				resBuilder.setFump(fump);
+		var legitRedeem = true
+		val monsterIdReward = quest.monsterIdReward
+		if (monsterIdReward > 0)
+		{
+			val monsterIdToNumPieces = new HashMap<Integer, Integer>()
+			monsterIdToNumPieces.put(monsterIdReward, 1)
+			val mfusop = ControllerConstants::MFUSOP__QUEST + questId
+			val reward = MonsterStuffUtils::updateUserMonsters(userUuid, monsterIdToNumPieces,
+				mfusop, combineStartDate)
+			if (reward.empty)
+			{
+				resBuilder.status = QuestRedeemStatus.FAIL_OTHER
+				LOG.error(
+					'problem with giving user 1 monster after completing the quest, monsterId=' +
+						monsterIdReward + ', quest= ' + quest)
+				legitRedeem = false
+			}
+			else
+			{
+				val fump = reward.get(0)
+				resBuilder.fump = fump
 			}
 		}
-
-		return legitRedeem;
+		legitRedeem
 	}
 
-	private void writeChangesToDB( final QuestForUser userQuest, final Quest quest,
-	    final User user, final MinimumUserProto senderProto, final int maxCash,
-	    final int maxOil, final Map<String, Integer> previousCurrency,
-	    final Map<String, Integer> money )
+	private def writeChangesToDB(QuestForUser userQuest, Quest quest, User user,
+		MinimumUserProto senderProto, int maxCash, int maxOil,
+		Map<String, Integer> previousCurrency, Map<String, Integer> money)
 	{
-		if (!UpdateUtils.get()
-		    .updateRedeemQuestForUser(userQuest.getUserUuid(), userQuest.getQuestId())) {
-			LOG.error("problem with marking user quest as redeemed. questId="
-			    + userQuest.getQuestId());
+		if (!UpdateUtils::get.updateRedeemQuestForUser(userQuest.userUuid, userQuest.questId))
+		{
+			LOG.error(
+				'problem with marking user quest as redeemed. questId=' + userQuest.questId)
 		}
-
-		previousCurrency.put(MiscMethods.gems, user.getGems());
-		previousCurrency.put(MiscMethods.cash, user.getCash());
-		previousCurrency.put(MiscMethods.oil, user.getOil());
-
-		int cashGain = Math.max(0, quest.getCashReward());
-		int oilGain = Math.max(0, quest.getOilReward());
-		final int gemsGained = Math.max(0, quest.getGemReward());
-		final int expGained = Math.max(0, quest.getExpReward());
-
-		final int curCash = Math.min(user.getCash(), maxCash); // in case user's
-															   // cash
-		// is more than maxCash
-		final int maxCashUserCanGain = maxCash
-		    - curCash; // this is the max cash the user can gain
-		cashGain = Math.min(maxCashUserCanGain, cashGain);
-
-		final int curOil = Math.max(user.getOil(), maxOil);
-		final int maxOilUserCanGain = maxOil
-		    - curOil;
-		oilGain = Math.min(maxOilUserCanGain, oilGain);
-
-		if ((0 == gemsGained)
-		    && (0 == cashGain)
-		    && (0 == expGained)
-		    && (0 == oilGain)) {
-			LOG.info("user does not get any gems, cash, or exp from redeeming quest="
-			    + quest
-			    + " because user is maxed out on resources, and quest doesn't given exp nor gems.");
+		previousCurrency.put(MiscMethods::gems, user.gems)
+		previousCurrency.put(MiscMethods::cash, user.cash)
+		previousCurrency.put(MiscMethods::oil, user.oil)
+		var cashGain = Math::max(0, quest.cashReward)
+		var oilGain = Math::max(0, quest.oilReward)
+		val gemsGained = Math::max(0, quest.gemReward)
+		val expGained = Math::max(0, quest.expReward)
+		val curCash = Math::min(user.cash, maxCash)
+		val maxCashUserCanGain = maxCash - curCash
+		cashGain = Math::min(maxCashUserCanGain, cashGain)
+		val curOil = Math::max(user.oil, maxOil)
+		val maxOilUserCanGain = maxOil - curOil
+		oilGain = Math::min(maxOilUserCanGain, oilGain)
+		if ((0 === gemsGained) && (0 === cashGain) && (0 === expGained) && (0 === oilGain))
+		{
+			LOG.info(
+				'user does not get any gems, cash, or exp from redeeming quest=' + quest +
+					" because user is maxed out on resources, and quest doesn't given exp nor gems.")
 			return;
 		}
-
-		if (!user.updateRelativeGemsCashOilExperienceNaive(gemsGained, cashGain, oilGain,
-		    expGained)) {
-			LOG.error("problem with giving user "
-			    + gemsGained
-			    + " diamonds, "
-			    + cashGain
-			    + " cash, "
-			    + expGained
-			    + " exp, "
-			    + oilGain
-			    + " oilGain");
-		} else {
-			// things worked
-			if (0 != gemsGained) {
-				money.put(MiscMethods.gems, gemsGained);
+		if (!user.
+			updateRelativeGemsCashOilExperienceNaive(gemsGained, cashGain, oilGain, expGained))
+		{
+			LOG.error(
+				'problem with giving user ' + gemsGained + ' diamonds, ' + cashGain + ' cash, ' +
+					expGained + ' exp, ' + oilGain + ' oilGain')
+		}
+		else
+		{
+			if (0 !== gemsGained)
+			{
+				money.put(MiscMethods::gems, gemsGained)
 			}
-			if (0 != cashGain) {
-				money.put(MiscMethods.cash, cashGain);
+			if (0 !== cashGain)
+			{
+				money.put(MiscMethods::cash, cashGain)
 			}
-			if (0 != oilGain) {
-				money.put(MiscMethods.oil, oilGain);
+			if (0 !== oilGain)
+			{
+				money.put(MiscMethods::oil, oilGain)
 			}
 		}
 	}
 
-	public void writeToUserCurrencyHistory( final User aUser, final String userUuid,
-	    final int questId, final Map<String, Integer> currencyChange,
-	    final Map<String, Integer> previousCurrency, final Timestamp curTime )
+	def writeToUserCurrencyHistory(User aUser, String userUuid, int questId,
+		Map<String, Integer> currencyChange, Map<String, Integer> previousCurrency,
+		Timestamp curTime)
 	{
-
-		final Map<String, Integer> currentCurrency = new HashMap<String, Integer>();
-		final Map<String, String> reasonsForChanges = new HashMap<String, String>();
-		final Map<String, String> detailsMap = new HashMap<String, String>();
-		final String gems = MiscMethods.gems;
-		final String cash = MiscMethods.cash;
-		final String oil = MiscMethods.oil;
-
-		final String reason = ControllerConstants.UCHRFC__QUEST_REDEEM;
-		final StringBuilder detailsSb = new StringBuilder();
-		detailsSb.append("quest redeemed=");
-		detailsSb.append(questId);
-		final String details = detailsSb.toString();
-
-		currentCurrency.put(gems, aUser.getGems());
-		currentCurrency.put(cash, aUser.getCash());
-		currentCurrency.put(oil, aUser.getOil());
-		reasonsForChanges.put(gems, reason);
-		reasonsForChanges.put(cash, reason);
-		reasonsForChanges.put(oil, reason);
-		detailsMap.put(gems, details);
-		detailsMap.put(cash, details);
-		detailsMap.put(oil, details);
-
-		MiscMethods.writeToUserCurrencyOneUser(userUuid, curTime, currencyChange,
-		    previousCurrency, currentCurrency, reasonsForChanges, detailsMap);
+		val currentCurrency = new HashMap<String, Integer>()
+		val reasonsForChanges = new HashMap<String, String>()
+		val detailsMap = new HashMap<String, String>()
+		val gems = MiscMethods::gems
+		val cash = MiscMethods::cash
+		val oil = MiscMethods::oil
+		val reason = ControllerConstants.UCHRFC__QUEST_REDEEM
+		val detailsSb = new StringBuilder()
+		detailsSb.append('quest redeemed=')
+		detailsSb.append(questId)
+		val details = detailsSb.toString
+		currentCurrency.put(gems, aUser.gems)
+		currentCurrency.put(cash, aUser.cash)
+		currentCurrency.put(oil, aUser.oil)
+		reasonsForChanges.put(gems, reason)
+		reasonsForChanges.put(cash, reason)
+		reasonsForChanges.put(oil, reason)
+		detailsMap.put(gems, details)
+		detailsMap.put(cash, details)
+		detailsMap.put(oil, details)
+		MiscMethods::writeToUserCurrencyOneUser(userUuid, curTime, currencyChange,
+			previousCurrency, currentCurrency, reasonsForChanges, detailsMap)
 	}
-
 }

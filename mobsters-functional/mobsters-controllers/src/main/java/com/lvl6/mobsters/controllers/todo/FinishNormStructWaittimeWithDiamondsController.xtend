@@ -1,298 +1,261 @@
-package com.lvl6.mobsters.controllers.todo;
+package com.lvl6.mobsters.controllers.todo
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.dynamo.StructureForUser;
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsRequestProto;
-import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsResponseProto;
-import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsResponseProto.Builder;
-import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsResponseProto.FinishNormStructWaittimeStatus;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.FinishNormStructWaittimeWithDiamondsRequestEvent;
-import com.lvl6.mobsters.events.response.FinishNormStructWaittimeWithDiamondsResponseEvent;
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
-import com.lvl6.mobsters.info.Structure;
-import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
-import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.dynamo.StructureForUser
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsResponseProto
+import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsResponseProto.Builder
+import com.lvl6.mobsters.eventproto.EventStructureProto.FinishNormStructWaittimeWithDiamondsResponseProto.FinishNormStructWaittimeStatus
+import com.lvl6.mobsters.events.EventsToDispatch
+import com.lvl6.mobsters.events.RequestEvent
+import com.lvl6.mobsters.events.request.FinishNormStructWaittimeWithDiamondsRequestEvent
+import com.lvl6.mobsters.events.response.FinishNormStructWaittimeWithDiamondsResponseEvent
+import com.lvl6.mobsters.info.Structure
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
+import com.lvl6.mobsters.server.ControllerConstants
+import com.lvl6.mobsters.server.EventController
+import java.sql.Timestamp
+import java.util.HashMap
+import java.util.Map
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.DependsOn
+import org.springframework.stereotype.Component
 
 @Component
-@DependsOn("gameServer")
-public class FinishNormStructWaittimeWithDiamondsController extends EventController
+@DependsOn('gameServer')
+class FinishNormStructWaittimeWithDiamondsController extends EventController
 {
-
-	private static Logger LOG =
-	    LoggerFactory.getLogger(FinishNormStructWaittimeWithDiamondsController.class);
-
+	static var LOG = LoggerFactory::getLogger(
+		typeof(FinishNormStructWaittimeWithDiamondsController))
 	@Autowired
-	protected DataServiceTxManager svcTxManager;
+	protected var DataServiceTxManager svcTxManager
 
-	public FinishNormStructWaittimeWithDiamondsController()
+	new()
 	{
-		numAllocatedThreads = 2;
+		numAllocatedThreads = 2
 	}
 
-	@Override
-	public RequestEvent createRequestEvent()
+	override createRequestEvent()
 	{
-		return new FinishNormStructWaittimeWithDiamondsRequestEvent();
+		new FinishNormStructWaittimeWithDiamondsRequestEvent()
 	}
 
-	@Override
-	public EventProtocolRequest getEventType()
+	override getEventType()
 	{
-		return EventProtocolRequest.C_FINISH_NORM_STRUCT_WAITTIME_WITH_DIAMONDS_EVENT;
+		EventProtocolRequest.C_FINISH_NORM_STRUCT_WAITTIME_WITH_DIAMONDS_EVENT
 	}
 
-	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter ) throws Exception
-	{
-
-		final FinishNormStructWaittimeWithDiamondsRequestProto reqProto =
-		    ((FinishNormStructWaittimeWithDiamondsRequestEvent) event).getFinishNormStructWaittimeWithDiamondsRequestProto();
-		LOG.info("reqProto="
-		    + reqProto);
-
-		final MinimumUserProto senderProto = reqProto.getSender();
-		final String userUuid = senderProto.getUserUuid();
-		final int userStructId = reqProto.getUserStructUuid();
-		// userstruct's lastRetrieved will start with this date
-		final Timestamp timeOfSpeedup = new Timestamp(reqProto.getTimeOfSpeedup());
-		final int gemCostToSpeedup = reqProto.getGemCostToSpeedup();
-
-		final FinishNormStructWaittimeWithDiamondsResponseProto.Builder resBuilder =
-		    FinishNormStructWaittimeWithDiamondsResponseProto.newBuilder();
-		resBuilder.setSender(senderProto);
-		resBuilder.setStatus(FinishNormStructWaittimeStatus.FAIL_OTHER);
-
-		svcTxManager.beginTransaction();
-		try {
-			final User user = RetrieveUtils.userRetrieveUtils()
-			    .getUserById(senderProto.getUserUuid());
-			LOG.info("user="
-			    + user);
-			int previousGems = 0;
-			final StructureForUser userStruct = RetrieveUtils.userStructRetrieveUtils()
-			    .getSpecificUserStruct(userStructId);
-			Structure struct = null;
-			Structure formerStruct = null;
-
-			if (userStruct != null) {
-				final int structId = userStruct.getStructId();
-				struct = StructureRetrieveUtils.getStructForStructId(structId);
-				formerStruct = StructureRetrieveUtils.getPredecessorStructForStructId(structId);
+	protected override processRequestEvent(RequestEvent event, EventsToDispatch eventWriter)
+	throws Exception {
+		val reqProto = ((event as FinishNormStructWaittimeWithDiamondsRequestEvent)).
+			finishNormStructWaittimeWithDiamondsRequestProto
+		LOG.info('reqProto=' + reqProto)
+		val senderProto = reqProto.sender
+		val userUuid = senderProto.userUuid
+		val userStructId = reqProto.userStructUuid
+		val timeOfSpeedup = new Timestamp(reqProto.timeOfSpeedup)
+		val gemCostToSpeedup = reqProto.gemCostToSpeedup
+		val resBuilder = FinishNormStructWaittimeWithDiamondsResponseProto::newBuilder
+		resBuilder.sender = senderProto
+		resBuilder.status = FinishNormStructWaittimeStatus.FAIL_OTHER
+		svcTxManager.beginTransaction
+		try
+		{
+			val user = RetrieveUtils::userRetrieveUtils.getUserById(senderProto.userUuid)
+			LOG.info('user=' + user)
+			var previousGems = 0
+			val userStruct = RetrieveUtils::userStructRetrieveUtils.
+				getSpecificUserStruct(userStructId)
+			var Structure struct = null
+			var Structure formerStruct = null
+			if (userStruct !== null)
+			{
+				val structId = userStruct.structId
+				struct = StructureRetrieveUtils::getStructForStructId(structId)
+				formerStruct = StructureRetrieveUtils::getPredecessorStructForStructId(structId)
 			}
-
-			final boolean legitSpeedup =
-			    checkLegitSpeedup(resBuilder, user, userStruct, timeOfSpeedup, struct,
-			        gemCostToSpeedup);
-
-			boolean success = false;
-			final Map<String, Integer> money = new HashMap<String, Integer>();
-			if (legitSpeedup) {
-				previousGems = user.getGems();
-				success =
-				    writeChangesToDB(user, userStruct, timeOfSpeedup, struct, gemCostToSpeedup,
-				        money);
+			val legitSpeedup = checkLegitSpeedup(resBuilder, user, userStruct, timeOfSpeedup,
+				struct, gemCostToSpeedup)
+			var success = false
+			val money = new HashMap<String, Integer>()
+			if (legitSpeedup)
+			{
+				previousGems = user.gems
+				success = writeChangesToDB(user, userStruct, timeOfSpeedup, struct,
+					gemCostToSpeedup, money)
 			}
-			if (success) {
-				resBuilder.setStatus(FinishNormStructWaittimeStatus.SUCCESS);
+			if (success)
+			{
+				resBuilder.status = FinishNormStructWaittimeStatus.SUCCESS
 			}
-
-			final FinishNormStructWaittimeWithDiamondsResponseEvent resEvent =
-			    new FinishNormStructWaittimeWithDiamondsResponseEvent(senderProto.getUserUuid());
-			resEvent.setTag(event.getTag());
-			resEvent.setFinishNormStructWaittimeWithDiamondsResponseProto(resBuilder.build());
-			// write to client
-			LOG.info("Writing event: "
-			    + resEvent);
-			try {
-				eventWriter.writeEvent(resEvent);
-			} catch (final Throwable e) {
+			val resEvent = new FinishNormStructWaittimeWithDiamondsResponseEvent(
+				senderProto.userUuid)
+			resEvent.tag = event.tag
+			resEvent.finishNormStructWaittimeWithDiamondsResponseProto = resBuilder.build
+			LOG.info('Writing event: ' + resEvent)
+			try
+			{
+				eventWriter.writeEvent(resEvent)
+			}
+			catch (Throwable e)
+			{
 				LOG.error(
-				    "fatal exception in FinishNormStructWaittimeWithDiamondsController.processRequestEvent",
-				    e);
+					'fatal exception in FinishNormStructWaittimeWithDiamondsController.processRequestEvent',
+					e)
 			}
-
-			if (success) {
-				// null PvpLeagueFromUser means will pull from hazelcast instead
-				final UpdateClientUserResponseEvent resEventUpdate =
-				    MiscMethods.createUpdateClientUserResponseEventAndUpdateLeaderboard(user,
-				        null);
-				resEventUpdate.setTag(event.getTag());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEventUpdate);
-				try {
-					eventWriter.writeEvent(resEventUpdate);
-				} catch (final Throwable e) {
-					LOG.error(
-					    "fatal exception in FinishNormStructWaittimeWithDiamondsController.processRequestEvent",
-					    e);
+			if (success)
+			{
+				val resEventUpdate = MiscMethods::
+					createUpdateClientUserResponseEventAndUpdateLeaderboard(user, null)
+				resEventUpdate.tag = event.tag
+				LOG.info('Writing event: ' + resEventUpdate)
+				try
+				{
+					eventWriter.writeEvent(resEventUpdate)
 				}
-				writeToUserCurrencyHistory(user, userStruct, formerStruct, timeOfSpeedup,
-				    money, previousGems);
+				catch (Throwable e)
+				{
+					LOG.error(
+						'fatal exception in FinishNormStructWaittimeWithDiamondsController.processRequestEvent',
+						e)
+				}
+				writeToUserCurrencyHistory(user, userStruct, formerStruct, timeOfSpeedup, money,
+					previousGems)
 			}
-		} catch (final Exception e) {
+		}
+		catch (Exception e)
+		{
+			LOG.error('exception in FinishNormStructWaittimeWithDiamondsController processEvent',
+				e)
+			try
+			{
+				resBuilder.status = FinishNormStructWaittimeStatus.FAIL_OTHER
+				val resEvent = new FinishNormStructWaittimeWithDiamondsResponseEvent(userUuid)
+				resEvent.tag = event.tag
+				resEvent.finishNormStructWaittimeWithDiamondsResponseProto = resBuilder.build
+				LOG.info('Writing event: ' + resEvent)
+				try
+				{
+					eventWriter.writeEvent(resEvent)
+				}
+				catch (Throwable e)
+				{
+					LOG.error(
+						'fatal exception in FinishNormStructWaittimeWithDiamondsController.processRequestEvent',
+						e)
+				}
+			}
+			catch (Exception e2)
+			{
+				LOG.error(
+					'exception2 in FinishNormStructWaittimeWithDiamondsController processEvent',
+					e)
+			}
+		}
+		finally
+		{
+			svcTxManager.commit
+		}
+	}
+
+	private def checkLegitSpeedup(Builder resBuilder, User user, StructureForUser userStruct,
+		Timestamp timeOfSpeedup, Structure struct, int gemCostToSpeedup)
+	{
+		if ((user === null) || (userStruct === null) || (struct === null) ||
+			(userStruct.userUuid !== user.id) || userStruct.complete)
+		{
+			resBuilder.status = FinishNormStructWaittimeStatus.FAIL_OTHER
 			LOG.error(
-			    "exception in FinishNormStructWaittimeWithDiamondsController processEvent", e);
-			// don't let the client hang
-			try {
-				resBuilder.setStatus(FinishNormStructWaittimeStatus.FAIL_OTHER);
-				final FinishNormStructWaittimeWithDiamondsResponseEvent resEvent =
-				    new FinishNormStructWaittimeWithDiamondsResponseEvent(userUuid);
-				resEvent.setTag(event.getTag());
-				resEvent.setFinishNormStructWaittimeWithDiamondsResponseProto(resBuilder.build());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEvent);
-				try {
-					eventWriter.writeEvent(resEvent);
-				} catch (final Throwable e) {
-					LOG.error(
-					    "fatal exception in FinishNormStructWaittimeWithDiamondsController.processRequestEvent",
-					    e);
-				}
-			} catch (final Exception e2) {
-				LOG.error(
-				    "exception2 in FinishNormStructWaittimeWithDiamondsController processEvent",
-				    e);
-			}
-		} finally {
-			svcTxManager.commit();
+				'something passed in is null. user=' + user + ', struct=' + struct +
+					", struct owner's id=" + userStruct.userUuid +
+					'	 or user struct is complete. userStruct=' + userStruct)
+			return false;
 		}
+		if (user.gems < gemCostToSpeedup)
+		{
+			resBuilder.status = FinishNormStructWaittimeStatus.FAIL_NOT_ENOUGH_GEMS
+			LOG.error(
+				"user doesn't have enough diamonds. has " + user.gems + ', needs ' +
+					gemCostToSpeedup)
+			return false;
+		}
+		true
 	}
 
-	private boolean checkLegitSpeedup( final Builder resBuilder, final User user,
-	    final StructureForUser userStruct, final Timestamp timeOfSpeedup,
-	    final Structure struct, final int gemCostToSpeedup )
+	private def writeChangesToDB(User user, StructureForUser userStruct,
+		Timestamp timeOfSpeedup, Structure struct, int gemCost, Map<String, Integer> money)
 	{
-		if ((user == null)
-		    || (userStruct == null)
-		    || (struct == null)
-		    || (userStruct.getUserUuid() != user.getId())
-		    || userStruct.isComplete()) {
-			resBuilder.setStatus(FinishNormStructWaittimeStatus.FAIL_OTHER);
-			LOG.error("something passed in is null. user="
-			    + user
-			    + ", struct="
-			    + struct
-			    + ", struct owner's id="
-			    + userStruct.getUserUuid()
-			    + "\t or user struct is complete. userStruct="
-			    + userStruct);
+		val gemChange = -1 * gemCost
+		if (!user.updateRelativeGemsNaive(gemChange))
+		{
+			LOG.error(
+				'problem with using diamonds to finish norm struct build. userStruct=' +
+					userStruct + '	 struct=' + struct + '	 gemCost=' + gemChange)
 			return false;
 		}
-
-		if (user.getGems() < gemCostToSpeedup) {
-			resBuilder.setStatus(FinishNormStructWaittimeStatus.FAIL_NOT_ENOUGH_GEMS);
-			LOG.error("user doesn't have enough diamonds. has "
-			    + user.getGems()
-			    + ", needs "
-			    + gemCostToSpeedup);
-			return false;
-		}
-
-		return true;
-	}
-
-	private boolean writeChangesToDB( final User user, final StructureForUser userStruct,
-	    final Timestamp timeOfSpeedup, final Structure struct, final int gemCost,
-	    final Map<String, Integer> money )
-	{
-
-		final int gemChange = -1
-		    * gemCost;
-		// update user gems
-		if (!user.updateRelativeGemsNaive(gemChange)) {
-			LOG.error("problem with using diamonds to finish norm struct build. userStruct="
-			    + userStruct
-			    + "\t struct="
-			    + struct
-			    + "\t gemCost="
-			    + gemChange);
-			return false;
-		} else {
-			if (0 != gemChange) {
-				money.put(MiscMethods.gems, gemChange);
+		else
+		{
+			if (0 !== gemChange)
+			{
+				money.put(MiscMethods::gems, gemChange)
 			}
 		}
-
-		// the last retrieved time has a value of timeOfSpeedup
-
-		// update structure for user to reflect it is complete
-		if (!UpdateUtils.get()
-		    .updateSpeedupUpgradingUserStruct(userStruct.getId(), timeOfSpeedup)) {
-			LOG.error("problem with completing norm struct build time. userStruct="
-			    + userStruct
-			    + "\t struct="
-			    + struct
-			    + "\t gemCost="
-			    + gemChange);
+		if (!UpdateUtils::get.updateSpeedupUpgradingUserStruct(userStruct.id, timeOfSpeedup))
+		{
+			LOG.error(
+				'problem with completing norm struct build time. userStruct=' + userStruct +
+					'	 struct=' + struct + '	 gemCost=' + gemChange)
 			return false;
 		}
-
-		return true;
+		true
 	}
 
-	public void writeToUserCurrencyHistory( final User aUser,
-	    final StructureForUser userStruct, final Structure formerStruct,
-	    final Timestamp timeOfPurchase, final Map<String, Integer> money, final int previousGems )
+	def writeToUserCurrencyHistory(User aUser, StructureForUser userStruct,
+		Structure formerStruct, Timestamp timeOfPurchase, Map<String, Integer> money,
+		int previousGems)
 	{
-		if (money.isEmpty()) {
+		if (money.empty)
+		{
 			return;
 		}
-		final int userStructId = userStruct.getId();
-		final int structId = userStruct.getStructId();
-		final StringBuilder structDetails = new StringBuilder(); // + structId;
-		if (null == formerStruct) {
-			// no previous guy so user speeding up building first building
-			structDetails.append("construction ");
-		} else {
-			structDetails.append("upgrade ");
+		val userStructId = userStruct.id
+		val structId = userStruct.structId
+		val structDetails = new StringBuilder()
+		if (null === formerStruct)
+		{
+			structDetails.append('construction ')
 		}
-		structDetails.append("uStructId: ");
-		structDetails.append(userStructId);
-		structDetails.append(" structId: ");
-		structDetails.append(structId);
-
-		if (null != formerStruct) {
-			final int prevStructId = formerStruct.getId();
-			final int prevLevel = formerStruct.getLevel();
-			structDetails.append(" prevStructId: ");
-			structDetails.append(prevStructId);
-			structDetails.append(" prevLevel: ");
-			structDetails.append(prevLevel);
+		else
+		{
+			structDetails.append('upgrade ')
 		}
-
-		final String userUuid = aUser.getId();
-		final Map<String, Integer> previousCurrencies = new HashMap<String, Integer>();
-		final Map<String, Integer> currentCurrencies = new HashMap<String, Integer>();
-		final Map<String, String> reasonsForChanges = new HashMap<String, String>();
-		final Map<String, String> details = new HashMap<String, String>();
-		final String reasonForChange = ControllerConstants.UCHRFC__SPED_UP_NORM_STRUCT;
-		final String gems = MiscMethods.gems;
-
-		previousCurrencies.put(gems, previousGems);
-		currentCurrencies.put(gems, aUser.getGems());
-		reasonsForChanges.put(gems, reasonForChange);
-		final String detail = structDetails.toString();
-		details.put(gems, detail);
-
-		MiscMethods.writeToUserCurrencyOneUser(userUuid, timeOfPurchase, money,
-		    previousCurrencies, currentCurrencies, reasonsForChanges, details);
+		structDetails.append('uStructId: ')
+		structDetails.append(userStructId)
+		structDetails.append(' structId: ')
+		structDetails.append(structId)
+		if (null !== formerStruct)
+		{
+			val prevStructId = formerStruct.id
+			val prevLevel = formerStruct.level
+			structDetails.append(' prevStructId: ')
+			structDetails.append(prevStructId)
+			structDetails.append(' prevLevel: ')
+			structDetails.append(prevLevel)
+		}
+		val userUuid = aUser.id
+		val previousCurrencies = new HashMap<String, Integer>()
+		val currentCurrencies = new HashMap<String, Integer>()
+		val reasonsForChanges = new HashMap<String, String>()
+		val details = new HashMap<String, String>()
+		val reasonForChange = ControllerConstants.UCHRFC__SPED_UP_NORM_STRUCT
+		val gems = MiscMethods::gems
+		previousCurrencies.put(gems, previousGems)
+		currentCurrencies.put(gems, aUser.gems)
+		reasonsForChanges.put(gems, reasonForChange)
+		val detail = structDetails.toString
+		details.put(gems, detail)
+		MiscMethods::writeToUserCurrencyOneUser(userUuid, timeOfPurchase, money,
+			previousCurrencies, currentCurrencies, reasonsForChanges, details)
 	}
-
 }

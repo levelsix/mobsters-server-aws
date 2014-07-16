@@ -1,261 +1,219 @@
-package com.lvl6.mobsters.controllers.todo;
+package com.lvl6.mobsters.controllers.todo
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.dynamo.Clan;
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.ClanForUser;
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipRequestProto;
-import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto;
-import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto.Builder;
-import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto.TransferClanOwnershipStatus;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.TransferClanOwnershipRequestEvent;
-import com.lvl6.mobsters.events.response.TransferClanOwnershipResponseEvent;
-import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.NoneventClanProto.UserClanStatus;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
-import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.dynamo.ClanForUser
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto
+import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto.Builder
+import com.lvl6.mobsters.eventproto.EventClanProto.TransferClanOwnershipResponseProto.TransferClanOwnershipStatus
+import com.lvl6.mobsters.events.EventsToDispatch
+import com.lvl6.mobsters.events.RequestEvent
+import com.lvl6.mobsters.events.request.TransferClanOwnershipRequestEvent
+import com.lvl6.mobsters.events.response.TransferClanOwnershipResponseEvent
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
+import com.lvl6.mobsters.noneventproto.NoneventClanProto.UserClanStatus
+import com.lvl6.mobsters.server.EventController
+import java.util.ArrayList
+import java.util.Collections
+import java.util.List
+import java.util.Map
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.DependsOn
+import org.springframework.stereotype.Component
 
 @Component
-@DependsOn("gameServer")
-public class TransferClanOwnershipController extends EventController
+@DependsOn('gameServer')
+class TransferClanOwnershipController extends EventController
 {
-
-	private static Logger LOG = LoggerFactory.getLogger(TransferClanOwnershipController.class);
-
+	static var LOG = LoggerFactory::getLogger(typeof(TransferClanOwnershipController))
 	@Autowired
-	protected DataServiceTxManager svcTxManager;
+	protected var DataServiceTxManager svcTxManager
 
-	public TransferClanOwnershipController()
+	new()
 	{
-		numAllocatedThreads = 2;
+		numAllocatedThreads = 2
 	}
 
-	@Override
-	public RequestEvent createRequestEvent()
+	override createRequestEvent()
 	{
-		return new TransferClanOwnershipRequestEvent();
+		new TransferClanOwnershipRequestEvent()
 	}
 
-	@Override
-	public EventProtocolRequest getEventType()
+	override getEventType()
 	{
-		return EventProtocolRequest.C_TRANSFER_CLAN_OWNERSHIP;
+		EventProtocolRequest.C_TRANSFER_CLAN_OWNERSHIP
 	}
 
-	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter ) throws Exception
-	{
-		final TransferClanOwnershipRequestProto reqProto =
-		    ((TransferClanOwnershipRequestEvent) event).getTransferClanOwnershipRequestProto();
-
-		final MinimumUserProto senderProto = reqProto.getSender();
-		final String userUuid = senderProto.getUserUuid();
-		final int newClanOwnerId = reqProto.getClanOwnerUuidNew();
-		final List<Integer> userUuids = new ArrayList<Integer>();
-		userUuids.add(userUuid);
-		userUuids.add(newClanOwnerId);
-
-		final TransferClanOwnershipResponseProto.Builder resBuilder =
-		    TransferClanOwnershipResponseProto.newBuilder();
-		resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_OTHER);
-		resBuilder.setSender(senderProto);
-
-		int clanId = 0;
-		if (senderProto.hasClan()
-		    && (null != senderProto.getClan())) {
-			clanId = senderProto.getClan()
-			    .getClanId();
+	protected override processRequestEvent(RequestEvent event, EventsToDispatch eventWriter)
+	throws Exception {
+		val reqProto = ((event as TransferClanOwnershipRequestEvent)).
+			transferClanOwnershipRequestProto
+		val senderProto = reqProto.sender
+		val userUuid = senderProto.userUuid
+		val newClanOwnerId = reqProto.clanOwnerUuidNew
+		val userUuids = new ArrayList<Integer>()
+		userUuids.add(userUuid)
+		userUuids.add(newClanOwnerId)
+		val resBuilder = TransferClanOwnershipResponseProto::newBuilder
+		resBuilder.status = TransferClanOwnershipStatus.FAIL_OTHER
+		resBuilder.sender = senderProto
+		var clanId = 0
+		if (senderProto.clan && (null !== senderProto.clan))
+		{
+			clanId = senderProto.clan.clanId
 		}
-
-		boolean lockedClan = false;
-		if (0 != clanId) {
-			lockedClan = getLocker().lockClan(clanId);
+		var lockedClan = false
+		if (0 !== clanId)
+		{
+			lockedClan = locker.lockClan(clanId)
 		}
-		try {
-			final Map<Integer, User> users = RetrieveUtils.userRetrieveUtils()
-			    .getUsersByUuids(userUuids);
-			final Map<Integer, ClanForUser> userClans = RetrieveUtils.userClanRetrieveUtils()
-			    .getUserClanForUsers(clanId, userUuids);
-
-			final User user = users.get(userUuid);
-			final User newClanOwner = users.get(newClanOwnerId);
-
-			final boolean legitTransfer =
-			    checkLegitTransfer(resBuilder, lockedClan, userUuid, user, newClanOwnerId,
-			        newClanOwner, userClans);
-
-			if (legitTransfer) {
-				final List<UserClanStatus> statuses = new ArrayList<UserClanStatus>();
-				statuses.add(UserClanStatus.JUNIOR_LEADER);
-				statuses.add(UserClanStatus.LEADER);
-				writeChangesToDB(clanId, userUuids, statuses);
-				setResponseBuilderStuff(resBuilder, clanId, newClanOwner);
+		try
+		{
+			val users = RetrieveUtils::userRetrieveUtils.getUsersByUuids(userUuids)
+			val userClans = RetrieveUtils::userClanRetrieveUtils.
+				getUserClanForUsers(clanId, userUuids)
+			val user = users.get(userUuid)
+			val newClanOwner = users.get(newClanOwnerId)
+			val legitTransfer = checkLegitTransfer(resBuilder, lockedClan, userUuid, user,
+				newClanOwnerId, newClanOwner, userClans)
+			if (legitTransfer)
+			{
+				val statuses = new ArrayList<UserClanStatus>()
+				statuses.add(UserClanStatus::JUNIOR_LEADER)
+				statuses.add(UserClanStatus::LEADER)
+				writeChangesToDB(clanId, userUuids, statuses)
+				setResponseBuilderStuff(resBuilder, clanId, newClanOwner)
 			}
-
-			if (!legitTransfer) {
-				// if not successful write to guy
-				final TransferClanOwnershipResponseEvent resEvent =
-				    new TransferClanOwnershipResponseEvent(userUuid);
-				resEvent.setTag(event.getTag());
-				resEvent.setTransferClanOwnershipResponseProto(resBuilder.build());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEvent);
-				try {
-					eventWriter.writeEvent(resEvent);
-				} catch (final Throwable e) {
+			if (!legitTransfer)
+			{
+				val resEvent = new TransferClanOwnershipResponseEvent(userUuid)
+				resEvent.tag = event.tag
+				resEvent.transferClanOwnershipResponseProto = resBuilder.build
+				LOG.info('Writing event: ' + resEvent)
+				try
+				{
+					eventWriter.writeEvent(resEvent)
+				}
+				catch (Throwable e)
+				{
 					LOG.error(
-					    "fatal exception in TransferClanOwnershipController.processRequestEvent",
-					    e);
+						'fatal exception in TransferClanOwnershipController.processRequestEvent',
+						e)
 				}
 			}
-
-			if (legitTransfer) {
-				final TransferClanOwnershipResponseEvent resEvent =
-				    new TransferClanOwnershipResponseEvent(senderProto.getUserUuid());
-				resEvent.setTag(event.getTag());
-				resEvent.setTransferClanOwnershipResponseProto(resBuilder.build());
-				server.writeClanEvent(resEvent, clanId);
-
+			if (legitTransfer)
+			{
+				val resEvent = new TransferClanOwnershipResponseEvent(senderProto.userUuid)
+				resEvent.tag = event.tag
+				resEvent.transferClanOwnershipResponseProto = resBuilder.build
+				server.writeClanEvent(resEvent, clanId)
 			}
-
-		} catch (final Exception e) {
-			LOG.error("exception in TransferClanOwnership processEvent", e);
-			try {
-				resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_OTHER);
-				final TransferClanOwnershipResponseEvent resEvent =
-				    new TransferClanOwnershipResponseEvent(userUuid);
-				resEvent.setTag(event.getTag());
-				resEvent.setTransferClanOwnershipResponseProto(resBuilder.build());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEvent);
-				try {
-					eventWriter.writeEvent(resEvent);
-				} catch (final Throwable e) {
-					LOG.error(
-					    "fatal exception in TransferClanOwnershipController.processRequestEvent",
-					    e);
+		}
+		catch (Exception e)
+		{
+			LOG.error('exception in TransferClanOwnership processEvent', e)
+			try
+			{
+				resBuilder.status = TransferClanOwnershipStatus.FAIL_OTHER
+				val resEvent = new TransferClanOwnershipResponseEvent(userUuid)
+				resEvent.tag = event.tag
+				resEvent.transferClanOwnershipResponseProto = resBuilder.build
+				LOG.info('Writing event: ' + resEvent)
+				try
+				{
+					eventWriter.writeEvent(resEvent)
 				}
-			} catch (final Exception e2) {
-				LOG.error("exception2 in TransferClanOwnership processEvent", e);
+				catch (Throwable e)
+				{
+					LOG.error(
+						'fatal exception in TransferClanOwnershipController.processRequestEvent',
+						e)
+				}
 			}
-		} finally {
-			if ((0 != clanId)
-			    && lockedClan) {
-				getLocker().unlockClan(clanId);
+			catch (Exception e2)
+			{
+				LOG.error('exception2 in TransferClanOwnership processEvent', e)
+			}
+		}
+		finally
+		{
+			if ((0 !== clanId) && lockedClan)
+			{
+				locker.unlockClan(clanId)
 			}
 		}
 	}
 
-	private boolean checkLegitTransfer( final Builder resBuilder, final boolean lockedClan,
-	    final String userUuid, final User user, final int newClanOwnerId,
-	    final User newClanOwner, final Map<Integer, ClanForUser> userClans )
+	private def checkLegitTransfer(Builder resBuilder, boolean lockedClan, String userUuid,
+		User user, int newClanOwnerId, User newClanOwner, Map<Integer, ClanForUser> userClans)
 	{
-
-		if (!lockedClan) {
-			LOG.error("couldn't obtain clan lock");
+		if (!lockedClan)
+		{
+			LOG.error("couldn't obtain clan lock")
 			return false;
 		}
-
-		if ((user == null)
-		    || (newClanOwner == null)) {
-			resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_OTHER);
-			LOG.error("user is "
-			    + user
-			    + ", new clan owner is "
-			    + newClanOwner);
+		if ((user === null) || (newClanOwner === null))
+		{
+			resBuilder.status = TransferClanOwnershipStatus.FAIL_OTHER
+			LOG.error('user is ' + user + ', new clan owner is ' + newClanOwner)
 			return false;
 		}
-		if (user.getClanId() <= 0) {
-			resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_NOT_AUTHORIZED);
-			LOG.error("user not in clan. user="
-			    + user);
+		if (user.clanId <= 0)
+		{
+			resBuilder.status = TransferClanOwnershipStatus.FAIL_NOT_AUTHORIZED
+			LOG.error('user not in clan. user=' + user)
 			return false;
 		}
-
-		if (newClanOwner.getClanId() != user.getClanId()) {
-			resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_NEW_OWNER_NOT_IN_CLAN);
-			LOG.error("new owner not in same clan as user. new owner= "
-			    + newClanOwner
-			    + ", user is "
-			    + user);
+		if (newClanOwner.clanId !== user.clanId)
+		{
+			resBuilder.status = TransferClanOwnershipStatus.FAIL_NEW_OWNER_NOT_IN_CLAN
+			LOG.error(
+				'new owner not in same clan as user. new owner= ' + newClanOwner + ', user is ' +
+					user)
 			return false;
 		}
-
-		if (!userClans.containsKey(userUuid)
-		    || !userClans.containsKey(newClanOwnerId)) {
-			LOG.error("a UserClan does not exist userUuid="
-			    + userUuid
-			    + ", newClanOwner="
-			    + newClanOwnerId
-			    + "\t userClans="
-			    + userClans);
+		if (!userClans.containsKey(userUuid) || !userClans.containsKey(newClanOwnerId))
+		{
+			LOG.error(
+				'a UserClan does not exist userUuid=' + userUuid + ', newClanOwner=' +
+					newClanOwnerId + '	 userClans=' + userClans)
 		}
-		final ClanForUser userClan = userClans.get(user.getId());
-
-		if (!UserClanStatus.LEADER.equals(userClan.getStatus())) {
-			resBuilder.setStatus(TransferClanOwnershipStatus.FAIL_NOT_AUTHORIZED);
-			LOG.error("user is "
-			    + user
-			    + ", and user isn't owner. user is:"
-			    + userClan);
+		val userClan = userClans.get(user.id)
+		if (UserClanStatus::LEADER != userClan.status)
+		{
+			resBuilder.status = TransferClanOwnershipStatus.FAIL_NOT_AUTHORIZED
+			LOG.error('user is ' + user + ", and user isn't owner. user is:" + userClan)
 			return false;
 		}
-		resBuilder.setStatus(TransferClanOwnershipStatus.SUCCESS);
-		return true;
+		resBuilder.status = TransferClanOwnershipStatus.SUCCESS
+		true
 	}
 
-	private void writeChangesToDB( final int clanId, final List<Integer> userIdList,
-	    final List<UserClanStatus> statuses )
+	private def writeChangesToDB(int clanId, List<Integer> userIdList,
+		List<UserClanStatus> statuses)
 	{
-		// update clan for user table
-
-		final int numUpdated = UpdateUtils.get()
-		    .updateUserClanStatuses(clanId, userIdList, statuses);
-		LOG.info("num clan_for_user updated="
-		    + numUpdated
-		    + " userIdList="
-		    + userIdList
-		    + " statuses="
-		    + statuses);
+		val numUpdated = UpdateUtils::get.updateUserClanStatuses(clanId, userIdList, statuses)
+		LOG.info(
+			'num clan_for_user updated=' + numUpdated + ' userIdList=' + userIdList +
+				' statuses=' + statuses)
 	}
 
-	private void setResponseBuilderStuff( final Builder resBuilder, final int clanId,
-	    final User newClanOwner )
+	private def setResponseBuilderStuff(Builder resBuilder, int clanId, User newClanOwner)
 	{
-		final Clan clan = ClanRetrieveUtils.getClanWithId(clanId);
-		final List<Integer> clanIdList = Collections.singletonList(clanId);
-
-		final List<String> statuses = new ArrayList<String>();
-		statuses.add(UserClanStatus.LEADER.name());
-		statuses.add(UserClanStatus.JUNIOR_LEADER.name());
-		statuses.add(UserClanStatus.CAPTAIN.name());
-		statuses.add(UserClanStatus.MEMBER.name());
-		final Map<Integer, Integer> clanIdToSize = RetrieveUtils.userClanRetrieveUtils()
-		    .getClanSizeForClanUuidsAndStatuses(clanIdList, statuses);
-
-		resBuilder.setMinClan(CreateInfoProtoUtils.createMinimumClanProtoFromClan(clan));
-
-		final int size = clanIdToSize.get(clanId);
-		resBuilder.setFullClan(CreateInfoProtoUtils.createFullClanProtoWithClanSize(clan, size));
-
-		final MinimumUserProto mup =
-		    CreateInfoProtoUtils.createMinimumUserProtoFromUser(newClanOwner);
-		resBuilder.setClanOwnerNew(mup);
+		val clan = ClanRetrieveUtils::getClanWithId(clanId)
+		val clanIdList = Collections::singletonList(clanId)
+		val statuses = new ArrayList<String>()
+		statuses.add(UserClanStatus.LEADER.name)
+		statuses.add(UserClanStatus.JUNIOR_LEADER.name)
+		statuses.add(UserClanStatus.CAPTAIN.name)
+		statuses.add(UserClanStatus.MEMBER.name)
+		val clanIdToSize = RetrieveUtils::userClanRetrieveUtils.
+			getClanSizeForClanUuidsAndStatuses(clanIdList, statuses)
+		resBuilder.minClan = CreateInfoProtoUtils::createMinimumClanProtoFromClan(clan)
+		val size = clanIdToSize.get(clanId)
+		resBuilder.fullClan = CreateInfoProtoUtils::createFullClanProtoWithClanSize(clan, size)
+		val mup = CreateInfoProtoUtils::createMinimumUserProtoFromUser(newClanOwner)
+		resBuilder.clanOwnerNew = mup
 	}
 }
