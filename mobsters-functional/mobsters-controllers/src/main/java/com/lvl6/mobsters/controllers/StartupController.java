@@ -313,11 +313,10 @@ public class StartupController extends EventController
 					userId = user.getUserId();
 					startupStatus = StartupStatus.USER_IN_DB;
 					LOG.info("No major update... getting user info");
-					loginExistingUser(resBuilder, user, userId);
+					loginExistingUser(resBuilder, user, userId, now);
 				} else {
 					LOG.info("no user id: tutorial(?) player with udid "
 						+ udid);
-					// TODO: setAllStaticData 
 					setAllStaticData(resBuilder, null, false);
 				}
 
@@ -366,7 +365,8 @@ public class StartupController extends EventController
 			MDC.put(MDCKeys.PLAYER_ID.toString(), playerId);
 	}
 	
-	private void loginExistingUser(Builder resBuilder, UserCredential uc, String userId) {
+	private void loginExistingUser(Builder resBuilder, UserCredential uc,
+			String userId, Date now) {
 		// TODO: Account for forcelogout
 //		StopWatch stopWatch = new StopWatch();
 //		stopWatch.start();
@@ -406,6 +406,9 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at achivementStuff", stopWatch.getTime());
 		setMiniJob(resBuilder, userId);
 //		LOG.info("{}ms at miniJobStuff", stopWatch.getTime());
+		
+		//TODO: update the user's last login
+		//send this updated user back to the client
 	}
 	
 	private void setInProgressAndAvailableQuests(Builder resBuilder, String userId) {
