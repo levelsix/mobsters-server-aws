@@ -1,7 +1,9 @@
 package com.lvl6.mobsters.info;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +12,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Proxy;
+
 @Entity(name="Quest")
 @Table(name="quest")
-public class Quest extends BaseIntPersistentObject{
+@Proxy(lazy=true, proxyClass=IQuest.class)
+@Cacheable(true)
+public class Quest extends BaseIntPersistentObject implements IQuest {
 
 	
 	private static final long serialVersionUID = -7293560537221688587L;	
@@ -39,9 +45,9 @@ public class Quest extends BaseIntPersistentObject{
 	private int monsterIdReward;
 	@Column(name = "is_complete_monster")
 	private boolean isCompleteMonster;
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, targetEntity=Quest.class)
 	@Column(name = "quests_required_for_this")
-	private List<Quest> questsRequiredForThis;
+	private List<IQuest> questsRequiredForThis;
 	@Column(name = "quest_giver_name")
 	private String questGiverName;
 	@Column(name = "quest_giver_image_prefix")
@@ -57,16 +63,17 @@ public class Quest extends BaseIntPersistentObject{
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
 		fetch=FetchType.EAGER,
 		mappedBy="quest", 
-		orphanRemoval=true)
-	private List<QuestJob> questJobs;  
+		orphanRemoval=true,
+		targetEntity=QuestJob.class)
+	private List<IQuestJob> questJobs;  
 	
 	public Quest(){}
 	public Quest(int id, String questName, String description, String doneResponse,
 			String acceptDialogue, int cashReward, int oilReward, int gemReward,
 			int expReward, int monsterIdReward, boolean isCompleteMonster,
-			List<Quest> questsRequiredForThis, String questGiverName,
+			List<IQuest> questsRequiredForThis, String questGiverName,
 			String questGiverImagePrefix, int priority, String carrotId,
-			String monsterElement, List<QuestJob> questJobs) {
+			String monsterElement, List<IQuestJob> questJobs) {
 		super(id);
 		this.questName = questName;
 		this.description = description;
@@ -89,139 +96,283 @@ public class Quest extends BaseIntPersistentObject{
 
 
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getQuestName()
+	 */
+	@Override
 	public String getQuestName() {
 		return questName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setQuestName(java.lang.String)
+	 */
+	@Override
 	public void setQuestName(String questName) {
 		this.questName = questName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getDescription()
+	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setDescription(java.lang.String)
+	 */
+	@Override
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getDoneResponse()
+	 */
+	@Override
 	public String getDoneResponse() {
 		return doneResponse;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setDoneResponse(java.lang.String)
+	 */
+	@Override
 	public void setDoneResponse(String doneResponse) {
 		this.doneResponse = doneResponse;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getAcceptDialogue()
+	 */
+	@Override
 	public String getAcceptDialogue() {
 		return acceptDialogue;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setAcceptDialogue(java.lang.String)
+	 */
+	@Override
 	public void setAcceptDialogue(String acceptDialogue) {
 		this.acceptDialogue = acceptDialogue;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getCashReward()
+	 */
+	@Override
 	public int getCashReward() {
 		return cashReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setCashReward(int)
+	 */
+	@Override
 	public void setCashReward(int cashReward) {
 		this.cashReward = cashReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getOilReward()
+	 */
+	@Override
 	public int getOilReward() {
 		return oilReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setOilReward(int)
+	 */
+	@Override
 	public void setOilReward(int oilReward) {
 		this.oilReward = oilReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getGemReward()
+	 */
+	@Override
 	public int getGemReward() {
 		return gemReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setGemReward(int)
+	 */
+	@Override
 	public void setGemReward(int gemReward) {
 		this.gemReward = gemReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getExpReward()
+	 */
+	@Override
 	public int getExpReward() {
 		return expReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setExpReward(int)
+	 */
+	@Override
 	public void setExpReward(int expReward) {
 		this.expReward = expReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getMonsterIdReward()
+	 */
+	@Override
 	public int getMonsterIdReward() {
 		return monsterIdReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setMonsterIdReward(int)
+	 */
+	@Override
 	public void setMonsterIdReward(int monsterIdReward) {
 		this.monsterIdReward = monsterIdReward;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#isCompleteMonster()
+	 */
+	@Override
 	public boolean isCompleteMonster() {
 		return isCompleteMonster;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setCompleteMonster(boolean)
+	 */
+	@Override
 	public void setCompleteMonster(boolean isCompleteMonster) {
 		this.isCompleteMonster = isCompleteMonster;
 	}
 
-	public List<Quest> getQuestsRequiredForThis() {
-		return questsRequiredForThis;
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getQuestsRequiredForThis()
+	 */
+	@Override
+	public List<IQuest> getQuestsRequiredForThis() {
+		 if (questsRequiredForThis == null) {
+			 questsRequiredForThis = new ArrayList<IQuest>(2);
+		 };
+		 
+		 return questsRequiredForThis;
 	}
 
-	public void setQuestsRequiredForThis(List<Quest> questsRequiredForThis) {
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setQuestsRequiredForThis(java.util.List)
+	 */
+	@Override
+	public void setQuestsRequiredForThis(final List<IQuest> questsRequiredForThis) {
 		this.questsRequiredForThis = questsRequiredForThis;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getQuestGiverName()
+	 */
+	@Override
 	public String getQuestGiverName() {
 		return questGiverName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setQuestGiverName(java.lang.String)
+	 */
+	@Override
 	public void setQuestGiverName(String questGiverName) {
 		this.questGiverName = questGiverName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getQuestGiverImagePrefix()
+	 */
+	@Override
 	public String getQuestGiverImagePrefix() {
 		return questGiverImagePrefix;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setQuestGiverImagePrefix(java.lang.String)
+	 */
+	@Override
 	public void setQuestGiverImagePrefix(String questGiverImagePrefix) {
 		this.questGiverImagePrefix = questGiverImagePrefix;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getPriority()
+	 */
+	@Override
 	public int getPriority() {
 		return priority;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setPriority(int)
+	 */
+	@Override
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getCarrotId()
+	 */
+	@Override
 	public String getCarrotId() {
 		return carrotId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setCarrotId(java.lang.String)
+	 */
+	@Override
 	public void setCarrotId(String carrotId) {
 		this.carrotId = carrotId;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getMonsterElement()
+	 */
+	@Override
 	public String getMonsterElement() {
 		return monsterElement;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setMonsterElement(java.lang.String)
+	 */
+	@Override
 	public void setMonsterElement(String monsterElement) {
 		this.monsterElement = monsterElement;
 	}
 
-	public List<QuestJob> getQuestJobs()
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#getQuestJobs()
+	 */
+	@Override
+	public List<IQuestJob> getQuestJobs()
 	{
+		if( questJobs == null ) {
+			questJobs = new ArrayList<IQuestJob>(3);
+		}
+		
 		return questJobs;
 	}
-	public void setQuestJobs( List<QuestJob> questJobs )
+	/* (non-Javadoc)
+	 * @see com.lvl6.mobsters.info.IQuest#setQuestJobs(java.util.List)
+	 */
+	@Override
+	public void setQuestJobs( List<IQuestJob> questJobs )
 	{
 		this.questJobs = questJobs;
 	}
