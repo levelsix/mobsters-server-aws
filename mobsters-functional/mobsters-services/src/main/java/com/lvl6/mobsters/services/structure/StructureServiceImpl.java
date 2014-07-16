@@ -13,8 +13,11 @@ import com.lvl6.mobsters.dynamo.ObstacleForUser;
 import com.lvl6.mobsters.dynamo.StructureForUser;
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository;
+import com.lvl6.mobsters.info.CoordinatePair;
 import com.lvl6.mobsters.info.Structure;
 import com.lvl6.mobsters.info.repository.StructureRepository;
+import com.lvl6.mobsters.services.common.Lvl6MobstersException;
+import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
 
 @Component
 public class StructureServiceImpl implements StructureService {
@@ -259,6 +262,19 @@ public class StructureServiceImpl implements StructureService {
 		structureForUserRepository.save(sfu);
 	}
 
+	@Override
+	public void moveUserStructure(String userId, String userStructId, CoordinatePair cp) {
+		StructureForUser sfu = structureForUserRepository.load(userId, userStructId);
+		
+		if (null == sfu) {
+			LOG.error("No StructureForUser for id:" + userStructId);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+		}
+		
+		sfu.setxCoord(cp.getX());
+		sfu.setyCoord(cp.getY());
+		structureForUserRepository.save(sfu);
+	}
     
     //for the dependency injection
     public ObstacleForUserRepository getObstacleForUserRepository()

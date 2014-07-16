@@ -63,7 +63,7 @@ message MoveOrRotateNormStructureResponseProto {
 	
 	enum MoveOrRotateNormStructureStatus {
 		SUCCESS = 1;
-		OTHER_FAIL = 2;
+		FAIL_OTHER = 2;
 	}
 }
 

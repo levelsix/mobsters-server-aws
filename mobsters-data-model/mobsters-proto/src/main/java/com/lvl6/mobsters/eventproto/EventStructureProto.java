@@ -2396,11 +2396,11 @@ public final class EventStructureProto {
     public enum MoveOrRotateNormStructureStatus
         implements com.google.protobuf.ProtocolMessageEnum {
       SUCCESS(0, 1),
-      OTHER_FAIL(1, 2),
+      FAIL_OTHER(1, 2),
       ;
       
       public static final int SUCCESS_VALUE = 1;
-      public static final int OTHER_FAIL_VALUE = 2;
+      public static final int FAIL_OTHER_VALUE = 2;
       
       
       public final int getNumber() { return value; }
@@ -2408,7 +2408,7 @@ public final class EventStructureProto {
       public static MoveOrRotateNormStructureStatus valueOf(int value) {
         switch (value) {
           case 1: return SUCCESS;
-          case 2: return OTHER_FAIL;
+          case 2: return FAIL_OTHER;
           default: return null;
         }
       }
@@ -2439,7 +2439,7 @@ public final class EventStructureProto {
       }
       
       private static final MoveOrRotateNormStructureStatus[] VALUES = {
-        SUCCESS, OTHER_FAIL, 
+        SUCCESS, FAIL_OTHER, 
       };
       
       public static MoveOrRotateNormStructureStatus valueOf(
@@ -12923,7 +12923,7 @@ public final class EventStructureProto {
       "M.proto.MoveOrRotateNormStructureRespons",
       "eProto.MoveOrRotateNormStructureStatus\">" +
       "\n\037MoveOrRotateNormStructureStatus\022\013\n\007SUC" +
-      "CESS\020\001\022\016\n\nOTHER_FAIL\020\002\"\326\001\n UpgradeNormSt" +
+      "CESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\326\001\n UpgradeNormSt" +
       "ructureRequestProto\022\'\n\006sender\030\001 \001(\0132\027.pr" +
       "oto.MinimumUserProto\022\026\n\016userStructUuid\030\002" +
       " \001(\t\022\025\n\rtimeOfUpgrade\030\003 \001(\003\022\021\n\tgemsSpent" +
