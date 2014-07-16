@@ -1515,9 +1515,9 @@ public final class EventStructureProto {
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto getCurStructCoordinates();
     com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProtoOrBuilder getCurStructCoordinatesOrBuilder();
     
-    // optional .proto.StructOrientation newOrientation = 5 [default = POSITION_1];
-    boolean hasNewOrientation();
-    com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getNewOrientation();
+    // optional .proto.StructOrientation orientationNew = 5 [default = POSITION_1];
+    boolean hasOrientationNew();
+    com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getOrientationNew();
   }
   public static final class MoveOrRotateNormStructureRequestProto extends
       com.google.protobuf.GeneratedMessage
@@ -1682,14 +1682,14 @@ public final class EventStructureProto {
       return curStructCoordinates_;
     }
     
-    // optional .proto.StructOrientation newOrientation = 5 [default = POSITION_1];
-    public static final int NEWORIENTATION_FIELD_NUMBER = 5;
-    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation newOrientation_;
-    public boolean hasNewOrientation() {
+    // optional .proto.StructOrientation orientationNew = 5 [default = POSITION_1];
+    public static final int ORIENTATIONNEW_FIELD_NUMBER = 5;
+    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientationNew_;
+    public boolean hasOrientationNew() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
-    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getNewOrientation() {
-      return newOrientation_;
+    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getOrientationNew() {
+      return orientationNew_;
     }
     
     private void initFields() {
@@ -1697,7 +1697,7 @@ public final class EventStructureProto {
       userStructUuid_ = "";
       type_ = com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.MoveOrRotateNormStructType.MOVE;
       curStructCoordinates_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto.getDefaultInstance();
-      newOrientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
+      orientationNew_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1724,7 +1724,7 @@ public final class EventStructureProto {
         output.writeMessage(4, curStructCoordinates_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeEnum(5, newOrientation_.getNumber());
+        output.writeEnum(5, orientationNew_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1753,7 +1753,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, newOrientation_.getNumber());
+          .computeEnumSize(5, orientationNew_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1897,7 +1897,7 @@ public final class EventStructureProto {
           curStructCoordinatesBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
-        newOrientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
+        orientationNew_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
         bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
@@ -1964,7 +1964,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.newOrientation_ = newOrientation_;
+        result.orientationNew_ = orientationNew_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1993,8 +1993,8 @@ public final class EventStructureProto {
         if (other.hasCurStructCoordinates()) {
           mergeCurStructCoordinates(other.getCurStructCoordinates());
         }
-        if (other.hasNewOrientation()) {
-          setNewOrientation(other.getNewOrientation());
+        if (other.hasOrientationNew()) {
+          setOrientationNew(other.getOrientationNew());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2068,7 +2068,7 @@ public final class EventStructureProto {
                 unknownFields.mergeVarintField(5, rawValue);
               } else {
                 bitField0_ |= 0x00000010;
-                newOrientation_ = value;
+                orientationNew_ = value;
               }
               break;
             }
@@ -2318,26 +2318,26 @@ public final class EventStructureProto {
         return curStructCoordinatesBuilder_;
       }
       
-      // optional .proto.StructOrientation newOrientation = 5 [default = POSITION_1];
-      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation newOrientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
-      public boolean hasNewOrientation() {
+      // optional .proto.StructOrientation orientationNew = 5 [default = POSITION_1];
+      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation orientationNew_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
+      public boolean hasOrientationNew() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
-      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getNewOrientation() {
-        return newOrientation_;
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation getOrientationNew() {
+        return orientationNew_;
       }
-      public Builder setNewOrientation(com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation value) {
+      public Builder setOrientationNew(com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation value) {
         if (value == null) {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000010;
-        newOrientation_ = value;
+        orientationNew_ = value;
         onChanged();
         return this;
       }
-      public Builder clearNewOrientation() {
+      public Builder clearOrientationNew() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        newOrientation_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
+        orientationNew_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation.POSITION_1;
         onChanged();
         return this;
       }
@@ -12915,7 +12915,7 @@ public final class EventStructureProto {
       "otateNormStructureRequestProto.MoveOrRot" +
       "ateNormStructType:\004MOVE\0224\n\024curStructCoor" +
       "dinates\030\004 \001(\0132\026.proto.CoordinateProto\022<\n" +
-      "\016newOrientation\030\005 \001(\0162\030.proto.StructOrie" +
+      "\016orientationNew\030\005 \001(\0162\030.proto.StructOrie" +
       "ntation:\nPOSITION_1\"&\n\032MoveOrRotateNormS" +
       "tructType\022\010\n\004MOVE\020\001\"\360\001\n&MoveOrRotateNorm" +
       "StructureResponseProto\022\'\n\006sender\030\001 \001(\0132\027" +
@@ -13038,7 +13038,7 @@ public final class EventStructureProto {
           internal_static_proto_MoveOrRotateNormStructureRequestProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_MoveOrRotateNormStructureRequestProto_descriptor,
-              new java.lang.String[] { "Sender", "UserStructUuid", "Type", "CurStructCoordinates", "NewOrientation", },
+              new java.lang.String[] { "Sender", "UserStructUuid", "Type", "CurStructCoordinates", "OrientationNew", },
               com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.MoveOrRotateNormStructureRequestProto.Builder.class);
           internal_static_proto_MoveOrRotateNormStructureResponseProto_descriptor =
