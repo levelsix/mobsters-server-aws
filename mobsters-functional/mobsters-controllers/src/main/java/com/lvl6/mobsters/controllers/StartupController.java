@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
@@ -287,12 +288,11 @@ public class StartupController extends EventController
 
 		try {
 			if (!UpdateStatus.MAJOR_UPDATE.equals(updateStatus)) {
-				user = userService.getUserCredentialByFacebookIdOrUdid(fbId, udid);
-				if (null != user) {
-					userId = user.getUserId();
+				userId = userService.getUserCredentialByFacebookIdOrUdid(fbId, udid);
+				if (StringUtils.hasText(userId)) {
 					startupStatus = StartupStatus.USER_IN_DB;
 					LOG.info("No major update... getting user info");
-					loginExistingUser(resBuilder, user, userId);
+					loginExistingUser(resBuilder, userId);
 				} else {
 					LOG.info("no user id: tutorial(?) player with udid "
 						+ udid);
@@ -343,7 +343,7 @@ public class StartupController extends EventController
 			MDC.put(MDCKeys.PLAYER_ID.toString(), playerId);
 	}
 	
-	private void loginExistingUser(Builder resBuilder, UserCredential uc, String userId) {
+	private void loginExistingUser(Builder resBuilder, String userId) {
 		// TODO: Account for forcelogout
 //		StopWatch stopWatch = new StopWatch();
 //		stopWatch.start();
