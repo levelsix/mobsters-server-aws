@@ -21,10 +21,12 @@ import org.hibernate.annotations.Proxy;
 @Table(name="monster")
 @Cacheable(true)
 @Proxy(lazy=true, proxyClass=IMonster.class)
-public class Monster extends BaseIntPersistentObject implements IMonster{	
+public class Monster extends BaseIntPersistentObject implements IMonster
+{	
+	/**
+	 */
+	private static final long serialVersionUID = 3306136127069310310L;
 
-	private static final long serialVersionUID = -229728137457368621L;
-	
 	@Column(name = "evolution_group")
 	private String evolutionGroup;
 	@Column(name = "monster_group")
@@ -62,8 +64,8 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	
 	@Column(name = "minutes_to_evolve")
 	private int minutesToEvolve;
-	// @Column(name = "num_catalysts_required")
-	// private int numCatalystsRequired; //will most likely be 1
+	@Column(name = "num_evolution_catalysts")
+	private int numEvolutionCatalysts; //will most likely be 1
 	@Column(name = "carrot_recruited")
 	private String carrotRecruited;
 	@Column(name = "carrot_defeated")
@@ -86,8 +88,8 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	private int atkAnimationRepeatedFramesStart;
 	@Column(name = "atk_animation_repeated_frames_end")
 	private int atkAnimationRepeatedFramesEnd;
-	//@Column(name = "shorter_name")
-	//private String shorterName;	
+	@Column(name = "short_name")
+	private String shortName;	
 	
 	@OneToMany(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -370,20 +372,20 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#getNumCatalystsRequired()
-	@Override
-	public int getNumCatalystsRequired() {
-		return numCatalystsRequired;
-	}
+	 * @see com.lvl6.mobsters.info.IMonster#getNumEvolutionCatalysts()
 	 */
+	@Override
+	public int getNumEvolutionCatalysts() {
+		return numEvolutionCatalysts;
+	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#setNumCatalystsRequired(int)
-	@Override
-	public void setNumCatalystsRequired(int numCatalystsRequired) {
-		this.numCatalystsRequired = numCatalystsRequired;
-	}
+	 * @see com.lvl6.mobsters.info.IMonster#setNumEvolutionCatalysts(int)
 	 */
+	@Override
+	public void setNumEvolutionCatalysts(int numEvolutionCatalysts) {
+		this.numEvolutionCatalysts = numEvolutionCatalysts;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getCarrotRecruited()
@@ -563,20 +565,20 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#getShorterName()
-	@Override
-	public String getShorterName() {
-		return shorterName;
-	}
+	 * @see com.lvl6.mobsters.info.IMonster#getShortName()
 	 */
+	@Override
+	public String getShortName() {
+		return shortName;
+	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#setShorterName(java.lang.String)
-	@Override
-	public void setShorterName(String shorterName) {
-		this.shorterName = shorterName;
-	}
+	 * @see com.lvl6.mobsters.info.IMonster#setShortName(java.lang.String)
 	 */
+	@Override
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getLvlInfo()

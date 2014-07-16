@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
@@ -110,7 +111,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	    }
 	    
 	    mpb.setMinutesToEvolve(aMonster.getMinutesToEvolve());
-	    mpb.setNumCatalystMonstersRequired(aMonster.getNumCatalystsRequired());
+	    mpb.setNumCatalystMonstersRequired(aMonster.getNumEvolutionCatalysts());
 
 	    Collection<MonsterLevelInfoProto> lvlInfoProtos = createMonsterLevelInfoFromInfo(aMonster.getLvlInfo());
 	    mpb.addAllLvlInfo(lvlInfoProtos);
@@ -138,9 +139,9 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	    
 	    mpb.setAtkAnimationRepeatedFramesEnd(aMonster.getAtkAnimationRepeatedFramesEnd());
 	    
-	    String shorterName = aMonster.getShorterName();
-	    if (null != shorterName) {
-	    	mpb.setShorterName(shorterName);
+	    final String shortName = aMonster.getShortName();
+	    if (StringUtils.hasText(shortName)) {
+	    	mpb.setShorterName(shortName);
 	    }
 	    
 	    mpb.setShadowScaleFactor(aMonster.getShadowScaleFactor());
