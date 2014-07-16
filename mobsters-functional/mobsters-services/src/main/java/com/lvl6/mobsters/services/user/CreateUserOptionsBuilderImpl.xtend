@@ -1,14 +1,15 @@
 package com.lvl6.mobsters.services.user
 
-import java.util.ArrayList
+import com.lvl6.mobsters.common.utils.Director
 import com.lvl6.mobsters.services.structure.StructureService.CreateStructureCollectionBuilder
+import java.util.ArrayList
 
 class CreateUserOptionsBuilderImpl implements UserService.CreateUserOptionsBuilder {
-	val ArrayList structureSpecList
+	val ArrayList<(CreateStructureCollectionBuilder)=>void> structureSpecList
 	
 	new()
 	{
-		structureSpecList = new ArrayList();
+		structureSpecList = new ArrayList<(CreateStructureCollectionBuilder)=>void>();
 	}
 	
 	override withStructure(
@@ -16,8 +17,18 @@ class CreateUserOptionsBuilderImpl implements UserService.CreateUserOptionsBuild
 	) {
 		structureSpecList += [ CreateStructureCollectionBuilder bldr |
 			bldr.addStructure(structureId,xPosition,yPosition)
+			return
 		]
+		
 		return this
 	}
 	
+	def Director<CreateStructureCollectionBuilder> buildDirector()
+	{
+		return [ CreateStructureCollectionBuilder bldr |
+			structureSpecList.forEach[
+				it.apply(bldr)
+			]
+		]
+	}
 }
