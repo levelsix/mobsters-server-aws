@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.services.structure;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.lvl6.mobsters.dynamo.ObstacleForUser;
@@ -128,6 +129,8 @@ public interface StructureService
 
 	public void beginUpgradingUserStruct( StructureForUser sfu, Date upgradeTime );
 
-	public abstract void moveUserStructure(String userId, String userStructId, CoordinatePair cp);
+	public void moveUserStructure( String userId, String userStructId, CoordinatePair cp );
+	
+	public void finishConstructingUserStructures( String userId, List<String> userStructId, Date now );
 
 }

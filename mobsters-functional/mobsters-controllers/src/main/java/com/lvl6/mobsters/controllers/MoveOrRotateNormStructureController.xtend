@@ -60,7 +60,7 @@ public class MoveOrRotateNormStructureController extends EventController
 		val MoveOrRotateNormStructureResponseProto.Builder resBuilder =
 		    MoveOrRotateNormStructureResponseProto.newBuilder();
 		resBuilder.sender = senderProto;
-		resBuilder.status = MoveOrRotateNormStructureStatus.FAIL_OTHER;
+		resBuilder.status = MoveOrRotateNormStructureStatus.SUCCESS;
 		
 		val MoveOrRotateNormStructureResponseEvent resEvent =
 			new MoveOrRotateNormStructureResponseEvent(userUuid);
