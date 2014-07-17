@@ -96,7 +96,7 @@ public class SpawnObstacleController extends EventController {
 							)
 						);
 						
-						builder.addStructure(obstacleId, x, y, orientation.name());
+						builder.addObstacle(obstacleId, x, y, orientation.name());
 					}
 				}
         	}
@@ -135,6 +135,8 @@ public class SpawnObstacleController extends EventController {
     		return retVal;
     	}
     }
+    
+    
 
     void setStructureService( final StructureService structureService ) {
         this.structureService = structureService;
