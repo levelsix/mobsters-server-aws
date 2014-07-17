@@ -16,11 +16,12 @@ public interface DataServiceTxManager {
 	 * Begin a new thread-scoped transaction if none is presently active.  If the current thread already has an active
 	 * transaction, nothing changes.
 	 * 
-	 * @return Returns if a new transaction was successfully opened and bound to the current thread.
+	 * @return True if a new transaction was successfully opened and bound to the current thread, false if a 
+	 *         previously existing transaction is reused.
 	 * @throws IllegalStateException if an open transaction is already bound to the current thread.
 	 * @throws TransactionFailureException if something unexpectedly prevents a transaction from being opened.
 	 */
-	public void requireTransaction();
+	public boolean requireTransaction();
 
 	/**
 	 * Ends an existing thread-scoped transaction if one is presently active.  If the current thread lacks an active

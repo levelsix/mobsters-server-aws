@@ -208,11 +208,15 @@ public class Lvl6TxManager extends TransactionManager
     }
 
     @Override
-    public void requireTransaction()
+    public boolean requireTransaction()
     {
+    	boolean retVal = false;
         if (threadActiveTx.get() == null) {
         	doBeginTransaction();
+        	retVal = true;
         }
+        
+        return retVal;
     }
         
     private void doBeginTransaction() {
