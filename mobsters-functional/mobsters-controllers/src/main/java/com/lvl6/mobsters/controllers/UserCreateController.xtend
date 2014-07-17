@@ -27,9 +27,9 @@ import static com.google.common.base.Preconditions.*
 import static extension org.springframework.util.StringUtils.*
 
 @Component
-public class UserCreateControllerX extends EventController
+public class UserCreateController extends EventController
 {
-	private static var LOG = LoggerFactory.getLogger(UserCreateControllerX);
+	private static var LOG = LoggerFactory.getLogger(UserCreateController);
 
 	@Autowired
 	private var UserService userService;
@@ -72,16 +72,29 @@ public class UserCreateControllerX extends EventController
 		// TODO: Find a way to use javax.validation framework to capture syntax rules in annotations somewhere.
 		checkArgument(
 			udid.hasText,
-			"udid must not be null, empty, or blank.  udid=%s",
-			udid
-		)
+			"udid must not be null, empty, or blank.  udid=%s", udid)
+		checkArgument(
+			name.hasText,
+			"name must not be null, empty, or blank.  name=%s", name)
+		checkArgument(
+			deviceToken.hasText,
+			"deviceToken must not be null, empty, or blank.  deviceToken=%s", deviceToken)
+		checkArgument(
+			(cash >= 0) && (oil >= 0) && (gems >= 0),
+			"Currency elements must all be non-negative. cash=%s, oil=%s, gems=%s",
+			cash, oil, gems)
 
 		// prepare to send response back to client
-		val CreateUserReplyBuilderImpl replyBuilder = new CreateUserReplyBuilderImpl();
+		val CreateUserReplyBuilderImpl replyBuilder = 
+			new CreateUserReplyBuilderImpl(udid, event.tag);
 
 		// Prepare a Director and store it so we don't have to repeat its contents in both createUser call variants.
 		val Director<CreateUserOptionsBuilder> structureDirector = [
 			structsJustBuilt.forEach[ proto |
+				checkArgument(
+					(proto.structId > 0) && (proto.coordinate.x > 0) && (proto.coordinate.y > 0)
+				)
+				
 				withStructure(proto.structId, proto.coordinate.x, proto.coordinate.y)
 			]
 		]
@@ -104,6 +117,7 @@ public class UserCreateControllerX extends EventController
 		// 	.equals(UserCreateStatus.SUCCESS)) { return; }
 		// game center id might have changed
 		// null PvpLeagueFromUser means will pull from a cache instead
+
 		// UpdateClientUserResponseEvent resEventUpdate =
 		// CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
 		// resEventUpdate.setTag(event.getTag());
@@ -111,12 +125,25 @@ public class UserCreateControllerX extends EventController
 	}
 
 	private static class CreateUserReplyBuilderImpl implements CreateUserReplyBuilder {
-	    val UserCreateResponseProto.Builder protoBuilder = 
-	    	UserCreateResponseProto.newBuilder();
+	    val UserCreateResponseProto.Builder protoBuilder 
+	    val String udid
+	    val int tag
+	
+		new(String udid, int tag) {
+			this.udid = udid
+			this.tag = tag
+			protoBuilder = UserCreateResponseProto.newBuilder()
+			protoBuilder.status = UserCreateStatus.FAIL_OTHER
+		}
+		
+		def CreateUserReplyBuilder resultOk()
+		{
+			protoBuilder.status = UserCreateStatus.SUCCESS
+			return this
+		}
 		
 		def UserCreateResponseProto.Builder build()
 		{
-			protoBuilder.setStatus(UserCreateStatus.SUCCESS);
 			return protoBuilder;
 		}
 	}
