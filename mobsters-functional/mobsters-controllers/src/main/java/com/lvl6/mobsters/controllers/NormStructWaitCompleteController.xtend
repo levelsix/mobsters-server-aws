@@ -72,7 +72,7 @@ public class NormStructWaitCompleteController extends EventController
         // call service if syntax is ok
         if (NormStructWaitCompleteStatus.SUCCESS.equals(resBuilder.status)) {
 			try {
-					structureService.finishConstructingUserStructures(
+					structureService.finishConstructingCompletedUserStructures(
 						userUuid, userStructIdList, clientTime
 					);
 				

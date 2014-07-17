@@ -282,7 +282,7 @@ public class StructureServiceImpl implements StructureService {
 	}
 	
 	@Override
-	public void finishConstructingUserStructures( String userId, List<String> userStructIdList, Date now ) {
+	public void finishConstructingCompletedUserStructures( String userId, List<String> userStructIdList, Date now ) {
 		// TODO: Transactionify
 		List<StructureForUser> sfuList = structureForUserRepository.loadEach(userId, userStructIdList);
 		
@@ -368,6 +368,13 @@ public class StructureServiceImpl implements StructureService {
 		return structureMap;
 	}
     
+	public void speedUpConstructingUserStructures( StructureForUser sfu, Date upgradeTime )
+	{
+		sfu.setLastRetrieved(upgradeTime);
+		sfu.setComplete(true);
+		structureForUserRepository.save(sfu);
+	}
+	
     //for the dependency injection
     public ObstacleForUserRepository getObstacleForUserRepository()
     {

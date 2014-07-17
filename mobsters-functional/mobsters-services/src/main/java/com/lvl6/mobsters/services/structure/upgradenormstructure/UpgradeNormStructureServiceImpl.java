@@ -46,6 +46,39 @@ public class UpgradeNormStructureServiceImpl implements
 	protected StructureRepository structureRepository;
 
 	// NON CRUD LOGIC
+	
+	private boolean hasEnoughCash( User user, int resourceChange ) {
+		int userCash = user.getCash();
+		if (userCash < resourceChange) {
+			LOG.error("user error: user does not have enough cash. userCash="
+					+ userCash + "\t cashSpent=" + resourceChange);
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private boolean hasEnoughOil( User user, int resourceChange ) {
+		int userOil = user.getOil();
+		if (userOil < resourceChange) {
+			LOG.error("user error: user does not have enough oil. userOil="
+					+ userOil + "\t oilSpent=" + resourceChange);
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private boolean hasEnoughGems( User user, int gemsSpent )
+	{
+		int userGems = user.getGems();
+		if (gemsSpent > 0 && userGems < gemsSpent) {
+			LOG.error("user has " + userGems + " gems; trying to spend " + gemsSpent);
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	/**************************************************************************/
 
@@ -110,13 +143,9 @@ public class UpgradeNormStructureServiceImpl implements
 	    	gemsSpent = Math.abs(gemsSpent);
 		}
 
-		int userGems = user.getGems();
-		if (gemsSpent > 0 && userGems < gemsSpent) {
-	    	LOG.error("user has " + userGems + " gems; trying to spend " +
-	    			gemsSpent + " and " + resourceChange  + " " +
-	    			resourceType + " to upgrade to structure=" + nextLevelStruct);
-	    	throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
-	    }
+		if (gemsSpent > 0 && !hasEnoughGems(user, gemsSpent)) {
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
+		}
 		
 		if (Lvl6MobstersResourceEnum.CASH.name().equals(resourceType)) {
 			if (!hasEnoughCash(user, resourceChange)) {
@@ -132,28 +161,6 @@ public class UpgradeNormStructureServiceImpl implements
 			}
 		}
 
-	}
-	
-	private boolean hasEnoughCash(User user, int resourceChange) {
-		int userCash = user.getCash();
-		if (userCash < resourceChange) {
-			LOG.error("user error: user does not have enough cash. userCash="
-					+ userCash + "\t cashSpent=" + resourceChange);
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	private boolean hasEnoughOil(User user, int resourceChange) {
-		int userOil = user.getOil();
-		if (userOil < resourceChange) {
-			LOG.error("user error: user does not have enough oil. userOil="
-					+ userOil + "\t oilSpent=" + resourceChange);
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	private void updateUserCurrency(int gemsSpent, String resourceType,
@@ -171,6 +178,38 @@ public class UpgradeNormStructureServiceImpl implements
 		userService.modifyUser(user, modifyUserSpecBuilder.build());
 	}
 
+	@Override
+	public User speedUpConstructingUserStruct( String userId, String userStructId,
+			int gemCost, Date now )
+	{
+		// TODO: TRANSACTIONIFY
+		User user = userRepository.load(userId);
+		StructureForUser sfu = structureForUserRepository.findByUserIdAndStructureForUserId(userId, userStructId);
+
+		checkIfUserCanSpeedUpUpgrade(gemCost, user, sfu);
+		
+		ModifyUserSpecBuilder modifyUserSpecBuilder = ModifyUserSpec.builder();
+		modifyUserSpecBuilder.decrementGems(gemCost);
+		userService.modifyUser(user, modifyUserSpecBuilder.build());
+		
+		
+		return user;
+	}
+
+	private void checkIfUserCanSpeedUpUpgrade(int gemCost, User user,
+			StructureForUser sfu) {
+		if ( null == user || null == sfu )
+		{
+			LOG.error("parameter passed in is null. user=" + user + ", user struct=" + sfu);
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+		}
+		
+		if (!hasEnoughGems(user, gemCost)) {
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
+		}
+		
+	}
+	
 	public UserRepository getUserRepository() {
 		return userRepository;
 	}

@@ -131,6 +131,8 @@ public interface StructureService
 
 	public void moveUserStructure( String userId, String userStructId, CoordinatePair cp );
 	
-	public void finishConstructingUserStructures( String userId, List<String> userStructId, Date now );
+	public void finishConstructingCompletedUserStructures( String userId, List<String> userStructId, Date now );
 
+	public void speedUpConstructingUserStructures( StructureForUser sfu, Date upgradeTime );
+	
 }
