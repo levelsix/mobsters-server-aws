@@ -65,7 +65,7 @@ public class UpgradeNormStructureController extends EventController
 		val UpgradeNormStructureResponseProto.Builder resBuilder =
 		    UpgradeNormStructureResponseProto.newBuilder();
 		resBuilder.sender = senderProto;
-		resBuilder.status = UpgradeNormStructureStatus.FAIL_OTHER;
+		resBuilder.status = UpgradeNormStructureStatus.SUCCESS;
 		
 		val UpgradeNormStructureResponseEvent resEvent =
 			new UpgradeNormStructureResponseEvent(userUuid);

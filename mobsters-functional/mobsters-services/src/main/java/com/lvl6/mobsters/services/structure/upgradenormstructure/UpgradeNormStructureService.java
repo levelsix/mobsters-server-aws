@@ -16,6 +16,8 @@ public interface UpgradeNormStructureService {
 	/**************************************************************************/
 
 	// TRANSACTIONAL LOGIC
-	public User upgradeNormStructure(String userId, String userStructId,
-			int gemsSpent, String rt, int resourceChange, Date timeOfUpgrade);
+	public User upgradeNormStructure( String userId, String userStructId,
+			int gemsSpent, String rt, int resourceChange, Date timeOfUpgrade );
+	
+	public User speedUpConstructingUserStruct( String userId, String userStructId, int gemCost, Date now );
 }

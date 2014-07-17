@@ -23,7 +23,7 @@ import com.lvl6.mobsters.services.structure.StructureService
 import com.lvl6.mobsters.services.user.UserService
 
 @Component
-public class UpgradeNormStructureServiceImpl implements
+public class UpgradeNormStructureServiceTwoImpl implements
 		UpgradeNormStructureService {
 
 	private static val Logger LOG = 
