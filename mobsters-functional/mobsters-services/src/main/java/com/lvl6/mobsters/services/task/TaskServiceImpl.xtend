@@ -1,44 +1,39 @@
-package com.lvl6.mobsters.services.task;
+package com.lvl6.mobsters.services.task
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Preconditions
+import com.lvl6.mobsters.common.utils.Director
+import com.lvl6.mobsters.dynamo.TaskForUserCompleted
+import com.lvl6.mobsters.dynamo.TaskForUserOngoing
+import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository
+import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository
+import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl
+import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
+import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import java.util.ArrayList
+import java.util.Date
+import java.util.List
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.common.utils.CollectionUtils;
-import com.lvl6.mobsters.dynamo.EventPersistentForUser;
-import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
-import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
-import com.lvl6.mobsters.dynamo.TaskStageForUser;
-import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository;
-import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository;
-import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl;
-import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository;
-import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository;
-
-@Component
-public class TaskServiceImpl implements TaskService {
-    
-    private static Logger LOG = LoggerFactory.getLogger(TaskServiceImpl.class);
+class TaskServiceImpl implements TaskService {
+    private static val Logger LOG = LoggerFactory.getLogger(TaskServiceImpl);
 
     @Autowired
-    private TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository;
+    private var TaskForUserCompletedRepository taskForUserCompletedRepository
 
     @Autowired
-    protected TaskForUserOngoingRepository taskForUserOngoingRepository;
+    private var TaskForUserOngoingRepository taskForUserOngoingRepository
     
     @Autowired
-    protected TaskStageForUserRepository taskStageForUserRepository;
+    protected var TaskStageForUserRepository taskStageForUserRepository
     
     @Autowired
-    protected EventPersistentForUserRepository eventPersistentForUserRepository;
+    protected var EventPersistentForUserRepository eventPersistentForUserRepository
+    
+    @Autowired
+    private var DataServiceTxManager txManager
     
     //NON CRUD LOGIC
     
@@ -46,141 +41,145 @@ public class TaskServiceImpl implements TaskService {
     //CRUD LOGIC
     
     // BEGIN READ ONLY LOGIC
-    @Override
-	public TaskForUserOngoing getUserTaskForUserId( String userId ) {
-    	List<TaskForUserOngoing> tfuoList =
-    		taskForUserOngoingRepository.findByUserId( userId );
-    	if (CollectionUtils.lacksSubstance(tfuoList)) {
-    		return null;
+    
+    /* BEGIN READ ONLY LOGIC *********************************************/
+	
+	override getUserTaskForUserId(String userId) {
+    	val List<TaskForUserOngoing> tfuoList = taskForUserOngoingRepository.findByUserId( userId ) 
+    	Preconditions.checkArgument(
+    		tfuoList.nullOrEmpty,
+    		"No ongoing tasks found for userId=%s; taskList=%s", userId, tfuoList
+    	)
+    	
+    	var TaskForUserOngoing retVal
+    	if (tfuoList.size() > 1) {
+    		LOG.warn(
+    			"User with userId=%s has multiple ongoing tasks.  Selecting the most recent from taskList=%s",
+    			userId, tfuoList)
+    		retVal = tfuoList.reduce[ min, next |
+    			var TaskForUserOngoing nextMin = next
+    			if (min.getStartDate() < next.getStartDate()) {
+    				nextMin = min
+    			}
+    			
+    			return nextMin
+    		]
+    	} else {
+    		retVal = tfuoList.get(0)
     	}
     	
-    	if (tfuoList.size() > 1) {
-    		LOG.warn("User has more than one ongoing task. selecting most recent. userId="
-    			+ userId
-    			+ ", tasks=" + tfuoList);
-    		
-    		Collections.sort(tfuoList, new Comparator<TaskForUserOngoing>() {
-
-				@Override
-				public int compare( TaskForUserOngoing o1, TaskForUserOngoing o2 )
-				{
-					if (o1.getStartDate().getTime() < o2.getStartDate().getTime()) {
-						return -1;
-					} else if (o1.getStartDate().getTime() > o2.getStartDate().getTime()) {
-						return 1;
-					} else {
-						return 0;
-					}
-				}
-    			
-    		});
-    	}
-    	return tfuoList.get(0);
+    	return retVal	
     }
-
-    @Override
-    public List<TaskForUserCompleted> getTaskCompletedForUser( String userId ) {
+	
+	override getTaskCompletedForUser(String userId) {
     	return taskForUserCompletedRepository.findByUserId(userId);
-    }
-    
-    @Override
-    public List<TaskStageForUser> getTaskStagesForUserWithTaskForUserId( String userTaskId ) {
+	}
+	
+	override getTaskStagesForUserWithTaskForUserId(String userTaskId) {
     	return taskStageForUserRepository.findByTaskForUserId(userTaskId);
-    }
-    
-    @Override
-    public List<EventPersistentForUser> getUserPersistentEventForUserId( String userId ) {
-    	return eventPersistentForUserRepository.findByUserId(userId);
-    }
-    
-	// END READ ONLY LOGIC
-    
+	}
+	
+	override getUserPersistentEventForUserId(String userId) {
+		return eventPersistentForUserRepository.findByUserId(userId);
+	}
+
     /**************************************************************************/
 
-    @Override
-    public void createTasksForUserCompleted( String userId, CreateUserTasksCompletedSpec createSpec ) {
-        // txManager.startTransaction();
+    override completeTasks( 
+    	String userUuid, Director<TaskService.CompleteTasksBuilder> director
+    ) {
+        val ArrayList<TaskForUserCompleted> saveList =
+        	(new TaskServiceImpl.CompleteTasksBuilderImpl(userUuid) => [ listBuilder |
+        		director.apply(listBuilder)
+        	]).build()
         
-        // get whatever we need from the database, which is nothing
-        final Map<Integer, TaskForUserCompleted> userTaskIdToOfu = createSpec.getTaskIdToTfuc();
-        
-        for ( TaskForUserCompleted ofu : userTaskIdToOfu.values()) {
-            ofu.setUserId(userId);
+        var boolean success = false
+        val boolean isTxRoot = txManager.requireTransaction()
+        try {
+	        // Save whatever we were asked to create to Dynamo.
+	        taskForUserCompletedRepository.saveEach(saveList);
+	        
+	        // TODO: Isn't there a concept of changing something previous OnGoing to Completed?
+	        success = true
+        } finally {
+        	if (success) {
+        		if (isTxRoot) {
+        			txManager.commit();
+        		}
+        	} else {
+        		txManager.rollback();
+        	}
         }
-        
-        taskForUserCompletedRepository.saveEach(userTaskIdToOfu.values());
     }
     
     // motivation for two separate Builders is because service will only be modifying
     // existing objects or creating new ones
-    static class CreateUserTasksCompletedSpecBuilderImpl implements CreateUserTasksCompletedSpecBuilder
+    static class CompleteTasksBuilderImpl implements TaskService.CompleteTasksBuilder
     {
         // the end state: objects to be saved to db
-        final Map<Integer, TaskForUserCompleted> userTaskIdToOfu;
+        private val String userUuid
+        private val ArrayList<TaskForUserCompleted> completedTaskList;
+
+        new(String userUuid) {
+        	this.userUuid = userUuid
+            completedTaskList = new ArrayList<TaskForUserCompleted>(2);
+        }
         
-        CreateUserTasksCompletedSpecBuilderImpl() {
-            this.userTaskIdToOfu = new HashMap<Integer, TaskForUserCompleted>();
-        }
-
-        private TaskForUserCompleted getTarget( int taskId ) {
-            TaskForUserCompleted tfuc = userTaskIdToOfu.get(taskId);
-            if (null == tfuc) {
-                tfuc = new TaskForUserCompleted();
-                userTaskIdToOfu.put(taskId, tfuc);
-            }
-            return tfuc;
-        }
-
-        @Override
-        public CreateUserTasksCompletedSpecBuilder setTimeOfEntry(
-            int taskId,
-            Date timeOfEntry)
+        override taskId(int taskId)
         {
-            TaskForUserCompleted tfuc = getTarget(taskId);
-            tfuc.setTimeOfEntry(timeOfEntry);
+        	throw new UnsupportedOperationException(
+        		"The workflow for normal task completion is not yet clear enough to determine if this belongs here"
+        	)
+        }
+        
+        override taskId(int taskId, Date timeOfEntry)
+        {
+            completedTaskList.add(
+            	new TaskForUserCompleted() => [
+            		it.userId = userUuid
+            		it.taskId = taskId
+            		it.timeOfEntry = timeOfEntry
+            	]
+            )
             
             return this;
         }
 
-        @Override
-        public CreateUserTasksCompletedSpec build() {
-
-            return new CreateUserTasksCompletedSpec(userTaskIdToOfu);
+        def ArrayList<TaskForUserCompleted> build() {
+            return completedTaskList;
         }
     }
 
     /**************************************************************************/
     
     //for the dependency injection
-    public TaskForUserCompletedRepository getTaskForUserCompletedRepository()
-    {
-        return taskForUserCompletedRepository;
-    }
-
-    public void setTaskForUserCompletedRepository( TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository )
+    def void setTaskForUserCompletedRepository( TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository )
     {
         this.taskForUserCompletedRepository = taskForUserCompletedRepository;
     }
 
-	public TaskForUserOngoingRepository getTaskForUserOngoingRepository()
-	{
-		return taskForUserOngoingRepository;
-	}
-
-	public void setTaskForUserOngoingRepository(
+	def void setTaskForUserOngoingRepository(
 		TaskForUserOngoingRepository taskForUserOngoingRepository )
 	{
 		this.taskForUserOngoingRepository = taskForUserOngoingRepository;
 	}
 
-	public TaskStageForUserRepository getTaskStageForUserRepository()
-	{
-		return taskStageForUserRepository;
-	}
-
-	public void setTaskStageForUserRepository( TaskStageForUserRepository taskStageForUserRepository )
+	def void setTaskStageForUserRepository( 
+		TaskStageForUserRepository taskStageForUserRepository
+	)
 	{
 		this.taskStageForUserRepository = taskStageForUserRepository;
 	}
 	
+	def void setEventPersistentForUserRepository( 
+		EventPersistentForUserRepository eventPersistentForUserRepository
+	)
+	{
+		this.eventPersistentForUserRepository = eventPersistentForUserRepository
+	}
+	
+	def void setDataServiceTxManager( DataServiceTxManager txManager )
+	{
+		this.txManager = txManager
+	}
 }
