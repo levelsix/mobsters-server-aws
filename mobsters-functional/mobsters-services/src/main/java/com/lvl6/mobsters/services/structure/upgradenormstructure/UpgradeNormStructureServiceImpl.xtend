@@ -1,49 +1,51 @@
-package com.lvl6.mobsters.services.structure.upgradenormstructure;
+package com.lvl6.mobsters.services.structure.upgradenormstructure
 
-import java.util.Date;
+import java.util.Date
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
-import com.lvl6.mobsters.dynamo.StructureForUser;
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository;
-import com.lvl6.mobsters.dynamo.repository.UserRepository;
-import com.lvl6.mobsters.info.IStructure;
-import com.lvl6.mobsters.info.Structure;
-import com.lvl6.mobsters.info.repository.StructureRepository;
-import com.lvl6.mobsters.services.common.Lvl6MobstersException;
-import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum;
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
-import com.lvl6.mobsters.services.common.TimeUtils;
-import com.lvl6.mobsters.services.structure.StructureService;
-import com.lvl6.mobsters.services.user.UserService;
-import com.lvl6.mobsters.services.user.UserService.ModifyUserSpec;
-import com.lvl6.mobsters.services.user.UserService.ModifyUserSpecBuilder;
+import com.lvl6.mobsters.dynamo.StructureForUser
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository
+import com.lvl6.mobsters.dynamo.repository.UserRepository
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
+import com.lvl6.mobsters.info.IStructure
+import com.lvl6.mobsters.info.Structure
+import com.lvl6.mobsters.info.repository.StructureRepository
+import com.lvl6.mobsters.services.common.Lvl6MobstersException
+import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
+import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.services.common.TimeUtils
+import com.lvl6.mobsters.services.structure.StructureService
+import com.lvl6.mobsters.services.user.UserService
 
 @Component
 public class UpgradeNormStructureServiceImpl implements
 		UpgradeNormStructureService {
 
-	private static Logger LOG = LoggerFactory
-			.getLogger(UpgradeNormStructureServiceImpl.class);
+	private static val Logger LOG = 
+		LoggerFactory.getLogger(UpgradeNormStructureServiceImpl)
 
 	@Autowired
-	protected UserRepository userRepository;
+	private var UserRepository userRepository
 	
 	@Autowired
-	protected UserService userService;
+	private var UserService userService
 
 	@Autowired
-	protected StructureForUserRepository structureForUserRepository;
+	private var StructureForUserRepository structureForUserRepository
 	
 	@Autowired
-	protected StructureService structureService;
+	private var StructureService structureService
 	
 	@Autowired
-	protected StructureRepository structureRepository;
+	private var StructureRepository structureRepository
+	
+	@Autowired
+	private var DataServiceTxManager txManager
 
 	// NON CRUD LOGIC
 
@@ -56,160 +58,157 @@ public class UpgradeNormStructureServiceImpl implements
 
 	// CRUD LOGIC
 
-	@Override
-	public User upgradeNormStructure(String userId, String userStructId,
-			int gemsSpent, String resourceType, int resourceChange,
+	override upgradeNormStructure(String userId, String userStructId,
+			int gemsSpent, String resourceType, int _resourceChange,
 			Date timeOfUpgrade)
 	{
 		// TODO: TRANSACTIONIFY
-		User user = userRepository.load(userId);
-		StructureForUser sfu = structureForUserRepository.findByUserIdAndStructureForUserId(userId, userStructId);
+		val User user = userRepository.load(userId)
+		val StructureForUser sfu = 
+			structureForUserRepository.findByUserIdAndStructureForUserId(
+				userId, userStructId)
 
-		resourceChange = Math.abs(resourceChange);
+		val resourceChange = Math.abs(_resourceChange)
 		checkIfUserCanUpgradeStructure(userId, user, userStructId, sfu,
-				gemsSpent, resourceType, resourceChange, timeOfUpgrade);
+				gemsSpent, resourceType, resourceChange, timeOfUpgrade)
 
 		// TODO: Write to currency history
-		updateUserCurrency(gemsSpent, resourceType, resourceChange, user);
-		structureService.beginUpgradingUserStruct(sfu, timeOfUpgrade);
+		updateUserCurrency(userId, gemsSpent, resourceType, resourceChange)
+		structureService.beginUpgradingUserStruct(sfu, timeOfUpgrade)
 		
-		return user;
+		return user
 	}
 	
-	private void checkIfUserCanUpgradeStructure(String userId, User user,
-			String userStructId, StructureForUser sfu, int gemsSpent,
+	private def void checkIfUserCanUpgradeStructure(String userId, User user,
+			String userStructId, StructureForUser sfu, int _gemsSpent,
 			String resourceType, int resourceChange, Date timeOfUpgrade)
 	{
 		if ( null == user || null == sfu || sfu.getLastRetrieved() == null ) {
 			LOG.error("parameter passed in is null. user=" + user + ", user struct=" + sfu + 
-			         ", userStruct's last retrieve time=" + sfu.getLastRetrieved());
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
+			         ", userStruct's last retrieve time=" + sfu.getLastRetrieved())
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER)
 		}
 
 		if (!sfu.isComplete()) {
-			LOG.error("user struct is not complete yet");
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE);
+			LOG.error("user struct is not complete yet")
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE)
 		}
 
-		Structure currentStruct = structureRepository.findOne(sfu.getStructId());
-		IStructure nextLevelStruct = currentStruct.getSuccessorStruct(); 
+		val Structure currentStruct = structureRepository.findOne(sfu.getStructId())
+		val IStructure nextLevelStruct = currentStruct.getSuccessorStruct(); 
 		if (null == nextLevelStruct ) {
 			//can't upgrade since there is no further structure to upgrade to
-			LOG.error("user struct at max level already. struct is " + currentStruct);
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_STRUCTURE_AT_MAX_LEVEL);
+			LOG.error("user struct at max level already. struct is " + currentStruct)
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_STRUCTURE_AT_MAX_LEVEL)
 		}
 		
 		if (TimeUtils.isFirstEarlierThanSecond(timeOfUpgrade, sfu.getLastRetrieved())) {
 			LOG.error("the upgrade time " + timeOfUpgrade + " is before the last time the building was retrieved:"
-			          + sfu.getLastRetrieved());
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE);
+			          + sfu.getLastRetrieved())
+			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE)
 		}
 			
+		var gemsSpent = _gemsSpent
 		if (gemsSpent < 0) {
-			LOG.warn("gemsSpent is negative! gemsSpent=" + gemsSpent);
-	    	gemsSpent = Math.abs(gemsSpent);
+			LOG.warn("gemsSpent is negative! gemsSpent=" + gemsSpent)
+	    	gemsSpent = Math.abs(_gemsSpent)
 		}
 
-		int userGems = user.getGems();
+		val userGems = user.gems
 		if (gemsSpent > 0 && userGems < gemsSpent) {
 	    	LOG.error("user has " + userGems + " gems; trying to spend " +
 	    			gemsSpent + " and " + resourceChange  + " " +
-	    			resourceType + " to upgrade to structure=" + nextLevelStruct);
-	    	throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
+	    			resourceType + " to upgrade to structure=" + nextLevelStruct)
+	    	throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS)
 	    }
-		
-		if (Lvl6MobstersResourceEnum.CASH.name().equals(resourceType)) {
+		var cashSpent = 0
+		if (Lvl6MobstersResourceEnum.CASH.name() == resourceType) {
 			if (!hasEnoughCash(user, resourceChange)) {
 				throw new Lvl6MobstersException(
-						Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_RESOURCE);
+						Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_RESOURCE)
 			}
+			cashSpent = resourceChange
 		}
 
-		if (Lvl6MobstersResourceEnum.OIL.name().equals(resourceType)) {
+		var oilSpent = 0
+		if (Lvl6MobstersResourceEnum.OIL.name() == resourceType) {
 			if (!hasEnoughOil(user, resourceChange)) {
 				throw new Lvl6MobstersException(
-						Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_RESOURCE);
+						Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_RESOURCE)
 			}
+			oilSpent = resourceChange
 		}
-
 	}
 	
-	private boolean hasEnoughCash(User user, int resourceChange) {
-		int userCash = user.getCash();
+	private def boolean hasEnoughCash(User user, int resourceChange) {
+		val userCash = user.cash
 		if (userCash < resourceChange) {
 			LOG.error("user error: user does not have enough cash. userCash="
-					+ userCash + "\t cashSpent=" + resourceChange);
-			return false;
+					+ userCash + "\t cashSpent=" + resourceChange)
+			return false
 		} else {
-			return true;
+			return true
 		}
 	}
 
-	private boolean hasEnoughOil(User user, int resourceChange) {
-		int userOil = user.getOil();
+	private def boolean hasEnoughOil(User user, int resourceChange) {
+		val userOil = user.oil
 		if (userOil < resourceChange) {
 			LOG.error("user error: user does not have enough oil. userOil="
-					+ userOil + "\t oilSpent=" + resourceChange);
-			return false;
+					+ userOil + "\t oilSpent=" + resourceChange)
+			return false
 		} else {
-			return true;
+			return true
 		}
 	}
 
-	private void updateUserCurrency(int gemsSpent, String resourceType,
-			int resourceChange, User user) {
-		ModifyUserSpecBuilder modifyUserSpecBuilder = ModifyUserSpec.builder();
-		
-		if (gemsSpent > 0) {
-			modifyUserSpecBuilder.decrementGems(gemsSpent);
-		}
-		if (Lvl6MobstersResourceEnum.CASH.name().equals(resourceType)) {
-			modifyUserSpecBuilder.decrementCash(resourceChange);
-		} else if (Lvl6MobstersResourceEnum.OIL.name().equals(resourceType)) {
-			modifyUserSpecBuilder.decrementOil(resourceChange);
-		}
-		userService.modifyUser(user, modifyUserSpecBuilder.build());
+	private def void updateUserCurrency(
+		String userUuid, int gemsSpent, 
+		String resourceType, int resourceChange)
+	{
+		userService.modifyUser(userUuid) [ bldr |
+		    if (gemsSpent > 0) {
+		    	bldr.spendGems(gemsSpent)
+		    }
+		    switch(Lvl6MobstersResourceEnum.valueOf(resourceType)) {
+		    	case Lvl6MobstersResourceEnum::CASH : {
+		    		bldr.spendCash(resourceChange)
+		    	}
+		    	case Lvl6MobstersResourceEnum::OIL : {
+		    		bldr.spendOil(resourceChange)
+		    	}
+		    	default : {
+		    		throw new IllegalArgumentException(
+		    			String.format( 
+		    				"Unexpected resource type: %s", 
+		    				resourceType))
+		    	}
+		    }
+		]
 	}
 
-	public UserRepository getUserRepository() {
-		return userRepository;
+	def void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository
 	}
 
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	def void setUserService(UserService userService) {
+		this.userService = userService
 	}
 
-	public UserService getUserService() {
-		return userService;
+	def void setStructureForUserRepository(
+		StructureForUserRepository structureForUserRepository) {
+		this.structureForUserRepository = structureForUserRepository
 	}
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	def void setStructureService(StructureService StructureService) {
+		this.structureService = StructureService
 	}
 
-	public StructureForUserRepository getStructureForUserRepository() {
-		return structureForUserRepository;
+	def void setStructureRepository(StructureRepository structureRepository) {
+		this.structureRepository = structureRepository
 	}
 
-	public void setStructureForUserRepository(
-			StructureForUserRepository structureForUserRepository) {
-		this.structureForUserRepository = structureForUserRepository;
+	def void setTxManager( DataServiceTxManager txManager) {
+		this.txManager = txManager
 	}
-
-	public StructureService getStructureService() {
-		return structureService;
-	}
-
-	public void setStructureService(StructureService StructureService) {
-		this.structureService = StructureService;
-	}
-
-	public StructureRepository getStructureRepository() {
-		return structureRepository;
-	}
-
-	public void setStructureRepository(StructureRepository structureRepository) {
-		this.structureRepository = structureRepository;
-	}
-
 }
