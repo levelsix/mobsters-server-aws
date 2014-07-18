@@ -1,10 +1,6 @@
 package com.lvl6.mobsters.tests.e2e;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +10,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.lvl6.mobsters.info.Clan;
-import com.lvl6.mobsters.info.User;
-import com.lvl6.mobsters.info.repository.UserRepository;
+import com.lvl6.mobsters.dynamo.Clan;
+import com.lvl6.mobsters.dynamo.User;
+import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.mobsters.tests.fixture.InitWorldService;
 

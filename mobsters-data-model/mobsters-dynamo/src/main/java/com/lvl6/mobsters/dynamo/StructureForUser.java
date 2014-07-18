@@ -136,22 +136,22 @@ public class StructureForUser
 		this.lastRetrieved = lastRetrieved;
 	}
 
-	public float getxCoord()
+	public float getXCoord()
 	{
 		return xCoord;
 	}
 
-	public void setxCoord( float xCoord )
+	public void setXCoord( float xCoord )
 	{
 		this.xCoord = xCoord;
 	}
 
-	public float getyCoord()
+	public float getYCoord()
 	{
 		return yCoord;
 	}
 
-	public void setyCoord( float yCoord )
+	public void setYCoord( float yCoord )
 	{
 		this.yCoord = yCoord;
 	}

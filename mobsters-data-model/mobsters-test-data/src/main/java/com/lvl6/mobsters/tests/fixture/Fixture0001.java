@@ -12,14 +12,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lvl6.mobsters.info.Clan;
 import com.lvl6.mobsters.info.Monster;
-import com.lvl6.mobsters.info.MonsterForUser;
-import com.lvl6.mobsters.info.User;
-import com.lvl6.mobsters.info.repository.ClanRepository;
-import com.lvl6.mobsters.info.repository.MonsterForUserRepository;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
-import com.lvl6.mobsters.info.repository.UserRepository;
 
 @Component
 public class Fixture0001 implements PartialDataSet {

@@ -13,6 +13,7 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 public abstract class ResponseEvent extends GameEvent {
   
 	/** event type */
+	// TODO Turn final once all assignment is done by constructor
 	protected EventProtocolResponse eventType;
 	protected int tag;
 
@@ -23,7 +24,7 @@ public abstract class ResponseEvent extends GameEvent {
 	}
 
 	// Event type with a default tag
-	public ResponseEvent(final EventProtocolResponse eventType) {
+	protected ResponseEvent(final EventProtocolResponse eventType) {
 		this.eventType = eventType;
 		this.tag = 0;
 	}

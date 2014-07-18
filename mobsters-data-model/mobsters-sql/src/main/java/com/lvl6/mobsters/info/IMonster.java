@@ -120,5 +120,4 @@ public interface IMonster extends IBaseIntPersistentObject
 	public abstract void setShadowScaleFactor( float shadowScaleFactor );
 
 	public abstract float getShadowScaleFactor();
-
 }

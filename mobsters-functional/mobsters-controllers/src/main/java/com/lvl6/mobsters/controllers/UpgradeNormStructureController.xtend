@@ -93,7 +93,7 @@ public class UpgradeNormStructureController extends EventController
 		}
 		
         // write to client
-        LOG.info("Writing event: " + resEvent);
+        LOG.info("Writing event: %s", resEvent);
         eventWriter.writeEvent(resEvent);
         
         if (successful) {

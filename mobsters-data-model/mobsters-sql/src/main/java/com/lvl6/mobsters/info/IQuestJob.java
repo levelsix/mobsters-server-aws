@@ -3,9 +3,9 @@ package com.lvl6.mobsters.info;
 public interface IQuestJob extends IBaseIntPersistentObject
 {
 
-	public Quest getQuest();
+	public IQuest getQuest();
 
-	public void setQuest( Quest quest );
+	public void setQuest( IQuest quest );
 
 	public String getQuestJobType();
 

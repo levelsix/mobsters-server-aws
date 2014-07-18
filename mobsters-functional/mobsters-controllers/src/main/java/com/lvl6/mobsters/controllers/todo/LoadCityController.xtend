@@ -1,152 +1,98 @@
-package com.lvl6.mobsters.controllers.todo;
+package com.lvl6.mobsters.controllers.todo
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.eventproto.EventCityProto.LoadCityRequestProto;
-import com.lvl6.mobsters.eventproto.EventCityProto.LoadCityResponseProto;
-import com.lvl6.mobsters.eventproto.EventCityProto.LoadCityResponseProto.Builder;
-import com.lvl6.mobsters.eventproto.EventCityProto.LoadCityResponseProto.LoadCityStatus;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.LoadCityRequestEvent;
-import com.lvl6.mobsters.events.response.LoadCityResponseEvent;
-import com.lvl6.mobsters.info.City;
-import com.lvl6.mobsters.info.CityElement;
-import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
-import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.events.EventsToDispatch
+import com.lvl6.mobsters.events.RequestEvent
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
+import com.lvl6.mobsters.server.EventController
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.DependsOn
+import org.springframework.stereotype.Component
 
 @Component
-@DependsOn("gameServer")
-public class LoadCityController extends EventController
+@DependsOn('gameServer')
+class LoadCityController extends EventController
 {
-
-	private static Logger LOG = LoggerFactory.getLogger(LoadCityController.class);
-
+	static var LOG = LoggerFactory::getLogger(typeof(LoadCityController))
 	@Autowired
-	protected DataServiceTxManager svcTxManager;
+	protected var DataServiceTxManager svcTxManager
 
-	public LoadCityController()
+	new()
 	{
-		numAllocatedThreads = 3;
+		numAllocatedThreads = 3
 	}
 
-	@Override
-	public RequestEvent createRequestEvent()
+	override createRequestEvent()
 	{
-		return new LoadCityRequestEvent();
+		new LoadCityRequestEvent()
 	}
 
-	@Override
-	public EventProtocolRequest getEventType()
+	override getEventType()
 	{
-		return EventProtocolRequest.C_LOAD_CITY_EVENT;
+		EventProtocolRequest.C_LOAD_CITY_EVENT
 	}
 
-	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter ) throws Exception
-	{
-		final LoadCityRequestProto reqProto =
-		    ((LoadCityRequestEvent) event).getLoadCityRequestProto();
-
-		final MinimumUserProto senderProto = reqProto.getSender();
-		final String userUuid = senderProto.getUserUuid();
-		final int cityId = reqProto.getCityUuid();
-		final City city = CityRetrieveUtils.getCityForCityId(cityId);
-
-		final LoadCityResponseProto.Builder resBuilder = LoadCityResponseProto.newBuilder();
-		resBuilder.setSender(senderProto);
-		resBuilder.setCityId(cityId);
-
-		resBuilder.setStatus(LoadCityStatus.SUCCESS);
-
-		// svcTxManager.beginTransaction();
-		try {
-			final User user = RetrieveUtils.userRetrieveUtils()
-			    .getUserById(userUuid);
-
-			final boolean legitCityLoad = checkLegitCityLoad(resBuilder, user, city);// ,
-			// currentCityRankForUser);
-
-			if (legitCityLoad) {
-				final List<CityElement> neutralCityElements =
-				    CityElementsRetrieveUtils.getCityElementsForCity(cityId);
-				if (neutralCityElements != null) {
-					for (final CityElement nce : neutralCityElements) {
-						resBuilder.addCityElements(CreateInfoProtoUtils.createCityElementProtoFromCityElement(nce));
+	protected override processRequestEvent(RequestEvent event, EventsToDispatch eventWriter)
+	throws Exception {
+		val reqProto = ((event as LoadCityRequestEvent)).loadCityRequestProto
+		val senderProto = reqProto.sender
+		val userUuid = senderProto.userUuid
+		val cityId = reqProto.cityUuid
+		val city = CityRetrieveUtils::getCityForCityId(cityId)
+		val resBuilder = LoadCityResponseProto::newBuilder
+		resBuilder.sender = senderProto
+		resBuilder.cityId = cityId
+		resBuilder.status = LoadCityStatus.SUCCESS
+		try
+		{
+			val user = RetrieveUtils::userRetrieveUtils.getUserById(userUuid)
+			val legitCityLoad = checkLegitCityLoad(resBuilder, user, city)
+			if (legitCityLoad)
+			{
+				val neutralCityElements = CityElementsRetrieveUtils::
+					getCityElementsForCity(cityId)
+				if (neutralCityElements !== null)
+				{
+					for (nce : neutralCityElements)
+					{
+						resBuilder.addCityElements(
+							CreateInfoProtoUtils::createCityElementProtoFromCityElement(nce))
 					}
 				}
-
-				// List<Monster> bosses =
-				// MonsterRetrieveUtils.getBossesForCityId(cityId);
-				// if (bosses != null && bosses.size() > 0) {
-				// List<Integer> bossUuids = new ArrayList<Integer>();
-				// for (Monster b : bosses) {
-				// bossUuids.add(b.getId());
-				// }
-				// setResponseUserBossInfos(resBuilder, bossUuids,
-				// user.getId());
-				// }
-
 			}
-
-			final LoadCityResponseEvent resEvent =
-			    new LoadCityResponseEvent(senderProto.getUserUuid());
-			resEvent.setTag(event.getTag());
-			resEvent.setLoadCityResponseProto(resBuilder.build());
-			// write to client
-			LOG.info("Writing event: "
-			    + resEvent);
-			try {
-				eventWriter.writeEvent(resEvent);
-			} catch (final Throwable e) {
-				LOG.error("fatal exception in LoadCityController.processRequestEvent", e);
+			val resEvent = new LoadCityResponseEvent(senderProto.userUuid)
+			resEvent.tag = event.tag
+			resEvent.loadCityResponseProto = resBuilder.build
+			LOG.info('Writing event: ' + resEvent)
+			try
+			{
+				eventWriter.writeEvent(resEvent)
 			}
-
-		} catch (final Exception e) {
-			LOG.error("exception in LoadCity processEvent", e);
-		} finally {
-			// svcTxManager.commit();
+			catch (Throwable e)
+			{
+				LOG.error('fatal exception in LoadCityController.processRequestEvent', e)
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.error('exception in LoadCity processEvent', e)
+		}
+		finally
+		{
 		}
 	}
 
-	// for each of this city's bosses send the corresponding user_bosses
-	// private void setResponseUserBossInfos(Builder resBuilder, List<Integer>
-	// bossUuids, String userUuid) {
-	// boolean livingBossesOnly = false;
-	// List<UserBoss> userBosses = UserBossRetrieveUtils
-	// .getUserBossesForUserUuid(userUuid, livingBossesOnly);
-	// for (UserBoss b : userBosses) {
-	// if (bossUuids.contains(b.getBossId())) {
-	// resBuilder.addUserBosses(CreateInfoProtoUtils.createFullUserBossProtoFromUserBoss(b));
-	// }
-	// }
-	// }
-
-	private boolean checkLegitCityLoad( final Builder resBuilder, final User user,
-	    final City city )
-	{// , int currentCityRankForUser) {
-		if ((city == null)
-		    || (user == null)) {
-			resBuilder.setStatus(LoadCityStatus.OTHER_FAIL);
-			LOG.error("city or user is null. city="
-			    + city
-			    + ", user="
-			    + user);
+	private def checkLegitCityLoad(Builder resBuilder, User user, City city)
+	{
+		if ((city === null) || (user === null))
+		{
+			resBuilder.status = LoadCityStatus.OTHER_FAIL
+			LOG.error('city or user is null. city=' + city + ', user=' + user)
 			return false;
 		}
-
-		resBuilder.setStatus(LoadCityStatus.SUCCESS);
-		return true;
+		resBuilder.status = LoadCityStatus.SUCCESS
+		true
 	}
-
 }

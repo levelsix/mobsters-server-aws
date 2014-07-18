@@ -4,6 +4,7 @@ package com.lvl6.mobsters.services.quest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lvl6.mobsters.info.IQuest;
 import com.lvl6.mobsters.info.Quest;
 
 // TODO: Can sets be used in place of List?
@@ -41,7 +42,7 @@ public class QuestGraph {
     for (Quest quest : quests) {
     	
     	List<Integer> prerequisiteQuestIds = new ArrayList<Integer>();
-    	for (Quest prereq : quest.getQuestsRequiredForThis()) {
+    	for (IQuest prereq : quest.getQuestsRequiredForThis()) {
     		prerequisiteQuestIds.add(prereq.getId());
     	}
       questVertices.add(new Vertex(quest.getId(), prerequisiteQuestIds));

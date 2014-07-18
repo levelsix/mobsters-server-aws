@@ -248,17 +248,27 @@ public class MiniJobService2Impl implements MiniJobService
 	public override void spawnMiniJobsForUser(String userId, Date clientStartTime, int numToSpawn, int structId) {
 		val List<MiniJob> spawnedMiniJobs = spawnMiniJobs(numToSpawn, structId);
         if (!CollectionUtils.lacksSubstance(spawnedMiniJobs)) {
-        	createMiniJobsForUser(userId) [ MiniJobService.CreateUserMiniJobsSpecBuilder builder |
+        	// The service call lambda 
+        	createMiniJobsForUser(userId) [ 
+        		// The innermost anonymous lambda's can always have "it"'s methods called
+        		// unqualified.  Assigning an "extension val" provides the same extensional
+        		// semantics, with the added boost that they remain available to inner
+        		// lambdas that hide the "it"s from outer scopes.
+        		extension val bldr = it
 	            spawnedMiniJobs.forEach[ MiniJob mj |
 	                //TODO: Figure out more efficient way to get key (or eliminate the need to have one yet)
-	                val String userMiniJobId = UUID.randomUUID().toString()
-	                builder
-	                	.setMiniJobId(userMiniJobId, mj.getId())
-	                	.setBaseDmgReceived(userMiniJobId, mj.getDmgDealt())
-	                	.setDurationMinutes(userMiniJobId, mj.getDurationMinutes())
-	                	.setTimeStarted(userMiniJobId, clientStartTime)
+	                UUID.randomUUID().toString() => [
+	                	// "it" is no longer the builder, but we still have extensional access
+	                	// because of the extension val assignment still in scope.
+		                setMiniJobId(it, mj.getId())
+		                	.setBaseDmgReceived(it, mj.getDmgDealt())
+		                	.setDurationMinutes(it, mj.getDurationMinutes())
+		                	.setTimeStarted(it, clientStartTime)
+		                	
+		            ]
 	            ]        		
         	]
+        	
         }
 	}
 	

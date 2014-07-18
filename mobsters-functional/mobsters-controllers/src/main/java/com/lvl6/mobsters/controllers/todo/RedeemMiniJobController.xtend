@@ -1,349 +1,288 @@
-package com.lvl6.mobsters.controllers.todo;
+package com.lvl6.mobsters.controllers.todo
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.lvl6.mobsters.dynamo.MiniJobForUser;
-import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobRequestProto;
-import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobResponseProto;
-import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobResponseProto.Builder;
-import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobResponseProto.RedeemMiniJobStatus;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.RequestEvent;
-import com.lvl6.mobsters.events.request.RedeemMiniJobRequestEvent;
-import com.lvl6.mobsters.events.response.RedeemMiniJobResponseEvent;
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
-import com.lvl6.mobsters.info.MiniJob;
-import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.FullUserMonsterProto;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
-import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithMaxResources;
-import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.dynamo.MiniJobForUser
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobResponseProto
+import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobResponseProto.Builder
+import com.lvl6.mobsters.eventproto.EventMiniJobProto.RedeemMiniJobResponseProto.RedeemMiniJobStatus
+import com.lvl6.mobsters.events.EventsToDispatch
+import com.lvl6.mobsters.events.RequestEvent
+import com.lvl6.mobsters.events.request.RedeemMiniJobRequestEvent
+import com.lvl6.mobsters.events.response.RedeemMiniJobResponseEvent
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
+import com.lvl6.mobsters.server.ControllerConstants
+import com.lvl6.mobsters.server.EventController
+import java.sql.Timestamp
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Date
+import java.util.HashMap
+import java.util.List
+import java.util.Map
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 @Component
-public class RedeemMiniJobController extends EventController
+class RedeemMiniJobController extends EventController
 {
-
-	private static Logger LOG = LoggerFactory.getLogger(RedeemMiniJobController.class);
-
+	static var LOG = LoggerFactory::getLogger(typeof(RedeemMiniJobController))
 	@Autowired
-	protected DataServiceTxManager svcTxManager;
-
+	protected var DataServiceTxManager svcTxManager
 	@Autowired
-	protected MonsterForUserRetrieveUtils monsterForUserRetrieveUtils;
-
+	protected var MonsterForUserRetrieveUtils monsterForUserRetrieveUtils
 	@Autowired
-	protected MiniJobForUserRetrieveUtil miniJobForUserRetrieveUtil;
+	protected var MiniJobForUserRetrieveUtil miniJobForUserRetrieveUtil
 
-	public RedeemMiniJobController()
+	new()
 	{
-		numAllocatedThreads = 4;
+		numAllocatedThreads = 4
 	}
 
-	@Override
-	public RequestEvent createRequestEvent()
+	override createRequestEvent()
 	{
-		return new RedeemMiniJobRequestEvent();
+		new RedeemMiniJobRequestEvent()
 	}
 
-	@Override
-	public EventProtocolRequest getEventType()
+	override getEventType()
 	{
-		return EventProtocolRequest.C_REDEEM_MINI_JOB_EVENT;
+		EventProtocolRequest.C_REDEEM_MINI_JOB_EVENT
 	}
 
-	@Override
-	protected void processRequestEvent( final RequestEvent event,
-	    final EventsToDispatch eventWriter ) throws Exception
-	{
-		final RedeemMiniJobRequestProto reqProto =
-		    ((RedeemMiniJobRequestEvent) event).getRedeemMiniJobRequestProto();
-		LOG.info("reqProto="
-		    + reqProto);
-
-		final MinimumUserProtoWithMaxResources senderResourcesProto = reqProto.getSender();
-		final MinimumUserProto senderProto = senderResourcesProto.getMinUserProto();
-
-		final String userUuid = senderProto.getUserUuid();
-		final Date now = new Date(reqProto.getClientTime());
-		final Timestamp clientTime = new Timestamp(reqProto.getClientTime());
-		final long userMiniJobId = reqProto.getUserMiniJobUuid();
-
-		final RedeemMiniJobResponseProto.Builder resBuilder =
-		    RedeemMiniJobResponseProto.newBuilder();
-		resBuilder.setSender(senderResourcesProto);
-		resBuilder.setStatus(RedeemMiniJobStatus.FAIL_OTHER);
-
-		svcTxManager.beginTransaction();
-		try {
-			// retrieve whatever is necessary from the db
-			// TODO: consider only retrieving user if the request is valid
-			final User user = RetrieveUtils.userRetrieveUtils()
-			    .getUserById(senderProto.getUserUuid());
-			final List<MiniJobForUser> mjfuList = new ArrayList<MiniJobForUser>();
-
-			final boolean legit =
-			    checkLegit(resBuilder, userUuid, user, userMiniJobId, mjfuList);
-
-			boolean success = false;
-			final Map<String, Integer> currencyChange = new HashMap<String, Integer>();
-			final Map<String, Integer> previousCurrency = new HashMap<String, Integer>();
-			if (legit) {
-				final MiniJobForUser mjfu = mjfuList.get(0);
-				success =
-				    writeChangesToDB(resBuilder, userUuid, user, userMiniJobId, mjfu, now,
-				        clientTime, currencyChange, previousCurrency);
+	protected override processRequestEvent(RequestEvent event, EventsToDispatch eventWriter)
+	throws Exception {
+		val reqProto = ((event as RedeemMiniJobRequestEvent)).redeemMiniJobRequestProto
+		LOG.info('reqProto=' + reqProto)
+		val senderResourcesProto = reqProto.sender
+		val senderProto = senderResourcesProto.minUserProto
+		val userUuid = senderProto.userUuid
+		val now = new Date(reqProto.clientTime)
+		val clientTime = new Timestamp(reqProto.clientTime)
+		val userMiniJobId = reqProto.userMiniJobUuid
+		val resBuilder = RedeemMiniJobResponseProto::newBuilder
+		resBuilder.sender = senderResourcesProto
+		resBuilder.status = RedeemMiniJobStatus.FAIL_OTHER
+		svcTxManager.beginTransaction
+		try
+		{
+			val user = RetrieveUtils::userRetrieveUtils.getUserById(senderProto.userUuid)
+			val mjfuList = new ArrayList<MiniJobForUser>()
+			val legit = checkLegit(resBuilder, userUuid, user, userMiniJobId, mjfuList)
+			var success = false
+			val currencyChange = new HashMap<String, Integer>()
+			val previousCurrency = new HashMap<String, Integer>()
+			if (legit)
+			{
+				val mjfu = mjfuList.get(0)
+				success = writeChangesToDB(resBuilder, userUuid, user, userMiniJobId, mjfu, now,
+					clientTime, currencyChange, previousCurrency)
 			}
-
-			if (success) {
-				resBuilder.setStatus(RedeemMiniJobStatus.SUCCESS);
+			if (success)
+			{
+				resBuilder.status = RedeemMiniJobStatus.SUCCESS
 			}
-
-			final RedeemMiniJobResponseEvent resEvent =
-			    new RedeemMiniJobResponseEvent(senderProto.getUserUuid());
-			resEvent.setTag(event.getTag());
-			resEvent.setRedeemMiniJobResponseProto(resBuilder.build());
-			// write to client
-			LOG.info("Writing event: "
-			    + resEvent);
-			try {
-				eventWriter.writeEvent(resEvent);
-			} catch (final Throwable e) {
-				LOG.error("fatal exception in RedeemMiniJobController.processRequestEvent", e);
+			val resEvent = new RedeemMiniJobResponseEvent(senderProto.userUuid)
+			resEvent.tag = event.tag
+			resEvent.redeemMiniJobResponseProto = resBuilder.build
+			LOG.info('Writing event: ' + resEvent)
+			try
+			{
+				eventWriter.writeEvent(resEvent)
 			}
-
-			if (success) {
-				// null PvpLeagueFromUser means will pull from hazelcast instead
-				final UpdateClientUserResponseEvent resEventUpdate =
-				    MiscMethods.createUpdateClientUserResponseEventAndUpdateLeaderboard(user,
-				        null);
-				resEventUpdate.setTag(event.getTag());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEventUpdate);
-				try {
-					eventWriter.writeEvent(resEventUpdate);
-				} catch (final Throwable e) {
-					LOG.error("fatal exception in RedeemMiniJobController.processRequestEvent",
-					    e);
+			catch (Throwable e)
+			{
+				LOG.error('fatal exception in RedeemMiniJobController.processRequestEvent', e)
+			}
+			if (success)
+			{
+				val resEventUpdate = MiscMethods::
+					createUpdateClientUserResponseEventAndUpdateLeaderboard(user, null)
+				resEventUpdate.tag = event.tag
+				LOG.info('Writing event: ' + resEventUpdate)
+				try
+				{
+					eventWriter.writeEvent(resEventUpdate)
 				}
-
-				// TODO: track the MiniJobForUser history
+				catch (Throwable e)
+				{
+					LOG.error('fatal exception in RedeemMiniJobController.processRequestEvent',
+						e)
+				}
 				writeToUserCurrencyHistory(user, userMiniJobId, currencyChange, clientTime,
-				    previousCurrency);
+					previousCurrency)
 			}
-
-		} catch (final Exception e) {
-			LOG.error("exception in RedeemMiniJobController processEvent", e);
-			// don't let the client hang
-			try {
-				resBuilder.setStatus(RedeemMiniJobStatus.FAIL_OTHER);
-				final RedeemMiniJobResponseEvent resEvent =
-				    new RedeemMiniJobResponseEvent(userUuid);
-				resEvent.setTag(event.getTag());
-				resEvent.setRedeemMiniJobResponseProto(resBuilder.build());
-				// write to client
-				LOG.info("Writing event: "
-				    + resEvent);
-				try {
-					eventWriter.writeEvent(resEvent);
-				} catch (final Throwable e) {
-					LOG.error("fatal exception in RedeemMiniJobController.processRequestEvent",
-					    e);
+		}
+		catch (Exception e)
+		{
+			LOG.error('exception in RedeemMiniJobController processEvent', e)
+			try
+			{
+				resBuilder.status = RedeemMiniJobStatus.FAIL_OTHER
+				val resEvent = new RedeemMiniJobResponseEvent(userUuid)
+				resEvent.tag = event.tag
+				resEvent.redeemMiniJobResponseProto = resBuilder.build
+				LOG.info('Writing event: ' + resEvent)
+				try
+				{
+					eventWriter.writeEvent(resEvent)
 				}
-			} catch (final Exception e2) {
-				LOG.error("exception2 in RedeemMiniJobController processEvent", e);
+				catch (Throwable e)
+				{
+					LOG.error('fatal exception in RedeemMiniJobController.processRequestEvent',
+						e)
+				}
 			}
-		} finally {
-			svcTxManager.commit();
-		}
-	}
-
-	private boolean checkLegit( final Builder resBuilder, final String userUuid,
-	    final User user, final long userMiniJobId, final List<MiniJobForUser> mjfuList )
-	{
-
-		final Collection<Long> userMiniJobUuids = Collections.singleton(userMiniJobId);
-		final Map<Long, MiniJobForUser> idToUserMiniJob =
-		    getMiniJobForUserRetrieveUtil().getSpecificOrAllIdToMiniJobForUser(userUuid,
-		        userMiniJobUuids);
-
-		if (idToUserMiniJob.isEmpty()) {
-			LOG.error("no UserMiniJob exists with id="
-			    + userMiniJobId);
-			resBuilder.setStatus(RedeemMiniJobStatus.FAIL_NO_MINI_JOB_EXISTS);
-			return false;
-		}
-
-		final MiniJobForUser mjfu = idToUserMiniJob.get(userMiniJobId);
-		if (null == mjfu.getTimeCompleted()) {
-			// sanity check
-			LOG.error("MiniJobForUser incomplete: "
-			    + mjfu);
-			return false;
-		}
-
-		// sanity check
-		final int miniJobId = mjfu.getMiniJobId();
-		final MiniJob mj = MiniJobRetrieveUtils.getMiniJobForMiniJobId(miniJobId);
-		if (null == mj) {
-			LOG.error("no MiniJob exists with id="
-			    + miniJobId
-			    + "\t invalid MiniJobForUser="
-			    + mjfu);
-			resBuilder.setStatus(RedeemMiniJobStatus.FAIL_NO_MINI_JOB_EXISTS);
-			return false;
-		}
-
-		mjfuList.add(mjfu);
-		return true;
-	}
-
-	private boolean writeChangesToDB( final Builder resBuilder, final String userUuid,
-	    final User user, final long userMiniJobId, final MiniJobForUser mjfu, final Date now,
-	    final Timestamp clientTime, final Map<String, Integer> currencyChange,
-	    final Map<String, Integer> previousCurrency )
-	{
-		final int miniJobId = mjfu.getMiniJobId();
-		final MiniJob mj = MiniJobRetrieveUtils.getMiniJobForMiniJobId(miniJobId);
-
-		final int prevGems = user.getGems();
-		final int prevCash = user.getCash();
-		final int prevOil = user.getOil();
-
-		// update user currency
-		final int gemsChange = mj.getGemReward();
-		final int cashChange = mj.getCashReward();
-		final int oilChange = mj.getOilReward();
-		final int monsterIdReward = mj.getMonsterIdReward();
-
-		if (!updateUser(user, gemsChange, cashChange, oilChange)) {
-			LOG.error("unexpected error: could not decrement user gems by "
-			    + gemsChange
-			    + ", cash by "
-			    + cashChange
-			    + ", and oil by "
-			    + oilChange);
-			return false;
-		} else {
-			if (0 != gemsChange) {
-				currencyChange.put(MiscMethods.gems, gemsChange);
-				previousCurrency.put(MiscMethods.gems, prevGems);
-			}
-			if (0 != cashChange) {
-				currencyChange.put(MiscMethods.cash, cashChange);
-				previousCurrency.put(MiscMethods.cash, prevCash);
-			}
-			if (0 != oilChange) {
-				currencyChange.put(MiscMethods.oil, oilChange);
-				previousCurrency.put(MiscMethods.oil, prevOil);
+			catch (Exception e2)
+			{
+				LOG.error('exception2 in RedeemMiniJobController processEvent', e)
 			}
 		}
-
-		// give the user the monster if he got one
-		if (0 != monsterIdReward) {
-			final StringBuilder mfusopB = new StringBuilder();
-			mfusopB.append(ControllerConstants.MFUSOP__MINI_JOB);
-			mfusopB.append(" ");
-			mfusopB.append(miniJobId);
-			final String mfusop = mfusopB.toString();
-			final Map<Integer, Integer> monsterIdToNumPieces = new HashMap<Integer, Integer>();
-			monsterIdToNumPieces.put(monsterIdReward, 1);
-
-			final List<FullUserMonsterProto> newOrUpdated =
-			    MonsterStuffUtils.updateUserMonsters(userUuid, monsterIdToNumPieces, mfusop,
-			        now);
-			final FullUserMonsterProto fump = newOrUpdated.get(0);
-			resBuilder.setFump(fump);
+		finally
+		{
+			svcTxManager.commit
 		}
-
-		// delete the user mini job
-		final int numDeleted = DeleteUtils.get()
-		    .deleteMiniJobForUser(userMiniJobId);
-		LOG.info("userMiniJob numDeleted="
-		    + numDeleted);
-
-		return true;
 	}
 
-	private boolean updateUser( final User u, final int gemsChange, final int cashChange,
-	    final int oilChange )
+	private def checkLegit(Builder resBuilder, String userUuid, User user, long userMiniJobId,
+		List<MiniJobForUser> mjfuList)
 	{
-		final int numChange =
-		    u.updateRelativeCashAndOilAndGems(cashChange, oilChange, gemsChange);
-
-		if (numChange <= 0) {
-			LOG.error("unexpected error: problem with updating user gems,"
-			    + " cash, and oil. gemChange="
-			    + gemsChange
-			    + ", cash= "
-			    + cashChange
-			    + ", oil="
-			    + oilChange
-			    + " user="
-			    + u);
+		val userMiniJobUuids = Collections::singleton(userMiniJobId)
+		val idToUserMiniJob = miniJobForUserRetrieveUtil.
+			getSpecificOrAllIdToMiniJobForUser(userUuid, userMiniJobUuids)
+		if (idToUserMiniJob.empty)
+		{
+			LOG.error('no UserMiniJob exists with id=' + userMiniJobId)
+			resBuilder.status = RedeemMiniJobStatus.FAIL_NO_MINI_JOB_EXISTS
 			return false;
 		}
-		return true;
+		val mjfu = idToUserMiniJob.get(userMiniJobId)
+		if (null === mjfu.timeCompleted)
+		{
+			LOG.error('MiniJobForUser incomplete: ' + mjfu)
+			return false;
+		}
+		val miniJobId = mjfu.miniJobId
+		val mj = MiniJobRetrieveUtils::getMiniJobForMiniJobId(miniJobId)
+		if (null === mj)
+		{
+			LOG.error(
+				'no MiniJob exists with id=' + miniJobId + '	 invalid MiniJobForUser=' + mjfu)
+			resBuilder.status = RedeemMiniJobStatus.FAIL_NO_MINI_JOB_EXISTS
+			return false;
+		}
+		mjfuList.add(mjfu)
+		true
 	}
 
-	private void writeToUserCurrencyHistory( final User aUser, final long userMiniJobId,
-	    final Map<String, Integer> currencyChange, final Timestamp curTime,
-	    final Map<String, Integer> previousCurrency )
+	private def writeChangesToDB(Builder resBuilder, String userUuid, User user,
+		long userMiniJobId, MiniJobForUser mjfu, Date now, Timestamp clientTime,
+		Map<String, Integer> currencyChange, Map<String, Integer> previousCurrency)
 	{
-		final String userUuid = aUser.getId();
-		final String reason = ControllerConstants.UCHRFC__SPED_UP_COMPLETE_MINI_JOB;
-		final StringBuilder detailsSb = new StringBuilder();
-		detailsSb.append("userMiniJobId=");
-		detailsSb.append(userMiniJobId);
-
-		final Map<String, Integer> currentCurrency = new HashMap<String, Integer>();
-		final Map<String, String> reasonsForChanges = new HashMap<String, String>();
-		final Map<String, String> detailsMap = new HashMap<String, String>();
-		final String gems = MiscMethods.gems;
-
-		currentCurrency.put(gems, aUser.getGems());
-		reasonsForChanges.put(gems, reason);
-		detailsMap.put(gems, detailsSb.toString());
-
-		MiscMethods.writeToUserCurrencyOneUser(userUuid, curTime, currencyChange,
-		    previousCurrency, currentCurrency, reasonsForChanges, detailsMap);
-
+		val miniJobId = mjfu.miniJobId
+		val mj = MiniJobRetrieveUtils::getMiniJobForMiniJobId(miniJobId)
+		val prevGems = user.gems
+		val prevCash = user.cash
+		val prevOil = user.oil
+		val gemsChange = mj.gemReward
+		val cashChange = mj.cashReward
+		val oilChange = mj.oilReward
+		val monsterIdReward = mj.monsterIdReward
+		if (!updateUser(user, gemsChange, cashChange, oilChange))
+		{
+			LOG.error(
+				'unexpected error: could not decrement user gems by ' + gemsChange +
+					', cash by ' + cashChange + ', and oil by ' + oilChange)
+			return false;
+		}
+		else
+		{
+			if (0 !== gemsChange)
+			{
+				currencyChange.put(MiscMethods::gems, gemsChange)
+				previousCurrency.put(MiscMethods::gems, prevGems)
+			}
+			if (0 !== cashChange)
+			{
+				currencyChange.put(MiscMethods::cash, cashChange)
+				previousCurrency.put(MiscMethods::cash, prevCash)
+			}
+			if (0 !== oilChange)
+			{
+				currencyChange.put(MiscMethods::oil, oilChange)
+				previousCurrency.put(MiscMethods::oil, prevOil)
+			}
+		}
+		if (0 !== monsterIdReward)
+		{
+			val mfusopB = new StringBuilder()
+			mfusopB.append(ControllerConstants::MFUSOP__MINI_JOB)
+			mfusopB.append(' ')
+			mfusopB.append(miniJobId)
+			val mfusop = mfusopB.toString
+			val monsterIdToNumPieces = new HashMap<Integer, Integer>()
+			monsterIdToNumPieces.put(monsterIdReward, 1)
+			val newOrUpdated = MonsterStuffUtils::updateUserMonsters(userUuid,
+				monsterIdToNumPieces, mfusop, now)
+			val fump = newOrUpdated.get(0)
+			resBuilder.fump = fump
+		}
+		val numDeleted = DeleteUtils::get.deleteMiniJobForUser(userMiniJobId)
+		LOG.info('userMiniJob numDeleted=' + numDeleted)
+		true
 	}
 
-	public MonsterForUserRetrieveUtils getMonsterForUserRetrieveUtils()
+	private def updateUser(User u, int gemsChange, int cashChange, int oilChange)
 	{
-		return monsterForUserRetrieveUtils;
+		val numChange = u.updateRelativeCashAndOilAndGems(cashChange, oilChange, gemsChange)
+		if (numChange <= 0)
+		{
+			LOG.error(
+				'unexpected error: problem with updating user gems,' +
+					' cash, and oil. gemChange=' + gemsChange + ', cash= ' + cashChange +
+					', oil=' + oilChange + ' user=' + u)
+			return false;
+		}
+		true
 	}
 
-	public void setMonsterForUserRetrieveUtils(
-	    final MonsterForUserRetrieveUtils monsterForUserRetrieveUtils )
+	private def writeToUserCurrencyHistory(User aUser, long userMiniJobId,
+		Map<String, Integer> currencyChange, Timestamp curTime,
+		Map<String, Integer> previousCurrency)
 	{
-		this.monsterForUserRetrieveUtils = monsterForUserRetrieveUtils;
+		val userUuid = aUser.id
+		val reason = ControllerConstants.UCHRFC__SPED_UP_COMPLETE_MINI_JOB
+		val detailsSb = new StringBuilder()
+		detailsSb.append('userMiniJobId=')
+		detailsSb.append(userMiniJobId)
+		val currentCurrency = new HashMap<String, Integer>()
+		val reasonsForChanges = new HashMap<String, String>()
+		val detailsMap = new HashMap<String, String>()
+		val gems = MiscMethods::gems
+		currentCurrency.put(gems, aUser.gems)
+		reasonsForChanges.put(gems, reason)
+		detailsMap.put(gems, detailsSb.toString)
+		MiscMethods::writeToUserCurrencyOneUser(userUuid, curTime, currencyChange,
+			previousCurrency, currentCurrency, reasonsForChanges, detailsMap)
 	}
 
-	public MiniJobForUserRetrieveUtil getMiniJobForUserRetrieveUtil()
+	def getMonsterForUserRetrieveUtils()
 	{
-		return miniJobForUserRetrieveUtil;
+		monsterForUserRetrieveUtils
 	}
 
-	public void setMiniJobForUserRetrieveUtil(
-	    final MiniJobForUserRetrieveUtil miniJobForUserRetrieveUtil )
+	def setMonsterForUserRetrieveUtils(MonsterForUserRetrieveUtils monsterForUserRetrieveUtils)
 	{
-		this.miniJobForUserRetrieveUtil = miniJobForUserRetrieveUtil;
+		this.monsterForUserRetrieveUtils = monsterForUserRetrieveUtils
 	}
 
+	def getMiniJobForUserRetrieveUtil()
+	{
+		miniJobForUserRetrieveUtil
+	}
+
+	def setMiniJobForUserRetrieveUtil(MiniJobForUserRetrieveUtil miniJobForUserRetrieveUtil)
+	{
+		this.miniJobForUserRetrieveUtil = miniJobForUserRetrieveUtil
+	}
 }

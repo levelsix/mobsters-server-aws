@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
@@ -30,7 +31,6 @@ import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.dynamo.User;
-import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupResponseProto.Builder;
@@ -304,16 +304,14 @@ public class StartupController extends EventController
 		// Don't fill in other fields if it is a major update
 		StartupStatus startupStatus = StartupStatus.USER_NOT_IN_DB;
 		Date now = TimeUtils.createNow();
-		UserCredential user = null;
 
 		try {
 			if (!UpdateStatus.MAJOR_UPDATE.equals(updateStatus)) {
-				user = userService.getUserCredentialByFacebookIdOrUdid(fbId, udid);
-				if (null != user) {
-					userId = user.getUserId();
+				userId = userService.getUserCredentialByFacebookIdOrUdid(fbId, udid);
+				if (StringUtils.hasText(userId)) {
 					startupStatus = StartupStatus.USER_IN_DB;
 					LOG.info("No major update... getting user info");
-					loginExistingUser(resBuilder, user, userId, now);
+					loginExistingUser(resBuilder, userId, now);
 				} else {
 					LOG.info("no user id: tutorial(?) player with udid "
 						+ udid);
@@ -365,8 +363,7 @@ public class StartupController extends EventController
 			MDC.put(MDCKeys.PLAYER_ID.toString(), playerId);
 	}
 	
-	private void loginExistingUser(Builder resBuilder, UserCredential uc,
-			String userId, Date now) {
+	private void loginExistingUser(Builder resBuilder, String userId, Date now) {
 		// TODO: Account for forcelogout
 //		StopWatch stopWatch = new StopWatch();
 //		stopWatch.start();
@@ -637,8 +634,7 @@ public class StartupController extends EventController
 	private void setMonsters(StaticDataProto.Builder sdpb) {
 		List<Monster> monsterList = monsterRepository.findAll();
 		for (Monster monster : monsterList) {
-			sdpb.addAllMonsters(
-				noneventMonsterProtoSerializer.createMonsterProto(monster));
+			noneventMonsterProtoSerializer.createMonsterProto(monster);
 		}
 	}
 	
@@ -968,391 +964,204 @@ public class StartupController extends EventController
 	    resBuilder.setTutorialConstants(tcb.build());
 	}
 	
-	//TODO: Generate the getters and setters for the autowired properties 
-
-	public UserService getUserService()
-	{
-		return userService;
-	}
-
-	public void setUserService( UserService userService )
+	void setUserService( UserService userService )
 	{
 		this.userService = userService;
 	}
 
-	public NoneventUserProtoSerializer getNoneventUserProtoSerializer()
-	{
-		return noneventUserProtoSerializer;
-	}
-
-	public void setNoneventUserProtoSerializer(
+	void setNoneventUserProtoSerializer(
 		NoneventUserProtoSerializer noneventUserProtoSerializer )
 	{
 		this.noneventUserProtoSerializer = noneventUserProtoSerializer;
 	}
 
-	public QuestService getQuestService()
-	{
-		return questService;
-	}
-
-	public void setQuestService( QuestService questService )
+	void setQuestService( QuestService questService )
 	{
 		this.questService = questService;
 	}
 
-	public QuestRepository getQuestRepository()
-	{
-		return questRepository;
-	}
-
-	public void setQuestRepository( QuestRepository questRepository )
+	void setQuestRepository( QuestRepository questRepository )
 	{
 		this.questRepository = questRepository;
 	}
 
-	public NoneventQuestProtoSerializer getNoneventQuestProtoSerializer()
-	{
-		return noneventQuestProtoSerializer;
-	}
-
-	public void setNoneventQuestProtoSerializer(
+	void setNoneventQuestProtoSerializer(
 		NoneventQuestProtoSerializer noneventQuestProtoSerializer )
 	{
 		this.noneventQuestProtoSerializer = noneventQuestProtoSerializer;
 	}
 
-	public ClanService getClanService()
-	{
-		return clanService;
-	}
-
-	public void setClanService( ClanService clanService )
+	void setClanService( ClanService clanService )
 	{
 		this.clanService = clanService;
 	}
 
-	public NoneventClanProtoSerializer getNoneventClanProtoSerializer()
-	{
-		return noneventClanProtoSerializer;
-	}
-
-	public void setNoneventClanProtoSerializer(
+	void setNoneventClanProtoSerializer(
 		NoneventClanProtoSerializer noneventClanProtoSerializer )
 	{
 		this.noneventClanProtoSerializer = noneventClanProtoSerializer;
 	}
 
-	public MonsterService getMonsterService()
-	{
-		return monsterService;
-	}
-
-	public void setMonsterService( MonsterService monsterService )
+	void setMonsterService( MonsterService monsterService )
 	{
 		this.monsterService = monsterService;
 	}
 
-	public TaskRepository getTaskRepository()
-	{
-		return taskRepository;
-	}
-
-	public void setTaskRepository( TaskRepository taskRepository )
+	void setTaskRepository( TaskRepository taskRepository )
 	{
 		this.taskRepository = taskRepository;
 	}
 
-	public NoneventTaskProtoSerializer getNoneventTaskProtoSerializer()
-	{
-		return noneventTaskProtoSerializer;
-	}
-
-	public void setNoneventTaskProtoSerializer(
+	void setNoneventTaskProtoSerializer(
 		NoneventTaskProtoSerializer noneventTaskProtoSerializer )
 	{
 		this.noneventTaskProtoSerializer = noneventTaskProtoSerializer;
 	}
 
-	public MonsterRepository getMonsterRepository()
-	{
-		return monsterRepository;
-	}
-
-	public void setMonsterRepository( MonsterRepository monsterRepository )
+	void setMonsterRepository( MonsterRepository monsterRepository )
 	{
 		this.monsterRepository = monsterRepository;
 	}
 
-	public NoneventMonsterProtoSerializer getNoneventMonsterProtoSerializer()
-	{
-		return noneventMonsterProtoSerializer;
-	}
-
-	public void setNoneventMonsterProtoSerializer(
+	void setNoneventMonsterProtoSerializer(
 		NoneventMonsterProtoSerializer noneventMonsterProtoSerializer )
 	{
 		this.noneventMonsterProtoSerializer = noneventMonsterProtoSerializer;
 	}
 
-	public StaticUserLevelInfoRepository getStaticUserLevelInfoRepository()
-	{
-		return staticUserLevelInfoRepository;
-	}
-
-	public void setStaticUserLevelInfoRepository(
+	void setStaticUserLevelInfoRepository(
 		StaticUserLevelInfoRepository staticUserLevelInfoRepository )
 	{
 		this.staticUserLevelInfoRepository = staticUserLevelInfoRepository;
 	}
 
-	public BoosterPackRepository getBoosterPackRepository()
-	{
-		return boosterPackRepository;
-	}
-
-	public void setBoosterPackRepository( BoosterPackRepository boosterPackRepository )
+	void setBoosterPackRepository( BoosterPackRepository boosterPackRepository )
 	{
 		this.boosterPackRepository = boosterPackRepository;
 	}
 
-	public NoneventBoosterPackProtoSerializer getNoneventBoosterPackProtoSerializer()
-	{
-		return noneventBoosterPackProtoSerializer;
-	}
-
-	public void setNoneventBoosterPackProtoSerializer(
+	void setNoneventBoosterPackProtoSerializer(
 		NoneventBoosterPackProtoSerializer noneventBoosterPackProtoSerializer )
 	{
 		this.noneventBoosterPackProtoSerializer = noneventBoosterPackProtoSerializer;
 	}
 
-	public NoneventStructureProtoSerializer getNoneventStructureProtoSerializer()
-	{
-		return noneventStructureProtoSerializer;
-	}
-
-	public void setNoneventStructureProtoSerializer(
+	void setNoneventStructureProtoSerializer(
 		NoneventStructureProtoSerializer noneventStructureProtoSerializer )
 	{
 		this.noneventStructureProtoSerializer = noneventStructureProtoSerializer;
 	}
 
-	public StructureResourceGeneratorRepository getStructureResourceGeneratorRepository()
-	{
-		return structureResourceGeneratorRepository;
-	}
-
-	public void setStructureResourceGeneratorRepository(
+	void setStructureResourceGeneratorRepository(
 		StructureResourceGeneratorRepository structureResourceGeneratorRepository )
 	{
 		this.structureResourceGeneratorRepository = structureResourceGeneratorRepository;
 	}
 
-	public StructureResourceStorageRepository getStructureResourceStorageRepository()
-	{
-		return structureResourceStorageRepository;
-	}
-
-	public void setStructureResourceStorageRepository(
+	void setStructureResourceStorageRepository(
 		StructureResourceStorageRepository structureResourceStorageRepository )
 	{
 		this.structureResourceStorageRepository = structureResourceStorageRepository;
 	}
 
-	public StructureHospitalRepository getStructureHospitalRepository()
-	{
-		return structureHospitalRepository;
-	}
-
-	public void setStructureHospitalRepository(
+	void setStructureHospitalRepository(
 		StructureHospitalRepository structureHospitalRepository )
 	{
 		this.structureHospitalRepository = structureHospitalRepository;
 	}
 
-	public StructureResidenceRepository getStructureResidenceRepository()
-	{
-		return structureResidenceRepository;
-	}
-
-	public void setStructureResidenceRepository(
+	void setStructureResidenceRepository(
 		StructureResidenceRepository structureResidenceRepository )
 	{
 		this.structureResidenceRepository = structureResidenceRepository;
 	}
 
-	public StructureTownHallRepository getStructureTownHallRepository()
-	{
-		return structureTownHallRepository;
-	}
-
-	public void setStructureTownHallRepository(
+	void setStructureTownHallRepository(
 		StructureTownHallRepository structureTownHallRepository )
 	{
 		this.structureTownHallRepository = structureTownHallRepository;
 	}
 
-	public StructureLabRepository getStructureLabRepository()
-	{
-		return structureLabRepository;
-	}
-
-	public void setStructureLabRepository( StructureLabRepository structureLabRepository )
+	void setStructureLabRepository( StructureLabRepository structureLabRepository )
 	{
 		this.structureLabRepository = structureLabRepository;
 	}
 
-	public StructureMiniJobRepository getStructureMiniJobRepository()
-	{
-		return structureMiniJobRepository;
-	}
-
-	public void setStructureMiniJobRepository( StructureMiniJobRepository structureMiniJobRepository )
+	void setStructureMiniJobRepository( StructureMiniJobRepository structureMiniJobRepository )
 	{
 		this.structureMiniJobRepository = structureMiniJobRepository;
 	}
 
-	public EventPersistentRepository getEventPersistentRepository()
-	{
-		return eventPersistentRepository;
-	}
-
-	public void setEventPersistentRepository( EventPersistentRepository eventPersistentRepository )
+	void setEventPersistentRepository( EventPersistentRepository eventPersistentRepository )
 	{
 		this.eventPersistentRepository = eventPersistentRepository;
 	}
 
-	public NoneventEventPersistentProtoSerializer getEventPersistentProtoSerializer()
-	{
-		return eventPersistentProtoSerializer;
-	}
-
-	public void setEventPersistentProtoSerializer(
+	void setEventPersistentProtoSerializer(
 		NoneventEventPersistentProtoSerializer eventPersistentProtoSerializer )
 	{
 		this.eventPersistentProtoSerializer = eventPersistentProtoSerializer;
 	}
 
-	public MonsterBattleDialogueRepository getMonsterBattleDialogueRepository()
-	{
-		return monsterBattleDialogueRepository;
-	}
-
-	public void setMonsterBattleDialogueRepository(
+	void setMonsterBattleDialogueRepository(
 		MonsterBattleDialogueRepository monsterBattleDialogueRepository )
 	{
 		this.monsterBattleDialogueRepository = monsterBattleDialogueRepository;
 	}
 
-	public ItemRepository getItemRepository()
-	{
-		return itemRepository;
-	}
-
-	public void setItemRepository( ItemRepository itemRepository )
+	void setItemRepository( ItemRepository itemRepository )
 	{
 		this.itemRepository = itemRepository;
 	}
 
-	public ObstacleRepository getObstacleRepository()
-	{
-		return obstacleRepository;
-	}
-
-	public void setObstacleRepository( ObstacleRepository obstacleRepository )
+	void setObstacleRepository( ObstacleRepository obstacleRepository )
 	{
 		this.obstacleRepository = obstacleRepository;
 	}
 
-	public PvpLeagueRepository getPvpLeagueRepository()
-	{
-		return pvpLeagueRepository;
-	}
-
-	public void setPvpLeagueRepository( PvpLeagueRepository pvpLeagueRepository )
+	void setPvpLeagueRepository( PvpLeagueRepository pvpLeagueRepository )
 	{
 		this.pvpLeagueRepository = pvpLeagueRepository;
 	}
 
-	public NoneventPvpProtoSerializer getNoneventPvpProtoSerializer()
-	{
-		return noneventPvpProtoSerializer;
-	}
-
-	public void setNoneventPvpProtoSerializer( NoneventPvpProtoSerializer noneventPvpProtoSerializer )
+	void setNoneventPvpProtoSerializer( NoneventPvpProtoSerializer noneventPvpProtoSerializer )
 	{
 		this.noneventPvpProtoSerializer = noneventPvpProtoSerializer;
 	}
 
-	public AchievementRepository getAchievementRepository()
-	{
-		return achievementRepository;
-	}
-
-	public void setAchievementRepository( AchievementRepository achievementRepository )
+	void setAchievementRepository( AchievementRepository achievementRepository )
 	{
 		this.achievementRepository = achievementRepository;
 	}
 
-	public NoneventAchievementProtoSerializer getNoneventAchievementProtoSerializer()
-	{
-		return noneventAchievementProtoSerializer;
-	}
-
-	public void setNoneventAchievementProtoSerializer(
+	void setNoneventAchievementProtoSerializer(
 		NoneventAchievementProtoSerializer noneventAchievementProtoSerializer )
 	{
 		this.noneventAchievementProtoSerializer = noneventAchievementProtoSerializer;
 	}
 
-	public TaskService getTaskService()
-	{
-		return taskService;
-	}
-
-	public void setTaskService( TaskService taskService )
+	void setTaskService( TaskService taskService )
 	{
 		this.taskService = taskService;
 	}
 
-	public AchievementService getAchievementService()
-	{
-		return achievementService;
-	}
-
-	public void setAchievementService( AchievementService achievementService )
+	void setAchievementService( AchievementService achievementService )
 	{
 		this.achievementService = achievementService;
 	}
 
-	public MiniJobService getMiniJobService()
-	{
-		return miniJobService;
-	}
-
-	public void setMiniJobService( MiniJobService miniJobService )
+	void setMiniJobService( MiniJobService miniJobService )
 	{
 		this.miniJobService = miniJobService;
 	}
 
-	public NoneventMiniJobProtoSerializer getNoneventMiniJobProtoSerializer()
-	{
-		return noneventMiniJobProtoSerializer;
-	}
-
-	public void setNoneventMiniJobProtoSerializer(
+	void setNoneventMiniJobProtoSerializer(
 		NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer )
 	{
 		this.noneventMiniJobProtoSerializer = noneventMiniJobProtoSerializer;
 	}
 
-	public NoneventStartupProtoSerializer getNoneventStartupProtoSerializer()
-	{
-		return noneventStartupProtoSerializer;
-	}
-
-	public void setNoneventStartupProtoSerializer(
+	void setNoneventStartupProtoSerializer(
 		NoneventStartupProtoSerializer noneventStartupProtoSerializer )
 	{
 		this.noneventStartupProtoSerializer = noneventStartupProtoSerializer;
