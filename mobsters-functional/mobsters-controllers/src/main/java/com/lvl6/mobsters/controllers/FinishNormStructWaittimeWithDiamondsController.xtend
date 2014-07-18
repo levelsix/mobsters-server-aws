@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 import java.util.Date
 import com.lvl6.mobsters.eventproto.utils.CreateEventProtoUtil
 import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.services.structure.upgradenormstructure.UpgradeNormStructureService
+import com.lvl6.mobsters.services.structure.composite.UpgradeNormStructureService
 import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 
 @Component

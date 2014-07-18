@@ -13,7 +13,7 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
 import com.lvl6.mobsters.server.EventController
-import com.lvl6.mobsters.services.structure.upgradenormstructure.UpgradeNormStructureService
+import com.lvl6.mobsters.services.structure.composite.UpgradeNormStructureService
 import java.util.Date
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

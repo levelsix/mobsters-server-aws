@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.services.structure.upgradenormstructure;
+package com.lvl6.mobsters.services.structure.composite;
 
 import java.util.Date;
 
