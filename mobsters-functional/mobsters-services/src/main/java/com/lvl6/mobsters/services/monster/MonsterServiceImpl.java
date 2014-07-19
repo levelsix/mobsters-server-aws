@@ -2,7 +2,6 @@ package com.lvl6.mobsters.services.monster;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +34,6 @@ import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
-import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
@@ -208,6 +206,7 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
 	{
+
 		txManager.beginTransaction();
 		boolean success = false;
 		try {
