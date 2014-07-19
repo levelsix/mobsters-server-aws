@@ -23,6 +23,9 @@
 		">
 
 
+	<bean id="serverInstance" class="com.lvl6.mobsters.server.ServerInstance" />
+	<bean id="eventsFromOtherServersDispatcher" class="com.lvl6.eventdispatcher.EventsFromOtherServersDispatcher" />
+
 	<bean id="rabbitConnectionFactory" class="com.rabbitmq.client.ConnectionFactory">
 		<property name="host" value="${amqp.host}" />
 		<property name="requestedHeartbeat" value="10" />
@@ -30,13 +33,12 @@
 
 
 	<rabbit:connection-factory id="amqpConnectionFactory"
-		host="${amqp.host}" username="${amqp.user}" password="${amqp.pass}"
-		virtual-host="${amqp.vhost}" channel-cache-size="30"
-		
+		host="${amqp.host}" 
+		username="${amqp.user}" 
+		password="${amqp.pass}"
+		virtual-host="${amqp.vhost}" 
+		channel-cache-size="30"
 		connection-factory="rabbitConnectionFactory" />
-
-
-
 
 
 	<rabbit:admin id="rabbitAdmin" connection-factory="amqpConnectionFactory" />
@@ -46,12 +48,18 @@
 		auto-delete="false" durable="true">
 		<rabbit:bindings>
 			<rabbit:binding queue="serverMessagesQueue" pattern="messageForAllServers"></rabbit:binding>
+			<rabbit:binding queue="normalEventsQueue" pattern="#{serverInstance.serverId()+'normalEvents'}"></rabbit:binding>
+			<rabbit:binding queue="preDatabaseEventsQueue" pattern="#{serverInstance.serverId()+'preDatabaseEvents'}"></rabbit:binding>
+			<rabbit:binding queue="broadcastEventsQueue" pattern="#{serverInstance.serverId()+'broadcastEvents'}"></rabbit:binding>
 		</rabbit:bindings>
 	</rabbit:topic-exchange>
 
 
 	<rabbit:queue id="serverMessagesQueue" />
-
+	
+	<rabbit:queue id="normalEvents" name="#{serverInstance.serverId()+'normalEventsQueue'}" />
+	<rabbit:queue id="preDatabaseEvents" name="#{serverInstance.serverId()+'preDatabaseEventsQueue'}" />
+	<rabbit:queue id="broadcastEvents" name="#{serverInstance.serverId()+'broadcastEventsQueue'}" />
 
 	<rabbit:listener-container
 		connection-factory="amqpConnectionFactory" 
@@ -61,16 +69,36 @@
 		<rabbit:listener queues="serverMessagesQueue" ref="serverEventHandler"	method="onMessage" />
 	</rabbit:listener-container>
 
+
+
+	<rabbit:listener-container
+		connection-factory="amqpConnectionFactory" 
+		concurrency="3"
+		error-handler="amqpErrorHandler"
+		<rabbit:listener queues="normalEventsQueue" ref="eventsFromOtherServersDispatcher"	method="handleNormalEvent" />
+	</rabbit:listener-container>
+
+	<rabbit:listener-container
+		connection-factory="amqpConnectionFactory" 
+		concurrency="3"
+		error-handler="amqpErrorHandler"
+		<rabbit:listener queues="preDatabaseEventsQueue" ref="eventsFromOtherServersDispatcher"	method="handlePreDatabaseEvent" />
+	</rabbit:listener-container>
+
+	<rabbit:listener-container
+		connection-factory="amqpConnectionFactory" 
+		concurrency="3"
+		error-handler="amqpErrorHandler"
+		<rabbit:listener queues="broadcastEventsQueue" ref="eventsFromOtherServersDispatcher"	method="handleBroadcastEvent" />
+	</rabbit:listener-container>
+
+
+
 	<rabbit:template id="serverMessagesTemplate"
 		connection-factory="amqpConnectionFactory" 
 		channel-transacted="true"
-		exchange="serverMessages" 
-		message-converter="jsonConverter" 
-		routing-key="messageForAllServers" />
-
-	<bean id="jsonConverter"
-		class="org.springframework.amqp.support.converter.JsonMessageConverter">
-	</bean>
+		exchange="serverMessages"  />
+<!-- 
 
 	<rabbit:listener-container
 		connection-factory="amqpConnectionFactory" 
@@ -78,14 +106,14 @@
 		prefetch="42"
 		error-handler="amqpErrorHandler">
 		<rabbit:listener queues="clientMessages" ref="clientEventHandler"	method="onMessage" />
-	</rabbit:listener-container>
+	</rabbit:listener-container> -->
 
-
+<!-- 
 	<rabbit:template id="chatMessagesTemplate"
 		connection-factory="amqpConnectionFactory" 
 		channel-transacted="true"
 		exchange="${amqp.chat.exchange}" />
-
+ -->
 	<bean id="serverEventHandler" class="com.lvl6.eventhandlers.AmqpServerEventHandler" />
 	<bean id="amqpErrorHandler" class="com.lvl6.eventhandlers.AmqpErrorHandler" />
 

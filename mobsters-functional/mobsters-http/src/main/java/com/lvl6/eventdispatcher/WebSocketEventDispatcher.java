@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -18,7 +19,9 @@ import com.lvl6.mobsters.events.ResponseEvent;
 import com.lvl6.mobsters.utils.NIOUtils;
 import com.lvl6.mobsters.websockets.SessionMap;
 
-public class WebSocketEventDispatcher implements ClientEventDispatcher {
+
+@Component
+public class WebSocketEventDispatcher implements ClientEventDispatcher, BinaryClientEventDispatcher {
 
 	
 	private static final Logger log = LoggerFactory.getLogger(WebSocketEventDispatcher.class);
@@ -127,6 +130,44 @@ public class WebSocketEventDispatcher implements ClientEventDispatcher {
 		}
 	}
 	
+
+	@Override
+	public void dispatchNormalEvent(String userId, byte[] event) {
+		WebSocketSession sess = sessionMap.get(userId);
+		if(sess != null && sess.isOpen()) {
+			if(sess.isOpen()) {
+				sendMessage(event, sess);
+			}
+		}else {
+			
+		}
+	}
+
+
+	@Override
+	public void dispatchPreDatabaseEvent(String udid, byte[] event) {
+		WebSocketSession sess = sessionMap.get(udid);
+		if(sess != null && sess.isOpen()){
+			if(sess.isOpen()) {
+				sendMessage(event, sess);
+			}
+		}else {
+			
+		}
+	}
+
+
+	@Override
+	public void dispatchBroadcastEvent(String userId, byte[] event) {
+		WebSocketSession sess = sessionMap.get(userId);
+		if(sess != null && sess.isOpen()) {
+			if(sess.isOpen()) {
+				sendMessage(event, sess);
+			}
+		}else {
+			
+		}
+	}
 	
 	
 	protected void sendMessage(ResponseEvent ev, WebSocketSession sess) {
@@ -138,6 +179,18 @@ public class WebSocketEventDispatcher implements ClientEventDispatcher {
 		}
 	}
 
+	
+	protected void sendMessage(byte[] event, WebSocketSession sess) {
+		BinaryMessage msg = new BinaryMessage(event);
+		try {
+			sess.sendMessage(msg);
+		} catch (IOException e) {
+			log.error("Error sending message", e);
+		}
+	}
+
+
+	
 
 	
 	
@@ -157,5 +210,7 @@ public class WebSocketEventDispatcher implements ClientEventDispatcher {
 	public void setSessionMap(SessionMap sessionMap) {
 		this.sessionMap = sessionMap;
 	}
+
+
 
 }

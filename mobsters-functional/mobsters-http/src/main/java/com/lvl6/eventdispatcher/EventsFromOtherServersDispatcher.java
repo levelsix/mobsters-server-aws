@@ -1,54 +1,40 @@
 package com.lvl6.eventdispatcher;
 
-import java.util.List;
+import org.springframework.amqp.core.Message;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.events.BroadcastResponseEvent;
-import com.lvl6.mobsters.events.EventsToDispatch;
-import com.lvl6.mobsters.events.NormalResponseEvent;
-import com.lvl6.mobsters.events.PreDatabaseResponseEvent;
+@Component
+public class EventsFromOtherServersDispatcher  {
 
-public class EventsFromOtherServersDispatcher implements ClientEventDispatcher {
+	
+	@Autowired
+	protected WebSocketEventDispatcher webSocketsEventDispatcher;
+	
 
-	@Override
-	public void dispatchEvents(EventsToDispatch events) {
-		// TODO Auto-generated method stub
-
+	protected void handleNormalEvent(Message msg){
+		//Map<String, Object> headers = msg.getMessageProperties().getHeaders();
+		String userId = msg.getMessageProperties().getUserId();
+		webSocketsEventDispatcher.dispatchNormalEvent(userId, msg.getBody());
 	}
 
-	@Override
-	public void dispatchNormalEvents(List<NormalResponseEvent> events) {
-		// TODO Auto-generated method stub
-
+	protected void handlePreDatabaseEvent(Message msg){
+		String userId = msg.getMessageProperties().getUserId();
+		webSocketsEventDispatcher.dispatchPreDatabaseEvent(userId, msg.getBody());
+	}
+	
+	protected void handleBroadcastEvent(Message msg){
+		String userId = msg.getMessageProperties().getUserId();
+		webSocketsEventDispatcher.dispatchBroadcastEvent(userId, msg.getBody());
 	}
 
-	@Override
-	public void dispatchNormalEvent(NormalResponseEvent ev) {
-		// TODO Auto-generated method stub
 
+	public WebSocketEventDispatcher getWebSocketsEventDispatcher() {
+		return webSocketsEventDispatcher;
 	}
 
-	@Override
-	public void dispatchPreDatabaseEvents(List<PreDatabaseResponseEvent> events) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispatchPreDatabaseEvent(PreDatabaseResponseEvent ev) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispatchBroadcastEvents(List<BroadcastResponseEvent> events) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispatchBroadcastEvent(BroadcastResponseEvent ev) {
-		// TODO Auto-generated method stub
-
+	public void setWebSocketsEventDispatcher(WebSocketEventDispatcher webSocketsEventDispatcher) {
+		this.webSocketsEventDispatcher = webSocketsEventDispatcher;
 	}
 
 }
