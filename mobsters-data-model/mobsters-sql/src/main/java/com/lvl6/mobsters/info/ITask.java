@@ -3,9 +3,9 @@ package com.lvl6.mobsters.info;
 public interface ITask extends IBaseIntPersistentObject
 {
 
-	public String getGoodName();
+	public String getName();
 
-	public void setGoodName( String goodName );
+	public void setName( String name );
 
 	public String getDescription();
 
@@ -15,8 +15,12 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public void setPrerequisiteTask( ITask prerequisiteTask );
 
-	public Quest getPrerequisiteQuest();
+	public abstract void setBoardHeight( int boardHeight );
 
-	public void setPrerequisiteQuest( Quest prerequisiteQuest );
+	public abstract int getBoardHeight();
+
+	public abstract void setBoardWidth( int boardWidth );
+
+	public abstract int getBoardWidth();
 
 }

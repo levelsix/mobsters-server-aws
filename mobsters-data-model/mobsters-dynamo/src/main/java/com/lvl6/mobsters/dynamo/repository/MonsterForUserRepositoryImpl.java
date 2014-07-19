@@ -17,7 +17,7 @@ import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 
 @Component
-public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<MonsterForUser>
+public class MonsterForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<MonsterForUser, String>
 	implements
 		MonsterForUserRepository
 {
@@ -27,14 +27,13 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Monst
 
 	protected MonsterForUserRepositoryImpl()
 	{
-		super(MonsterForUser.class);
-		isActive = true;// for unit test
+		super(MonsterForUser.class, "monsterForUserUuid", String.class);
 	}
 
 	@Override
-	public List<MonsterForUser> findByUserIdAndId(
+	public List<MonsterForUser> findByUserIdAndMonsterForUserIdIn(
 		final String userId,
-		final Collection<String> monsterForUserIds )
+		final Iterable<String> monsterForUserIds )
 	{
 		final List<AttributeValue> monsterForUserIdz = new ArrayList<>();
 		final MonsterForUser hashKey = new MonsterForUser();
@@ -45,7 +44,6 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Monst
 
 		final DynamoDBQueryExpression<MonsterForUser> query =
 			new DynamoDBQueryExpression<MonsterForUser>()
-			// .withIndexName("userIdGlobalIndex")
 			.withHashKeyValues(hashKey)
 				.withQueryFilterEntry("monsterForUserId",
 					new Condition().withComparisonOperator(ComparisonOperator.IN)
@@ -59,7 +57,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoRepositoryImpl<Monst
 	}
 
 	@Override
-	public List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
+	public List<MonsterForUser> findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(
 		final String userId,
 		final Collection<String> monsterForUserIds,
 		final Integer teamSlotNum )

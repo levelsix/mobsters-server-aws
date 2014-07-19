@@ -15,10 +15,10 @@ public class MiniJobForUser {
     // private String id;
 
     private String userId;
+    
+    private String miniJobForUserId;
 
     private Long version;
-
-    private String miniJobForUserId;
 
     private int miniJobId;
 

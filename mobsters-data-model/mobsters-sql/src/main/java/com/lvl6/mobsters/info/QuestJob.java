@@ -1,5 +1,6 @@
 package com.lvl6.mobsters.info;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -19,17 +20,17 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="QuestJob")
 @Table(name="quest_job")
 @Proxy(lazy=true, proxyClass=IQuestJob.class)
-public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
-	
+@Cacheable(true)
+public class QuestJob extends BaseIntPersistentObject implements IQuestJob
+{
 	private static final long serialVersionUID = -7270821507727387958L;
-	
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Quest.class)
 	@JoinColumn(
 		name = "quest_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private Quest quest;
+	private IQuest quest;
 	
 	@Column(name = "quest_job_type")
 	private String questJobType;
@@ -53,7 +54,7 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
 	private ITask task;
 	
 	public QuestJob(){}
-	public QuestJob(int id, Quest quest, String questJobType,
+	public QuestJob(int id, IQuest quest, String questJobType,
 			String description, int staticDataId, int quantity, int priority,
 			ITask task) {
 		super(id);
@@ -66,14 +67,11 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
 		this.task = task;
 	}
 
-
-
-
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IQuestJob#getQuest()
 	 */
 	@Override
-	public Quest getQuest()
+	public IQuest getQuest()
 	{
 		return quest;
 	}
@@ -81,7 +79,7 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob{
 	 * @see com.lvl6.mobsters.info.IQuestJob#setQuest(com.lvl6.mobsters.info.Quest)
 	 */
 	@Override
-	public void setQuest( Quest quest )
+	public void setQuest( IQuest quest )
 	{
 		this.quest = quest;
 	}

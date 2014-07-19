@@ -46,11 +46,6 @@ public class ControllerManager {
 	//       build, then preventing future thread-safe atomic get() calls is not viable.
 	
 
-	//		The map was created by Spring before anything uses it.
-	//		The map is never modified after creation.
-	//		The map is only used by the GameEventHandler which is also created by Spring and doesn't process
-	//		any events until after creation is complete.
-	
 	private static final class EventControllerMap {
 		private final HashMap<EventProtocolRequest, EventController> eventControllerMap;
 		

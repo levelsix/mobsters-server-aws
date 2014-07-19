@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.dynamo.MonsterForUserHistory;
 
 @Component
-public class MonsterForUserHistoryRepositoryImpl extends BaseDynamoRepositoryImpl<MonsterForUserHistory>
+public abstract class MonsterForUserHistoryRepositoryImpl extends BaseDynamoItemRepositoryImpl<MonsterForUserHistory>
 	implements
 		MonsterForUserHistoryRepository
 {
@@ -16,7 +16,6 @@ public class MonsterForUserHistoryRepositoryImpl extends BaseDynamoRepositoryImp
 	protected MonsterForUserHistoryRepositoryImpl()
 	{
 		super(MonsterForUserHistory.class);
-		isActive = true;// for unit test
 	}
 
 }

@@ -28,7 +28,9 @@
 	<modules>
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
+		<!-- module>mobsters-modeling</module -->
 	</modules>
+
 	<organization>
 		<name>Lvl6</name>
 		<url>http://lvl6.com</url>
@@ -51,7 +53,6 @@
 		<aws.dynamo.regionId>local</aws.dynamo.regionId>
 		<aws.dynamo.checkTables>true</aws.dynamo.checkTables>
 		<aws.dynamo.table.name.prefix>DEV_</aws.dynamo.table.name.prefix>
-
 
 		<!-- MySQL -->
 		<jdbc.url><![CDATA[jdbc:mysql://mobstersdev.cirdfrlgyccg.us-west-2.rds.amazonaws.com:3306/mobsters?useLegacyDatetimeCode=false]]></jdbc.url>
@@ -90,50 +91,61 @@
 		<!-- Maven Plugin Versions -->
 		<maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
 		<maven-surefire.plugin-version>2.15</maven-surefire.plugin-version>
+		<xtend.plugin-version>2.6.2</xtend.plugin-version>
+		<xtext.plugin-version>2.6.2</xtext.plugin-version>
 
-		<!-- Dependencies -->
+		<!-- Dependency versions -->
 		<apns.version>0.1.6</apns.version>
 		<awaitility.version>1.2.4</awaitility.version>
+		<aws-java-sdk.version>1.7.7</aws-java-sdk.version>
+
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
+
 		<c3p0.version>0.9.1.2</c3p0.version>
+		<chill-java.version>0.3.6</chill-java.version>
+		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool.version>1.5.3</commons-pool.version>
+
 		<easymock.version>3.2</easymock.version>
 		<guava.version>12.0</guava.version>
-		<hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
+
+		<hibernate-core.version>4.3.5.Final</hibernate-core.version>
 		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
 		<httpclient.version>4.2.1</httpclient.version>
 
 		<javax.servlet-api.version>3.0.1</javax.servlet-api.version>
 		<javax.mail.version>1.4.5</javax.mail.version>
 		<javax.websocket-api.version>1.0</javax.websocket-api.version>
-
 		<jedis.version>2.4.2</jedis.version>
 		<joda-time.version>2.1</joda-time.version>
-		<chill-java.version>0.3.6</chill-java.version>
-		<aws-java-sdk.version>1.7.7</aws-java-sdk.version>
-		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<junit.version>4.10</junit.version>
+
 		<logback-classic.version>1.1.2</logback-classic.version>
 		<mysql-connector.version>5.1.20</mysql-connector.version>
+
 		<protobuf.version>2.4.1</protobuf.version>
 		<powermock.version>1.5.4</powermock.version>
-		<slf4j.version>1.6.6</slf4j.version>
 
+		<slf4j.version>1.6.6</slf4j.version>
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<spring.data-jpa.version>1.6.0.RELEASE</spring.data-jpa.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
-		
+
 		<!-- AMQP -->
 		<amqp.host>robot.lvl6.com</amqp.host>
 		<amqp.user>lvl6server</amqp.user>
 		<amqp.pass>devserver</amqp.pass>
 		<amqp.vhost>devageofchaos</amqp.vhost>
 		<amqp.exchange>servermessages</amqp.exchange>
-		
-		
+
+
 		<tomcat.version>7.0.27</tomcat.version>
+		<tycho.version>4.2.0</tycho.version>
+
+		<xbase.version>2.6.0</xbase.version>
+		<xtext.version>2.6.0</xtext.version>
 	</properties>
 
 	<build>
@@ -160,13 +172,75 @@
 						</includes>
 					</configuration>
 				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtend.plugin-version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>xtend-install-debug-info</goal>
+								<goal>testCompile</goal>
+								<goal>xtend-test-install-debug-info</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<outputDirectory>${project.build.directory}/generated-sources/xtend-gen</outputDirectory>
+						<testOutputDirectory>${project.build.directory}/generated-test-sources/xtend-gen</testOutputDirectory>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<extensions>true</extensions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>xtext-maven-plugin</artifactId>
+					<version>${xtext.plugin-version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<languages>
+							<!-- Add additional standalone setups if you have more than one language -->
+							<language>
+								<setup>com.lvl6.modeling.mobsters.dsl.services.ServiceLayerStandaloneSetup</setup>
+								<outputConfigurations>
+									<outputConfiguration>
+										<outputDirectory>${project.build.directory}/generated-sources/xtext-gen/</outputDirectory>
+										<testOutputDirectory>${project.build.directory}/generated-test-sources/xtext-gen/</testOutputDirectory>
+									</outputConfiguration>
+								</outputConfigurations>
+							</language>
+						</languages>
+					</configuration>
+					<dependencies>
+						<!-- add a dependency to the language core bundle, this will only be 
+							needed during geneeration and will not pollute your project's classpath. -->
+						<dependency>
+							<groupId>com.lvl6.modeling</groupId>
+							<artifactId>mobsters-service-dsl</artifactId>
+							<version>0.0.1-SNAPSHOT</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
 	<dependencyManagement>
 		<dependencies>
-
 			<!-- Lvl6 -->
 			<dependency>
 				<groupId>com.lvl6</groupId>
@@ -352,8 +426,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>${hibernate-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>${hibernate-entitymanager.version}</version>
+				<version>${hibernate-core.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -406,6 +485,18 @@
 				<artifactId>hibernate-ehcache</artifactId>
 				<version>4.3.5.Final</version>
 				<!-- <version>${hibernate-version}</version> -->
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase</artifactId>
+				<version>${xbase.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xtext</artifactId>
+				<version>${xtext.version}</version>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -472,10 +563,6 @@
 			<artifactId>powermock-module-junit4-rule-agent</artifactId>
 			<version>${powermock.version}</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -9,11 +9,15 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 
 public class UserCreateResponseEvent extends PreDatabaseResponseEvent{
 
-  private UserCreateResponseProto userCreateResponseProto;
+  private final UserCreateResponseProto userCreateResponseProto;
   
-  public UserCreateResponseEvent(String udid) {
-    super(udid);
-    eventType = EventProtocolResponse.S_USER_CREATE_EVENT;
+  // By doing all state assignment in the event's construction, we gain the ability to pass the event object to another thread
+  // without having to consider using a "synchronized" or "volatile" memory barrier to ensure visibility.  The ability to
+  // size and schedule I/O processing thread pools independently from request computation thread pools  
+  public UserCreateResponseEvent(final String udid, final int tag, UserCreateResponseProto.Builder responseProtoBuilder)
+  {
+    super(udid, EventProtocolResponse.S_USER_CREATE_EVENT, tag);
+    this.userCreateResponseProto = responseProtoBuilder.build();
   }
   
   /** 
@@ -24,13 +28,17 @@ public class UserCreateResponseEvent extends PreDatabaseResponseEvent{
    * versions on the client and use old-style socket input/output streams
    */
   public int write(ByteBuffer buff) {
-    ByteString b = userCreateResponseProto.toByteString();
+    ByteString b = getUserCreateResponseProto().toByteString();
     b.copyTo(buff);
     return b.size();
   }
 
-  public void setUserCreateResponseProto(UserCreateResponseProto UserCreateResponseProto) {
-    this.userCreateResponseProto = UserCreateResponseProto;
-  }
-  
+	public UserCreateResponseProto getUserCreateResponseProto()
+	{
+		return userCreateResponseProto;
+	}
+
+//  public void setUserCreateResponseProto(UserCreateResponseProto UserCreateResponseProto) {
+//    this.userCreateResponseProto = UserCreateResponseProto;
+//  }
 }

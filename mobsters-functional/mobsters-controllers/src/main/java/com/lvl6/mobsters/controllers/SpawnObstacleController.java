@@ -1,5 +1,7 @@
 package com.lvl6.mobsters.controllers;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,9 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.lvl6.mobsters.common.utils.CollectionUtils;
-import com.lvl6.mobsters.dynamo.ObstacleForUser;
+import com.google.common.base.Preconditions;
+import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleRequestProto;
 import com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleResponseProto;
 import com.lvl6.mobsters.eventproto.EventStructureProto.SpawnObstacleResponseProto.SpawnObstacleStatus;
@@ -18,12 +21,15 @@ import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.SpawnObstacleRequestEvent;
 import com.lvl6.mobsters.events.response.SpawnObstacleResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.MinimumObstacleProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.structure.StructureService;
-import com.lvl6.mobsters.services.structure.StructureService.CreateUserObstaclesSpec;
-import com.lvl6.mobsters.services.structure.StructureService.CreateUserObstaclesSpecBuilder;
+import com.lvl6.mobsters.services.structure.StructureService.CreateObstacleCollectionBuilder;
+import com.lvl6.mobsters.services.structure.StructureService.CreateObstaclesReplyBuilder;
 
 
 @Component
@@ -55,92 +61,84 @@ public class SpawnObstacleController extends EventController {
     {
         final SpawnObstacleRequestProto reqProto =
             ((SpawnObstacleRequestEvent) event).getSpawnObstacleRequestProto();
-        final MinimumUserProto senderProto = reqProto.getSender();
-        final String userIdString = senderProto.getUserUuid();
-        final Date clientTime = new Date(reqProto.getCurTime());
+        final MinimumUserProto sender = reqProto.getSender();
+        final String userUuid = sender.getUserUuid();
+        final Date clientTime = 
+            TimeUtils.createDateFromTime(
+            	reqProto.getCurTime());
         final List<MinimumObstacleProto> mopList = reqProto.getProspectiveObstaclesList();
 
-        // prepare to send response back to client
-        final SpawnObstacleResponseProto.Builder responseBuilder =
-            SpawnObstacleResponseProto.newBuilder();
-        responseBuilder.setStatus(SpawnObstacleStatus.FAIL_OTHER);
-        responseBuilder.setSender(senderProto);
-        SpawnObstacleResponseEvent resEvent =
-            new SpawnObstacleResponseEvent(userIdString);
-        resEvent.setTag(event.getTag());
+		// prepare to send response back to client
+		CreateObstaclesReplyBuilderImpl replyBuilder =
+			new CreateObstaclesReplyBuilderImpl(sender, event.getTag());
 
-        // Check values client sent for syntax errors. Call service only if
-        // syntax checks out ok; prepare arguments for service
-        final CreateUserObstaclesSpecBuilder modBuilder = CreateUserObstaclesSpec.builder();
-        if (!CollectionUtils.lacksSubstance(mopList)) {
-            
-        	for (MinimumObstacleProto mop : mopList) {
-        		//TODO: Figure out more efficient way to get key.
-        		String userObstacleId = (new ObstacleForUser()).getObstacleForUserId();
-    			
-    			modBuilder.setObstacleId(userObstacleId, mop.getObstacleId());
-    			modBuilder.setXCoord(userObstacleId, (int) mop.getCoordinate().getX());
-    			modBuilder.setYCoord(userObstacleId, (int) mop.getCoordinate().getY());
-    			modBuilder.setOrientation(userObstacleId, mop.getOrientation().name());
-    		}
-
-            responseBuilder.setStatus(SpawnObstacleStatus.SUCCESS);
-        }
-
-        // call service if syntax is ok
-        if (responseBuilder.getStatus() == SpawnObstacleStatus.SUCCESS) {
-            try {
-                structureService.createObstaclesForUser(userIdString, modBuilder.build());
-                // TODO: Ensure that the user's lastMiniJobGenerated time is updated to now,
-                // er, clientTime
-                
-            } catch (Exception e) {
-                LOG.error(
-                    "exception in SpawnObstacleController processEvent when calling userService",
-                    e);
-                responseBuilder.setStatus(SpawnObstacleStatus.FAIL_OTHER);
-            }
-        }
-
-        resEvent.setSpawnObstacleResponseProto(responseBuilder.build());
+        // TODO: Check values client sent for syntax errors.  Complete service call only
+        // if syntax checks out ok, otherwise throw an Exception otherwise.		
+        structureService.createObstaclesForUser(
+        	replyBuilder, userUuid, 
+        	new Director<CreateObstacleCollectionBuilder>() {
+				@Override
+				public void apply(final CreateObstacleCollectionBuilder builder) {
+					for (final MinimumObstacleProto mop : mopList) {
+						final CoordinateProto coordPair = mop.getCoordinate();
+						final int obstacleId = mop.getObstacleId();
+						final float x = coordPair.getX();
+						final float y = coordPair.getY();
+						final StructOrientation orientation = mop.getOrientation();
+						
+						checkArgument(
+							(obstacleId > 0) && 
+							(x > 0) && 
+							(y > 0) && 
+							(
+								(orientation == StructOrientation.POSITION_1) || 
+								(orientation == StructOrientation.POSITION_2)
+							)
+						);
+						
+						builder.addObstacle(obstacleId, x, y, orientation.name());
+					}
+				}
+        	}
+        );
 
         // write to client
-        LOG.info("Writing event: " + resEvent);
-        try {
-            eventWriter.writeEvent(resEvent);
-        } catch (Exception e) {
-            LOG.error("fatal exception in SpawnObstacleController processRequestEvent", e);
-        }
-
-        // TODO: FIGURE OUT IF THIS IS STILL NEEDED
-        // game center id might have changed
-        // null PvpLeagueFromUser means will pull from a cache instead
-        // UpdateClientUserResponseEvent resEventUpdate =
-        // CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-        // resEventUpdate.setTag(event.getTag());
-        // eventWriter.writeEvent(resEventUpdate);
+        SpawnObstacleResponseEvent resEvent = replyBuilder.buildResponseEvent();
+        LOG.info("Writing event: %s", resEvent);
+        eventWriter.writeEvent(resEvent);
     }
+    
+    private static class CreateObstaclesReplyBuilderImpl implements CreateObstaclesReplyBuilder {
+    	private final SpawnObstacleResponseProto.Builder protoBuilder;
+		private final String userUuid;
+		private final int tag;
+		
+    	public CreateObstaclesReplyBuilderImpl(MinimumUserProto senderProto, int tag) {
+    		protoBuilder = SpawnObstacleResponseProto.newBuilder();
+    		protoBuilder.setStatus(SpawnObstacleStatus.FAIL_OTHER);
+    		protoBuilder.setSender(senderProto);
+    		userUuid = senderProto.getUserUuid();
+			this.tag = tag;
+		}
+    	
+    	public CreateObstaclesReplyBuilder resultOk()
+    	{
+    		protoBuilder.setStatus(SpawnObstacleStatus.SUCCESS);
+    		return this;
+    	}
 
-    // private void failureCase(
-    // RequestEvent event,
-    // EventsToDispatch eventWriter,
-    // String userId,
-    // SpawnObstacleResponseProto.Builder resBuilder )
-    // {
-    // eventWriter.clearResponses();
-    // resBuilder.setStatus(SpawnObstacleStatus.FAIL_OTHER);
-    // SpawnObstacleResponseEvent resEvent = new SpawnObstacleResponseEvent(userId);
-    // resEvent.setTag(event.getTag());
-    // resEvent.setSpawnObstacleResponseProto(resBuilder.build());
-    // eventWriter.writeEvent(resEvent);
-    // }
+		SpawnObstacleResponseEvent buildResponseEvent()
+    	{
+	        final SpawnObstacleResponseEvent retVal =
+	            new SpawnObstacleResponseEvent(userUuid, tag, protoBuilder);
 
-    public StructureService getStructureService() {
-        return structureService;
+    		return retVal;
+    	}
     }
+    
+    
 
-    public void setStructureService( StructureService structureService ) {
+    void setStructureService( final StructureService structureService ) {
         this.structureService = structureService;
     }
-
 }

@@ -81,6 +81,11 @@ public class TaskForUserCompleted
 	{
 		this.taskId = taskId;
 	}
+	
+	// Temporary redundancy to facilitate Templated rangeId in BaseDynamoCollectionRepository signature.
+	public void setTaskId( Integer taskId ) {
+		this.taskId = taskId.intValue();
+	}
 
 	public Date getTimeOfEntry()
 	{

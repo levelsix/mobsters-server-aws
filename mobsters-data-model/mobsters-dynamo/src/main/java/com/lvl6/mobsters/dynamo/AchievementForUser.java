@@ -13,7 +13,7 @@ public class AchievementForUser {
 
     // private String id;
     private String userId;
-    
+
     private int achievementId;
 
     private Long version;
@@ -65,7 +65,7 @@ public class AchievementForUser {
     public void setUserId( String userId ) {
         this.userId = userId;
     }
-    
+
     @DynamoDBRangeKey(attributeName = "achievementId")
     public int getAchievementId() {
     	return achievementId;

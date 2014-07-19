@@ -61,15 +61,9 @@
 			<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
 		</dependency>
-<!-- 		<dependency> -->
-<!--        		<groupId>org.hibernate</groupId> -->
-<!--        		<artifactId>hibernate-ehcache</artifactId> -->
-<!--        		<version>4.2.5.Final</version> -->
-<!--     	</dependency>  -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-		</dependency>
+		</dependency-->
 	</dependencies>
-
 </project>

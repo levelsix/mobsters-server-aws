@@ -6,8 +6,8 @@ import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.FullUserMonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.MonsterBattleDialogueProto;
@@ -22,7 +22,7 @@ import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserMonsterHealingPr
 public interface NoneventMonsterProtoSerializer
 {
 
-	public MonsterProto createMonsterProto( Monster aMonster );
+	public MonsterProto createMonsterProto( IMonster aMonster );
 	
 	public MonsterLevelInfoProto createMonsterLevelInfoProto( IMonsterLevelInfo mli );
 	

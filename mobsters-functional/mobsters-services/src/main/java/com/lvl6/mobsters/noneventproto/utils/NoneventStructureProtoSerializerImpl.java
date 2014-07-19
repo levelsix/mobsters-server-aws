@@ -3,6 +3,7 @@ package com.lvl6.mobsters.noneventproto.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lvl6.mobsters.info.CoordinatePair;
 import com.lvl6.mobsters.info.IStructure;
 import com.lvl6.mobsters.info.Obstacle;
 import com.lvl6.mobsters.info.StructureHospital;
@@ -13,21 +14,25 @@ import com.lvl6.mobsters.info.StructureResourceGenerator;
 import com.lvl6.mobsters.info.StructureResourceStorage;
 import com.lvl6.mobsters.info.StructureTownHall;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.CoordinateProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.HospitalProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.LabProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.MiniJobCenterProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.MinimumObstacleProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.ObstacleProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResidenceProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceGeneratorProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceStorageProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.StructType;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TownHallProto;
+import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProto;
 
 public class NoneventStructureProtoSerializerImpl implements NoneventStructureProtoSerializer 
 {
 
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
+	private static Logger LOG = LoggerFactory.getLogger(new Object() {}.getClass()
 		.getEnclosingClass());
 
 	@Override
@@ -46,7 +51,7 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 			StructType st = StructType.valueOf(aStr);
 			builder.setStructType(st);
 		} catch (Exception e) {
-			log.error("can't create enum type. structType=" + aStr + ".\t structure=" + s);
+			LOG.error("can't create enum type. structType=" + aStr + ".\t structure=" + s);
 		}
 
 		aStr = s.getBuildResourceType();
@@ -54,7 +59,7 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 			ResourceType rt = ResourceType.valueOf(aStr);
 			builder.setBuildResourceType(rt);
 		} catch (Exception e) {
-			log.error("can't create enum type. resourceType=" + aStr + ". structure=" + s);
+			LOG.error("can't create enum type. resourceType=" + aStr + ". structure=" + s);
 		}
 
 		builder.setBuildCost(s.getBuildCost());
@@ -115,7 +120,7 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 			ResourceType rt = ResourceType.valueOf(aStr);
 			rgpb.setResourceType(rt);
 		} catch (Exception e) {
-			log.error("can't create enum type. resourceType=" + aStr +
+			LOG.error("can't create enum type. resourceType=" + aStr +
 				". resourceGenerator=" + srg);
 		}
 
@@ -138,7 +143,7 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 			ResourceType rt = ResourceType.valueOf(aStr);
 			rspb.setResourceType(rt);
 		} catch (Exception e) {
-			log.error("can't create enum type. resourceType=" + aStr +
+			LOG.error("can't create enum type. resourceType=" + aStr +
 				". resourceStorage=" + srs);
 		}
 
@@ -247,7 +252,7 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 	  		ResourceType rt = ResourceType.valueOf(aStr);
 	  		ob.setRemovalCostType(rt);
 	  	} catch (Exception e) {
-	  		log.info("incorrect resource type name in db. name=" + aStr, e);
+	  		LOG.info("incorrect resource type name in db. name=" + aStr, e);
 	  	}
 	  	
 	  	ob.setCost(o.getCost());
@@ -277,6 +282,50 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 	  	ob.setShadowHorizontalOfffset(o.getShadowHorizontalOffset());
 	  	
 	  	return ob.build();
+	}
+
+	@Override
+	public MinimumObstacleProto createMinimumObstacleProto(int obstacleId,
+		float posX, float posY, int orientation) {
+
+		MinimumObstacleProto.Builder mopb = MinimumObstacleProto.newBuilder();
+		mopb.setObstacleId(obstacleId);
+
+		CoordinatePair cp = new CoordinatePair(posX, posY);
+		CoordinateProto cProto = createCoordinateProtoFromCoordinatePair(cp); 
+		mopb.setCoordinate(cProto);
+
+		try {
+			StructOrientation structOrientation = StructOrientation.valueOf(orientation);
+			mopb.setOrientation(structOrientation);
+		} catch (Exception e) {
+			LOG.info("incorrect struct orientation. obstacleId=" + obstacleId
+				+ ", posX=" + posX + ", posY=" + posY + ", orientation" + orientation);
+		}
+
+		return mopb.build();
+	}
+	
+	@Override
+	public CoordinateProto createCoordinateProtoFromCoordinatePair(CoordinatePair cp) {
+		CoordinateProto.Builder cpb = CoordinateProto.newBuilder();
+		cpb.setX(cp.getX());
+		cpb.setY(cp.getY());
+
+		return cpb.build();
+	}
+	
+	@Override
+	public TutorialStructProto createTutorialStructProto(int structId, float posX,
+	      float posY)
+	{
+		TutorialStructProto.Builder tspb = TutorialStructProto.newBuilder();
+
+		tspb.setStructId(structId);
+		CoordinatePair cp = new CoordinatePair(posX, posY);
+		CoordinateProto cpp = createCoordinateProtoFromCoordinatePair(cp);
+		tspb.setCoordinate(cpp);
+		return tspb.build();
 	}
 	
 }

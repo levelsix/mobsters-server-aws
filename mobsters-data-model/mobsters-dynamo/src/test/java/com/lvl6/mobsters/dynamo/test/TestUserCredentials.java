@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.lvl6.mobsters.dynamo.UserCredential;
-import com.lvl6.mobsters.dynamo.repository.BaseDynamoRepository;
+import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
@@ -62,10 +62,11 @@ public class TestUserCredentials
 	}
 
 	@After
+	@SuppressWarnings("unchecked")
 	public void destroyTestData()
 	{
-		//userRepo.emptyTable();
-		//userRepo.
+
+		((BaseDynamoItemRepositoryImpl<UserCredential>)userRepo).emptyTable();
 		/*
 		 * for (final String userId : TestUserCredentials.userIds) { final List<UserCredential> users =
 		 * userRepo.getUserCredentialByUdid(userId); userRepo.delete(users); }
@@ -76,17 +77,12 @@ public class TestUserCredentials
 	public void test()
 	{
 		final List<UserCredential> users =
-			userRepo.getUserCredentialByFacebook(TestUserCredentials.userIds.get(0));
+			userRepo.findByFacebookId(TestUserCredentials.userIds.get(0));
 		final List<UserCredential> userz =
-			userRepo.getUserCredentialByUdid(TestUserCredentials.userIds.get(0));
+			userRepo.findByUdid(TestUserCredentials.userIds.get(0));
 		Assert.assertEquals("Found one user by facebook", users.size(), 1);
 		Assert.assertEquals("Found one user by udid", userz.size(), 1);
 		Assert.assertEquals("Found same", users.get(0), userz.get(0));
-	}
-
-	public SetupDynamoDB getSetup()
-	{
-		return setup;
 	}
 
 	public void setSetup( final SetupDynamoDB setup )
@@ -94,19 +90,9 @@ public class TestUserCredentials
 		this.setup = setup;
 	}
 
-	public AmazonDynamoDBClient getDynamoClient()
-	{
-		return dynamoClient;
-	}
-
 	public void setDynamoClient( final AmazonDynamoDBClient dynamoClient )
 	{
 		this.dynamoClient = dynamoClient;
-	}
-
-	public BaseDynamoRepository<UserCredential> getUserRepo()
-	{
-		return userRepo;
 	}
 
 	public void setUserRepo( final UserCredentialRepository userRepo )

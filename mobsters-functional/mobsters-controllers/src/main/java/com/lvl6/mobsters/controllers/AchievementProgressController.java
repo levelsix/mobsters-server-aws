@@ -23,6 +23,7 @@ import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.achievement.AchievementService.ModifyUserAchievementsSpec;
 import com.lvl6.mobsters.services.achievement.AchievementService.ModifyUserAchievementsSpecBuilder;
+import com.lvl6.mobsters.services.common.TimeUtils;
 
 @Component
 public class AchievementProgressController extends EventController {
@@ -55,8 +56,10 @@ public class AchievementProgressController extends EventController {
             ((AchievementProgressRequestEvent) event).getAchievementProgressRequestProto();
         final MinimumUserProto senderProto = reqProto.getSender();
         final String userIdString = senderProto.getUserUuid();
-        List<UserAchievementProto> uapList = reqProto.getUapListList();
-        Date clientTime = new Date(reqProto.getClientTime());
+        final List<UserAchievementProto> uapList = reqProto.getUapListList();
+        final Date clientTime = 
+            TimeUtils.createDateFromTime(
+            	reqProto.getClientTime());
 
         // prepare to send response back to client
         AchievementProgressResponseProto.Builder responseBuilder =
@@ -108,34 +111,9 @@ public class AchievementProgressController extends EventController {
 
         // write to client
         LOG.info("Writing event: " + resEvent);
-        try {
-            eventWriter.writeEvent(resEvent);
-        } catch (Exception e) {
-            LOG.error("fatal exception in AchievementProgressController processRequestEvent", e);
-        }
+        eventWriter.writeEvent(resEvent);
 
-        // TODO: FIGURE OUT IF THIS IS STILL NEEDED
-        // game center id might have changed
-        // null PvpLeagueFromUser means will pull from a cache instead
-        // UpdateClientUserResponseEvent resEventUpdate =
-        // CreateEventProtoUtil.createUpdateClientUserResponseEvent(null, null, user, null, null);
-        // resEventUpdate.setTag(event.getTag());
-        // eventWriter.writeEvent(resEventUpdate);
     }
-
-    // private void failureCase(
-    // RequestEvent event,
-    // EventsToDispatch eventWriter,
-    // String userId,
-    // AchievementProgressResponseProto.Builder resBuilder )
-    // {
-    // eventWriter.clearResponses();
-    // resBuilder.setStatus(AchievementProgressStatus.FAIL_OTHER);
-    // AchievementProgressResponseEvent resEvent = new AchievementProgressResponseEvent(userId);
-    // resEvent.setTag(event.getTag());
-    // resEvent.setAchievementProgressResponseProto(resBuilder.build());
-    // eventWriter.writeEvent(resEvent);
-    // }
 
     public AchievementService getAchievementService() {
         return achievementService;

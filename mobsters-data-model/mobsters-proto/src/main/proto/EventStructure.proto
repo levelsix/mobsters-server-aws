@@ -49,7 +49,7 @@ message MoveOrRotateNormStructureRequestProto {
 	optional string userStructUuid = 2;
 	optional MoveOrRotateNormStructType type = 3 [default = MOVE];
 	optional CoordinateProto curStructCoordinates = 4;
-	optional StructOrientation newOrientation = 5 [default = POSITION_1];
+	optional StructOrientation orientationNew = 5 [default = POSITION_1];
 	
 	enum MoveOrRotateNormStructType {
 		MOVE = 1;
@@ -63,7 +63,7 @@ message MoveOrRotateNormStructureResponseProto {
 	
 	enum MoveOrRotateNormStructureStatus {
 		SUCCESS = 1;
-		OTHER_FAIL = 2;
+		FAIL_OTHER = 2;
 	}
 }
 
@@ -108,7 +108,7 @@ message UpgradeNormStructureResponseProto {
 		//FAIL_ANOTHER_STRUCT_STILL_UPGRADING = 7; 
 		
 		//FAIL_AT_MAX_LEVEL_ALREADY = 8;
-		FAIL_AT_MAX_LEVEL = 8;
+		FAIL_STRUCTURE_AT_MAX_LEVEL = 8;
 		
 		FAIL_OTHER = 9;
 	}

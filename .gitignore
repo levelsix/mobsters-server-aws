@@ -25,3 +25,4 @@ test-output/
 *.log*
 
 ## 
+**/junk/**

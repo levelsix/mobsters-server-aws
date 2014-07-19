@@ -16,9 +16,14 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
 import com.lvl6.mobsters.dynamo.QuestForUser;
+import com.lvl6.mobsters.dynamo.repository.filter.Director;
+import com.lvl6.mobsters.dynamo.repository.filter.QueryFilterConditionStrategy;
+import com.lvl6.mobsters.dynamo.repository.filter.IBooleanConditionBuilder;
+import com.lvl6.mobsters.dynamo.repository.filter.IConditionStrategy;
+import com.lvl6.mobsters.dynamo.repository.filter.IIntConditionBuilder;
 
 @Component
-public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestForUser>
+public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<QuestForUser, Integer>
 	implements
 		QuestForUserRepository
 {
@@ -27,9 +32,7 @@ public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestFo
 			.getLogger(QuestForUserRepositoryImpl.class);
 	public QuestForUserRepositoryImpl()
 	{
-		super(
-			QuestForUser.class);
-		isActive = true;
+		super(QuestForUser.class, "questId", Integer.TYPE);
 	}
 
 	@Override
@@ -71,23 +74,66 @@ public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestFo
 	@Override
 	public List<QuestForUser> findByUserId( String userId )
 	{
+		return loadAll(userId);
+	}
+
+	@Override
+	public List<QuestForUser> findByUserId( String userId, Director<QuestForUserConditionBuilder> director )
+	{
 		final QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
 
 		final DynamoDBQueryExpression<QuestForUser> query =
 			new DynamoDBQueryExpression<QuestForUser>()
-				//.withIndexName("userIdGlobalIndex")
-				.withHashKeyValues(hashKey)
-				.withConsistentRead(true);
-		QuestForUserRepositoryImpl.log.info(
-			"Query: {}",
-			query);
+				.withHashKeyValues(hashKey);
 		
-		final PaginatedQueryList<QuestForUser> questsForUser = query(query);
-		questsForUser.loadAllResults();
-		return questsForUser;
+		// This is the Bridge design pattern.  Each repository type has a ConditionBuilder specific to its
+		// Entity's field names and types.  That implementation knows how to delegate to an IConditionStategy
+		// There will be at least two such strategies, one that attaches Conditions to a Query's filter clause,
+		// and another that attaches them to a Scan's filtering clause.  This is a query use case, so we inject
+		// a QueryFilterConditionStrategy that is in turn wired to the DynamoDBQueryExpression being built.
+		director.apply(
+			new QuestForUserConditionBuilderImpl(
+				new QueryFilterConditionStrategy(query)));
+		
+		return query(query);
+	}
+	
+	// Use composition, not inheritance, so the IConditionStategy is the polymorphic root
+	// of hierarchy with one small subtype for Queries Filters and another for Scan Filters.
+	// To do the same with inheritance, the class below would have to be redundantly declared
+	// and maintained twice.
+	static class QuestForUserConditionBuilderImpl implements QuestForUserConditionBuilder {
+		private final IConditionStrategy builderContext;
+
+		QuestForUserConditionBuilderImpl(final IConditionStrategy builderContext) {
+			this.builderContext = builderContext;
+		}
+
+		@Override
+		public QuestForUserConditionBuilder complete(Director<IBooleanConditionBuilder> director) {
+			builderContext.filterBooleanField("complete", director);
+			return this;
+		}
+
+		@Override
+		public QuestForUserConditionBuilder redeemed(Director<IBooleanConditionBuilder> director) {
+			builderContext.filterBooleanField("redeemed", director);
+			return this;
+		}
+
+		@Override
+		public QuestForUserConditionBuilder questId(Director<IIntConditionBuilder> director) {
+			builderContext.filterIntField("questId", director);
+			return this;
+		}
 	}
 
+	// NOTE: One of the indices implied below is redundant with the base table
+	//       definition, and the other two are probably invalid unless 
+	//       userId+redeemed and userId+complete are unique tuples, which seems
+	//       unlikely to be true.  Filters are adequate for separating true/false
+	//       sets on this note.
 	@Override
 	public List<LocalSecondaryIndex> getLocalIndexes()
 	{
@@ -120,6 +166,11 @@ public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestFo
 		return null;
 	}
 
+	// TODO: Is there a use case for getting data from this table across all users, but grouped
+	//       by questId?  There may be a global secondary index that has value if so, but be aware
+	//       that Dynamo might impose a size limit on secondary collection and there are more users
+	//       per quest Id than there are quests per user.
+	
 	@Override
 	public List<GlobalSecondaryIndex> getGlobalIndexes(){
 /*		List<GlobalSecondaryIndex> indexes = new ArrayList<>();
@@ -143,5 +194,4 @@ public class QuestForUserRepositoryImpl extends BaseDynamoRepositoryImpl<QuestFo
 		*/
 		return null;
 	}
-
 }

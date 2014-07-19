@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 
 @Component
-public interface MonsterForUserRepository extends BaseDynamoRepository<MonsterForUser>
+public interface MonsterForUserRepository extends BaseDynamoCollectionRepository<MonsterForUser, String>
 {
-	public List<MonsterForUser> findByUserId( String userId );
+	List<MonsterForUser> findByUserId( String userId );
 	
-	public List<MonsterForUser> findByUserIdAndId( String userId, Collection<String> monsterForUserIds );
+	List<MonsterForUser> findByUserIdAndMonsterForUserIdIn( String userId, Iterable<String> monsterForUserIds );
 
-	public List<MonsterForUser> findByUserIdAndIdOrTeamSlotNumAndUserId(
+	List<MonsterForUser> findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(
 		String userId,
 		Collection<String> monsterForUserIds,
 		Integer teamSlotNum );

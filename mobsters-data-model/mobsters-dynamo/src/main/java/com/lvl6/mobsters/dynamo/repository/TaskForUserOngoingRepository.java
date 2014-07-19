@@ -1,8 +1,13 @@
 package com.lvl6.mobsters.dynamo.repository;
 
+import java.util.List;
+
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 
-public interface TaskForUserOngoingRepository extends BaseDynamoRepository<TaskForUserOngoing>
+public interface TaskForUserOngoingRepository extends BaseDynamoCollectionRepository<TaskForUserOngoing, String>
 {
-	public TaskForUserOngoing findByUserId( String userId );
+	TaskForUserOngoing findByUserIdTaskForUserId( String userId, String taskForUserId );
+	
+	List<TaskForUserOngoing> findByUserId( String userId );;
+
 }

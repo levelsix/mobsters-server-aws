@@ -16,6 +16,7 @@ import com.lvl6.mobsters.info.ConnectedPlayer;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.server.ServerInstance;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.websockets.SessionMap;
 
 public class GameEventHandler extends AbstractGameEventHandler {
@@ -58,8 +59,9 @@ public class GameEventHandler extends AbstractGameEventHandler {
 		log.debug("Updating player to server maps for player: "	+ event.getPlayerId());
 		ConnectedPlayer p = playerMaps.getPlayer(event.getPlayerId());
 		if (p != null) {
-			p.setLastMessageSentToServer(new Date());
+			p.setLastMessageSentToServer(TimeUtils.createNow());
 			p.setServerHostName(server.serverId());
+			
 			playerMaps.savePlayer(p);
 			if(event.getPlayerId() != "") {
 				sessionMap.put(event.getPlayerId(), session);

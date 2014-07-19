@@ -1,11 +1,12 @@
 package com.lvl6.mobsters.services.common;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.Period;
@@ -25,6 +26,10 @@ public class TimeUtils
 
 	public static DateTimeZone PST =
 		DateTimeZone.forTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+	
+	private TimeUtils() {
+		throw new AssertionError("TimeUtils is a static utility class");
+	}
 
 	public static boolean isSynchronizedWithServerTime( Date maybeNow )
 	{
@@ -100,11 +105,15 @@ public class TimeUtils
 		return dt.getDayOfWeek();
 	}
 
-	public int getDayOfMonthPst( Date d )
+	public static int getDayOfMonthPst( Date d )
 	{
 		DateTime dt = new DateTime(d, PST);
 		return dt.getDayOfMonth();
 	}
+
+    public static Date createNow() {
+    	return new Date();
+    }
 
 	// dayOffset is most likely negative (called from ClanEventPersistentRetrieveUtils.java)
 	public static Date createPstDate( Date curDate, int dayOffset, int hour, int minutesAddend )
@@ -190,4 +199,20 @@ public class TimeUtils
 
 		return createdDate;
 	}
+
+	public static Date createDateFromTime(long clientTime) {
+		return new Date(clientTime);
+	}
+    
+    public static Calendar createToday() {
+    	return new GregorianCalendar();
+    }
+    
+    public static long currentTimeMillis() {
+    	return System.currentTimeMillis();
+    }
+    
+    public static long nanoTime() {
+    	return System.nanoTime();
+    }
 }

@@ -1,7 +1,9 @@
 package com.lvl6.mobsters.info;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -17,12 +19,14 @@ import org.hibernate.annotations.Proxy;
 
 @Entity(name="Monster")
 @Table(name="monster")
+@Cacheable(true)
 @Proxy(lazy=true, proxyClass=IMonster.class)
-public class Monster extends BaseIntPersistentObject implements IMonster{	
+public class Monster extends BaseIntPersistentObject implements IMonster
+{	
+	/**
+	 */
+	private static final long serialVersionUID = 3306136127069310310L;
 
-	private static final long serialVersionUID = -6165082176139667297L;
-	
-	
 	@Column(name = "evolution_group")
 	private String evolutionGroup;
 	@Column(name = "monster_group")
@@ -84,15 +88,19 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	private int atkAnimationRepeatedFramesStart;
 	@Column(name = "atk_animation_repeated_frames_end")
 	private int atkAnimationRepeatedFramesEnd;
-	@Column(name = "shorter_name")
-	private String shorterName;	
+	@Column(name = "short_name")
+	private String shortName;	
 	
-	@OneToOne(
+	@OneToMany(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
 		fetch=FetchType.EAGER,
 		mappedBy="monster", 
 		orphanRemoval=true,
 		targetEntity=MonsterLevelInfo.class)
+//	@JoinColumns( {
+//		@JoinColumn(name="monster_id", referencedColumnName="monster_id"),
+//		@JoinColumn(name="level", referencedColumnName="level")
+//	} )
 	private List<IMonsterLevelInfo> lvlInfo;
 	
 	@OneToMany(
@@ -102,6 +110,9 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		orphanRemoval=true,
 		targetEntity=MonsterBattleDialogue.class)
 	private List<IMonsterBattleDialogue> battleDialogue;
+
+	@Column(name = "shadow_scale_factor")
+	private float shadowScaleFactor; //TODO: Use this column
 	
 	public Monster() { }
 	public Monster(int id, String name, String monsterGroup, String quality,
@@ -114,9 +125,10 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 			int evolutionCost, String animationType, int verticalPixelOffset,
 			String atkSoundFile, int atkSoundAnimationFrame,
 			int atkAnimationRepeatedFramesStart,
-			int atkAnimationRepeatedFramesEnd, String shorterName,
+			int atkAnimationRepeatedFramesEnd, String shortName,
 			List<IMonsterLevelInfo> lvlInfo,
-			List<IMonsterBattleDialogue> battleDialogue) {
+			List<IMonsterBattleDialogue> battleDialogue,
+			float shadowScaleFactor) {
 		super(id);
 		this.evolutionGroup = name;
 		this.monsterGroup = monsterGroup;
@@ -143,9 +155,10 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 		this.atkSoundAnimationFrame = atkSoundAnimationFrame;
 		this.atkAnimationRepeatedFramesStart = atkAnimationRepeatedFramesStart;
 		this.atkAnimationRepeatedFramesEnd = atkAnimationRepeatedFramesEnd;
-		this.shorterName = shorterName;
+		this.shortName = shortName;
 		this.lvlInfo = lvlInfo;
 		this.battleDialogue = battleDialogue;
+		this.shadowScaleFactor = shadowScaleFactor;
 	}
 
 
@@ -552,19 +565,19 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#getShorterName()
+	 * @see com.lvl6.mobsters.info.IMonster#getShortName()
 	 */
 	@Override
-	public String getShorterName() {
-		return shorterName;
+	public String getShortName() {
+		return shortName;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IMonster#setShorterName(java.lang.String)
+	 * @see com.lvl6.mobsters.info.IMonster#setShortName(java.lang.String)
 	 */
 	@Override
-	public void setShorterName(String shorterName) {
-		this.shorterName = shorterName;
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 
 	/* (non-Javadoc)
@@ -573,57 +586,113 @@ public class Monster extends BaseIntPersistentObject implements IMonster{
 	@Override
 	public List<IMonsterLevelInfo> getLvlInfo()
 	{
+		if( lvlInfo == null ) {
+			lvlInfo = new ArrayList<IMonsterLevelInfo>(4);
+		}
 		return lvlInfo;
 	}
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#setLvlInfo(java.util.List)
-	 */
 	@Override
 	public void setLvlInfo( List<IMonsterLevelInfo> lvlInfo )
 	{
 		this.lvlInfo = lvlInfo;
 	}
+	 */
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#getBattleDialogue()
 	 */
 	@Override
 	public List<IMonsterBattleDialogue> getBattleDialogue()
 	{
+		if( battleDialogue == null ) {
+			battleDialogue = new ArrayList<IMonsterBattleDialogue>(4);
+		}
 		return battleDialogue;
 	}
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonster#setBattleDialogue(java.util.List)
-	 */
 	@Override
 	public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue )
 	{
 		this.battleDialogue = battleDialogue;
 	}
-	
+	 */
+
 	@Override
-	public String toString() {
-		return "Monster [id=" + id + ", evolutionGroup=" + evolutionGroup + ", monsterGroup="
-				+ monsterGroup + ", quality=" + quality + ", evolutionLevel="
-				+ evolutionLevel + ", displayName=" + displayName
-				+ ", element=" + element + ", imagePrefix=" + imagePrefix
-				+ ", numPuzzlePieces=" + numPuzzlePieces
-				+ ", minutesToCombinePieces=" + minutesToCombinePieces
-				+ ", maxLevel=" + maxLevel + ", evolutionMonsterId="
-				+ evolutionMonster + ", evolutionCatalystMonsterId="
-				+ evolutionCatalystMonster + ", minutesToEvolve="
-				+ minutesToEvolve + ", numCatalystsRequired="
-				+ numCatalystsRequired + ", carrotRecruited=" + carrotRecruited
-				+ ", carrotDefeated=" + carrotDefeated + ", carrotEvolved="
-				+ carrotEvolved + ", description=" + description
-				+ ", evolutionCost=" + evolutionCost + ", animationType="
-				+ animationType + ", verticalPixelOffset="
-				+ verticalPixelOffset + ", atkSoundFile=" + atkSoundFile
-				+ ", atkSoundAnimationFrame=" + atkSoundAnimationFrame
-				+ ", atkAnimationRepeatedFramesStart="
-				+ atkAnimationRepeatedFramesStart
-				+ ", atkAnimationRepeatedFramesEnd="
-				+ atkAnimationRepeatedFramesEnd + ", shorterName="
-				+ shorterName + "]";
+	public float getShadowScaleFactor()
+	{
+		return shadowScaleFactor;
+	}
+	@Override
+	public void setShadowScaleFactor( float shadowScaleFactor )
+	{
+		this.shadowScaleFactor = shadowScaleFactor;
 	}
 	
+	@Override
+	public String toString()
+	{
+		return "Monster [id="
+			+ id
+			+ "evolutionGroup="
+			+ evolutionGroup
+			+ ", monsterGroup="
+			+ monsterGroup
+			+ ", quality="
+			+ quality
+			+ ", evolutionLevel="
+			+ evolutionLevel
+			+ ", displayName="
+			+ displayName
+			+ ", element="
+			+ element
+			+ ", imagePrefix="
+			+ imagePrefix
+			+ ", numPuzzlePieces="
+			+ numPuzzlePieces
+			+ ", minutesToCombinePieces="
+			+ minutesToCombinePieces
+			+ ", maxLevel="
+			+ maxLevel
+			+ ", evolutionMonster=Monster[id="
+			+ evolutionMonster.getId()
+			+ "], evolutionCatalystMonster=Monster[id="
+			+ evolutionCatalystMonster.getId()
+			+ "], minutesToEvolve="
+			+ minutesToEvolve
+			+ ", numCatalystsRequired="
+			+ numCatalystsRequired
+			+ ", carrotRecruited="
+			+ carrotRecruited
+			+ ", carrotDefeated="
+			+ carrotDefeated
+			+ ", carrotEvolved="
+			+ carrotEvolved
+			+ ", description="
+			+ description
+			+ ", evolutionCost="
+			+ evolutionCost
+			+ ", animationType="
+			+ animationType
+			+ ", verticalPixelOffset="
+			+ verticalPixelOffset
+			+ ", atkSoundFile="
+			+ atkSoundFile
+			+ ", atkSoundAnimationFrame="
+			+ atkSoundAnimationFrame
+			+ ", atkAnimationRepeatedFramesStart="
+			+ atkAnimationRepeatedFramesStart
+			+ ", atkAnimationRepeatedFramesEnd="
+			+ atkAnimationRepeatedFramesEnd
+			+ ", shortName="
+			+ shortName
+			+ ", lvlInfo="
+			+ lvlInfo.toString()
+			+ ", battleDialogue="
+			+ battleDialogue.toString()
+			+ ", shadowScaleFactor="
+			+ shadowScaleFactor
+			+ "]";
+	}
 }

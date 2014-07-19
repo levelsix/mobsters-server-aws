@@ -194,14 +194,32 @@ public class Lvl6TxManager extends TransactionManager
     }
 
     //
-    // Session context style elements from DataServiceTxManager
+    // Session context manager mode methods for DataServiceTxManager
     //
 
     @Override
     public void beginTransaction()
     {
-        if (threadActiveTx.get() != null) { throw new IllegalStateException(); }
+        if (threadActiveTx.get() != null) { 
+        	throw new IllegalStateException(); 
+        }
 
+        doBeginTransaction();
+    }
+
+    @Override
+    public boolean requireTransaction()
+    {
+    	boolean retVal = false;
+        if (threadActiveTx.get() == null) {
+        	doBeginTransaction();
+        	retVal = true;
+        }
+        
+        return retVal;
+    }
+        
+    private void doBeginTransaction() {
         final Lvl6Transaction newTx;
         try {
             newTx = newTransaction();
@@ -219,15 +237,14 @@ public class Lvl6TxManager extends TransactionManager
             try {
                 newTx.rollback();
             } catch (final Throwable t2) {
-                Lvl6TxManager.LOG.error(
+                LOG.error(
                     "Failed to retain new transaction with ThreadLocal, then failed to roll it back!  Original exception: ",
                     t);
-                Lvl6TxManager.LOG.error(
+                LOG.error(
                     "Failed to retain new transaction with ThreadLocal, then failed to roll it back!  Rollback exception: ",
                     t2);
             }
-            throw new TransactionFailureException(
-                t);
+            throw new TransactionFailureException(t);
         }
     }
 

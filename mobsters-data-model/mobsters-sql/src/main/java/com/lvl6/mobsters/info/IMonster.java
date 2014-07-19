@@ -105,16 +105,19 @@ public interface IMonster extends IBaseIntPersistentObject
 
 	public void setAtkAnimationRepeatedFramesEnd( int atkAnimationRepeatedFramesEnd );
 
-	public String getShorterName();
+	public String getShortName();
 
-	public void setShorterName( String shorterName );
+	public void setShortName( String shortName );
 
 	public List<IMonsterLevelInfo> getLvlInfo();
 
-	public void setLvlInfo( List<IMonsterLevelInfo> lvlInfo );
+	// public void setLvlInfo( List<IMonsterLevelInfo> lvlInfo );
 
 	public List<IMonsterBattleDialogue> getBattleDialogue();
 
-	public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue );
+	// public void setBattleDialogue( List<IMonsterBattleDialogue> battleDialogue );
 
+	public abstract void setShadowScaleFactor( float shadowScaleFactor );
+
+	public abstract float getShadowScaleFactor();
 }

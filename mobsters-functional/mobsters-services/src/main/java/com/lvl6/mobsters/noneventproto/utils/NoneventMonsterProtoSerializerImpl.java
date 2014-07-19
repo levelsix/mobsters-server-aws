@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
@@ -16,7 +17,6 @@ import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
-import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality;
@@ -38,7 +38,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 		.getEnclosingClass());
 
 	@Override
-	public MonsterProto createMonsterProto(Monster aMonster) {
+	public MonsterProto createMonsterProto(IMonster aMonster) {
 		MonsterProto.Builder mpb = MonsterProto.newBuilder();
 		
 		mpb.setMonsterId(aMonster.getId());
@@ -111,7 +111,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	    }
 	    
 	    mpb.setMinutesToEvolve(aMonster.getMinutesToEvolve());
-	    mpb.setNumCatalystMonstersRequired(aMonster.getNumCatalystsRequired());
+	    mpb.setNumCatalystMonstersRequired(aMonster.getNumEvolutionCatalysts());
 
 	    Collection<MonsterLevelInfoProto> lvlInfoProtos = createMonsterLevelInfoFromInfo(aMonster.getLvlInfo());
 	    mpb.addAllLvlInfo(lvlInfoProtos);
@@ -139,10 +139,12 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	    
 	    mpb.setAtkAnimationRepeatedFramesEnd(aMonster.getAtkAnimationRepeatedFramesEnd());
 	    
-	    String shorterName = aMonster.getShorterName();
-	    if (null != shorterName) {
-	    	mpb.setShorterName(shorterName);
+	    final String shortName = aMonster.getShortName();
+	    if (StringUtils.hasText(shortName)) {
+	    	mpb.setShorterName(shortName);
 	    }
+	    
+	    mpb.setShadowScaleFactor(aMonster.getShadowScaleFactor());
 	    
 		return mpb.build();
 	}
@@ -225,7 +227,7 @@ public class NoneventMonsterProtoSerializerImpl implements NoneventMonsterProtoS
 	@Override
 	public FullUserMonsterProto createFullUserMonsterProtoFromUserMonster(MonsterForUser mfu) {
 		FullUserMonsterProto.Builder fumpb = FullUserMonsterProto.newBuilder();
-	    fumpb.setUserMonsterUuid(mfu.getMonsterForUserId());
+	    fumpb.setUserMonsterUuid(mfu.getMonsterForUserUuid());
 	    fumpb.setUserUuid(mfu.getUserId());
 	    fumpb.setMonsterId(mfu.getMonsterId());
 	    fumpb.setCurrentExp(mfu.getCurrentExp());

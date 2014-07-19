@@ -11,11 +11,9 @@ import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.info.ITask;
+import com.lvl6.mobsters.info.ITaskStageMonster;
 import com.lvl6.mobsters.info.Item;
-import com.lvl6.mobsters.info.Quest;
-import com.lvl6.mobsters.info.Task;
 import com.lvl6.mobsters.info.TaskStage;
-import com.lvl6.mobsters.info.TaskStageMonster;
 import com.lvl6.mobsters.info.repository.ItemRepository;
 import com.lvl6.mobsters.info.repository.TaskStageMonsterRepository;
 import com.lvl6.mobsters.info.repository.TaskStageRepository;
@@ -42,10 +40,10 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 	protected ItemRepository itemRepository;
 	
 	@Override
-	public FullTaskProto createFullTaskProtoFromTask( Task task )
+	public FullTaskProto createFullTaskProtoFromTask( ITask task )
 	{
 		FullTaskProto.Builder builder = FullTaskProto.newBuilder();
-		String str = task.getGoodName();
+		String str = task.getName();
 
 		builder.setTaskId(task.getId());
 		if (null != str) {
@@ -61,11 +59,9 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		if (null != prerequisiteTask) {
 			builder.setPrerequisiteTaskId(prerequisiteTask.getId());
 		}
-
-		Quest prerequisiteQuest = task.getPrerequisiteQuest();
-		if (null != prerequisiteQuest) {
-			builder.setPrerequisiteQuestId(prerequisiteQuest.getId());
-		}
+		
+		builder.setBoardHeight(task.getBoardHeight());
+		builder.setBoardWidth(task.getBoardWidth());
 
 		return builder.build();
 	}
@@ -109,7 +105,7 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 	@Override
 	public TaskStageMonsterProto createTaskStageMonsterProto(TaskStageForUser tsfu) {
 		int tsmId = tsfu.getTaskStageMonsterId();
-		  TaskStageMonster tsm = taskStageMonsterRepository
+		  ITaskStageMonster tsm = taskStageMonsterRepository
 				  .findOne(tsmId);
 
 		  int tsmMonsterId = tsm.getMonster().getId();
@@ -135,6 +131,7 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		  bldr.setExpReward(tsfu.getExpGained());
 		  
 		  bldr.setLevel(tsm.getLevel());
+		  bldr.setDmgMultiplier(tsm.getDmgMultiplier());
 
 		  int itemId = tsfu.getItemIdDropped();
 		  if (itemId > 0) {

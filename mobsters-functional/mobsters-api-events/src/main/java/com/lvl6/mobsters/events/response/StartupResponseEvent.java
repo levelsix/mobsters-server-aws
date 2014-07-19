@@ -11,9 +11,8 @@ public class StartupResponseEvent extends PreDatabaseResponseEvent{
 
   private StartupResponseProto startupResponseProto;
   
-  public StartupResponseEvent(String udid) {
-    super(udid);
-    eventType = EventProtocolResponse.S_STARTUP_EVENT;
+  public StartupResponseEvent(final String udid) {
+    super(udid, EventProtocolResponse.S_STARTUP_EVENT);
   }
   
   /** 

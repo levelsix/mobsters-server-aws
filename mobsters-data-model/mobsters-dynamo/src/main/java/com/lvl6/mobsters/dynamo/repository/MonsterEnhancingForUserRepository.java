@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 
-public interface MonsterEnhancingForUserRepository extends BaseDynamoRepository<MonsterEnhancingForUser>
+public interface MonsterEnhancingForUserRepository extends BaseDynamoCollectionRepository<MonsterEnhancingForUser, String>
 {
-
 	List<MonsterEnhancingForUser> findByUserId( String userId );
-
 }

@@ -9,22 +9,22 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 
 public class SpawnObstacleResponseEvent extends NormalResponseEvent {
 
-  private SpawnObstacleResponseProto spawnObstacleResponseProto;
-  
-  public SpawnObstacleResponseEvent(String playerId){
-    super(playerId);
-    eventType = EventProtocolResponse.S_SPAWN_OBSTACLE_EVENT;
+  // private final SpawnObstacleResponseProto spawnObstacleResponseProto;
+  private final ByteString b; 
+
+  public SpawnObstacleResponseEvent(
+	final String playerId, final int tag, final SpawnObstacleResponseProto.Builder protoBuilder
+  )
+  {
+    super(playerId, EventProtocolResponse.S_SPAWN_OBSTACLE_EVENT, tag);
+    b = protoBuilder.build()
+      .toByteString();
   }
   
   @Override
-  public int write(ByteBuffer bb) {
-    ByteString b = spawnObstacleResponseProto.toByteString();
+  public int write(final ByteBuffer bb) 
+  {
     b.copyTo(bb);
     return b.size();
   }
-
-  public void setSpawnObstacleResponseProto(SpawnObstacleResponseProto spawnObstacleResponseProto) {
-    this.spawnObstacleResponseProto = spawnObstacleResponseProto;
-  }
-
 }
