@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.lvl6.eventdispatcher.ClientEventDispatcherImpl;
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.PreDatabaseRequestEvent;
@@ -34,12 +35,11 @@ public class GameEventHandler extends AbstractGameEventHandler {
 	@Autowired
 	protected SessionMap sessionMap;
 	
-	/**
-	 * pass off an event to the appropriate GameController based on the GameName
-	 * of the event
-	 * 
-	 * @throws FileNotFoundException
-	 */
+	
+	@Autowired
+	protected ClientEventDispatcherImpl eventDispatcher;
+	
+
 	@Override
 	protected void delegateEvent(byte[] bytes, RequestEvent event, EventProtocolRequest eventType, WebSocketSession session) {
 		if (event != null && eventType.getNumber() < 0) {
@@ -53,6 +53,7 @@ public class GameEventHandler extends AbstractGameEventHandler {
 		}
 		updatePlayerToServerMaps(event, session);
 		EventsToDispatch responseEvents = ec.handleEvent(event);
+		eventDispatcher.dispatchEvents(responseEvents);
 	}
 
 	protected void updatePlayerToServerMaps(RequestEvent event, WebSocketSession session) {
@@ -115,6 +116,14 @@ public class GameEventHandler extends AbstractGameEventHandler {
 
 	public void setSessionMap(SessionMap sessionMap) {
 		this.sessionMap = sessionMap;
+	}
+
+	public ClientEventDispatcherImpl getEventDispatcher() {
+		return eventDispatcher;
+	}
+
+	public void setEventDispatcher(ClientEventDispatcherImpl eventDispatcher) {
+		this.eventDispatcher = eventDispatcher;
 	}
 
 }
