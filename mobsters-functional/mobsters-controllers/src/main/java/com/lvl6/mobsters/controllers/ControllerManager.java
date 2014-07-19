@@ -6,8 +6,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.server.EventController;
@@ -42,6 +40,8 @@ public class ControllerManager {
 	//       their lifetime, then it is even possible to do away with the volatile read cost by using ThreadLocal
 	//       to capture the map after its is first looked up.  If the map can change at runtime after its initial
 	//       build, then preventing future thread-safe atomic get() calls is not viable.
+	
+	//NOTE: This map is only is only written to once during spring initialization. After that it is read only. Making it atomic was unnecessary.
 	private static final class EventControllerMap {
 		private final HashMap<EventProtocolRequest, EventController> eventControllerMap;
 		
