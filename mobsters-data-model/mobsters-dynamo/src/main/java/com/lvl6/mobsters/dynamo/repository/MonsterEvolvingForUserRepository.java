@@ -1,10 +1,12 @@
 package com.lvl6.mobsters.dynamo.repository;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
-@Component public class MonsterEvolvingForUserRepository extends BaseDynamoRepositoryImpl<MonsterEvolvingForUser>{
-	public MonsterEvolvingForUserRepository(){
-		super(MonsterEvolvingForUser.class);
-	}
+
+public interface MonsterEvolvingForUserRepository extends BaseDynamoRepository<MonsterEvolvingForUser>
+{
+
+	List<MonsterEvolvingForUser> findByUserId( String userId );
 
 }

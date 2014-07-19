@@ -1,10 +1,12 @@
 package com.lvl6.mobsters.dynamo.repository;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
-@Component public class TaskForUserCompletedRepository extends BaseDynamoRepositoryImpl<TaskForUserCompleted>{
-	public TaskForUserCompletedRepository(){
-		super(TaskForUserCompleted.class);
-	}
+
+public interface TaskForUserCompletedRepository extends BaseDynamoRepository<TaskForUserCompleted>
+{
+
+	public List<TaskForUserCompleted> findByUserId( String userId );
 
 }

@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.services.achievement;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Multimap;
@@ -10,6 +11,21 @@ import com.lvl6.mobsters.services.achievement.AchievementServiceImpl.ModifyUserA
 
 public interface AchievementService {
 
+
+	//NON CRUD LOGIC
+	
+	/**************************************************************************/
+	//CRUD LOGIC
+    
+    // BEGIN READ ONLY LOGIC
+	public List<AchievementForUser> getAchievementsForUserId( String userId );
+
+	// END READ ONLY LOGIC
+	
+	/**************************************************************************/
+    
+    
+	
     /**
      * Apply an arbitary number of property changes to an arbitrary number of monsters all owned by a
      * single user. In the details table, a row corresponds to the identifier for a specific user

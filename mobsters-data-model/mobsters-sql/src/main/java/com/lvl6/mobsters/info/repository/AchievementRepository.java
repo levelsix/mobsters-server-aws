@@ -11,4 +11,6 @@ public interface AchievementRepository extends JpaRepository<Achievement, Intege
 	
 	Collection<Achievement> findByAchievementNameStartingWith(String startsWith);
 	
+//	@Query("select a.id, a from achievement a")
+//	Map<Integer, Achievement> findAllAsMap();
 }

@@ -13,10 +13,10 @@ public class AchievementForUser {
 
     // private String id;
     private String userId;
+    
+    private int achievementId;
 
     private Long version;
-
-    private int achievementId;
 
     private int progress;
 
@@ -65,6 +65,15 @@ public class AchievementForUser {
     public void setUserId( String userId ) {
         this.userId = userId;
     }
+    
+    @DynamoDBRangeKey(attributeName = "achievementId")
+    public int getAchievementId() {
+    	return achievementId;
+    }
+    
+    public void setAchievementId( int achievementId ) {
+    	this.achievementId = achievementId;
+    }
 
     @DynamoDBVersionAttribute
     public Long getVersion() {
@@ -73,15 +82,6 @@ public class AchievementForUser {
 
     public void setVersion( Long version ) {
         this.version = version;
-    }
-
-    @DynamoDBRangeKey(attributeName = "achievementId")
-    public int getAchievementId() {
-        return achievementId;
-    }
-
-    public void setAchievementId( int achievementId ) {
-        this.achievementId = achievementId;
     }
 
     public int getProgress() {

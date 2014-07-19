@@ -9,6 +9,11 @@ import com.lvl6.mobsters.events.PreDatabaseResponseEvent;
 
 public class AmqpEventDispatcher implements ClientEventDispatcher {
 
+	
+	
+	
+	
+	
 	@Override
 	public void dispatchEvents(EventsToDispatch events) {
 		// TODO Auto-generated method stub

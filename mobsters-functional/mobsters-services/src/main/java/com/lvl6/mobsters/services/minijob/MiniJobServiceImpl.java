@@ -20,6 +20,7 @@ import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepositoryImpl;
 import com.lvl6.mobsters.info.MiniJob;
 
 @Component
@@ -81,8 +82,18 @@ public class MiniJobServiceImpl implements MiniJobService {
         return spawnedMiniJobs;
     }
     
-    //CRUD LOGIC******************************************************************
-
+    /**************************************************************************/
+	//CRUD LOGIC
+    
+    // BEGIN READ ONLY LOGIC
+    @Override
+    public List<MiniJobForUser> getMiniJobForUserId( String userId ) {
+    	return miniJobForUserRepository.findByUserId(userId);
+    }
+    // END READ ONLY LOGIC
+	
+ 	/**************************************************************************/
+     
     @Override
     public void modifyMiniJobsForUser( String userId, ModifyUserMiniJobsSpec modifySpec ) {
         // txManager.startTransaction();
@@ -338,7 +349,7 @@ public class MiniJobServiceImpl implements MiniJobService {
         return miniJobForUserRepository;
     }
 
-    public void setMiniJobForUserRepository( MiniJobForUserRepository miniJobForUserRepository )
+    public void setMiniJobForUserRepository( MiniJobForUserRepositoryImpl miniJobForUserRepository )
     {
         this.miniJobForUserRepository = miniJobForUserRepository;
     }

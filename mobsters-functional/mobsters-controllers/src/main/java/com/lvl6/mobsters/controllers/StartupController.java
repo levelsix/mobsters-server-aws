@@ -3,6 +3,7 @@ package com.lvl6.mobsters.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +13,21 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
+import com.lvl6.mobsters.dynamo.AchievementForUser;
 import com.lvl6.mobsters.dynamo.ClanForUser;
+import com.lvl6.mobsters.dynamo.EventPersistentForUser;
+import com.lvl6.mobsters.dynamo.MiniJobForUser;
+import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
+import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
+import com.lvl6.mobsters.dynamo.MonsterForUser;
+import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
+import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
+import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
+import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.UserCredential;
 import com.lvl6.mobsters.eventproto.EventStartupProto.StartupRequestProto;
@@ -27,6 +40,7 @@ import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.StartupRequestEvent;
 import com.lvl6.mobsters.events.response.StartupResponseEvent;
 import com.lvl6.mobsters.info.Achievement;
+import com.lvl6.mobsters.info.BaseIntPersistentObject;
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.EventPersistent;
 import com.lvl6.mobsters.info.Item;
@@ -34,7 +48,6 @@ import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.MonsterBattleDialogue;
 import com.lvl6.mobsters.info.Obstacle;
 import com.lvl6.mobsters.info.PvpLeague;
-import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.info.StaticUserLevelInfo;
 import com.lvl6.mobsters.info.StructureHospital;
 import com.lvl6.mobsters.info.StructureLab;
@@ -52,6 +65,7 @@ import com.lvl6.mobsters.info.repository.MonsterBattleDialogueRepository;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 import com.lvl6.mobsters.info.repository.ObstacleRepository;
 import com.lvl6.mobsters.info.repository.PvpLeagueRepository;
+import com.lvl6.mobsters.info.repository.QuestRepository;
 import com.lvl6.mobsters.info.repository.StaticUserLevelInfoRepository;
 import com.lvl6.mobsters.info.repository.StructureHospitalRepository;
 import com.lvl6.mobsters.info.repository.StructureLabRepository;
@@ -62,12 +76,16 @@ import com.lvl6.mobsters.info.repository.StructureResourceStorageRepository;
 import com.lvl6.mobsters.info.repository.StructureTownHallRepository;
 import com.lvl6.mobsters.info.repository.TaskRepository;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
+import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserEnhancementItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventStaticDataProto.StaticDataProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventAchievementProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventBoosterPackProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventClanProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventEventPersistentProtoSerializer;
+import com.lvl6.mobsters.noneventproto.utils.NoneventMiniJobProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventMonsterProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventPvpProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventQuestProtoSerializer;
@@ -75,8 +93,12 @@ import com.lvl6.mobsters.noneventproto.utils.NoneventStructureProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventTaskProtoSerializer;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.clan.ClanService;
+import com.lvl6.mobsters.services.minijob.MiniJobService;
+import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.quest.QuestService;
+import com.lvl6.mobsters.services.task.TaskService;
 import com.lvl6.mobsters.services.user.UserService;
 import com.lvl6.properties.Globals;
 import com.lvl6.properties.MDCKeys;
@@ -89,21 +111,30 @@ public class StartupController extends EventController
 
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired
+	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
 
 	@Autowired
 	protected QuestService questService;
 	
 	@Autowired
-	protected ClanService clanService;
+	protected QuestRepository questRepository;
 	
 	@Autowired
 	protected NoneventQuestProtoSerializer noneventQuestProtoSerializer;
 	
 	@Autowired
-	protected NoneventUserProtoSerializer noneventUserProtoSerializer;
+	protected ClanService clanService;
 	
 	@Autowired
 	protected NoneventClanProtoSerializer noneventClanProtoSerializer;
+	
+	@Autowired
+	protected MonsterService monsterService;
+	
+	@Autowired
+	protected TaskService taskService;
 	
 	@Autowired
 	protected TaskRepository taskRepository;
@@ -177,7 +208,16 @@ public class StartupController extends EventController
 	@Autowired
 	protected NoneventAchievementProtoSerializer noneventAchievementProtoSerializer;
 	
-	//TODO
+	@Autowired
+	protected AchievementService achievementService;
+	
+	@Autowired
+	protected MiniJobService miniJobService;
+	
+	@Autowired
+	protected NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer;
+	
+	// TODO
 	/*
 	 * @Autowired protected EventWriter eventWriter;
 	 */
@@ -245,7 +285,7 @@ public class StartupController extends EventController
 
 		try {
 			if (!UpdateStatus.MAJOR_UPDATE.equals(updateStatus)) {
-				user = getUserService().getUserCredentialByFacebookIdOrUdid(fbId, udid);
+				user = userService.getUserCredentialByFacebookIdOrUdid(fbId, udid);
 				if (null != user) {
 					userId = user.getUserId();
 					startupStatus = StartupStatus.USER_IN_DB;
@@ -313,7 +353,7 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at setUserClanInfos", stopWatch.getTime());
 //		setNotifications(resBuilder, user);
 //		LOG.info("{}ms at setNotifications", stopWatch.getTime());
-		setNoticesToPlayers(resBuilder);
+//		setNoticesToPlayers(resBuilder);
 //		LOG.info("{}ms at setNoticesToPlayers", stopWatch.getTime());
 //		setGroupChatMessages(resBuilder, user);
 //		LOG.info("{}ms at groupChatMessages", stopWatch.getTime());
@@ -321,15 +361,13 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at privateChatPosts", stopWatch.getTime());
 		setUserMonsterStuff(resBuilder, userId);
 //		LOG.info("{}ms at setUserMonsterStuff", stopWatch.getTime());
-//		setBoosterPurchases(resBuilder);
-//		LOG.info("{}ms at boosterPurchases", stopWatch.getTime());
 //		setFacebookAndExtraSlotsStuff(resBuilder, user, userId);
 //		LOG.info("{}ms at facebookAndExtraSlotsStuff", stopWatch.getTime());
-//		setTaskStuff(resBuilder, userId);
+		setTaskStuff(resBuilder, userId);
 //		LOG.info("{}ms at task stuff", stopWatch.getTime());
 		setAllStaticData(resBuilder, userId, true);
 //		LOG.info("{}ms at static data", stopWatch.getTime());
-//		setEventStuff(resBuilder, userId);
+		setEventStuff(resBuilder, userId);
 //		LOG.info("{}ms at eventStuff", stopWatch.getTime());
 		//if server sees that the user is in a pvp battle, decrement user's elo
 //		PvpLeagueForUser plfu = pvpBattleStuff(resBuilder, user,
@@ -339,9 +377,9 @@ public class StartupController extends EventController
 //		LOG.info("{}ms at pvpBattleHistoryStuff", stopWatch.getTime());
 //		setClanRaidStuff(resBuilder, user, userId, now);
 //		LOG.info("{}ms at clanRaidStuff", stopWatch.getTime());
-//		setAchievementStuff(resBuilder, userId);
+		setAchievementStuff(resBuilder, userId);
 //		LOG.info("{}ms at achivementStuff", stopWatch.getTime());
-//		setMiniJob(resBuilder, userId);
+		setMiniJob(resBuilder, userId);
 //		LOG.info("{}ms at miniJobStuff", stopWatch.getTime());
 	}
 	
@@ -368,7 +406,10 @@ public class StartupController extends EventController
 		Map<Integer, Collection<QuestJobForUser>> questIdToUserQuestJobs = questService
 			.findByUserIdAndQuestIdIn(userId, inProgressQuestIds);
 		
-		Map<Integer, Quest> questIdToQuests = null;//QuestRetrieveUtils.getQuestIdsToQuests();
+		Collection<?> configQuests = questRepository.findByIdIn(inProgressQuestIds);
+		
+		Map<Integer, BaseIntPersistentObject> questIdToQuests =
+			ConfigurationDataUtil.mapifyConfigurationData(configQuests);
 
 		//generate the user quests
 		List<FullUserQuestProto> currentUserQuests = noneventQuestProtoSerializer
@@ -376,7 +417,7 @@ public class StartupController extends EventController
 				questIdToUserQuestJobs);
 		resBuilder.addAllUserQuests(currentUserQuests);
 
-		//generate the redeemed quest ids
+		//send the redeemed quest ids
 		resBuilder.addAllRedeemedQuestIds(redeemedQuestIds);
 	}
 	
@@ -389,7 +430,7 @@ public class StartupController extends EventController
 		}
 	}
 	
-	private void setNoticesToPlayers(Builder resBuilder) {
+	/*private void setNoticesToPlayers(Builder resBuilder) {
 		// TODO: Fill in the place holder
 		List<String> notices = null;//StartupStuffRetrieveUtils.getAllActiveAlerts();
 	  	if (null != notices) {
@@ -397,15 +438,145 @@ public class StartupController extends EventController
 	  	    resBuilder.addNoticesToPlayers(notice);
 	  	  }
 	  	}
-	}
+	}*/
 	
 	private void setGroupChatMessages(Builder resBuilder, User user) {
 		// TODO: Fill in
 	}
 	
 	private void setUserMonsterStuff(Builder resBuilder, String userId) {
-		// TODO: Fill in
+		List<MonsterForUser> userMonsters= monsterService.getMonstersForUser(userId);
+		
+		if (!CollectionUtils.lacksSubstance(userMonsters))
+		{
+			for (MonsterForUser mfu : userMonsters) {
+				resBuilder.addUsersMonsters(
+					noneventMonsterProtoSerializer.createFullUserMonsterProtoFromUserMonster(mfu));
+			}
+		}
+		
+		//monsters in healing
+		List<MonsterHealingForUser> userMonstersHealing =
+			monsterService.getMonstersInHealingForUser(userId);
+		if (!CollectionUtils.lacksSubstance(userMonstersHealing))
+		{
+			for (MonsterHealingForUser mhfu : userMonstersHealing) {
+				resBuilder.addMonstersHealing(
+					noneventMonsterProtoSerializer.createUserMonsterHealingProto(mhfu));
+			}
+		}
+		
+		//monsters in enhancing
+		List<MonsterEnhancingForUser> userMonstersEnhancing =
+			monsterService.getMonstersInEnhancingForUser(userId);
+		if (!CollectionUtils.lacksSubstance(userMonstersEnhancing))
+		{
+	    	UserEnhancementItemProto baseMonster = null;
+	    	
+	    	List<UserEnhancementItemProto> feeders = new ArrayList<UserEnhancementItemProto>();
+	    	for (MonsterEnhancingForUser mefu : userMonstersEnhancing) {
+	    		UserEnhancementItemProto ueip =
+	    			noneventMonsterProtoSerializer.createUserEnhancementItemProto(mefu);
+	    		
+	    		// TODO: if user has no monsters with null start time
+	    		// (if user has all monsters with a start time), or
+	    		// if user has more than one monster with a null start time
+	    		// store them to history and delete them or something
+	    		
+	    		//search for the monster that is being enhanced, the one with null start time
+	    		Date startTime = mefu.getExpectedStartTime();
+	    		if(null == startTime) {
+	    			//found him
+	    			baseMonster = ueip;
+	    		} else {
+	    			//just a feeder, add him to the list
+	    			feeders.add(ueip);
+	    		}
+	    	}
+			
+	    	resBuilder.setEnhancements(
+	    		noneventMonsterProtoSerializer.createUserEnhancementProto(
+	    			userId,
+	    			baseMonster,
+	    			feeders)
+	    	);
+		}
+		
+		//monsters in evolution
+		List<MonsterEvolvingForUser> userMonstersEvolving =
+			monsterService.getMonstersInEvolution(userId);
+		
+		if (!CollectionUtils.lacksSubstance(userMonstersEvolving))
+		{
+			for (MonsterEvolvingForUser mefu : userMonstersEvolving) {
+				// TODO: NOTE THAT IF MORE THAN ONE EVOLUTION IS ALLLOWED AT A TIME,
+				// THIS METHOD CALL NEEDS TO CHANGE
+				resBuilder.setEvolution(
+					noneventMonsterProtoSerializer.createUserEvolutionProtoFromEvolution(mefu));
+			}
+		}
 	}
+	
+	private void setTaskStuff(Builder resBuilder, String userId) {
+		List<TaskForUserCompleted> tfucList = taskService.getTaskCompletedForUser(userId);
+		for (TaskForUserCompleted tfuc : tfucList) {
+			resBuilder.addCompletedTaskIds(tfuc.getTaskId());
+		}
+		
+		TaskForUserOngoing aTaskForUser = taskService.getUserTaskForUserId(userId);
+		if (null != aTaskForUser) {
+			LOG.warn("user has incompleted task userTask=" + aTaskForUser);
+			setOngoingTask(resBuilder, userId, aTaskForUser);
+		}
+	}
+	
+	private void setOngoingTask(Builder resBuilder, String userId,
+		TaskForUserOngoing aTaskForUser)
+	{
+		try {
+			MinimumUserTaskProto mutp = noneventTaskProtoSerializer
+				.createMinimumUserTaskProto(userId, aTaskForUser);
+			resBuilder.setCurTask(mutp);
+			
+			//create protos for stages
+			List<TaskStageForUser> taskStages = taskService
+				.getTaskStagesForUserWithTaskForUserId(
+					aTaskForUser.getTaskForUserId());
+			
+			//group taskStageForUsers by stage nums because more than one
+			//taskStageForUser with the same stage num means this stage
+			//has more than one monster
+			Map<Integer, List<TaskStageForUser>> stageNumToTsfu =
+				new HashMap<Integer, List<TaskStageForUser>>();
+			for (TaskStageForUser tsfu : taskStages) {
+				int stageNum = tsfu.getStageNum();
+
+				if (!stageNumToTsfu.containsKey(stageNum)) {
+					List<TaskStageForUser> a = new ArrayList<TaskStageForUser>(); 
+					stageNumToTsfu.put(stageNum, a);
+				}
+
+				List<TaskStageForUser> tsfuList = stageNumToTsfu.get(stageNum);
+				tsfuList.add(tsfu);
+			}
+
+			//now that we have grouped all the monsters in their corresponding
+			//task stages, protofy them
+			int taskId = aTaskForUser.getTaskId();
+			for (Integer stageNum : stageNumToTsfu.keySet()) {
+				List<TaskStageForUser> monsters = stageNumToTsfu.get(stageNum);
+
+				TaskStageProto tsp = noneventTaskProtoSerializer.createTaskStageProto(
+					taskId, stageNum, monsters);
+				resBuilder.addCurTaskStages(tsp);
+			}
+				
+		} catch (Exception e) {
+			LOG.error("could not create existing user task, letting it get" +
+		  		" deleted when user starts another task.", e);
+		}
+	}
+	
 	
 	private void setAllStaticData(Builder resBuilder, String userId, boolean userIdSet) {
 		StaticDataProto.Builder sdpb = StaticDataProto.newBuilder();
@@ -580,7 +751,37 @@ public class StartupController extends EventController
 		}
 	}
 	
-	//TODO
+	private void setEventStuff( Builder resBuilder, String userId ) {
+		List<EventPersistentForUser> events = taskService
+			.getUserPersistentEventForUserId(userId);
+		
+		for (EventPersistentForUser epfu : events) {
+			resBuilder.addUserEvents(
+				noneventTaskProtoSerializer.createUserPersistentEventProto(epfu));
+		}
+	}
+	
+	private void setAchievementStuff( Builder resBuilder, String userId) {
+		List<AchievementForUser> userAchievements = achievementService
+			.getAchievementsForUserId(userId);
+		
+		for (AchievementForUser afu : userAchievements) {
+			resBuilder.addUserAchievements(
+				noneventAchievementProtoSerializer.createUserAchievementProto(afu));
+		}
+	}
+	
+	private void setMiniJob( Builder resBuilder, String userId ) {
+		List<MiniJobForUser> userMiniJobs = miniJobService
+			.getMiniJobForUserId(userId);
+		resBuilder.addAllUserMiniJobProtos(
+			noneventMiniJobProtoSerializer
+			.createUserMiniJobProtos(userMiniJobs, null));
+		
+	}
+	
+	//TODO: Generate the getters and setters for the autowired properties 
+
 	public UserService getUserService()
 	{
 		return userService;
@@ -589,26 +790,6 @@ public class StartupController extends EventController
 	public void setUserService( UserService userService )
 	{
 		this.userService = userService;
-	}
-
-	public QuestService getQuestService()
-	{
-		return questService;
-	}
-
-	public void setQuestService( QuestService questService )
-	{
-		this.questService = questService;
-	}
-
-	public ClanService getClanService()
-	{
-		return clanService;
-	}
-
-	public void setClanService( ClanService clanService )
-	{
-		this.clanService = clanService;
 	}
 
 	public NoneventUserProtoSerializer getNoneventUserProtoSerializer()
@@ -622,6 +803,26 @@ public class StartupController extends EventController
 		this.noneventUserProtoSerializer = noneventUserProtoSerializer;
 	}
 
+	public QuestService getQuestService()
+	{
+		return questService;
+	}
+
+	public void setQuestService( QuestService questService )
+	{
+		this.questService = questService;
+	}
+
+	public QuestRepository getQuestRepository()
+	{
+		return questRepository;
+	}
+
+	public void setQuestRepository( QuestRepository questRepository )
+	{
+		this.questRepository = questRepository;
+	}
+
 	public NoneventQuestProtoSerializer getNoneventQuestProtoSerializer()
 	{
 		return noneventQuestProtoSerializer;
@@ -633,6 +834,16 @@ public class StartupController extends EventController
 		this.noneventQuestProtoSerializer = noneventQuestProtoSerializer;
 	}
 
+	public ClanService getClanService()
+	{
+		return clanService;
+	}
+
+	public void setClanService( ClanService clanService )
+	{
+		this.clanService = clanService;
+	}
+
 	public NoneventClanProtoSerializer getNoneventClanProtoSerializer()
 	{
 		return noneventClanProtoSerializer;
@@ -642,6 +853,16 @@ public class StartupController extends EventController
 		NoneventClanProtoSerializer noneventClanProtoSerializer )
 	{
 		this.noneventClanProtoSerializer = noneventClanProtoSerializer;
+	}
+
+	public MonsterService getMonsterService()
+	{
+		return monsterService;
+	}
+
+	public void setMonsterService( MonsterService monsterService )
+	{
+		this.monsterService = monsterService;
 	}
 
 	public TaskRepository getTaskRepository()
@@ -814,15 +1035,15 @@ public class StartupController extends EventController
 		this.eventPersistentRepository = eventPersistentRepository;
 	}
 
-	public NoneventEventPersistentProtoSerializer getEventPersistentSerializer()
+	public NoneventEventPersistentProtoSerializer getEventPersistentProtoSerializer()
 	{
 		return eventPersistentProtoSerializer;
 	}
 
-	public void setEventPersistentSerializer(
-		NoneventEventPersistentProtoSerializer eventPersistentSerializer )
+	public void setEventPersistentProtoSerializer(
+		NoneventEventPersistentProtoSerializer eventPersistentProtoSerializer )
 	{
-		this.eventPersistentProtoSerializer = eventPersistentSerializer;
+		this.eventPersistentProtoSerializer = eventPersistentProtoSerializer;
 	}
 
 	public MonsterBattleDialogueRepository getMonsterBattleDialogueRepository()
@@ -834,17 +1055,6 @@ public class StartupController extends EventController
 		MonsterBattleDialogueRepository monsterBattleDialogueRepository )
 	{
 		this.monsterBattleDialogueRepository = monsterBattleDialogueRepository;
-	}
-
-	public NoneventEventPersistentProtoSerializer getEventPersistentProtoSerializer()
-	{
-		return eventPersistentProtoSerializer;
-	}
-
-	public void setEventPersistentProtoSerializer(
-		NoneventEventPersistentProtoSerializer eventPersistentProtoSerializer )
-	{
-		this.eventPersistentProtoSerializer = eventPersistentProtoSerializer;
 	}
 
 	public ItemRepository getItemRepository()
@@ -906,6 +1116,47 @@ public class StartupController extends EventController
 		NoneventAchievementProtoSerializer noneventAchievementProtoSerializer )
 	{
 		this.noneventAchievementProtoSerializer = noneventAchievementProtoSerializer;
+	}
+
+	public TaskService getTaskService()
+	{
+		return taskService;
+	}
+
+	public void setTaskService( TaskService taskService )
+	{
+		this.taskService = taskService;
+	}
+
+	public AchievementService getAchievementService()
+	{
+		return achievementService;
+	}
+
+	public void setAchievementService( AchievementService achievementService )
+	{
+		this.achievementService = achievementService;
+	}
+
+	public MiniJobService getMiniJobService()
+	{
+		return miniJobService;
+	}
+
+	public void setMiniJobService( MiniJobService miniJobService )
+	{
+		this.miniJobService = miniJobService;
+	}
+
+	public NoneventMiniJobProtoSerializer getNoneventMiniJobProtoSerializer()
+	{
+		return noneventMiniJobProtoSerializer;
+	}
+
+	public void setNoneventMiniJobProtoSerializer(
+		NoneventMiniJobProtoSerializer noneventMiniJobProtoSerializer )
+	{
+		this.noneventMiniJobProtoSerializer = noneventMiniJobProtoSerializer;
 	}
 
 }

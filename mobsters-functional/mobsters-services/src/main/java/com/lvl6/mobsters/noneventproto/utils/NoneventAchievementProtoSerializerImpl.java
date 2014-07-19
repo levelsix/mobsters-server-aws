@@ -3,12 +3,14 @@ package com.lvl6.mobsters.noneventproto.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lvl6.mobsters.dynamo.AchievementForUser;
 import com.lvl6.mobsters.info.Achievement;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType;
 import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto;
 import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType;
+import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.UserAchievementProto;
 
 public class NoneventAchievementProtoSerializerImpl implements NoneventAchievementProtoSerializer 
 {
@@ -84,4 +86,24 @@ public class NoneventAchievementProtoSerializerImpl implements NoneventAchieveme
 
 		return ab.build();
 	}
+
+	
+	//BEGIN USER DATA SERIALIZATION
+	
+	
+	@Override
+	public UserAchievementProto createUserAchievementProto(
+		AchievementForUser afu)
+	{
+		UserAchievementProto.Builder uapb = UserAchievementProto.newBuilder();
+
+		uapb.setAchievementId(afu.getAchievementId());
+		uapb.setProgress(afu.getProgress());
+		uapb.setIsComplete(afu.isComplete());
+		uapb.setIsRedeemed(afu.isRedeemed());
+
+		return uapb.build();
+	}
+	
+	
 }
