@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.controllers;
+/*package com.lvl6.mobsters.controllers;
 
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.eventproto.EventStructureProto.RetrieveCurrencyFromNormStructureRequestProto.StructRetrieval
@@ -8,23 +8,23 @@ import com.lvl6.mobsters.eventproto.utils.CreateEventProtoUtil
 import com.lvl6.mobsters.events.EventsToDispatch
 import com.lvl6.mobsters.events.RequestEvent
 import com.lvl6.mobsters.events.request.RetrieveCurrencyFromNormStructureRequestEvent
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 import com.lvl6.mobsters.events.response.RetrieveCurrencyFromNormStructureResponseEvent
+import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithMaxResources
 import com.lvl6.mobsters.server.EventController
-import com.lvl6.mobsters.services.structure.composite.CollectCurrencyFromNormStructureService
+import java.util.AbstractMap.SimpleEntry
 import java.util.Date
+import java.util.HashMap
+import java.util.List
+import java.util.Map
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.List
+
 import static com.lvl6.mobsters.common.utils.CollectionUtils.*
-import java.util.Map
-import java.util.HashMap
-import java.util.AbstractMap.SimpleEntry
 
 @Component
 public class RetrieveCurrencyFromNormStructureController extends EventController
@@ -132,3 +132,4 @@ public class RetrieveCurrencyFromNormStructureController extends EventController
 	}
 	
 }
+*/

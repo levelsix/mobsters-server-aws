@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.services.structure.upgradenormstructure
+package com.lvl6.mobsters.services.structure.composite
 
 import com.lvl6.mobsters.dynamo.StructureForUser
 import com.lvl6.mobsters.dynamo.User
@@ -11,6 +11,7 @@ import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.common.TimeUtils
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
 import com.lvl6.mobsters.services.structure.StructureService
+import com.lvl6.mobsters.services.structure.composite.UpgradeNormStructureService
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import com.lvl6.mobsters.services.user.UserService
 import java.util.Date
@@ -20,14 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
-import static com.lvl6.mobsters.services.structure.upgradenormstructure.UpgradeNormStructureServiceTwoImpl.*
 
 @Component
-public class UpgradeNormStructureServiceTwoImpl implements
-		UpgradeNormStructureService {
+public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureService {
 
 	private static val Logger LOG = 
-		LoggerFactory.getLogger(UpgradeNormStructureServiceTwoImpl)
+		LoggerFactory.getLogger(UpgradeNormStructureServiceImpl)
 
 	@Autowired
 	private var UserRepository userRepository
@@ -68,8 +67,8 @@ public class UpgradeNormStructureServiceTwoImpl implements
 			int gemsSpent, String resourceType, int _resourceChange,
 			Date timeOfUpgrade)
 	{
-		val UpgradeNormStructureServiceTwoImpl.UpgradeNormStructureAction action =
-			new UpgradeNormStructureServiceTwoImpl.UpgradeNormStructureAction(
+		val UpgradeNormStructureServiceImpl.UpgradeNormStructureAction action =
+			new UpgradeNormStructureServiceImpl.UpgradeNormStructureAction(
 				userId, userStructId, gemsSpent, resourceType, _resourceChange, timeOfUpgrade,
 				userRepository, structureForUserRepository, structExtension, userExtension
 			);
@@ -190,7 +189,7 @@ public class UpgradeNormStructureServiceTwoImpl implements
 		    	gemsSpent = Math.abs(gemsSpent)
 			}
 	
-			val spendPurpose = [| return String.format(" to upgrade to structure=%s", nextLevelStruct.toString())]
+			val spendPurpose = [| return String.format("to upgrade to structure=%s", nextLevelStruct.toString())]
 			
 			userGems = user.gems
 			user.checkCanSpendGems(gemsSpent, LOG, spendPurpose)

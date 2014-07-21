@@ -32,6 +32,7 @@ import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
+import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
 

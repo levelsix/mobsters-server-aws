@@ -77,7 +77,7 @@ class UserExtensionLib {
 			log,
 			[ | 
 				return String.format(
-					"user has %d oil; trying to spend %d as part of cost to %s",
+					"user has %d oil; trying to spend %d as part of cost %s",
 					u.oil, oilToSpend, spendPurposeLambda.apply())]
 		)
 				
