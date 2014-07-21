@@ -1,33 +1,33 @@
 package com.lvl6.mobsters.services.structure.upgradenormstructure
 
+import com.lvl6.mobsters.dynamo.StructureForUser
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository
+import com.lvl6.mobsters.dynamo.repository.UserRepository
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.info.repository.StructureRepository
+import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
+import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.services.common.TimeUtils
+import com.lvl6.mobsters.services.structure.StructureExtensionLib
+import com.lvl6.mobsters.services.structure.StructureService
+import com.lvl6.mobsters.services.user.UserExtensionLib
+import com.lvl6.mobsters.services.user.UserService
 import java.util.Date
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import com.lvl6.mobsters.dynamo.StructureForUser
-import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository
-import com.lvl6.mobsters.dynamo.repository.UserRepository
-import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
-import com.lvl6.mobsters.info.IStructure
-import com.lvl6.mobsters.info.Structure
-import com.lvl6.mobsters.info.repository.StructureRepository
-import com.lvl6.mobsters.services.common.Lvl6MobstersException
-import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
-import com.lvl6.mobsters.services.common.TimeUtils
-import com.lvl6.mobsters.services.structure.StructureService
-import com.lvl6.mobsters.services.user.UserService
+import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.services.structure.upgradenormstructure.UpgradeNormStructureServiceTwoImpl.*
 
 @Component
 public class UpgradeNormStructureServiceTwoImpl implements
 		UpgradeNormStructureService {
 
 	private static val Logger LOG = 
-		LoggerFactory.getLogger(UpgradeNormStructureServiceImpl)
+		LoggerFactory.getLogger(UpgradeNormStructureServiceTwoImpl)
 
 	@Autowired
 	private var UserRepository userRepository
@@ -47,6 +47,12 @@ public class UpgradeNormStructureServiceTwoImpl implements
 	@Autowired
 	private var DataServiceTxManager txManager
 
+	@Autowired
+	extension StructureExtensionLib structExtension
+	
+	@Autowired
+	extension UserExtensionLib userExtension
+
 	// NON CRUD LOGIC
 
 	/**************************************************************************/
@@ -62,129 +68,162 @@ public class UpgradeNormStructureServiceTwoImpl implements
 			int gemsSpent, String resourceType, int _resourceChange,
 			Date timeOfUpgrade)
 	{
-		// TODO: TRANSACTIONIFY
-		val User user = userRepository.load(userId)
-		val StructureForUser sfu = 
-			structureForUserRepository.findByUserIdAndStructureForUserId(
-				userId, userStructId)
-
-		val resourceChange = Math.abs(_resourceChange)
-		checkIfUserCanUpgradeStructure(userId, user, userStructId, sfu,
-				gemsSpent, resourceType, resourceChange, timeOfUpgrade)
-
-		// TODO: Write to currency history
-		updateUserCurrency(userId, gemsSpent, resourceType, resourceChange)
-		structureService.beginUpgradingUserStruct(sfu, timeOfUpgrade)
+		val UpgradeNormStructureServiceTwoImpl.UpgradeNormStructureAction action =
+			new UpgradeNormStructureServiceTwoImpl.UpgradeNormStructureAction(
+				userId, userStructId, gemsSpent, resourceType, _resourceChange, timeOfUpgrade,
+				userRepository, structureForUserRepository, structExtension, userExtension
+			);
 		
-		return user
+		var success = false
+		txManager.beginTransaction()
+		try {
+			action.execute();
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
+		}
+
+		// Don't expose the User object, although it could be returned by the Action if that were desired....
+		return null;
 	}
 	
-	private def void checkIfUserCanUpgradeStructure(String userId, User user,
-			String userStructId, StructureForUser sfu, int _gemsSpent,
-			String resourceType, int resourceChange, Date timeOfUpgrade)
+	static class UpgradeNormStructureAction 
 	{
-		if ( null == user || null == sfu || sfu.getLastRetrieved() == null ) {
-			LOG.error("parameter passed in is null. user=" + user + ", user struct=" + sfu + 
-			         ", userStruct's last retrieve time=" + sfu.getLastRetrieved())
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER)
-		}
-
-		if (!sfu.isComplete()) {
-			LOG.error("user struct is not complete yet")
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE)
-		}
-
-		val Structure currentStruct = structureRepository.findOne(sfu.getStructId())
-		val IStructure nextLevelStruct = currentStruct.getSuccessorStruct(); 
-		if (null == nextLevelStruct ) {
-			//can't upgrade since there is no further structure to upgrade to
-			LOG.error("user struct at max level already. struct is " + currentStruct)
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_STRUCTURE_AT_MAX_LEVEL)
-		}
+		val String userId
+		val String userStructId
+		var int gemsSpent
+		val String resourceType
+		var int resourceChange
+		val Date timeOfUpgrade
 		
-		if (TimeUtils.isFirstEarlierThanSecond(timeOfUpgrade, sfu.getLastRetrieved())) {
-			LOG.error("the upgrade time " + timeOfUpgrade + " is before the last time the building was retrieved:"
-			          + sfu.getLastRetrieved())
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE)
-		}
+		val UserRepository userRepo
+		val StructureForUserRepository sfuRepo
+		val extension StructureExtensionLib sfuExt
+		val extension UserExtensionLib userExt
+		
+		// Derived properties computed when checking, then applied when updating
+		var User user
+		var StructureForUser sfu
+		var int userGems
+		var int cashToSpend
+		var int oilToSpend
+		
+		new(String userId, String userStructId,
+			int gemsSpent, String resourceType, int resourceChange,
+			Date timeOfUpgrade, UserRepository userRepo,
+			StructureForUserRepository sfuRepo,
+			StructureExtensionLib sfuExt, UserExtensionLib userExt) 
+		{
+			this.userId = userId
+			this.userStructId = userStructId
+			this.gemsSpent = gemsSpent
+			this.resourceType = resourceType
+			this.resourceChange = Math.abs(resourceChange)
+			this.timeOfUpgrade = timeOfUpgrade
+
+			this.userRepo = userRepo
+			this.sfuRepo = sfuRepo
+			this.sfuExt = sfuExt
+			this.userExt = userExt
 			
-		var gemsSpent = _gemsSpent
-		if (gemsSpent < 0) {
-			LOG.warn("gemsSpent is negative! gemsSpent=" + gemsSpent)
-	    	gemsSpent = Math.abs(_gemsSpent)
+			// Derived properties computed when checking, then applied when updating
+			this.user = null
+			this.sfu = null
+			this.userGems = 0
+			this.cashToSpend = 0
+			this.oilToSpend = 0
 		}
-
-		val userGems = user.gems
-		if (gemsSpent > 0 && userGems < gemsSpent) {
-	    	LOG.error("user has " + userGems + " gems; trying to spend " +
-	    			gemsSpent + " and " + resourceChange  + " " +
-	    			resourceType + " to upgrade to structure=" + nextLevelStruct)
-	    	throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS)
-	    }
-		var cashSpent = 0
-		if (Lvl6MobstersResourceEnum.CASH.name() == resourceType) {
-			if (!hasEnoughCash(user, resourceChange)) {
-				throw new Lvl6MobstersException(
-						Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_RESOURCE)
-			}
-			cashSpent = resourceChange
-		}
-
-		var oilSpent = 0
-		if (Lvl6MobstersResourceEnum.OIL.name() == resourceType) {
-			if (!hasEnoughOil(user, resourceChange)) {
-				throw new Lvl6MobstersException(
-						Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_RESOURCE)
-			}
-			oilSpent = resourceChange
-		}
-	}
+		
+		def void execute() {
+			user = userRepo.load(userId)
+			sfu = sfuRepo.findByUserIdAndStructureForUserId(userId, userStructId)
+			
+			checkIfUserCanUpgradeStructure()
 	
-	private def boolean hasEnoughCash(User user, int resourceChange) {
-		val userCash = user.cash
-		if (userCash < resourceChange) {
-			LOG.error("user error: user does not have enough cash. userCash="
-					+ userCash + "\t cashSpent=" + resourceChange)
-			return false
-		} else {
-			return true
+			// TODO: Write to currency history
+			updateUserCurrency()	
+			sfu.speedUpConstruction(timeOfUpgrade).moveTo(495, 284)
+			
+			userRepo.save(user)
+			sfuRepo.save(sfu)
+		}
+		
+		private def void checkIfUserCanUpgradeStructure()
+		{
+			lvl6Precondition( 
+				(user !== null && sfu !== null && sfu.getLastRetrieved() !== null),
+				Lvl6MobstersStatusCode.FAIL_OTHER,
+				LOG,
+				"parameter passed in is null. user=%s, user struct=%s, userStruct's last retrieve time=%s", 
+				user, sfu, sfu.getLastRetrieved())
+	
+			lvl6Precondition(
+				sfu.isComplete(),
+				Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE,
+				LOG,
+				"user struct is not complete yet")
+	
+			val currentStruct = sfu.structure
+			val nextLevelStruct = currentStruct.successorStruct
+			
+			//can't upgrade if there is no further structure to upgrade to
+			lvl6Precondition(
+				nextLevelStruct !== null,
+				Lvl6MobstersStatusCode.FAIL_STRUCTURE_AT_MAX_LEVEL,
+				LOG,
+				"user struct at max level already.  Current structure is %s", 
+				currentStruct)
+			
+			lvl6Precondition(
+				TimeUtils.isFirstEarlierThanSecond(sfu.getLastRetrieved(), timeOfUpgrade),
+				Lvl6MobstersStatusCode.FAIL_CONSTRUCTION_INCOMPLETE,
+				LOG,
+				"the upgrade time %s is before the last time the building was retrieved: %s",
+				timeOfUpgrade, sfu.getLastRetrieved())
+		
+			if (gemsSpent < 0) {
+				LOG.warn("gemsSpent is negative! gemsSpent=%d", gemsSpent)
+		    	gemsSpent = Math.abs(gemsSpent)
+			}
+	
+			val spendPurpose = [| return String.format(" to upgrade to structure=%s", nextLevelStruct.toString())]
+			
+			userGems = user.gems
+			user.checkCanSpendGems(gemsSpent, LOG, spendPurpose)
+		    
+		    switch (resourceType) {
+				case Lvl6MobstersResourceEnum.CASH.name: {
+					user.checkCanSpendCash(resourceChange, LOG, spendPurpose)
+					cashToSpend = resourceChange
+				}
+				case Lvl6MobstersResourceEnum.OIL.name: {
+		    		user.checkCanSpendOil(resourceChange, LOG, spendPurpose)
+		    		oilToSpend = resourceChange
+		    	}
+		    	default: {
+			    	// TODO: Default case is optional.  Is it an error to specify some other string?
+		    		throwException(
+		    			Lvl6MobstersStatusCode.FAIL_OTHER, "Invalid resource type name: %s", resourceType
+		    		)
+		    	}
+		    }	
+		}
+	
+		private def void updateUserCurrency()
+		{
+			user.spendGems(gemsSpent)
+			user.spendCash(cashToSpend)
+			user.spendOil(oilToSpend)
 		}
 	}
 
-	private def boolean hasEnoughOil(User user, int resourceChange) {
-		val userOil = user.oil
-		if (userOil < resourceChange) {
-			LOG.error("user error: user does not have enough oil. userOil="
-					+ userOil + "\t oilSpent=" + resourceChange)
-			return false
-		} else {
-			return true
-		}
-	}
-
-	private def void updateUserCurrency(
-		String userUuid, int gemsSpent, 
-		String resourceType, int resourceChange)
-	{
-		userService.modifyUser(userUuid) [ bldr |
-		    if (gemsSpent > 0) {
-		    	bldr.spendGems(gemsSpent)
-		    }
-		    switch(Lvl6MobstersResourceEnum.valueOf(resourceType)) {
-		    	case Lvl6MobstersResourceEnum::CASH : {
-		    		bldr.spendCash(resourceChange)
-		    	}
-		    	case Lvl6MobstersResourceEnum::OIL : {
-		    		bldr.spendOil(resourceChange)
-		    	}
-		    	default : {
-		    		throw new IllegalArgumentException(
-		    			String.format( 
-		    				"Unexpected resource type: %s", 
-		    				resourceType))
-		    	}
-		    }
-		]
+	override speedUpConstructingUserStruct( String userId, String userStructId, int gemCost, Date now ) {
+		// TODO port this next...
+		return null
 	}
 
 	def void setUserRepository(UserRepository userRepository) {
