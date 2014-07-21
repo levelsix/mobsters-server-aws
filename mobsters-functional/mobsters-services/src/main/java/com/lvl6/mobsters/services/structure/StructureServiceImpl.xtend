@@ -258,7 +258,7 @@ class StructureServiceImpl implements StructureService
 		try {
 			structureForUserRepository.save(
 				structureForUserRepository.load(userId, userStructId) => [ sfu |
-					Lvl6MobstersConditions.checkCondition(
+					Lvl6MobstersConditions.lvl6Precondition(
 						sfu !== null,
 						Lvl6MobstersStatusCode.FAIL_OTHER,
 						"No StructureForUser for userUuid=%s, userStructId=%s",

@@ -304,7 +304,7 @@ class UserServiceImpl implements UserService
 		val boolean isRootTx = txManager.requireTransaction()
 		try {
 			var user = userRepo.load(userId)
-			checkCondition(user !== null, Lvl6MobstersStatusCode.FAIL_OTHER, "no User for userId=%s", userId);
+			lvl6Precondition(user !== null, Lvl6MobstersStatusCode.FAIL_OTHER, "no User for userId=%s", userId);
 			user.level = newLevel
 			userRepo.save(user)
 			success = true
@@ -331,7 +331,7 @@ class UserServiceImpl implements UserService
 		try {
 			userRepo.save(
 				userRepo.load(userId) => [ user |
-					checkCondition(user !== null, Lvl6MobstersStatusCode.FAIL_OTHER, "no User for userId=%s", userId);
+					lvl6Precondition(user !== null, Lvl6MobstersStatusCode.FAIL_OTHER, "no User for userId=%s", userId);
 					modifyUserOps.forEach[it.apply(user)]
 					userRepo.save(user)
 				]
@@ -366,7 +366,7 @@ class UserServiceImpl implements UserService
 		{
 			userModificationList.add[
 				val oldGems = it.gems
-				checkCondition(
+				lvl6Precondition(
 					oldGems >= gemsDelta, 
 					Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_GEMS, 
 					"User=%s cannot afford to spend %s gems", 
@@ -395,7 +395,7 @@ class UserServiceImpl implements UserService
 		{
 			userModificationList.add[
 				val oldCash = it.cash
-				checkCondition(
+				lvl6Precondition(
 					oldCash >= cashDelta, 
 					Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_CASH, 
 					"User=%s cannot afford to spend %s cash", 
@@ -424,7 +424,7 @@ class UserServiceImpl implements UserService
 		{
 			userModificationList.add[
 				val oldOil = it.oil
-				checkCondition(
+				lvl6Precondition(
 					oldOil >= oilDelta, 
 					Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_OIL, 
 					"User=%s cannot afford to spend %s oil", 
@@ -660,7 +660,7 @@ class UserServiceImpl implements UserService
 		try {
 			userDraRepo.save(
 				userDraRepo.load(userId) => [ udra |
-					checkCondition( 
+					lvl6Precondition( 
 						udra!== null, Lvl6MobstersStatusCode::FAIL_OTHER, 
 						"No UserDataRarelyAccessed object found for userUuid=%s", 
 						userId
