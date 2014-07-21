@@ -30,124 +30,160 @@ import org.slf4j.Logger;
  * @see com.google.common.base.Preconditions For Google's more general purpose
  *      utility class upon which this class is based.
  */
-public final class Lvl6MobstersConditions {
-	private Lvl6MobstersConditions() 
+final class Lvl6MobstersConditions
+{
+	private new()
 	{ }
 
-	public static void lvl6Precondition(
-		boolean condition,
-		Lvl6MobstersStatusCode failureCode, 
-		String message) 
+	static def void lvl6Precondition(
+		boolean condition, 
+		Lvl6MobstersStatusCode failureCode,
+		String message)
 	{
 		if (!condition) {
 			throw new Lvl6MobstersException(
-				failureCode,
-				echoString(message));
+				failureCode, echoString(message))
 		}
 	}
 
-	public static void lvl6Precondition(
+	static def void lvl6Precondition(
 		boolean condition, 
-		Lvl6MobstersStatusCode failureCode, 
+		Lvl6MobstersStatusCode failureCode,
 		Logger log, 
-		String message) 
+		String message)
 	{
 		if (!condition) {
 			throw new Lvl6MobstersException(
-				failureCode,
-				echoAndLog(log, message));
+				failureCode, echoAndLog(log, message))
 		}
 	}
 
-	public static void lvl6Precondition(
+	static def void lvl6Precondition(
 		boolean condition, 
-		Lvl6MobstersStatusCode failureCode, 
-		String messageTemplate, Object... tmplArgs) 
+		Lvl6MobstersStatusCode failureCode,
+		String messageTemplate, Object... tmplArgs)
 	{
 		if (!condition) {
 			throw new Lvl6MobstersException(
-				failureCode, 
-				String.format(messageTemplate, tmplArgs));
+				failureCode, String::format(messageTemplate, tmplArgs))
 		}
 	}
 
-	public static void lvl6Precondition(
+	static def void lvl6Precondition(
 		boolean condition, 
-		Lvl6MobstersStatusCode failureCode, 
+		Lvl6MobstersStatusCode failureCode,
 		Logger log, 
 		String msgTemplate, Object... tmplArgs)
 	{
 		if (!condition) {
 			throw new Lvl6MobstersException(
-				failureCode, 
-				formatAndLog(log, msgTemplate, tmplArgs));
+				failureCode, formatAndLog(log, msgTemplate, tmplArgs))
 		}
 	}
 
-	public static void throwException(
-		Lvl6MobstersStatusCode failureCode, 
-		String message) 
+	static def void lvl6Precondition(
+		boolean condition, 
+		Lvl6MobstersStatusCode failureCode,
+		()=>String msgLambda)
 	{
-		if (true) {
+		if (!condition) {
 			throw new Lvl6MobstersException(
-				failureCode,
-				echoString(message));
+				failureCode, msgLambda.apply())
 		}
 	}
 
-	public static void throwException(
-		Lvl6MobstersStatusCode failureCode, 
-		Logger log, 
-		String message) 
-	{
-		if (true) {
-			throw new Lvl6MobstersException(
-				failureCode, 
-				echoAndLog(log, message));
-		}
-	}
-
-	public static void throwException(
-		Lvl6MobstersStatusCode failureCode, 
-		String msgTemplate, Object... tmplArgs) 
-	{
-		if (true) {
-			throw new Lvl6MobstersException(
-				failureCode, 
-				String.format(msgTemplate, tmplArgs));
-		}
-	}
-
-	public static void throwException(
+	static def void lvl6Precondition(
+		boolean condition, 
 		Lvl6MobstersStatusCode failureCode,
 		Logger log, 
-		String msgTemplate, Object... tmplArgs) 
+		()=>String msgLambda)
 	{
-		if (true) {
+		if (!condition) {
 			throw new Lvl6MobstersException(
-				failureCode, 
-				formatAndLog(log, msgTemplate, tmplArgs));
+				failureCode, echoAndLog(log, msgLambda.apply()))
 		}
 	}
 
-	private static String echoString(String message) 
+
+	//
+    // Unconditionally thrown exceptions
+    //
+
+	static def void throwException(Lvl6MobstersStatusCode failureCode, String message)
 	{
-		return message;
-	}
-	
-	private static String echoAndLog(Logger log, String message) 
-	{
-		log.error(message);
-		return message;
+		if (true) {
+			throw new Lvl6MobstersException(
+				failureCode, echoString(message))
+		}
 	}
 
-	private static String formatAndLog(
-		Logger log, String messageTemplate, Object... tmplArgs) 
+	static def void throwException(
+		Lvl6MobstersStatusCode failureCode, 
+		Logger log, 
+		String message)
 	{
-		final String message = 
-			String.format(messageTemplate, tmplArgs);
-		log.error(message);
-		
-		return message;
+		if (true) {
+			throw new Lvl6MobstersException(failureCode, echoAndLog(log, message))
+		}
+	}
+
+	static def void throwException(
+		Lvl6MobstersStatusCode failureCode, 
+		String msgTemplate, Object... tmplArgs)
+	{
+		if (true) {
+			throw new Lvl6MobstersException(
+				failureCode, String::format(msgTemplate, tmplArgs))
+		}
+	}
+
+	static def void throwException(
+		Lvl6MobstersStatusCode failureCode, 
+		Logger log,
+		String msgTemplate, Object... tmplArgs)
+	{
+		if (true) {
+			throw new Lvl6MobstersException(
+				failureCode, formatAndLog(log, msgTemplate, tmplArgs))
+		}
+	}
+
+	static def void throwException(
+		Lvl6MobstersStatusCode failureCode, 
+		()=>String msgLambda)
+	{
+		if (true) {
+			throw new Lvl6MobstersException(
+				failureCode, msgLambda.apply())
+		}
+	}
+
+	static def void throwException(
+		Lvl6MobstersStatusCode failureCode, 
+		Logger log,
+		()=>String msgLambda)
+	{
+		if (true) {
+			throw new Lvl6MobstersException(
+				failureCode, echoAndLog(log, msgLambda.apply()))
+		}
+	}
+
+	private static def String echoString(String message)
+	{
+		return message
+	}
+
+	private static def String echoAndLog(Logger log, String message)
+	{
+		log?.error(message)
+		return message
+	}
+
+	private static def String formatAndLog(Logger log, String messageTemplate, Object... tmplArgs)
+	{
+		val message = String::format(messageTemplate, tmplArgs)
+		log?.error(message)
+		return message
 	}
 }
