@@ -28,9 +28,9 @@
 	<modules>
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
-		<!-- module>mobsters-modeling</module-->
+		<!-- module>mobsters-modeling</module -->
 	</modules>
-	
+
 	<organization>
 		<name>Lvl6</name>
 		<url>http://lvl6.com</url>
@@ -133,9 +133,17 @@
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
 
+		<!-- AMQP -->
+		<amqp.host>robot.lvl6.com</amqp.host>
+		<amqp.user>lvl6server</amqp.user>
+		<amqp.pass>devserver</amqp.pass>
+		<amqp.vhost>devageofchaos</amqp.vhost>
+		<amqp.exchange>servermessages</amqp.exchange>
+
+
 		<tomcat.version>7.0.27</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
-		
+
 		<xbase.version>2.6.0</xbase.version>
 		<xtext.version>2.6.0</xtext.version>
 	</properties>
@@ -164,7 +172,7 @@
 						</includes>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.eclipse.xtend</groupId>
 					<artifactId>xtend-maven-plugin</artifactId>
@@ -184,7 +192,7 @@
 						<testOutputDirectory>${project.build.directory}/generated-test-sources/xtend-gen</testOutputDirectory>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-maven-plugin</artifactId>
@@ -218,15 +226,15 @@
 						</languages>
 					</configuration>
 					<dependencies>
-						<!-- add a dependency to the language core bundle, this will only be needed 
-							during geneeration and will not pollute your project's classpath. -->
+						<!-- add a dependency to the language core bundle, this will only be 
+							needed during geneeration and will not pollute your project's classpath. -->
 						<dependency>
 							<groupId>com.lvl6.modeling</groupId>
 							<artifactId>mobsters-service-dsl</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 						</dependency>
 					</dependencies>
-				</plugin>			
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -282,6 +290,16 @@
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql-connector.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.rabbitmq</groupId>
+				<artifactId>rabbitmq-client</artifactId>
+				<version>1.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.amqp</groupId>
+				<artifactId>spring-rabbit</artifactId>
+				<version>1.3.5.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -358,6 +376,11 @@
 				<groupId>org.springframework.integration</groupId>
 				<artifactId>spring-integration-ip</artifactId>
 				<version>${spring.integration.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.amqp</groupId>
+				<artifactId>spring-amqp</artifactId>
+				<version>1.3.5.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>
@@ -466,6 +489,12 @@
 				<groupId>com.twitter</groupId>
 				<artifactId>chill-java</artifactId>
 				<version>${chill-java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-ehcache</artifactId>
+				<version>4.3.5.Final</version>
+				<!-- <version>${hibernate-version}</version> -->
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>

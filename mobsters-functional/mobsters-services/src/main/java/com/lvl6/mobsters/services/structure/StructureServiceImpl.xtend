@@ -273,7 +273,7 @@ class StructureServiceImpl implements StructureService
 			success = true
 		} finally {
 			if (success) {
-ß				if (isRootTx) {
+				if (isRootTx) {
 					txManager.commit()
 				}
 			} else {
@@ -395,3 +395,4 @@ class StructureServiceImpl implements StructureService
 		this.structureRepository = structureRepository
 	}
 }
+

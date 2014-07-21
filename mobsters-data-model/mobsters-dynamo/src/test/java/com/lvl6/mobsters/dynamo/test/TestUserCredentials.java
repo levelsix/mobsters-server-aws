@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.lvl6.mobsters.dynamo.UserCredential;
-import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepository;
 import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
@@ -66,6 +65,7 @@ public class TestUserCredentials
 	@SuppressWarnings("unchecked")
 	public void destroyTestData()
 	{
+
 		((BaseDynamoItemRepositoryImpl<UserCredential>)userRepo).emptyTable();
 		/*
 		 * for (final String userId : TestUserCredentials.userIds) { final List<UserCredential> users =
