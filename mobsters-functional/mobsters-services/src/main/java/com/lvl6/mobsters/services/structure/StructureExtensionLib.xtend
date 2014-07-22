@@ -13,6 +13,8 @@ import javax.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import static com.google.common.base.Preconditions.*
+import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.services.user.UserExtensionLib
 
 // TODO: Place all Extension Libraries in a parallel package structure
 //       and use CheckStyle to detect attempts to use them outside the
@@ -53,6 +55,9 @@ class StructureExtensionLib {
 	@Autowired
 	StructureRepository structDefRepo;
 	
+	@Autowired
+	extension UserExtensionLib userExtension
+	
 	public def StructureForUser moveTo( StructureForUser sfu, CoordinatePair dest )
 	{
 		sfu.XCoord = dest.x
@@ -67,12 +72,68 @@ class StructureExtensionLib {
 		return sfu
 	}
 	
-	public def StructureForUser speedUpConstruction( StructureForUser sfu, Date upgradeTime ) 
+	def StructureForUser finishConstruction( StructureForUser sfu,
+		Date constructionTime ) 
 	{
-		sfu.setLastRetrieved(upgradeTime);
-		sfu.setComplete(true);
+		sfu.setLastRetrieved( constructionTime );
+		sfu.setComplete( true );
 		return sfu
 	}
+	
+	def StructureForUser speedUpConstruction( StructureForUser sfu,
+		Date constructionTime, User u, int gemsToSpend ) 
+	{
+		// TODO: Is this allowed? Or should there be a third method
+		// doCompleteConstruction which does the actual work for this
+		// method and 'finishConstruction'?
+		u.spendGems(gemsToSpend)
+		sfu.finishConstruction( constructionTime )
+		return sfu
+	}
+
+		
+	def StructureForUser beginPurchase( StructureForUser sfu,
+		Structure struct, Date constructionTime, CoordinatePair dest,
+		User u, int gemsToSpend, int cashToSpend, int oilToSpend ) 
+	{
+		sfu.setStructId(struct.id)
+		sfu.moveTo( dest )
+		sfu.doBeginTimedConstruction( constructionTime, u, gemsToSpend,
+			cashToSpend, oilToSpend )
+		return sfu
+	}		
+	
+	def StructureForUser beginTimedUpgrade( StructureForUser sfu, Date constructionTime,
+		User u, int gemsToSpend, int cashToSpend, int oilToSpend ) 
+	{
+		sfu.setStructId(sfu.structure.successorStruct.id)
+		sfu.doBeginTimedConstruction( constructionTime, u, gemsToSpend,
+			cashToSpend, oilToSpend )
+		return sfu
+	}
+	
+	/**
+	 * Contains shared logic when a user creates a structure for the first time (PurchaseNormStruct)
+	 * and when the user is upgrading a structure (UpgradeNormStruct). The reason the logic is
+	 * extracted here is there might be more shared logic in the future.
+	 * 
+	 *  In common logic:
+	 * 	Setting the StructureForUser's purchaseTime and complete to 'constructionTime' and 'false'
+	 *  to indicate the StructureForUser is being built. 
+	 *  Charging the user 'gemsToSpend' and or 'cashToSpend,' or 'oilToSpend'
+	 */
+	private def StructureForUser doBeginTimedConstruction( StructureForUser sfu,
+		Date constructionTime, User u, int gemsToSpend, int cashToSpend, int oilToSpend ) 
+	{
+		u.spendGems(gemsToSpend)
+		u.spendCash(cashToSpend)
+		u.spendOil(oilToSpend)
+		
+		sfu.setPurchaseTime( constructionTime );
+		sfu.setComplete( false );
+		return sfu
+	}
+	
 	
 	// StructureContext Attachment lookup map is empty until @PostConstruct phase calls
 	// doInitExtension() to load it from the config repo.
