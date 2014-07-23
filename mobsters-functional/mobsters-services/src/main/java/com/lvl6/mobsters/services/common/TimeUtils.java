@@ -188,6 +188,24 @@ public class TimeUtils
 
 		return createdDate;
 	}
+	
+	/**
+	 * 
+	 * @param curDate
+	 * @param minutesAddend
+	 *        Can be negative.
+	 * @return
+	 */
+	public static Date createDateAddMinutes( Date curDate, int minutesAddend )
+	{
+		DateTime dt = new DateTime(curDate);
+
+		MutableDateTime mdt = dt.toMutableDateTime();
+		mdt.addMinutes(minutesAddend);
+		Date createdDate = mdt.toDate();
+
+		return createdDate;
+	}
 
 	public static Date createDateTruncateMillis( Date curDate )
 	{

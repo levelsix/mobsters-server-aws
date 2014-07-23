@@ -77,13 +77,16 @@ interface StructureService
 			Director<StructureService.CreateStructureOptionsBuilder> director)
 	}
 
+	def void finishConstructingCompletedUserStructures( String userId, List<String> userStructId, Date now );
+
+	/* TODO Deprecate these
+
 	/** 
  	*/
 	def void beginUpgradingUserStruct(StructureForUser sfu, Date upgradeTime)
 
 	def void moveUserStructure( String userId, String userStructId, CoordinatePair cp );
 	
-	def void finishConstructingCompletedUserStructures( String userId, List<String> userStructId, Date now );
 
 	/**
 	 * TODO: This is NOT a valid service API method--StrucutreForUser cannot appear in the
