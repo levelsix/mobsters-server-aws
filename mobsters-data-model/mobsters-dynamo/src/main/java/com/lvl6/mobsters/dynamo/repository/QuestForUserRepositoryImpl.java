@@ -35,15 +35,21 @@ public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryIm
 		super(QuestForUser.class, "questId", Integer.TYPE);
 	}
 
+	/*
 	@Override
 	public List<QuestForUser> findByUserIdAndIsCompleteAndQuestIdIn(
 		final String userId,
 		final boolean isComplete,
 		final Collection<Integer> questIds )
 	{
-		final List<AttributeValue> questIdz = new ArrayList<>();
 		final QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
+
+		final DynamoDBQueryExpression<QuestForUser> query =
+			new DynamoDBQueryExpression<QuestForUser>()
+				.withHashKeyValues(hashKey)
+				.
+
 		for (final Integer quest : questIds) {
 			questIdz.add(new AttributeValue().withN(quest.toString()));
 		}
@@ -70,6 +76,7 @@ public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryIm
 		questsForUser.loadAllResults();
 		return questsForUser;
 	}
+	*/
 
 	@Override
 	public List<QuestForUser> findByUserId( String userId )

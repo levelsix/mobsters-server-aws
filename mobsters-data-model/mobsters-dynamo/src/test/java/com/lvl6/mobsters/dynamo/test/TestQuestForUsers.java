@@ -19,10 +19,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-import com.lvl6.mobsters.dynamo.repository.BaseDynamoItemRepositoryImpl;
 import com.lvl6.mobsters.dynamo.repository.DynamoRepositorySetup;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository.QuestForUserConditionBuilder;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepositoryImpl;
+import com.lvl6.mobsters.dynamo.repository.filter.Director;
+import com.lvl6.mobsters.dynamo.repository.filter.IBooleanConditionBuilder;
+import com.lvl6.mobsters.dynamo.repository.filter.IIntConditionBuilder;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 
@@ -75,8 +78,33 @@ public class TestQuestForUsers {
 	
 	@Test
 	public void testLoadEach() {
-		Collection<QuestForUser> quests = qfuRepo.findByUserIdAndIsCompleteAndQuestIdIn(userId, true, questIds);
-		log.info("Found {} quests", quests.size());
+		/*
+		 * This will becomes much more concise once this class gets ported to XTend or Java 8 is used:
+		 * 
+		 * qfuRepo.findByUserId(userId) [ bldr |
+		 *     bldr.complete[isTrue()].questId[in(questIds)]];
+		 */
+		Collection<QuestForUser> quests = 
+			qfuRepo.findByUserId(
+				userId,
+				new Director<QuestForUserRepository.QuestForUserConditionBuilder>() {
+					@Override
+					public void apply(QuestForUserConditionBuilder builder) {
+						builder.complete(new Director<IBooleanConditionBuilder>() {
+							@Override
+							public void apply(IBooleanConditionBuilder builder) {
+								builder.isTrue();
+							}
+						}).questId(new Director<IIntConditionBuilder>() {
+							@Override
+							public void apply(IIntConditionBuilder builder) {
+								builder.in(questIds);
+							}
+						});
+					}
+				}
+			);
+			log.info("Found {} quests", quests.size());
 		Assert.assertTrue("Found all quests", quests.size() == questIds.size());
 	}
 	
