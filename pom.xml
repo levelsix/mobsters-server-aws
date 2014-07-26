@@ -493,12 +493,6 @@
 				<version>${chill-java.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-ehcache</artifactId>
-				<version>4.3.5.Final</version>
-				<!-- <version>${hibernate-version}</version> -->
-			</dependency>
-			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase</artifactId>
 				<version>${xbase.version}</version>
