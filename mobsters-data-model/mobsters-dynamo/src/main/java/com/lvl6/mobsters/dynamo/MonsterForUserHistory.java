@@ -45,6 +45,10 @@ public class MonsterForUserHistory {
     public void setuId( String uId ) {
         this.uId = uId;
     }
+    
+    public void setUserId( String uId ) {
+    	this.uId = uId;
+    }
 
     @DynamoDBRangeKey(attributeName = "date")
     public void setDate( Date date )

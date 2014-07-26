@@ -1,11 +1,13 @@
 package com.lvl6.mobsters.dynamo.repository;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.MonsterForUserHistory;
 
 @Component
-public abstract class MonsterForUserHistoryRepositoryImpl extends BaseDynamoItemRepositoryImpl<MonsterForUserHistory>
+public class MonsterForUserHistoryRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<MonsterForUserHistory, Date>
 	implements
 		MonsterForUserHistoryRepository
 {
@@ -15,7 +17,7 @@ public abstract class MonsterForUserHistoryRepositoryImpl extends BaseDynamoItem
 	*/
 	protected MonsterForUserHistoryRepositoryImpl()
 	{
-		super(MonsterForUserHistory.class);
+		super(MonsterForUserHistory.class, "date", Date.class);
 	}
 
 }
