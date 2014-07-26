@@ -2,14 +2,11 @@ package com.lvl6.mobsters.dynamo.tests.e2e;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper.FailedBatch
-import com.lvl6.mobsters.dynamo.ClanForUser
 import com.lvl6.mobsters.dynamo.QuestForUser
 import com.lvl6.mobsters.dynamo.repository.DynamoRepositorySetup
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB
 import java.util.ArrayList
-import java.util.Collections
-import java.util.Date
 import java.util.List
 import org.junit.After
 import org.junit.Assert
@@ -107,7 +104,7 @@ public class E2ETestQuestForUserRepositoryQueryFilter
 		LOG.info("BEGIN testLoadEach()")
 		val List<QuestForUser> quests = 
 			new ArrayList<QuestForUser>(
-				qfuRepo.findByUserId(userId) [
+				qfuRepo.findByUserIdAndAll(userId) [
 					complete[isTrue].redeemed[isFalse]
 				]
 			)
@@ -125,7 +122,7 @@ public class E2ETestQuestForUserRepositoryQueryFilter
 		LOG.info("BEGIN testLoadEach()")
 		val List<QuestForUser> quests = 
 			new ArrayList<QuestForUser>(
-				qfuRepo.findByUserId(userId) [
+				qfuRepo.findByUserIdAndAll(userId) [
 					complete[isFalse].redeemed[isTrue]
 				]
 			)
@@ -143,7 +140,7 @@ public class E2ETestQuestForUserRepositoryQueryFilter
 		LOG.info("BEGIN testLoadPending()")
 		val List<QuestForUser> quests = 
 			new ArrayList<QuestForUser>(
-				qfuRepo.findByUserId(userId) [
+				qfuRepo.findByUserIdAndAll(userId) [
 					complete[isFalse].redeemed[isFalse]
 				]
 			)
@@ -162,7 +159,7 @@ public class E2ETestQuestForUserRepositoryQueryFilter
 		LOG.info("BEGIN testLoadEach()")
 		val List<QuestForUser> quests = 
 			new ArrayList<QuestForUser>(
-				qfuRepo.findByUserId(userId) [
+				qfuRepo.findByUserIdAndAll(userId) [
 					complete[isTrue].redeemed[isTrue]
 				]
 			)
