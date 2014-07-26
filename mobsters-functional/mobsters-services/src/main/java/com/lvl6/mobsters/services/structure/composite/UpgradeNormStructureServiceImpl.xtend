@@ -144,8 +144,9 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 			checkIfUserCanUpgradeStructure()
 	
 			// TODO: Write to currency history
-			updateUserCurrency()	
-			sfu.speedUpConstruction(timeOfUpgrade).moveTo(495, 284)
+//			updateUserCurrency()	
+//			sfu.speedUpConstruction(timeOfUpgrade).moveTo(495, 284)
+			sfu.beginTimedUpgrade(timeOfUpgrade, user, gemsSpent, cashToSpend, oilToSpend)
 			
 			userRepo.save(user)
 			sfuRepo.save(sfu)
@@ -212,12 +213,12 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		    }	
 		}
 	
-		private def void updateUserCurrency()
+		/*private def void updateUserCurrency()
 		{
 			user.spendGems(gemsSpent)
 			user.spendCash(cashToSpend)
 			user.spendOil(oilToSpend)
-		}
+		}*/
 	}
 
 	override speedUpConstructingUserStruct( String userId, String userStructId, int gemCost, Date now ) {
