@@ -317,7 +317,7 @@
 			<dependency>
 				<groupId>org.springframework.amqp</groupId>
 				<artifactId>spring-rabbit</artifactId>
-				<version>${spring-amqp.version}</version>
+				<version>${spring.amqp.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -398,7 +398,7 @@
 			<dependency>
 				<groupId>org.springframework.amqp</groupId>
 				<artifactId>spring-amqp</artifactId>
-				<version>${spring-amqp.version}</version>
+				<version>${spring.amqp.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>
