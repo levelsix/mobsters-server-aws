@@ -44,6 +44,13 @@
 	</ciManagement>
 
 	<properties>
+		<!-- AMQP -->
+		<amqp.host>robot.lvl6.com</amqp.host>
+		<amqp.user>lvl6server</amqp.user>
+		<amqp.pass>devserver</amqp.pass>
+		<amqp.vhost>devageofchaos</amqp.vhost>
+		<amqp.exchange>servermessages</amqp.exchange>
+
 		<!-- AWS -->
 		<aws.accessKey>dummyKey</aws.accessKey>
 		<aws.secretKey>dummySecretKey</aws.secretKey>
@@ -132,14 +139,6 @@
 		<spring.data-jpa.version>1.6.0.RELEASE</spring.data-jpa.version>
 		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
-
-		<!-- AMQP -->
-		<amqp.host>robot.lvl6.com</amqp.host>
-		<amqp.user>lvl6server</amqp.user>
-		<amqp.pass>devserver</amqp.pass>
-		<amqp.vhost>devageofchaos</amqp.vhost>
-		<amqp.exchange>servermessages</amqp.exchange>
-
 
 		<tomcat.version>7.0.27</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
