@@ -102,6 +102,7 @@
 		<xtext.plugin-version>2.6.1</xtext.plugin-version>
 
 		<!-- Dependency versions -->
+		<apache.cdf.version>3.0.0</apache.cdf.version>
 		<apns.version>0.1.6</apns.version>
 		<awaitility.version>1.2.4</awaitility.version>
 		<aws-java-sdk.version>1.7.7</aws-java-sdk.version>
@@ -118,9 +119,10 @@
 		<guava.version>12.0</guava.version>
 
 		<hibernate-core.version>4.3.5.Final</hibernate-core.version>
-		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
+		<hibernate-validator.version>5.1.1.Final</hibernate-validator.version>
 		<httpclient.version>4.2.1</httpclient.version>
 
+		<javax.el.version>2.2.4</javax.el.version>
 		<javax.mail.version>1.4.5</javax.mail.version>
 		<javax.servlet.version>3.0.1</javax.servlet.version>
 		<javax.websocket.version>1.0</javax.websocket.version>
@@ -289,6 +291,11 @@
 
 			<!-- Third Party -->
 			<dependency>
+				<groupId>javax.el</groupId>
+				<artifactId>javax.el-api</artifactId>
+				<version>${javax.el.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet.version}</version>
@@ -359,6 +366,20 @@
 				<artifactId>tomcat-servlet-api</artifactId>
 				<version>${tomcat.version}</version>
 				<scope>provided</scope>
+			</dependency>
+			<!-- CDI 1.1 required to use annotation-based validation. May require configuration 
+			     and/or implementation selection to use in Tomcat 7.0.27 container. See 
+			     http://hibernate.org/validator/documentation/getting-started/ 
+			     and http://www.cnblogs.com/davidwang456/p/3765214.html for details. -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-integration-cdi</artifactId>
+				<version>${apache-cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator-cdi</artifactId>
+				<version>${hibernate-validator.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -460,6 +481,12 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-validator.version}</version>
+			</dependency>
+			<!-- Next dependency may be unnecessary if Tomcat 7.0.27 provides a JSR-341 implementation -->
+			<dependency>
+				<groupId>org.glassfish.web</groupId>
+				<artifactId>javax.el</artifactId>
+				<version>${javax.el.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>joda-time</groupId>
