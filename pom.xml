@@ -146,8 +146,8 @@
 		<tomcat.version>7.0.27</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
 
-		<xbase.version>2.6.0</xbase.version>
-		<xtext.version>2.6.0</xtext.version>
+		<xbase.version>2.6.2</xbase.version>
+		<xtext.version>2.6.2</xtext.version>
 	</properties>
 
 	<build>
