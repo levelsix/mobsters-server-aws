@@ -85,7 +85,7 @@ public class TestQuestForUsers {
 		 *     bldr.complete[isTrue()].questId[in(questIds)]];
 		 */
 		Collection<QuestForUser> quests = 
-			qfuRepo.findByUserId(
+			qfuRepo.findByUserIdAndAll(
 				userId,
 				new Director<QuestForUserRepository.QuestForUserConditionBuilder>() {
 					@Override
