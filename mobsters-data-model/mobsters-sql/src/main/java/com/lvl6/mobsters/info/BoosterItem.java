@@ -15,24 +15,27 @@ import org.hibernate.annotations.Proxy;
 
 @Entity(name="BoosterItem") //set so the cache can refer to this class/table by name 
 @Table(name="booster_item")
-//created proxy because don't want hibernate to create two instances of this class (?)
-//"lazy=true" means a proxy will be used unless another class loads this class eagerly
-//in which case the "lazy=true" is overridden and the actual class instead of the proxy is loaded
-//default is lazy=true, just being explicit here
+// created proxy interface because don't want hibernate to subclass the concrete implementation
+// under any circumstances where it would return a proxy of this entity.
+// "lazy=true" means any references to this entity type that are not explicitly eager will be populated
+// by a proxy object to enact laziness (deferred retrieval).  Lazy loading is the default behavior,
+// so this is merely making the default explicit.
 @Proxy(lazy=true, proxyClass=IBoosterItem.class) 
 public class BoosterItem extends BaseIntPersistentObject implements IBoosterItem{	
 
 	private static final long serialVersionUID = 967478067223025160L;
 	
 
-	//"targetEntity=BoosterPack.class" is specified because the property is IBoosterPack
-	//and need a real implementation
+	// "targetEntity=BoosterPack.class" is specified because the property is IBoosterPack.
+	// IBoosterPack enables the class to store a proxy if necessary, but does not provide 
+	// BoosterPack is the entity type and Hibernate needs a hint to link the entity type with
+	// that proxy-capable interface.
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=BoosterPack.class)
 	@JoinColumn(
 		name = "booster_pack_id", //exact column name (verbatim) in the booster_item table 
 		nullable = false, //(foreign key must be valid) a booster item must have a booster pack
 		//name=none means that hibernate won't create a foreign key constraint in the db
-		//NO_CONSTRAINT flag is not used, more of an explanation for "name=none"
+		//NO_CONSTRAINT flag is not used, but is included for more human clarity than "name=none"
 		foreignKey = @ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT)) 
 	private IBoosterPack boosterPack;
 	

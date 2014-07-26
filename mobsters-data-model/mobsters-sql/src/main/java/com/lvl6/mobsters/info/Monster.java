@@ -13,6 +13,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
@@ -97,6 +98,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster
 		mappedBy="monster", 
 		orphanRemoval=true,
 		targetEntity=MonsterLevelInfo.class)
+	@OrderBy("level ASC")
 //	@JoinColumns( {
 //		@JoinColumn(name="monster_id", referencedColumnName="monster_id"),
 //		@JoinColumn(name="level", referencedColumnName="level")

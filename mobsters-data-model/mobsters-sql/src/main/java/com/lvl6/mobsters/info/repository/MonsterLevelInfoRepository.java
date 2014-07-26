@@ -9,14 +9,34 @@ import org.springframework.data.repository.query.Param;
 
 import com.lvl6.mobsters.info.MonsterLevelInfo;
 public interface MonsterLevelInfoRepository extends JpaRepository<MonsterLevelInfo, Integer> {
+    /*
+     * Unnecessary to make Hibernate cache this query.  Instead, leverage the @OrderBy annotation on
+     * Monster.lvlInfo:
+     * 
+     * monsterRepository.findById(monsterId).getLvlInfo().get(level)
+     * 
+     * As a rule of thumb, access configuration data by fetching root objects and navigate from there 
+     * to minimize the amount of work Hibernate invests in cache unnecessary cache and query indices.
+     */
+	// MonsterLevelInfo findByMonsterIdAndLevel(int monsterId, int level);
 
-	MonsterLevelInfo findByMonsterIdAndLevel(int id, int level);
+	/*
+	 * Unnecessary to make Hibernate cache this query.  Instead, leverage the @OrderBy annotation on
+     * Monster.lvlInfo:
+     * 
+     * monsterRepository.findById(monsterId).getLvlInfo().get(level)
+     * 
+     * As a rule of thumb, access configuration data by fetching root objects and navigate from there 
+     * to minimize the amount of work Hibernate invests in cache unnecessary cache and query indices.
+	List<MonsterLevelInfo> findByMonsterId(int monsterId);
+	 */
 
-	List<MonsterLevelInfo> findByMonsterId(int id);
-
-	List<MonsterLevelInfo> findByMonsterIdOrderByLevel(int id);
 	
-	List<MonsterLevelInfo> findByMonsterIdOrderByLevel(int id, Pageable p);
+	// These should likely be removed as well, but leaving them purely for reference value:
+	
+	// List<MonsterLevelInfo> findByMonsterIdOrderByLevel(int monsterId);
+	
+	// List<MonsterLevelInfo> findByMonsterIdOrderByLevel(int monsterId, Pageable p);
 	
 	
 	@Query( "select m from MonsterLevelInfo m where m.monster.id = :id order by m.id.level asc")
