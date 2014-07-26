@@ -102,7 +102,7 @@
 		<xtext.plugin-version>2.6.1</xtext.plugin-version>
 
 		<!-- Dependency versions -->
-		<apache.cdf.version>3.0.0</apache.cdf.version>
+		<apache-cxf.version>3.0.0</apache-cxf.version>
 		<apns.version>0.1.6</apns.version>
 		<awaitility.version>1.2.4</awaitility.version>
 		<aws-java-sdk.version>1.7.7</aws-java-sdk.version>
