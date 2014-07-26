@@ -18,20 +18,30 @@ import com.lvl6.mobsters.conditions.IStringConditionBuilder;
 public abstract class AbstractConditionsBuilder<T>
 	implements IConditionsBuilder
 {
-	private final IIntConditionBuilder intFieldState;
-	private final IStringConditionBuilder stringFieldState;
-	private final IBooleanConditionBuilder booleanFieldState;
+	private final IIntConditionFactory<T> intFieldState;
+	private final IStringConditionFactory<T> stringFieldState;
+	private final IBooleanConditionFactory<T> booleanFieldState;
 	private String fieldName;
 	
 	protected AbstractConditionsBuilder(
-		IIntConditionBuilder intFieldState,
-		IStringConditionBuilder stringFieldState, 
-		IBooleanConditionBuilder booleanFieldState
+		IIntConditionFactory<T> intFieldState,
+		IStringConditionFactory<T> stringFieldState, 
+		IBooleanConditionFactory<T> booleanFieldState
 	) {
 		this.fieldName = null;
+		
 		this.intFieldState = intFieldState;
 		this.stringFieldState = stringFieldState;
 		this.booleanFieldState = booleanFieldState;
+	}
+	
+	public void init() {
+		// Java memory model guidelines warn against leaking objects out of their constructors, hence this wiring
+		// has to be done in a secondary init() method.
+		
+		this.intFieldState.init(this);
+		this.stringFieldState.init(this);
+		this.booleanFieldState.init(this);
 	}
 
 	/* 

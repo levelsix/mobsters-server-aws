@@ -12,7 +12,10 @@ public final class ConditionStrategyFactory {
     public static final QueryFilterConditionStrategy getQueryFilterBuilder(
     	final DynamoDBQueryExpression<?> unfilteredQuery) 
     {
-    	return new QueryFilterConditionStrategy(unfilteredQuery);
+    	QueryFilterConditionStrategy retVal =
+    		new QueryFilterConditionStrategy(unfilteredQuery);
+    	retVal.init();
+    	return retVal;
     }
     
     public static final ScanFilterConditionStrategy getScanFilterConditionStrategy(

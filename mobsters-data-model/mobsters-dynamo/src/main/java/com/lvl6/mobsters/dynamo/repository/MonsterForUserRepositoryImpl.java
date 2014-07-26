@@ -14,6 +14,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
+import com.lvl6.mobsters.conditions.ConditionStrategyFactory;
 import com.lvl6.mobsters.conditions.Director;
 import com.lvl6.mobsters.conditions.IBooleanConditionBuilder;
 import com.lvl6.mobsters.conditions.IConditionsBuilder;
@@ -119,37 +120,28 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoCollectionRepository
 	public List<MonsterForUser> findByUserIdAndAll( 
 		String userId, Director<MonsterForUserConditionBuilder> director )
 	{
-		final MonsterForUser hashKey = new MonsterForUser();
-		hashKey.setUserId(userId);
-
-		final DynamoDBQueryExpression<MonsterForUser> query =
-			new DynamoDBQueryExpression<MonsterForUser>()
-				.withHashKeyValues(hashKey)
-				.withConditionalOperator(ConditionalOperator.AND);
-		
-		// This is the Bridge design pattern.  Each repository type has a ConditionBuilder specific to its
-		// Entity's field names and types.  That implementation knows how to delegate to an IConditionStategy
-		// There will be at least two such strategies, one that attaches Conditions to a Query's filter clause,
-		// and another that attaches them to a Scan's filtering clause.  This is a query use case, so we inject
-		// a QueryFilterConditionStrategy that is in turn wired to the DynamoDBQueryExpression being built.
-		director.apply(
-			new MonsterForUserConditionBuilderImpl(
-				new QueryFilterConditionStrategy(query)));
-		
-		return query(query);
+		return findByUserIdWithFilter(userId, director, ConditionalOperator.AND);
 	}
 	
 	@Override
 	public List<MonsterForUser> findByUserIdAndAny( 
 		String userId, Director<MonsterForUserConditionBuilder> director )
 	{
+		return findByUserIdWithFilter(userId, director, ConditionalOperator.OR);
+	}
+	
+	private List<MonsterForUser> findByUserIdWithFilter(
+		final String userId,
+		final Director<MonsterForUserConditionBuilder> director,
+		final ConditionalOperator conjunction
+	) {
 		final MonsterForUser hashKey = new MonsterForUser();
 		hashKey.setUserId(userId);
 
 		final DynamoDBQueryExpression<MonsterForUser> query =
 			new DynamoDBQueryExpression<MonsterForUser>()
 				.withHashKeyValues(hashKey)
-				.withConditionalOperator(ConditionalOperator.OR);
+				.withConditionalOperator(conjunction);
 		
 		// This is the Bridge design pattern.  Each repository type has a ConditionBuilder specific to its
 		// Entity's field names and types.  That implementation knows how to delegate to an IConditionStategy
@@ -158,7 +150,7 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoCollectionRepository
 		// a QueryFilterConditionStrategy that is in turn wired to the DynamoDBQueryExpression being built.
 		director.apply(
 			new MonsterForUserConditionBuilderImpl(
-				new QueryFilterConditionStrategy(query)));
+				ConditionStrategyFactory.getQueryFilterBuilder(query)));
 		
 		return query(query);
 	}
