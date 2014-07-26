@@ -14,6 +14,12 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
+import com.lvl6.mobsters.conditions.Director;
+import com.lvl6.mobsters.conditions.IBooleanConditionBuilder;
+import com.lvl6.mobsters.conditions.IConditionsBuilder;
+import com.lvl6.mobsters.conditions.IIntConditionBuilder;
+import com.lvl6.mobsters.conditions.IStringConditionBuilder;
+import com.lvl6.mobsters.conditions.dynamo.QueryFilterConditionStrategy;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 
 @Component
@@ -109,4 +115,127 @@ public class MonsterForUserRepositoryImpl extends BaseDynamoCollectionRepository
 		return monsterForUsersForUser;
 	}
 	
+	@Override
+	public List<MonsterForUser> findByUserIdAndAll( 
+		String userId, Director<MonsterForUserConditionBuilder> director )
+	{
+		final MonsterForUser hashKey = new MonsterForUser();
+		hashKey.setUserId(userId);
+
+		final DynamoDBQueryExpression<MonsterForUser> query =
+			new DynamoDBQueryExpression<MonsterForUser>()
+				.withHashKeyValues(hashKey)
+				.withConditionalOperator(ConditionalOperator.AND);
+		
+		// This is the Bridge design pattern.  Each repository type has a ConditionBuilder specific to its
+		// Entity's field names and types.  That implementation knows how to delegate to an IConditionStategy
+		// There will be at least two such strategies, one that attaches Conditions to a Query's filter clause,
+		// and another that attaches them to a Scan's filtering clause.  This is a query use case, so we inject
+		// a QueryFilterConditionStrategy that is in turn wired to the DynamoDBQueryExpression being built.
+		director.apply(
+			new MonsterForUserConditionBuilderImpl(
+				new QueryFilterConditionStrategy(query)));
+		
+		return query(query);
+	}
+	
+	@Override
+	public List<MonsterForUser> findByUserIdAndAny( 
+		String userId, Director<MonsterForUserConditionBuilder> director )
+	{
+		final MonsterForUser hashKey = new MonsterForUser();
+		hashKey.setUserId(userId);
+
+		final DynamoDBQueryExpression<MonsterForUser> query =
+			new DynamoDBQueryExpression<MonsterForUser>()
+				.withHashKeyValues(hashKey)
+				.withConditionalOperator(ConditionalOperator.OR);
+		
+		// This is the Bridge design pattern.  Each repository type has a ConditionBuilder specific to its
+		// Entity's field names and types.  That implementation knows how to delegate to an IConditionStategy
+		// There will be at least two such strategies, one that attaches Conditions to a Query's filter clause,
+		// and another that attaches them to a Scan's filtering clause.  This is a query use case, so we inject
+		// a QueryFilterConditionStrategy that is in turn wired to the DynamoDBQueryExpression being built.
+		director.apply(
+			new MonsterForUserConditionBuilderImpl(
+				new QueryFilterConditionStrategy(query)));
+		
+		return query(query);
+	}
+	
+	// Use composition, not inheritance, so the IConditionStategy is the polymorphic root
+	// of hierarchy with one small subtype for Queries Filters and another for Scan Filters.
+	// To do the same with inheritance, the class below would have to be redundantly declared
+	// and maintained twice.
+	static class MonsterForUserConditionBuilderImpl implements MonsterForUserConditionBuilder {
+		private final IConditionsBuilder builderContext;
+
+		MonsterForUserConditionBuilderImpl(final IConditionsBuilder builderContext) {
+			this.builderContext = builderContext;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder monsterForUserUuid(
+			Director<IStringConditionBuilder> director) 
+		{
+			builderContext.filterStringField("monsterForUserUuid", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder monsterId(
+			Director<IIntConditionBuilder> director) 
+		{
+			builderContext.filterIntField("monsterId", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder currentExp(
+			Director<IIntConditionBuilder> director) 
+		{
+			builderContext.filterIntField("currentExp", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder currentLvl(
+			Director<IIntConditionBuilder> director) 
+		{
+			builderContext.filterIntField("currentLvl", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder currentHealth(
+			Director<IIntConditionBuilder> director) 
+		{
+			builderContext.filterIntField("currentHealth", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder numPieces(
+			Director<IIntConditionBuilder> director) 
+		{
+			builderContext.filterIntField("numPieces", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder complete(
+			Director<IBooleanConditionBuilder> director) 
+		{
+			builderContext.filterBooleanField("complete", director);
+			return this;
+		}
+
+		@Override
+		public MonsterForUserConditionBuilder teamSlotNum(
+			Director<IIntConditionBuilder> director) 
+		{
+			builderContext.filterIntField("teamSlotNum", director);
+			return this;
+		}
+	}
 }

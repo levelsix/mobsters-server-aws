@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.lvl6.mobsters.common.utils.CollectionUtils;
+import com.lvl6.mobsters.conditions.Director;
+import com.lvl6.mobsters.conditions.IIntConditionBuilder;
+import com.lvl6.mobsters.conditions.IStringConditionBuilder;
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
@@ -26,6 +29,7 @@ import com.lvl6.mobsters.dynamo.repository.MonsterEnhancingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserHistoryRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository;
+import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository.MonsterForUserConditionBuilder;
 import com.lvl6.mobsters.dynamo.repository.MonsterHealingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
@@ -174,16 +178,36 @@ public class MonsterServiceImpl implements MonsterService
 	
 	@Override
 	public void addMonsterForUserToTeamSlot(
-		String userId,
-		String monsterForUserId,
-		int teamSlotNum )
+		final String userId,
+		final String monsterForUserId,
+		final int teamSlotNum )
 	{
 		txManager.beginTransaction();
 		boolean success = false;
 		try {
+			/*
+			 * mfuRepo.findByUserIdAndAny(userId) [bldr|
+			 *     bldr.monsterForUserUuid[isString(monsterForUserId)].teamSlotNum[is(teamSlotNum)];
+			 */
 			final List<MonsterForUser> monstersForUser =
-				monsterForUserRepository.findByUserIdAndMonsterForUserIdInOrTeamSlotNumAndUserId(userId,
-					Collections.singleton(monsterForUserId), teamSlotNum);
+			    monsterForUserRepository.findByUserIdAndAny(
+			    	userId, new Director<MonsterForUserConditionBuilder>() {
+						@Override
+						public void apply(MonsterForUserConditionBuilder builder) {
+							builder.monsterForUserUuid(new Director<IStringConditionBuilder>() {
+								@Override
+								public void apply(IStringConditionBuilder builder) {
+									builder.isString(monsterForUserId);
+								}
+							}).teamSlotNum(new Director<IIntConditionBuilder>() {
+								@Override
+								public void apply(IIntConditionBuilder builder) {
+									builder.is(teamSlotNum);
+								}
+							});
+						}					
+			    	}
+			    );
 
 		for (final MonsterForUser mfu : monstersForUser) {
 			if (monsterForUserId == mfu.getMonsterForUserUuid()) {
