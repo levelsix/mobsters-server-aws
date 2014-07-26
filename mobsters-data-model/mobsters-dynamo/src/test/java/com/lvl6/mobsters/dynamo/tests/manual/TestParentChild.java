@@ -3,6 +3,7 @@ package com.lvl6.mobsters.dynamo.tests.manual;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,11 +46,11 @@ public class TestParentChild
 	public void createTestData()
 	{
 		variantOne.getRepository()
-		    .emptyTables();
+		    .checkTables();
 		doLoadData("Unpartitioned", variantOne);
 
 		variantTwo.getRepository()
-		    .emptyTables();
+		    .checkTables();
 		doLoadData("Partitioned", variantTwo);
 	}
 
@@ -90,7 +91,7 @@ public class TestParentChild
 		    + " parents.");
 	}
 
-	// @After
+	@After
 	public void destroyTestData()
 	{
 		// txManager.rollback();

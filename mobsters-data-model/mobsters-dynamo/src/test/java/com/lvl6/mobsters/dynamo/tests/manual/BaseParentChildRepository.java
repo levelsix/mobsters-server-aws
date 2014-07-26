@@ -440,10 +440,6 @@ public abstract class BaseParentChildRepository<P, C>
 			}
 			nextFieldClass = nextFieldClass.getSuperclass();
 		}
-		// TODO: Why is this here
-		while (nextFieldClass != null) {
-			;
-		}
 
 		for (final Method nextMethod : clss.getMethods()) {
 			String attrName = nextMethod.getName();
