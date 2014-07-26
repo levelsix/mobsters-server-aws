@@ -98,8 +98,8 @@
 		<!-- Maven Plugin Versions -->
 		<maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
 		<maven-surefire.plugin-version>2.15</maven-surefire.plugin-version>
-		<xtend.plugin-version>2.6.2</xtend.plugin-version>
-		<xtext.plugin-version>2.6.2</xtext.plugin-version>
+		<xtend.plugin-version>2.6.1</xtend.plugin-version>
+		<xtext.plugin-version>2.6.1</xtext.plugin-version>
 
 		<!-- Dependency versions -->
 		<apns.version>0.1.6</apns.version>
@@ -146,8 +146,8 @@
 		<tomcat.version>7.0.27</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
 
-		<xbase.version>2.6.2</xbase.version>
-		<xtext.version>2.6.2</xtext.version>
+		<xbase.version>2.6.1</xbase.version>
+		<xtext.version>2.6.1</xtext.version>
 	</properties>
 
 	<build>
