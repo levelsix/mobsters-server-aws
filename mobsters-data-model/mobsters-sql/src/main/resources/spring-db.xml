@@ -4,6 +4,7 @@
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/aop 
@@ -11,7 +12,9 @@
         http://www.springframework.org/schema/util 
      	http://www.springframework.org/schema/util/spring-util-4.0.xsd
      	http://www.springframework.org/schema/data/jpa
-    	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+    	http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+    	http://www.springframework.org/schema/context
+    	http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
     <!--
        This has no effect unless its declared in a Spring context where @Transactional @Components are
@@ -46,6 +49,7 @@
 	
 	<jpa:repositories base-package="com.lvl6.mobsters.info.repository" entity-manager-factory-ref="lvl6Emf"
 	   transaction-manager-ref="lvl6Txm"/>
+	<context:component-scan base-package="com.lvl6.mobsters.info.xtension"/>
 	
 	<bean id="lvl6Emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
       <property name="dataSource" ref="dataSource" />
