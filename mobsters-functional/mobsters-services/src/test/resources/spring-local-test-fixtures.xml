@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/tx 
+     	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/context 
+     	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		">
+
+    <!-- If we can standardize on a package space for local and global test fixtures, then this file and
+         spring-testdata.xml can be defined once and only once.  This would be the file that is reused for
+         local fixtures.  Local fixtures are not meant for sharing and therefore not in the test module 
+         artifact itself, but are at a standard location made canonical by that test module artifact).
+         Shared fixtures are bundled in the test module artifact along with the context file (e.g.
+         spring-testdata.xml) that "activates" them. 
+         
+         For the moment, these package namespaces overlap, which would have to change.  The local and
+         shared distinction requires distinct page namespace roots. -->
+    <context:annotation-config/>
+	<context:component-scan base-package="com.lvl6.mobsters.tests.fixture.dummy"/>
+</beans>
