@@ -1,9 +1,11 @@
-package com.lvl6.mobsters.dynamo.repository.filter;
+package com.lvl6.mobsters.conditions;
 
 import java.util.Collection;
 
 public interface IIntConditionBuilder {
-    void in(Collection<Integer> matchValues);
+    void inNumberCollection(Collection<? extends Number> matchValues);
+    
+    void inNumbers(Number...matchValues);
     
     void in(int...matchValues);
     

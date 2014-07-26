@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.dynamo.repository.filter;
+package com.lvl6.mobsters.conditions.dynamo;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,8 +6,13 @@ import java.util.List;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.lvl6.mobsters.conditions.framework.AbstractTypedConditionFactory;
+import com.lvl6.mobsters.conditions.framework.IBooleanConditionFactory;
 
-public class ConditionFactoryBooleanState extends ConditionFactoryAbstractState {
+class BooleanConditionFactory
+	extends AbstractTypedConditionFactory<Condition>
+	implements IBooleanConditionFactory<Condition>
+{
     private final static List<AttributeValue> TRUE = 
     	Collections.singletonList(
     		new AttributeValue()
@@ -18,13 +23,10 @@ public class ConditionFactoryBooleanState extends ConditionFactoryAbstractState 
     		new AttributeValue()
     			.withN("0"));
     
-    ConditionFactoryBooleanState( final IConditionFactoryContext contextCallback ) {
-    	super(contextCallback);
-    }
     
 	@Override
 	public void isTrue() {
-		contextCallback.addCondition(
+		handleSuccess(
 			new Condition()
 				.withComparisonOperator(ComparisonOperator.EQ)
 				.withAttributeValueList(TRUE));
@@ -32,25 +34,9 @@ public class ConditionFactoryBooleanState extends ConditionFactoryAbstractState 
 
 	@Override
 	public void isFalse() {
-		contextCallback.addCondition(
+		handleSuccess(
 			new Condition()
 				.withComparisonOperator(ComparisonOperator.EQ)
 				.withAttributeValueList(FALSE));
-	}
-
-	@Override
-	public void is(boolean truthiness) {
-		contextCallback.addCondition(
-			new Condition()
-				.withComparisonOperator(ComparisonOperator.EQ)
-				.withAttributeValueList(truthiness ? TRUE : FALSE));
-	}
-
-	@Override
-	public void isNot(boolean falsiness) {
-		contextCallback.addCondition(
-			new Condition()
-				.withComparisonOperator(ComparisonOperator.NE)
-				.withAttributeValueList(falsiness ? TRUE : FALSE));
 	}
 }

@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.dynamo.repository.filter;
+package com.lvl6.mobsters.conditions.dynamo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,21 +7,36 @@ import java.util.Collections;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.lvl6.mobsters.conditions.framework.AbstractTypedConditionFactory;
+import com.lvl6.mobsters.conditions.framework.IIntConditionFactory;
 
-class ConditionFactoryIntState extends ConditionFactoryAbstractState {
-	ConditionFactoryIntState(IConditionFactoryContext contextCallback) {
-		super(contextCallback);
+class IntConditionFactory 
+	extends AbstractTypedConditionFactory<Condition>
+	implements IIntConditionFactory<Condition>
+{
+	@Override
+	public void inNumberCollection(Collection<? extends Number> matchValues) {
+		final ArrayList<AttributeValue> attrValList = 
+			new ArrayList<>(matchValues.size());
+		for( final Number nextNumber : matchValues ) {
+			attrValList.add(
+				getNumericAttrVal(nextNumber));
+		}
+		handleSuccess(
+			new Condition()
+				.withComparisonOperator(ComparisonOperator.IN)
+				.withAttributeValueList(attrValList));
 	}
 
 	@Override
-	public void in(Collection<Integer> matchValues) {
+	public void inNumbers(Number... matchValues) {
 		final ArrayList<AttributeValue> attrValList = 
-			new ArrayList<>(matchValues.size());
-		for( final Integer nextInteger : matchValues ) {
+			new ArrayList<>(matchValues.length);
+		for( final Number nextNum : matchValues ) {
 			attrValList.add(
-				getNumericAttrVal(nextInteger));
+				getNumericAttrVal(nextNum));
 		}
-		contextCallback.addCondition(
+		handleSuccess(
 			new Condition()
 				.withComparisonOperator(ComparisonOperator.IN)
 				.withAttributeValueList(attrValList));
@@ -35,7 +50,7 @@ class ConditionFactoryIntState extends ConditionFactoryAbstractState {
 			attrValList.add(
 				getNumericAttrVal(nextInt));
 		}
-		contextCallback.addCondition(
+		handleSuccess(
 			new Condition()
 				.withComparisonOperator(ComparisonOperator.IN)
 				.withAttributeValueList(attrValList));
@@ -79,14 +94,14 @@ class ConditionFactoryIntState extends ConditionFactoryAbstractState {
 			getNumericAttrVal(lower));
 		attrValList.add(
 			getNumericAttrVal(upper));
-		contextCallback.addCondition(
+		handleSuccess(
 			new Condition()
 				.withComparisonOperator(ComparisonOperator.BETWEEN)
 				.withAttributeValueList(attrValList));
 	}
 
 	private void addUnaryCondition(final ComparisonOperator operator, final int operand) {
-		contextCallback.addCondition(
+		handleSuccess(
 			new Condition()
 				.withComparisonOperator(operator)
 				.withAttributeValueList(
@@ -101,7 +116,7 @@ class ConditionFactoryIntState extends ConditionFactoryAbstractState {
 					Integer.toString(operand));
 	}
 
-	private AttributeValue getNumericAttrVal(final Integer operand) {
+	private AttributeValue getNumericAttrVal(final Number operand) {
 		return 
 			new AttributeValue()
 				.withN(

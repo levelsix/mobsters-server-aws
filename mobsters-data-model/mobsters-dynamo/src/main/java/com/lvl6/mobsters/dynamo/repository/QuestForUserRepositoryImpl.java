@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.dynamo.repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,27 +7,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.LocalSecondaryIndex;
+import com.lvl6.mobsters.conditions.ConditionStrategyFactory;
+import com.lvl6.mobsters.conditions.Director;
+import com.lvl6.mobsters.conditions.IBooleanConditionBuilder;
+import com.lvl6.mobsters.conditions.IConditionsBuilder;
+import com.lvl6.mobsters.conditions.IIntConditionBuilder;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-import com.lvl6.mobsters.dynamo.repository.filter.Director;
-import com.lvl6.mobsters.dynamo.repository.filter.QueryFilterConditionStrategy;
-import com.lvl6.mobsters.dynamo.repository.filter.IBooleanConditionBuilder;
-import com.lvl6.mobsters.dynamo.repository.filter.IConditionStrategy;
-import com.lvl6.mobsters.dynamo.repository.filter.IIntConditionBuilder;
 
 @Component
 public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<QuestForUser, Integer>
-	implements
-		QuestForUserRepository
+	implements QuestForUserRepository
 {
-
-	private static final Logger log = LoggerFactory
-			.getLogger(QuestForUserRepositoryImpl.class);
+	@SuppressWarnings("unused")
+	private static final Logger LOG = LoggerFactory.getLogger(QuestForUserRepositoryImpl.class);
+	
 	public QuestForUserRepositoryImpl()
 	{
 		super(QuestForUser.class, "questId", Integer.TYPE);
@@ -48,7 +42,7 @@ public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryIm
 		final DynamoDBQueryExpression<QuestForUser> query =
 			new DynamoDBQueryExpression<QuestForUser>()
 				.withHashKeyValues(hashKey)
-				.
+				.withConditionalOperator(conjunction);
 
 		for (final Integer quest : questIds) {
 			questIdz.add(new AttributeValue().withN(quest.toString()));
@@ -85,14 +79,31 @@ public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryIm
 	}
 
 	@Override
-	public List<QuestForUser> findByUserId( String userId, Director<QuestForUserConditionBuilder> director )
+	public List<QuestForUser> findByUserIdAndAll( 
+		final String userId, final Director<QuestForUserConditionBuilder> director )
+	{
+		return findByUserIdWithFilter(userId, director, ConditionalOperator.AND);
+	}
+
+	@Override
+	public List<QuestForUser> findByUserIdAndAny( 
+		final String userId, final Director<QuestForUserConditionBuilder> director )
+	{
+		return findByUserIdWithFilter(userId, director, ConditionalOperator.OR);
+	}
+	
+	private List<QuestForUser> findByUserIdWithFilter( 
+		final String userId, 
+		final Director<QuestForUserConditionBuilder> director, 
+		final ConditionalOperator conjunction ) 
 	{
 		final QuestForUser hashKey = new QuestForUser();
 		hashKey.setUserId(userId);
 
 		final DynamoDBQueryExpression<QuestForUser> query =
 			new DynamoDBQueryExpression<QuestForUser>()
-				.withHashKeyValues(hashKey);
+				.withHashKeyValues(hashKey)
+				.withConditionalOperator(conjunction);
 		
 		// This is the Bridge design pattern.  Each repository type has a ConditionBuilder specific to its
 		// Entity's field names and types.  That implementation knows how to delegate to an IConditionStategy
@@ -101,7 +112,7 @@ public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryIm
 		// a QueryFilterConditionStrategy that is in turn wired to the DynamoDBQueryExpression being built.
 		director.apply(
 			new QuestForUserConditionBuilderImpl(
-				new QueryFilterConditionStrategy(query)));
+				ConditionStrategyFactory.getQueryFilterBuilder(query)));
 		
 		return query(query);
 	}
@@ -111,9 +122,9 @@ public class QuestForUserRepositoryImpl extends BaseDynamoCollectionRepositoryIm
 	// To do the same with inheritance, the class below would have to be redundantly declared
 	// and maintained twice.
 	static class QuestForUserConditionBuilderImpl implements QuestForUserConditionBuilder {
-		private final IConditionStrategy builderContext;
+		private final IConditionsBuilder builderContext;
 
-		QuestForUserConditionBuilderImpl(final IConditionStrategy builderContext) {
+		QuestForUserConditionBuilderImpl(final IConditionsBuilder builderContext) {
 			this.builderContext = builderContext;
 		}
 

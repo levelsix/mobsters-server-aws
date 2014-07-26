@@ -2,10 +2,10 @@ package com.lvl6.mobsters.dynamo.repository;
 
 import java.util.List;
 
+import com.lvl6.mobsters.conditions.Director;
+import com.lvl6.mobsters.conditions.IBooleanConditionBuilder;
+import com.lvl6.mobsters.conditions.IIntConditionBuilder;
 import com.lvl6.mobsters.dynamo.QuestForUser;
-import com.lvl6.mobsters.dynamo.repository.filter.Director;
-import com.lvl6.mobsters.dynamo.repository.filter.IBooleanConditionBuilder;
-import com.lvl6.mobsters.dynamo.repository.filter.IIntConditionBuilder;
 
 public interface QuestForUserRepository extends BaseDynamoCollectionRepository<QuestForUser, Integer>
 {
@@ -30,5 +30,7 @@ public interface QuestForUserRepository extends BaseDynamoCollectionRepository<Q
 	
 	public List<QuestForUser> findByUserId( String userId );
 	
-	public List<QuestForUser> findByUserId( String userId, Director<QuestForUserConditionBuilder> filterDirector );
+	public List<QuestForUser> findByUserIdAndAll( String userId, Director<QuestForUserConditionBuilder> filterDirector );
+	
+	public List<QuestForUser> findByUserIdAndAny( String userId, Director<QuestForUserConditionBuilder> filterDirector );
 }

@@ -18,14 +18,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.lvl6.mobsters.conditions.Director;
+import com.lvl6.mobsters.conditions.IBooleanConditionBuilder;
+import com.lvl6.mobsters.conditions.IIntConditionBuilder;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.repository.DynamoRepositorySetup;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository.QuestForUserConditionBuilder;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepositoryImpl;
-import com.lvl6.mobsters.dynamo.repository.filter.Director;
-import com.lvl6.mobsters.dynamo.repository.filter.IBooleanConditionBuilder;
-import com.lvl6.mobsters.dynamo.repository.filter.IIntConditionBuilder;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 
@@ -98,7 +98,7 @@ public class TestQuestForUsers {
 						}).questId(new Director<IIntConditionBuilder>() {
 							@Override
 							public void apply(IIntConditionBuilder builder) {
-								builder.in(questIds);
+								builder.inNumberCollection(questIds);
 							}
 						});
 					}
