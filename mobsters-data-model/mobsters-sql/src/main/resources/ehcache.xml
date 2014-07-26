@@ -7,6 +7,7 @@
     <defaultCache eternal="true" copyOnRead="true" diskPersistent="false" 
     	maxElementsInMemory="0" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" />           
 
+<!--     A first effort... -->
 <!--     <cache  -->
 <!--     	name="Achievement" -->
 <!--     	eternal="true" -->
@@ -16,10 +17,16 @@
 <!--     	timeToLiveSeconds="6000" />   -->
 
 	<!-- NO: maxEntriesLocalHeap="150" maxEntriesInCache="150" --> 
+	<!-- eternal="true" contradicts timeTo****Seconds > 0.  Setting
+	     TTL=0 or TTI=0 means "indefinitely", which is also what
+	     eternal="true" means.  Conversely, non-zero values are 
+	     contradictions unless eternal="false". -->
+	<!-- maxElementsInMemory=0 means infinite may elements may be 
+	     allowed to reside in-memory. -->
 	<cache name="com.lvl6.mobsters.info.Achievement" 
 	    eternal="true" copyOnRead="false" copyOnWrite="true"
 		diskPersistent="false" 
 		overflowToDisk="false" overflowToOffHeap="false" 
 		maxElementsInMemory="0" maxMemoryOffHeap="150M"
-		timeToIdleSeconds="3" timeToLiveSeconds="6" />	
+		timeToIdleSeconds="0" timeToLiveSeconds="0" />	
  </ehcache>
