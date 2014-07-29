@@ -26,6 +26,7 @@
 		</developer>
 	</developers>
 	<modules>
+		<module>mobsters-commons</module>
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
 		<!-- module>mobsters-modeling</module -->
@@ -125,6 +126,7 @@
 		<javax.el.version>2.2.4</javax.el.version>
 		<javax.mail.version>1.4.5</javax.mail.version>
 		<javax.servlet.version>3.0.1</javax.servlet.version>
+		<javax.validation.version>1.1.0.Final</javax.validation.version>
 		<javax.websocket.version>1.0</javax.websocket.version>
 		<jedis.version>2.4.2</jedis.version>
 		<joda-time.version>2.1</joda-time.version>
@@ -253,6 +255,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-commons</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
 				<artifactId>mobsters-sql</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -310,6 +317,11 @@
 				<groupId>javax.websocket</groupId>
 				<artifactId>javax.websocket-api</artifactId>
 				<version>${javax.websocket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${javax.validation.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>mysql</groupId>

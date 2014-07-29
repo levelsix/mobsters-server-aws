@@ -16,6 +16,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-cache</artifactId>
 		</dependency>
 		<dependency>
