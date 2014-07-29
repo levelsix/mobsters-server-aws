@@ -9,11 +9,11 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 
 public class BeginDungeonResponseEvent extends NormalResponseEvent {
 
-  private BeginDungeonResponseProto beginDungeonResponseProto;
+  private final BeginDungeonResponseProto beginDungeonResponseProto;
   
-  public BeginDungeonResponseEvent(String playerId){
-    super(playerId);
-    eventType = EventProtocolResponse.S_BEGIN_DUNGEON_EVENT;
+  public BeginDungeonResponseEvent(String playerId, int tag, BeginDungeonResponseProto.Builder protoBuilder){
+    super(playerId, EventProtocolResponse.S_BEGIN_DUNGEON_EVENT, tag);
+    beginDungeonResponseProto = protoBuilder.build();
   }
   
   @Override
@@ -21,14 +21,5 @@ public class BeginDungeonResponseEvent extends NormalResponseEvent {
     ByteString b = beginDungeonResponseProto.toByteString();
     b.copyTo(bb);
     return b.size();
-  }
-
-  public void setBeginDungeonResponseProto(BeginDungeonResponseProto beginDungeonResponseProto) {
-    this.beginDungeonResponseProto = beginDungeonResponseProto;
-  }
-
-  public BeginDungeonResponseProto getBeginDungeonResponseProto() {   //because APNS required
-    return beginDungeonResponseProto;
-  }
-  
+  }  
 }

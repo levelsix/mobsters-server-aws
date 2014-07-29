@@ -1,24 +1,34 @@
 package com.lvl6.mobsters.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.common.utils.AbstractAction;
+import com.lvl6.mobsters.common.utils.IAction;
+import com.lvl6.mobsters.common.utils.ICallableAction;
 import com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonRequestProto;
 import com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonResponseProto;
 import com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonResponseProto.BeginDungeonStatus;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.events.request.BeginDungeonRequestEvent;
+import com.lvl6.mobsters.events.response.BeginDungeonResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.task.TaskService;
+import com.lvl6.mobsters.services.task.TaskService.GenerateUserTaskStagesResponseBuilder;
 
 @Component
 public class BeginDungeonController extends EventController
@@ -75,21 +85,63 @@ public class BeginDungeonController extends EventController
 		Element elem = reqProto.getElem();
 		// if not set, then go select monsters at random
 		boolean forceEnemyElem = reqProto.getForceEnemyElem();
-
-		//set some values to send to the client (the response proto)
-		BeginDungeonResponseProto.Builder resBuilder = BeginDungeonResponseProto.newBuilder();
-		resBuilder.setSender(senderProto);
-		resBuilder.setTaskId(taskId);
-		resBuilder.setStatus(BeginDungeonStatus.SUCCESS); //default
-
 //			TreeMap<Integer, List<TaskStageForUser>> orderedStages = beginTaskService
 //				.generateUserTaskStages(userId, curTime, taskId, isEvent,
 //					eventId, gemsSpent, questIds, elem.name(), forceEnemyElem);
+		
+		// Verify syntax validity of service call parameters.
+		ICallableAction<GenerateUserTaskStagesResponseBuilder> svcAction = 
+			taskService.generateUserTaskStages(
+				userId, curTime, taskId, isEvent, eventId, gemsSpent, questIds, 
+				(elem != null) ? elem.name() : "", forceEnemyElem
+			);
+		checkSyntaxValidity(svcAction);
+
+		// Prepare to receive response values for sending to the client (via response proto),
+		// then call the service.
+		final GenerateUserTaskStagesResponseBuilderImpl responseEventBuilder = 
+			new GenerateUserTaskStagesResponseBuilderImpl(senderProto, event.getTag(), taskId);
+		svcAction.execute(responseEventBuilder);
+		
+		// If no exception was thrown, result was a success.  Write response to client
+		final BeginDungeonResponseEvent responseEvent = responseEventBuilder.build();
+		LOG.info("Writing event: %s", responseEvent);
+		eventWriter.writeEvent(responseEvent);
+	}
+	
+	static class GenerateUserTaskStagesResponseBuilderImpl implements GenerateUserTaskStagesResponseBuilder {
+		private final BeginDungeonResponseProto.Builder resBuilder;
+		private final String userUuid;
+		private final int tag;
+		
+		GenerateUserTaskStagesResponseBuilderImpl(
+			final MinimumUserProto senderProto, final int tag, final int taskId ) 
+		{
+			resBuilder = BeginDungeonResponseProto.newBuilder();
+			resBuilder.setSender(senderProto);
+			resBuilder.setTaskId(taskId);
+			resBuilder.setStatus(BeginDungeonStatus.SUCCESS); //default
+
+			userUuid = senderProto.getUserUuid();
+			this.tag = tag;
+		}
+		
+		public GenerateUserTaskStagesResponseBuilder taskId(int taskId) {
+			resBuilder.setTaskId(taskId);
+			return this;
+		}
+		
+		BeginDungeonResponseEvent build() {
+			return new BeginDungeonResponseEvent(userUuid, tag, resBuilder);
+		}
 	}
 
-	public void setBeginTaskService( TaskService taskService )
+	/******************************************************************************************/
+	
+	/* BEGIN Dependency Injection *************************************************************/
+	
+	void setTaskService( TaskService taskService )
 	{
 		this.taskService = taskService;
 	}
-	
 }

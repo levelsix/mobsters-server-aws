@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.lvl6.mobsters.common.utils.Director;
+import com.lvl6.mobsters.common.utils.ICallableAction;
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
@@ -11,9 +12,9 @@ import com.lvl6.mobsters.dynamo.TaskStageForUser;
 
 public interface TaskService {
 	/* BEGIN NON-CRUD METHODS **************************************************/
-	
+
 	/* BEGIN READ ONLY METHODS *************************************************/
-    
+
 	/**
 	 * TODO: This is not a valid service method!!  It leaks a Domain Object to the caller.
 	 */
@@ -54,6 +55,15 @@ public interface TaskService {
     	 */
     	CompleteTasksBuilder taskId(int taskId, Date timeOfEntry);
     }
+
+	public ICallableAction<GenerateUserTaskStagesResponseBuilder> generateUserTaskStages(
+			String userId, Date curTime, int taskId, boolean isEvent, int eventId, 
+			int gemsSpent, List<Integer> questIds, String string, boolean forceEnemyElem);
+
+	public interface GenerateUserTaskStagesResponseBuilder {
+		// TODO: Don't require echoing back input arguments
+		GenerateUserTaskStagesResponseBuilder taskId(int taskId);
+	}
 	
     /* END OF INTERFACE ********************************************************/    
 }

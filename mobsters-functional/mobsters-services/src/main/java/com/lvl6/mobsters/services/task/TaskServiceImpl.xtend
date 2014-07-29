@@ -1,7 +1,10 @@
 package com.lvl6.mobsters.services.task
 
 import com.google.common.base.Preconditions
+import com.lvl6.mobsters.common.utils.AbstractAction
+import com.lvl6.mobsters.common.utils.AbstractService
 import com.lvl6.mobsters.common.utils.Director
+import com.lvl6.mobsters.common.utils.ICallableAction
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository
@@ -10,16 +13,21 @@ import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.validation.constraints.ConfigID
+import com.lvl6.mobsters.validation.constraints.DynamoID
 import java.util.ArrayList
 import java.util.Date
 import java.util.List
+import javax.validation.constraints.Min
+import javax.validation.constraints.Size
+import org.hibernate.validator.constraints.ScriptAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class TaskServiceImpl implements TaskService {
+class TaskServiceImpl extends AbstractService implements TaskService {
     private static val Logger LOG = LoggerFactory.getLogger(TaskServiceImpl);
 
     @Autowired
@@ -153,6 +161,73 @@ class TaskServiceImpl implements TaskService {
     }
 
     /**************************************************************************/
+	
+	override generateUserTaskStages(String userId, Date curTime, int taskId, boolean isEvent, int eventId, int gemsSpent, List<Integer> questIds, String elementName, boolean forceEnemyElem) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	@ScriptAssert.List(
+		@ScriptAssert(
+			lang="javascript",
+			script="if (_this.forceEnemyElem) { return(_this.elementName !== '' && _this.elementName !== null);}; return true;",
+			message="elementName must not be blank or null when forceEnemyElem is set true"
+		), 
+		@ScriptAssert(
+			lang="javascript",
+			script="if (_this.isEvent) { return(_this.eventId > 0); }; return true;",
+			message="If this is an event, then eventId must be a positive value."
+		)
+	)
+	static class GenerateUserTaskStagesActionImpl 
+		extends AbstractAction 
+		implements ICallableAction<TaskService.GenerateUserTaskStagesResponseBuilder>
+	{
+	@DynamoID
+	val String userId
+	
+	// Cannot mark @Past because client clock may run fast.  Create an annotation for
+	// tolerated margin for error?
+	val Date curTime
+	
+	@ConfigID
+	val int taskId
+	
+	val boolean isEvent
+	val int eventId
+	
+	@Min(0)
+	val int gemsSpent
+	
+	@Size(min=1)
+	val List<Integer> questIds
+	
+	val String elementName
+	val boolean forceEnemyElem
+	
+	new(TaskServiceImpl parentService, String userId, Date curTime, int taskId,
+			boolean isEvent, int eventId, int gemsSpent, List<Integer> questIds, String elementName,
+			boolean forceEnemyElem)
+		{
+			super(parentService)
+			this.userId = userId;
+			this.curTime = curTime;
+			this.taskId = taskId;
+			this.isEvent = isEvent;
+			this.eventId = eventId;
+			this.gemsSpent = gemsSpent;
+			this.questIds = questIds;
+			this.elementName = elementName;
+			this.forceEnemyElem = forceEnemyElem;
+		}
+		
+		override execute(TaskService.GenerateUserTaskStagesResponseBuilder resultBuilder) 
+		{
+			throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		}
+		
+	}
+
+    /**************************************************************************/
     
     //for the dependency injection
     def void setTaskForUserCompletedRepository( TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository )
@@ -184,4 +259,5 @@ class TaskServiceImpl implements TaskService {
 	{
 		this.txManager = txManager
 	}
+	
 }
