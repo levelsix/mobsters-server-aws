@@ -68,40 +68,21 @@ public class AchievementRedeemController extends EventController {
         responseBuilder.setStatus(AchievementRedeemStatus.SUCCESS);
         responseBuilder.setSender(senderProto);
         
-        AchievementRedeemResponseEvent resEvent =
-            new AchievementRedeemResponseEvent(userIdString);
-        resEvent.setTag(event.getTag());
-
         // Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
+        // TODO: Keep track of the user currency history somehow
+        final User u = achievementService.redeemAchievement(userIdString, achievementId, clientTime);
 
-        // call service if syntax is ok
-        boolean successful = false;
-        User u = null; 
-        try {
-        	u = achievementService.redeemAchievement(userIdString, achievementId, clientTime);
-        	// TODO: Keep track of the user currency history somehow
-        	
-            successful = true;
-        } catch (Exception e) {
-        	LOG.error(
-        		"exception in AchievementRedeemController processEvent when calling userService",
-        		e);
-        	responseBuilder.setStatus(AchievementRedeemStatus.FAIL_OTHER);
-        }
-
-        resEvent.setAchievementRedeemResponseProto(responseBuilder.build());
-
-        // write to client
-        LOG.info("Writing event: " + resEvent);
+        // write response to client
+        final AchievementRedeemResponseEvent resEvent =
+        	new AchievementRedeemResponseEvent(userIdString, event.getTag(), responseBuilder);
+        LOG.info("Writing event: %s", resEvent);
         eventWriter.writeEvent(resEvent);
         
-        if (successful) {
-        	UpdateClientUserResponseEvent resEventUpdate =
-            	createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
-            eventWriter.writeEvent(resEventUpdate);
-        }
-
+        // write async client update response
+        final UpdateClientUserResponseEvent resEventUpdate =
+            createEventProtoUtil.createUpdateClientUserResponseEvent(u, null, null, null, null);
+        eventWriter.writeEvent(resEventUpdate);
     }
 
     public AchievementService getAchievementService() {

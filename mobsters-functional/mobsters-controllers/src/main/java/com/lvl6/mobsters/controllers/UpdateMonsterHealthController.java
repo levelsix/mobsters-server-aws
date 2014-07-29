@@ -67,8 +67,6 @@ public class UpdateMonsterHealthController extends EventController
 		// prepare to send response back to client
 		final Builder responseBuilder = UpdateMonsterHealthResponseProto.newBuilder();
 		responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
-		final UpdateMonsterHealthResponseEvent resEvent =
-			new UpdateMonsterHealthResponseEvent(userIdString, event.getTag());
 
 		// Check values client sent for syntax errors. Call service only if
 		// syntax checks out ok
@@ -88,30 +86,17 @@ public class UpdateMonsterHealthController extends EventController
 		}
 
 		if (responseBuilder.getStatus() == UpdateMonsterHealthStatus.SUCCESS) {
-			try {
-				monsterService.modifyMonstersForUser(userIdString, modBuilder.build());
-				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
-			} catch (final Exception e) {
-				LOG.error(
-					"exception in UpdateMonsterHealthController processRequestEvent when calling MonsterService",
-					e);
-				responseBuilder.setStatus(UpdateMonsterHealthStatus.FAIL_OTHER);
-				resEvent.setUpdateMonsterHealthResponseProto(responseBuilder.build());
-			}
+			monsterService.modifyMonstersForUser(userIdString, modBuilder.build());
 		}
 
 		// write to client
-		LOG.info("Writing event: "
-			+ resEvent);
+		final UpdateMonsterHealthResponseEvent resEvent =
+			new UpdateMonsterHealthResponseEvent(userIdString, event.getTag(), responseBuilder);
+		LOG.info("Writing event: %s", resEvent);
 		eventWriter.writeEvent(resEvent);
 	}
 
-	public MonsterService getMonsterService()
-	{
-		return monsterService;
-	}
-
-	public void setMonsterService( final MonsterService monsterService )
+	void setMonsterService( final MonsterService monsterService )
 	{
 		this.monsterService = monsterService;
 	}

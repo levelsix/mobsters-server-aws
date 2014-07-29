@@ -11,8 +11,9 @@ public class UpdateMonsterHealthResponseEvent extends NormalResponseEvent {
 
   private UpdateMonsterHealthResponseProto updateMonsterHealthResponseProto;
   
-  public UpdateMonsterHealthResponseEvent(final String playerId, final int tag){
+  public UpdateMonsterHealthResponseEvent(final String playerId, final int tag, UpdateMonsterHealthResponseProto.Builder protoBuilder){
     super(playerId, EventProtocolResponse.S_UPDATE_MONSTER_HEALTH_EVENT, tag);
+    updateMonsterHealthResponseProto = protoBuilder.build();
   }
   
   @Override

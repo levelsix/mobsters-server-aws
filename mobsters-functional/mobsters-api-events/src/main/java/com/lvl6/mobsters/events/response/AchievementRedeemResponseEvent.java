@@ -9,10 +9,11 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 
 public class AchievementRedeemResponseEvent extends NormalResponseEvent {
 
-  private AchievementRedeemResponseProto achievementRedeemResponseProto;
+  private final AchievementRedeemResponseProto achievementRedeemResponseProto;
   
-  public AchievementRedeemResponseEvent(String playerId){
-    super(playerId, EventProtocolResponse.S_ACHIEVEMENT_REDEEM_EVENT);
+  public AchievementRedeemResponseEvent(String playerId, int tag, AchievementRedeemResponseProto.Builder protoBuilder){
+    super(playerId, EventProtocolResponse.S_ACHIEVEMENT_REDEEM_EVENT, tag);
+    achievementRedeemResponseProto = protoBuilder.build();
   }
   
   @Override
@@ -21,9 +22,4 @@ public class AchievementRedeemResponseEvent extends NormalResponseEvent {
     b.copyTo(bb);
     return b.size();
   }
-
-  public void setAchievementRedeemResponseProto(AchievementRedeemResponseProto achievementRedeemResponseProto) {
-    this.achievementRedeemResponseProto = achievementRedeemResponseProto;
-  }
-
 }

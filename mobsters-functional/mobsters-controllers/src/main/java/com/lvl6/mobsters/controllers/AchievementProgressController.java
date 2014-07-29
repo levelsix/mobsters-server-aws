@@ -66,9 +66,6 @@ public class AchievementProgressController extends EventController {
             AchievementProgressResponseProto.newBuilder();
         responseBuilder.setStatus(AchievementProgressStatus.FAIL_OTHER);
         responseBuilder.setSender(senderProto);
-        AchievementProgressResponseEvent resEvent =
-            new AchievementProgressResponseEvent(userIdString);
-        resEvent.setTag(event.getTag());
 
         // Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
@@ -107,8 +104,9 @@ public class AchievementProgressController extends EventController {
             }
         }
 
-        resEvent.setAchievementProgressResponseProto(responseBuilder.build());
-
+        AchievementProgressResponseEvent resEvent =
+        	new AchievementProgressResponseEvent(userIdString, event.getTag(), responseBuilder);
+       
         // write to client
         LOG.info("Writing event: " + resEvent);
         eventWriter.writeEvent(resEvent);

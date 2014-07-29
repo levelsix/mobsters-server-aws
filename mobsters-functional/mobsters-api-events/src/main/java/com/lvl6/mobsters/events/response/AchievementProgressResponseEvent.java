@@ -9,10 +9,11 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 
 public class AchievementProgressResponseEvent extends NormalResponseEvent {
 
-  private AchievementProgressResponseProto achievementProgressResponseProto;
+  private final AchievementProgressResponseProto achievementProgressResponseProto;
   
-  public AchievementProgressResponseEvent(String playerId){
-    super(playerId, EventProtocolResponse.S_ACHIEVEMENT_PROGRESS_EVENT);
+  public AchievementProgressResponseEvent(String playerId, int tag, AchievementProgressResponseProto.Builder protoBuilder){
+    super(playerId, EventProtocolResponse.S_ACHIEVEMENT_PROGRESS_EVENT, tag);
+    achievementProgressResponseProto = protoBuilder.build();
   }
   
   @Override
@@ -21,9 +22,4 @@ public class AchievementProgressResponseEvent extends NormalResponseEvent {
     b.copyTo(bb);
     return b.size();
   }
-
-  public void setAchievementProgressResponseProto(AchievementProgressResponseProto achievementProgressResponseProto) {
-    this.achievementProgressResponseProto = achievementProgressResponseProto;
-  }
-
 }

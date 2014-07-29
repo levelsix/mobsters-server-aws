@@ -9,16 +9,21 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRes
 
 public class UpdateClientUserResponseEvent extends NormalResponseEvent{
 
-  private UpdateClientUserResponseProto updateClientUserResponseProto;
+  private final UpdateClientUserResponseProto updateClientUserResponseProto;
   
   // By doing all state assignment in the event's construction, we gain the ability to pass the event object to another thread
   // without having to consider using a "synchronized" or "volatile" memory barrier to ensure visibility.  The ability to
   // size and schedule I/O processing thread pools independently from request computation thread pools  
   public UpdateClientUserResponseEvent(String playerId, int tag, UpdateClientUserResponseProto.Builder responseProtoBuilder) {
-    super(playerId, EventProtocolResponse.S_UPDATE_CLIENT_USER_EVENT, tag);
-    this.updateClientUserResponseProto = responseProtoBuilder.build();
-  }
-  
+	    super(playerId, EventProtocolResponse.S_UPDATE_CLIENT_USER_EVENT, tag);
+	    this.updateClientUserResponseProto = responseProtoBuilder.build();
+	  }
+	  
+  public UpdateClientUserResponseEvent(String playerId, UpdateClientUserResponseProto.Builder responseProtoBuilder) {
+	    super(playerId, EventProtocolResponse.S_UPDATE_CLIENT_USER_EVENT);
+	    this.updateClientUserResponseProto = responseProtoBuilder.build();
+	  }
+	  
   /** 
    * write the event to the given ByteBuffer
    * 
@@ -31,9 +36,4 @@ public class UpdateClientUserResponseEvent extends NormalResponseEvent{
     b.copyTo(buff);
     return b.size();
   }
-
-  // public void setUpdateClientUserResponseProto(UpdateClientUserResponseProto updateClientUserResponseProto) {
-  //   this.updateClientUserResponseProto = updateClientUserResponseProto;
-  // }
-  
 }
