@@ -11,7 +11,6 @@ import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.common.TimeUtils
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
 import com.lvl6.mobsters.services.structure.StructureService
-import com.lvl6.mobsters.services.structure.composite.UpgradeNormStructureService
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import com.lvl6.mobsters.services.user.UserService
 import java.util.Date
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.services.structure.composite.UpgradeNormStructureServiceImpl.*
 
 @Component
 public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureService {
@@ -67,11 +67,11 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 			int gemsSpent, String resourceType, int _resourceChange,
 			Date timeOfUpgrade)
 	{
-		val UpgradeNormStructureServiceImpl.UpgradeNormStructureAction action =
-			new UpgradeNormStructureServiceImpl.UpgradeNormStructureAction(
+		val UpgradeNormStructureServiceImpl.BeginUpgradeNormStructureAction action =
+			new UpgradeNormStructureServiceImpl.BeginUpgradeNormStructureAction(
 				userId, userStructId, gemsSpent, resourceType, _resourceChange, timeOfUpgrade,
 				userRepository, structureForUserRepository, structExtension, userExtension
-			);
+		);
 		
 		var success = false
 		txManager.beginTransaction()
@@ -90,7 +90,7 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		return null;
 	}
 	
-	static class UpgradeNormStructureAction 
+	static class BeginUpgradeNormStructureAction 
 	{
 		val String userId
 		val String userStructId
@@ -144,8 +144,6 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 			checkIfUserCanUpgradeStructure()
 	
 			// TODO: Write to currency history
-//			updateUserCurrency()	
-//			sfu.speedUpConstruction(timeOfUpgrade).moveTo(495, 284)
 			sfu.beginTimedUpgrade(timeOfUpgrade, user, gemsSpent, cashToSpend, oilToSpend)
 			
 			userRepo.save(user)
@@ -213,17 +211,98 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		    }	
 		}
 	
-		/*private def void updateUserCurrency()
-		{
-			user.spendGems(gemsSpent)
-			user.spendCash(cashToSpend)
-			user.spendOil(oilToSpend)
-		}*/
 	}
 
 	override speedUpConstructingUserStruct( String userId, String userStructId, int gemCost, Date now ) {
-		// TODO port this next...
+		
+		val UpgradeNormStructureServiceImpl.SpeedUpUpgradeNormStructureAction action =
+			new UpgradeNormStructureServiceImpl.SpeedUpUpgradeNormStructureAction(
+				userId, userStructId, gemCost, now,  userRepository,
+				 structureForUserRepository, userExtension, structExtension
+		);
+		
+		var success = false
+		txManager.beginTransaction()
+		try {
+			action.execute();
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
+		}
+		
+		// TODO: return a user or some container holding the user data that was updated
 		return null
+	}
+	
+	static class SpeedUpUpgradeNormStructureAction 
+	{
+		val String userId
+		val String userStructId
+		val int gemCost
+		val Date now
+		
+		val UserRepository userRepo
+		val StructureForUserRepository sfuRepo
+		val extension StructureExtensionLib sfuExt
+		val extension UserExtensionLib userExt
+		
+		//Derived properties computed when checking, then applied when updating
+		var User user
+		var StructureForUser sfu
+		var int userGems
+		
+		new( String userId, String userStructId, int gemCost, Date now,
+			 UserRepository userRepo, StructureForUserRepository sfuRepo,
+			 UserExtensionLib  userExt, StructureExtensionLib sfuExt )
+		{
+			this.userId = userId
+			this.userStructId = userStructId
+			this.gemCost = gemCost
+			this.now = now
+			
+			this.userRepo = userRepo
+			this.sfuRepo = sfuRepo
+			this.userExt = userExt
+			this.sfuExt = sfuExt
+		}
+		
+		def void execute() {
+			user = userRepo.load(userId);
+			sfu = sfuRepo.load(userId, userStructId);
+			
+			checkIfUserCanSpeedUp();
+			
+			userRepo.save(user);
+			sfuRepo.save(sfu);
+		}
+		
+		private def void checkIfUserCanSpeedUp()
+		{
+			lvl6Precondition( 
+				(user !== null && sfu !== null && sfu.structure != null),
+				Lvl6MobstersStatusCode.FAIL_OTHER,
+				LOG,
+				"parameter passed in is null. user=%s, user struct=%s, userStruct's last retrieve time=%s", 
+				user, sfu, sfu.structure)
+	
+			lvl6Precondition(
+				!sfu.complete,
+				Lvl6MobstersStatusCode.FAIL_OTHER,
+				LOG,
+				"sfu is already complete. sfu=%s",
+				sfu
+			)
+			
+			val spendPurpose = [| return String.format("to speed up upgrading userStructure=%s", sfu)]
+			
+			userGems = user.gems
+			user.checkCanSpendGems(gemCost, LOG, spendPurpose)
+		    
+		}
 	}
 
 	def void setUserRepository(UserRepository userRepository) {

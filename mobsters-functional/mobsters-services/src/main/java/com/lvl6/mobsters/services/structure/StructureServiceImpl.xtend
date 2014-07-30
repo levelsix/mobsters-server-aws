@@ -293,8 +293,8 @@ class StructureServiceImpl implements StructureService
 	override finishConstructingCompletedUserStructures( 
 		String userId, List<String> userStructIdList, Date now) 
 	{
-		val StructureServiceImpl.ConstructNormStructureAction action =
-			new StructureServiceImpl.ConstructNormStructureAction(
+		val StructureServiceImpl.MarkNormStructureAsBuiltAction action =
+			new StructureServiceImpl.MarkNormStructureAsBuiltAction(
 				userId, userStructIdList, now, structureForUserRepository, structExtension 
 			);
 			
@@ -313,7 +313,7 @@ class StructureServiceImpl implements StructureService
 		
 	}
 	
-	static class ConstructNormStructureAction
+	static class MarkNormStructureAsBuiltAction
 	{
 		
 		val String userId
