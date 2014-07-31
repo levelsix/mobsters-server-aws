@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.info;
 
-import java.util.List;
-
 public interface IStructure extends IBaseIntPersistentObject
 {
 
@@ -85,28 +83,28 @@ public interface IStructure extends IBaseIntPersistentObject
 
 	public void setShadowScale( float shadowScale );
 
-	public List<IStructureHospital> getHospitals();
+	public IStructureHospital getHospital();
 
-	public void setHospitals( List<IStructureHospital> hospitals );
+	public void setHospital( IStructureHospital hospital );
 
-	public List<IStructureLab> getLabs();
+	public IStructureLab getLab();
 
-	public void setLabs( List<IStructureLab> labs );
+	public void setLab( IStructureLab lab );
 
-	public List<IStructureResidence> getResidences();
+	public IStructureResidence getResidence();
 
-	public void setResidences( List<IStructureResidence> residences );
+	public void setResidence( IStructureResidence residence );
 
-	public List<IStructureResourceGenerator> getResourceGenerators();
+	public IStructureResourceGenerator getResourceGenerator();
 
-	public void setResourceGenerators( List<IStructureResourceGenerator> resourceGenerators );
+	public void setResourceGenerator( IStructureResourceGenerator resourceGenerator );
 
-	public List<IStructureResourceStorage> getResourceStorages();
+	public IStructureResourceStorage getResourceStorage();
 
-	public void setResourceStorages( List<IStructureResourceStorage> resourceStorages );
+	public void setResourceStorage( IStructureResourceStorage resourceStorage );
 
-	public List<IStructureTownHall> getTownHalls();
+	public IStructureTownHall getTownHall();
 
-	public void setTownHalls( List<IStructureTownHall> townHalls );
+	public void setTownHall( IStructureTownHall townHall );
 
 }

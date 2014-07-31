@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.info;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -19,8 +17,7 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=IStructure.class)
 public class Structure extends BaseIntPersistentObject implements IStructure{
 
-	
-	private static final long serialVersionUID = 5524500535596533823L;
+	private static final long serialVersionUID = 1149844559874723039L;
 	
 	@Column(name = "name")
 	private String name;
@@ -80,7 +77,7 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		mappedBy="struct", 
 		orphanRemoval=true,
 		targetEntity=StructureHospital.class)
-	private List<IStructureHospital> hospitals;
+	private IStructureHospital hospital;
 
 	@OneToOne(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -88,7 +85,7 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		mappedBy="struct", 
 		orphanRemoval=true,
 		targetEntity=StructureLab.class)
-	private List<IStructureLab> labs;
+	private IStructureLab lab;
 
 	@OneToOne(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -96,7 +93,7 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		mappedBy="struct", 
 		orphanRemoval=true,
 		targetEntity=StructureResidence.class)
-	private List<IStructureResidence> residences;
+	private IStructureResidence residence;
 
 	@OneToOne(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -104,7 +101,7 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		mappedBy="struct", 
 		orphanRemoval=true,
 		targetEntity=StructureResourceGenerator.class)
-	private List<IStructureResourceGenerator> resourceGenerators;
+	private IStructureResourceGenerator resourceGenerator;
 
 	@OneToOne(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -112,7 +109,7 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		mappedBy="struct", 
 		orphanRemoval=true,
 		targetEntity=StructureResourceStorage.class)
-	private List<IStructureResourceStorage> resourceStorages;
+	private IStructureResourceStorage resourceStorage;
 
 	@OneToOne(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
@@ -120,7 +117,7 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		mappedBy="struct", 
 		orphanRemoval=true,
 		targetEntity=StructureTownHall.class)
-	private List<IStructureTownHall> townHalls;
+	private IStructureTownHall townHall;
 	
 	
 	public Structure(){}
@@ -131,11 +128,11 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 			float imgVerticalPixelOffset, float imgHorizontalPixelOffset,
 			String description, String shortDescription, String shadowImgName,
 			float shadowVerticalOffset, float shadowHorizontalOffset,
-			float shadowScale, List<IStructureHospital> hospitals,
-			List<IStructureLab> labs, List<IStructureResidence> residences,
-			List<IStructureResourceGenerator> resourceGenerators,
-			List<IStructureResourceStorage> resourceStorages,
-			List<IStructureTownHall> townHalls) {
+			float shadowScale, IStructureHospital hospital,
+			IStructureLab lab, IStructureResidence residence,
+			IStructureResourceGenerator resourceGenerator,
+			IStructureResourceStorage resourceStorage,
+			IStructureTownHall townHall) {
 		
 		super(id);
 		this.name = name;
@@ -158,12 +155,12 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 		this.shadowVerticalOffset = shadowVerticalOffset;
 		this.shadowHorizontalOffset = shadowHorizontalOffset;
 		this.shadowScale = shadowScale;
-		this.hospitals = hospitals;
-		this.labs = labs;
-		this.residences = residences;
-		this.resourceGenerators = resourceGenerators;
-		this.resourceStorages = resourceStorages;
-		this.townHalls = townHalls;
+		this.hospital = hospital;
+		this.lab = lab;
+		this.residence = residence;
+		this.resourceGenerator = resourceGenerator;
+		this.resourceStorage = resourceStorage;
+		this.townHall = townHall;
 	}
 
 
@@ -489,101 +486,113 @@ public class Structure extends BaseIntPersistentObject implements IStructure{
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#getHospitals()
+	 * @see com.lvl6.mobsters.info.IStructure#getHospital()
 	 */
 	@Override
-	public List<IStructureHospital> getHospitals()
+	public IStructureHospital getHospital()
 	{
-		return hospitals;
+		return hospital;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#setHospitals(java.util.List)
+	 * @see com.lvl6.mobsters.info.IStructure#setHospital(com.lvl6.mobsters.info.IStructureHospital)
 	 */
 	@Override
-	public void setHospitals( List<IStructureHospital> hospitals )
+	public void setHospital( IStructureHospital hospital )
 	{
-		this.hospitals = hospitals;
+		this.hospital = hospital;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#getLabs()
+	 * @see com.lvl6.mobsters.info.IStructure#getLab()
 	 */
 	@Override
-	public List<IStructureLab> getLabs()
+	public IStructureLab getLab()
 	{
-		return labs;
+		return lab;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#setLabs(java.util.List)
+	 * @see com.lvl6.mobsters.info.IStructure#setLab(com.lvl6.mobsters.info.IStructureLab)
 	 */
 	@Override
-	public void setLabs( List<IStructureLab> labs )
+	public void setLab( IStructureLab lab )
 	{
-		this.labs = labs;
+		this.lab = lab;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#getResidences()
+	 * @see com.lvl6.mobsters.info.IStructure#getResidence()
 	 */
 	@Override
-	public List<IStructureResidence> getResidences()
+	public IStructureResidence getResidence()
 	{
-		return residences;
+		return residence;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#setResidences(java.util.List)
+	 * @see com.lvl6.mobsters.info.IStructure#setResidence(com.lvl6.mobsters.info.IStructureResidence)
 	 */
 	@Override
-	public void setResidences( List<IStructureResidence> residences )
+	public void setResidence( IStructureResidence residence )
 	{
-		this.residences = residences;
+		this.residence = residence;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#getResourceGenerators()
+	 * @see com.lvl6.mobsters.info.IStructure#getResourceGenerator()
 	 */
 	@Override
-	public List<IStructureResourceGenerator> getResourceGenerators()
+	public IStructureResourceGenerator getResourceGenerator()
 	{
-		return resourceGenerators;
+		return resourceGenerator;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#setResourceGenerators(java.util.List)
+	 * @see com.lvl6.mobsters.info.IStructure#setResourceGenerator(com.lvl6.mobsters.info.IStructureResourceGenerator)
 	 */
 	@Override
-	public void setResourceGenerators( List<IStructureResourceGenerator> resourceGenerators )
+	public void setResourceGenerator( IStructureResourceGenerator resourceGenerator )
 	{
-		this.resourceGenerators = resourceGenerators;
+		this.resourceGenerator = resourceGenerator;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#getResourceStorages()
+	 * @see com.lvl6.mobsters.info.IStructure#getResourceStorage()
 	 */
 	@Override
-	public List<IStructureResourceStorage> getResourceStorages()
+	public IStructureResourceStorage getResourceStorage()
 	{
-		return resourceStorages;
+		return resourceStorage;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#setResourceStorages(java.util.List)
+	 * @see com.lvl6.mobsters.info.IStructure#setResourceStorage(com.lvl6.mobsters.info.IStructureResourceStorage)
 	 */
 	@Override
-	public void setResourceStorages( List<IStructureResourceStorage> resourceStorages )
+	public void setResourceStorage( IStructureResourceStorage resourceStorage )
 	{
-		this.resourceStorages = resourceStorages;
+		this.resourceStorage = resourceStorage;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#getTownHalls()
+	 * @see com.lvl6.mobsters.info.IStructure#getTownHall()
 	 */
 	@Override
-	public List<IStructureTownHall> getTownHalls()
+	public IStructureTownHall getTownHall()
 	{
-		return townHalls;
+		return townHall;
 	}
+	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IStructure#setTownHalls(java.util.List)
+	 * @see com.lvl6.mobsters.info.IStructure#setTownHall(com.lvl6.mobsters.info.IStructureTownHall)
 	 */
 	@Override
-	public void setTownHalls( List<IStructureTownHall> townHalls )
+	public void setTownHall( IStructureTownHall townHall )
 	{
-		this.townHalls = townHalls;
+		this.townHall = townHall;
 	}
+	
 	@Override
 	public String toString() {
 		return "Structure [id=" + id + ", name=" + name + ", level=" + level
