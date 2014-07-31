@@ -395,9 +395,10 @@ class StructureServiceImpl implements StructureService
 				var Date timeBuildFinishes = createDateAddMinutes( purchaseDate, struct.minutesToBuild );
 				if (isFirstEarlierThanSecond( timeBuildFinishes, clientTime ))
 				{
-					LOG.warn( format( "the building is not done yet. userstruct=%s, purchase time=%t,
-							 timeBuildFinishes=%t, struct=%s, client time=%t,",
-							 sfu, purchaseDate, timeBuildFinishes, struct, clientTime) );
+					LOG.warn( 
+						format( "the building is not done yet. userstruct=%s, purchase time=%t,
+							 	timeBuildFinishes=%t, struct=%s, client time=%t,",
+							 	sfu, purchaseDate, timeBuildFinishes, struct, clientTime) );
 					return;					
 				}
 				

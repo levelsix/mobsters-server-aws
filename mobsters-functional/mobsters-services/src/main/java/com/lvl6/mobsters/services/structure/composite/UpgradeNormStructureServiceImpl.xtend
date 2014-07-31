@@ -10,9 +10,7 @@ import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.common.TimeUtils
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
-import com.lvl6.mobsters.services.structure.StructureService
 import com.lvl6.mobsters.services.user.UserExtensionLib
-import com.lvl6.mobsters.services.user.UserService
 import java.util.Date
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -32,13 +30,7 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 	private var UserRepository userRepository
 	
 	@Autowired
-	private var UserService userService
-
-	@Autowired
 	private var StructureForUserRepository structureForUserRepository
-	
-	@Autowired
-	private var StructureService structureService
 	
 	@Autowired
 	private var StructureRepository structureRepository
@@ -104,13 +96,6 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		val extension StructureExtensionLib sfuExt
 		val extension UserExtensionLib userExt
 		
-		// Derived properties computed when checking, then applied when updating
-		var User user
-		var StructureForUser sfu
-		var int userGems
-		var int cashToSpend
-		var int oilToSpend
-		
 		new(String userId, String userStructId,
 			int gemsSpent, String resourceType, int resourceChange,
 			Date timeOfUpgrade, UserRepository userRepo,
@@ -129,13 +114,14 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 			this.sfuExt = sfuExt
 			this.userExt = userExt
 			
-			// Derived properties computed when checking, then applied when updating
-			this.user = null
-			this.sfu = null
-			this.userGems = 0
-			this.cashToSpend = 0
-			this.oilToSpend = 0
 		}
+		
+		// Derived properties computed when checking, then applied when updating
+		var User user
+		var StructureForUser sfu
+		var int userGems
+		var int cashToSpend
+		var int oilToSpend
 		
 		def void execute() {
 			user = userRepo.load(userId)
@@ -250,11 +236,6 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		val extension StructureExtensionLib sfuExt
 		val extension UserExtensionLib userExt
 		
-		//Derived properties computed when checking, then applied when updating
-		var User user
-		var StructureForUser sfu
-		var int userGems
-		
 		new( String userId, String userStructId, int gemCost, Date now,
 			 UserRepository userRepo, StructureForUserRepository sfuRepo,
 			 UserExtensionLib  userExt, StructureExtensionLib sfuExt )
@@ -269,6 +250,12 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 			this.userExt = userExt
 			this.sfuExt = sfuExt
 		}
+		
+		//Derived properties computed when checking, then applied when updating
+		var User user
+		var StructureForUser sfu
+		var int userGems
+		
 		
 		def void execute() {
 			user = userRepo.load(userId);
@@ -309,17 +296,9 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		this.userRepository = userRepository
 	}
 
-	def void setUserService(UserService userService) {
-		this.userService = userService
-	}
-
 	def void setStructureForUserRepository(
 		StructureForUserRepository structureForUserRepository) {
 		this.structureForUserRepository = structureForUserRepository
-	}
-
-	def void setStructureService(StructureService StructureService) {
-		this.structureService = StructureService
 	}
 
 	def void setStructureRepository(StructureRepository structureRepository) {
@@ -329,4 +308,5 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 	def void setTxManager( DataServiceTxManager txManager) {
 		this.txManager = txManager
 	}
+	
 }

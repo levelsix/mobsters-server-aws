@@ -150,6 +150,12 @@ class UserExtensionLib {
 		return retVal
 	}
 	
+	def User gainCash ( User u, int cash, int maxCash) {
+		var int newCash = u.cash + cash
+		u.cash = Math.min(newCash, maxCash)
+		return u
+	}
+	
 	def User spendOil( User u, int oilToSpend, Logger log) {		
 		u.checkCanSpendOil(oilToSpend, log)
 		u.oil = u.oil - oilToSpend
@@ -165,4 +171,11 @@ class UserExtensionLib {
 		
 		return retVal
 	}
+	
+	def User gainOil ( User u, int oil, int maxOil) {
+		var int newOil = u.oil + oil
+		u.oil = Math.min(newOil, maxOil)
+		return u
+	}
+	
 }

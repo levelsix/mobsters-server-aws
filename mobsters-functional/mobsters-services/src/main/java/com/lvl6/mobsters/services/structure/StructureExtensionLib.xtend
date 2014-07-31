@@ -72,6 +72,12 @@ class StructureExtensionLib {
 		return sfu
 	}
 	
+	def StructureForUser collectResource( StructureForUser sfu, Date collectTime )
+	{
+		sfu.lastRetrieved = collectTime
+		return sfu;
+	}
+	
 	def StructureForUser finishConstruction( StructureForUser sfu,
 		Date constructionTime ) 
 	{
