@@ -16,7 +16,7 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy=true, proxyClass=ITask.class)
 public class Task extends BaseIntPersistentObject implements ITask{
 
-	private static final long serialVersionUID = -5841712902617988030L;
+	private static final long serialVersionUID = 7155509336427769742L;
 
 	@Column(name = "name")
 	private String name;
@@ -37,13 +37,16 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	@Column(name = "board_height")
 	private int boardHeight;
 	
+	@Column(name = "ground_img_prefix")
+	private String groundImgPrefix;
+	
 	public Task() {
 		super();
 	}
 
 	public Task(final int id, final String name, final String description,
 			final ITask prerequisiteTask, final int boardWidth,
-			final int boardHeight)
+			final int boardHeight, final String groundImgPrefix)
 	{
 		super(id);
 		this.name = name;
@@ -51,6 +54,7 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		this.prerequisiteTask = prerequisiteTask;
 		this.boardWidth = boardWidth;
 		this.boardHeight = boardHeight;
+		this.groundImgPrefix = groundImgPrefix;
 	}
 	
 	/* (non-Javadoc)
@@ -120,6 +124,19 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		this.boardHeight = boardHeight;
 	}
 
+	
+	@Override
+	public String getGroundImgPrefix()
+	{
+		return groundImgPrefix;
+	}
+
+	@Override
+	public void setGroundImgPrefix( String groundImgPrefix )
+	{
+		this.groundImgPrefix = groundImgPrefix;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -133,6 +150,8 @@ public class Task extends BaseIntPersistentObject implements ITask{
 			+ boardWidth
 			+ ", boardHeight="
 			+ boardHeight
+			+ ", groundImgPrefix="
+			+ groundImgPrefix
 			+ "]";
 	}
 

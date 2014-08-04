@@ -23,4 +23,8 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public abstract int getBoardWidth();
 
+	public abstract void setGroundImgPrefix( String groundImgPrefix );
+
+	public abstract String getGroundImgPrefix();
+
 }

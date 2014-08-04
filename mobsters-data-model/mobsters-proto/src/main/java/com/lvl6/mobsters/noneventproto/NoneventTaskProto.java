@@ -649,6 +649,10 @@ public final class NoneventTaskProto {
     // optional int32 boardHeight = 7;
     boolean hasBoardHeight();
     int getBoardHeight();
+    
+    // optional string groundImgPrefix = 8;
+    boolean hasGroundImgPrefix();
+    String getGroundImgPrefix();
   }
   public static final class FullTaskProto extends
       com.google.protobuf.GeneratedMessage
@@ -793,6 +797,38 @@ public final class NoneventTaskProto {
       return boardHeight_;
     }
     
+    // optional string groundImgPrefix = 8;
+    public static final int GROUNDIMGPREFIX_FIELD_NUMBER = 8;
+    private java.lang.Object groundImgPrefix_;
+    public boolean hasGroundImgPrefix() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    public String getGroundImgPrefix() {
+      java.lang.Object ref = groundImgPrefix_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          groundImgPrefix_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getGroundImgPrefixBytes() {
+      java.lang.Object ref = groundImgPrefix_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        groundImgPrefix_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
     private void initFields() {
       taskId_ = 0;
       name_ = "";
@@ -801,6 +837,7 @@ public final class NoneventTaskProto {
       prerequisiteQuestId_ = 0;
       boardWidth_ = 0;
       boardHeight_ = 0;
+      groundImgPrefix_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -834,6 +871,9 @@ public final class NoneventTaskProto {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(7, boardHeight_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getGroundImgPrefixBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -871,6 +911,10 @@ public final class NoneventTaskProto {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(7, boardHeight_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getGroundImgPrefixBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1010,6 +1054,8 @@ public final class NoneventTaskProto {
         bitField0_ = (bitField0_ & ~0x00000020);
         boardHeight_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
+        groundImgPrefix_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
       
@@ -1076,6 +1122,10 @@ public final class NoneventTaskProto {
           to_bitField0_ |= 0x00000040;
         }
         result.boardHeight_ = boardHeight_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.groundImgPrefix_ = groundImgPrefix_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1112,6 +1162,9 @@ public final class NoneventTaskProto {
         }
         if (other.hasBoardHeight()) {
           setBoardHeight(other.getBoardHeight());
+        }
+        if (other.hasGroundImgPrefix()) {
+          setGroundImgPrefix(other.getGroundImgPrefix());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1177,6 +1230,11 @@ public final class NoneventTaskProto {
             case 56: {
               bitField0_ |= 0x00000040;
               boardHeight_ = input.readInt32();
+              break;
+            }
+            case 66: {
+              bitField0_ |= 0x00000080;
+              groundImgPrefix_ = input.readBytes();
               break;
             }
           }
@@ -1360,6 +1418,42 @@ public final class NoneventTaskProto {
         boardHeight_ = 0;
         onChanged();
         return this;
+      }
+      
+      // optional string groundImgPrefix = 8;
+      private java.lang.Object groundImgPrefix_ = "";
+      public boolean hasGroundImgPrefix() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      public String getGroundImgPrefix() {
+        java.lang.Object ref = groundImgPrefix_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          groundImgPrefix_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setGroundImgPrefix(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        groundImgPrefix_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearGroundImgPrefix() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        groundImgPrefix_ = getDefaultInstance().getGroundImgPrefix();
+        onChanged();
+        return this;
+      }
+      void setGroundImgPrefix(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000080;
+        groundImgPrefix_ = value;
+        onChanged();
       }
       
       // @@protoc_insertion_point(builder_scope:proto.FullTaskProto)
@@ -4156,6 +4250,732 @@ public final class NoneventTaskProto {
     // @@protoc_insertion_point(class_scope:proto.UserPersistentEventProto)
   }
   
+  public interface TaskMapElementProtoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // optional int32 mapElementId = 1;
+    boolean hasMapElementId();
+    int getMapElementId();
+    
+    // optional int32 taskId = 2;
+    boolean hasTaskId();
+    int getTaskId();
+    
+    // optional int32 xPos = 3;
+    boolean hasXPos();
+    int getXPos();
+    
+    // optional int32 yPos = 4;
+    boolean hasYPos();
+    int getYPos();
+    
+    // optional .proto.Element element = 5;
+    boolean hasElement();
+    com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element getElement();
+    
+    // optional bool boss = 6;
+    boolean hasBoss();
+    boolean getBoss();
+    
+    // optional string bossImgName = 7;
+    boolean hasBossImgName();
+    String getBossImgName();
+  }
+  public static final class TaskMapElementProto extends
+      com.google.protobuf.GeneratedMessage
+      implements TaskMapElementProtoOrBuilder {
+    // Use TaskMapElementProto.newBuilder() to construct.
+    private TaskMapElementProto(Builder builder) {
+      super(builder);
+    }
+    private TaskMapElementProto(boolean noInit) {}
+    
+    private static final TaskMapElementProto defaultInstance;
+    public static TaskMapElementProto getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public TaskMapElementProto getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.lvl6.mobsters.noneventproto.NoneventTaskProto.internal_static_proto_TaskMapElementProto_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.lvl6.mobsters.noneventproto.NoneventTaskProto.internal_static_proto_TaskMapElementProto_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // optional int32 mapElementId = 1;
+    public static final int MAPELEMENTID_FIELD_NUMBER = 1;
+    private int mapElementId_;
+    public boolean hasMapElementId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public int getMapElementId() {
+      return mapElementId_;
+    }
+    
+    // optional int32 taskId = 2;
+    public static final int TASKID_FIELD_NUMBER = 2;
+    private int taskId_;
+    public boolean hasTaskId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public int getTaskId() {
+      return taskId_;
+    }
+    
+    // optional int32 xPos = 3;
+    public static final int XPOS_FIELD_NUMBER = 3;
+    private int xPos_;
+    public boolean hasXPos() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public int getXPos() {
+      return xPos_;
+    }
+    
+    // optional int32 yPos = 4;
+    public static final int YPOS_FIELD_NUMBER = 4;
+    private int yPos_;
+    public boolean hasYPos() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public int getYPos() {
+      return yPos_;
+    }
+    
+    // optional .proto.Element element = 5;
+    public static final int ELEMENT_FIELD_NUMBER = 5;
+    private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element element_;
+    public boolean hasElement() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element getElement() {
+      return element_;
+    }
+    
+    // optional bool boss = 6;
+    public static final int BOSS_FIELD_NUMBER = 6;
+    private boolean boss_;
+    public boolean hasBoss() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public boolean getBoss() {
+      return boss_;
+    }
+    
+    // optional string bossImgName = 7;
+    public static final int BOSSIMGNAME_FIELD_NUMBER = 7;
+    private java.lang.Object bossImgName_;
+    public boolean hasBossImgName() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    public String getBossImgName() {
+      java.lang.Object ref = bossImgName_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          bossImgName_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getBossImgNameBytes() {
+      java.lang.Object ref = bossImgName_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        bossImgName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    private void initFields() {
+      mapElementId_ = 0;
+      taskId_ = 0;
+      xPos_ = 0;
+      yPos_ = 0;
+      element_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.FIRE;
+      boss_ = false;
+      bossImgName_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, mapElementId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, taskId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, xPos_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, yPos_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeEnum(5, element_.getNumber());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBool(6, boss_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getBossImgNameBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, mapElementId_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, taskId_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, xPos_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, yPos_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(5, element_.getNumber());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, boss_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getBossImgNameBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProtoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.lvl6.mobsters.noneventproto.NoneventTaskProto.internal_static_proto_TaskMapElementProto_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.lvl6.mobsters.noneventproto.NoneventTaskProto.internal_static_proto_TaskMapElementProto_fieldAccessorTable;
+      }
+      
+      // Construct using com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        mapElementId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        taskId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        xPos_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        yPos_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        element_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.FIRE;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        boss_ = false;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        bossImgName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto.getDescriptor();
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto getDefaultInstanceForType() {
+        return com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto.getDefaultInstance();
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto build() {
+        com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto buildPartial() {
+        com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto result = new com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.mapElementId_ = mapElementId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.taskId_ = taskId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.xPos_ = xPos_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.yPos_ = yPos_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.element_ = element_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.boss_ = boss_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.bossImgName_ = bossImgName_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto) {
+          return mergeFrom((com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto other) {
+        if (other == com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto.getDefaultInstance()) return this;
+        if (other.hasMapElementId()) {
+          setMapElementId(other.getMapElementId());
+        }
+        if (other.hasTaskId()) {
+          setTaskId(other.getTaskId());
+        }
+        if (other.hasXPos()) {
+          setXPos(other.getXPos());
+        }
+        if (other.hasYPos()) {
+          setYPos(other.getYPos());
+        }
+        if (other.hasElement()) {
+          setElement(other.getElement());
+        }
+        if (other.hasBoss()) {
+          setBoss(other.getBoss());
+        }
+        if (other.hasBossImgName()) {
+          setBossImgName(other.getBossImgName());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              mapElementId_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              taskId_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              xPos_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              yPos_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              int rawValue = input.readEnum();
+              com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element value = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(5, rawValue);
+              } else {
+                bitField0_ |= 0x00000010;
+                element_ = value;
+              }
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              boss_ = input.readBool();
+              break;
+            }
+            case 58: {
+              bitField0_ |= 0x00000040;
+              bossImgName_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // optional int32 mapElementId = 1;
+      private int mapElementId_ ;
+      public boolean hasMapElementId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public int getMapElementId() {
+        return mapElementId_;
+      }
+      public Builder setMapElementId(int value) {
+        bitField0_ |= 0x00000001;
+        mapElementId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearMapElementId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mapElementId_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 taskId = 2;
+      private int taskId_ ;
+      public boolean hasTaskId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public int getTaskId() {
+        return taskId_;
+      }
+      public Builder setTaskId(int value) {
+        bitField0_ |= 0x00000002;
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearTaskId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        taskId_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 xPos = 3;
+      private int xPos_ ;
+      public boolean hasXPos() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public int getXPos() {
+        return xPos_;
+      }
+      public Builder setXPos(int value) {
+        bitField0_ |= 0x00000004;
+        xPos_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearXPos() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        xPos_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 yPos = 4;
+      private int yPos_ ;
+      public boolean hasYPos() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public int getYPos() {
+        return yPos_;
+      }
+      public Builder setYPos(int value) {
+        bitField0_ |= 0x00000008;
+        yPos_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearYPos() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        yPos_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional .proto.Element element = 5;
+      private com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element element_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.FIRE;
+      public boolean hasElement() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element getElement() {
+        return element_;
+      }
+      public Builder setElement(com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000010;
+        element_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearElement() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        element_ = com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element.FIRE;
+        onChanged();
+        return this;
+      }
+      
+      // optional bool boss = 6;
+      private boolean boss_ ;
+      public boolean hasBoss() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public boolean getBoss() {
+        return boss_;
+      }
+      public Builder setBoss(boolean value) {
+        bitField0_ |= 0x00000020;
+        boss_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearBoss() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        boss_ = false;
+        onChanged();
+        return this;
+      }
+      
+      // optional string bossImgName = 7;
+      private java.lang.Object bossImgName_ = "";
+      public boolean hasBossImgName() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      public String getBossImgName() {
+        java.lang.Object ref = bossImgName_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          bossImgName_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setBossImgName(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        bossImgName_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearBossImgName() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        bossImgName_ = getDefaultInstance().getBossImgName();
+        onChanged();
+        return this;
+      }
+      void setBossImgName(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000040;
+        bossImgName_ = value;
+        onChanged();
+      }
+      
+      // @@protoc_insertion_point(builder_scope:proto.TaskMapElementProto)
+    }
+    
+    static {
+      defaultInstance = new TaskMapElementProto(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:proto.TaskMapElementProto)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_proto_TaskStageProto_descriptor;
   private static
@@ -4186,6 +5006,11 @@ public final class NoneventTaskProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_proto_UserPersistentEventProto_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_proto_TaskMapElementProto_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_proto_TaskMapElementProto_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4199,34 +5024,39 @@ public final class NoneventTaskProto {
       "ster.proto\032\036ConfigNoneventSharedEnum.pro" +
       "to\"V\n\016TaskStageProto\022\017\n\007stageId\030\001 \001(\005\0223\n" +
       "\rstageMonsters\030\002 \003(\0132\034.proto.TaskStageMo" +
-      "nsterProto\"\244\001\n\rFullTaskProto\022\016\n\006taskId\030\001" +
+      "nsterProto\"\275\001\n\rFullTaskProto\022\016\n\006taskId\030\001" +
       " \001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022" +
       "\032\n\022prerequisiteTaskId\030\004 \001(\005\022\033\n\023prerequis" +
       "iteQuestId\030\005 \001(\005\022\022\n\nboardWidth\030\006 \001(\005\022\023\n\013" +
-      "boardHeight\030\007 \001(\005\"f\n\024MinimumUserTaskProt" +
-      "o\022\020\n\010userUuid\030\001 \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026\n\016c",
-      "urTaskStageId\030\003 \001(\005\022\024\n\014userTaskUuid\030\004 \001(" +
-      "\t\"\252\002\n\025TaskStageMonsterProto\022\021\n\tmonsterId" +
-      "\030\001 \001(\005\022=\n\013monsterType\030\002 \001(\0162(.proto.Task" +
-      "StageMonsterProto.MonsterType\022\021\n\texpRewa" +
-      "rd\030\003 \001(\005\022\022\n\ncashReward\030\004 \001(\005\022\021\n\toilRewar" +
-      "d\030\010 \001(\005\022\032\n\022puzzlePieceDropped\030\005 \001(\010\022\r\n\005l" +
-      "evel\030\006 \001(\005\022\016\n\006itemId\030\007 \001(\005\022\025\n\rdmgMultipl" +
-      "ier\030\t \001(\002\"3\n\013MonsterType\022\013\n\007REGULAR\020\001\022\r\n" +
-      "\tMINI_BOSS\020\002\022\010\n\004BOSS\020\003\"\370\002\n\024PersistentEve" +
-      "ntProto\022\017\n\007eventId\030\001 \001(\005\022+\n\tdayOfWeek\030\002 ",
-      "\001(\0162\020.proto.DayOfWeek:\006MONDAY\022\021\n\tstartHo" +
-      "ur\030\003 \001(\005\022\034\n\024eventDurationMinutes\030\004 \001(\005\022\016" +
-      "\n\006taskId\030\005 \001(\005\022\027\n\017cooldownMinutes\030\006 \001(\005\022" +
-      "M\n\004type\030\007 \001(\0162%.proto.PersistentEventPro" +
-      "to.EventType:\030NO_PERSISTENT_EVENT_TYPE\0222" +
-      "\n\016monsterElement\030\010 \001(\0162\016.proto.Element:\n" +
-      "NO_ELEMENT\"E\n\tEventType\022\013\n\007ENHANCE\020\001\022\r\n\t" +
-      "EVOLUTION\020\002\022\034\n\030NO_PERSISTENT_EVENT_TYPE\020" +
-      "\003\"X\n\030UserPersistentEventProto\022\020\n\010userUui" +
-      "d\030\001 \001(\t\022\017\n\007eventId\030\002 \001(\005\022\031\n\021coolDownStar",
-      "tTime\030\003 \001(\003B4\n\037com.lvl6.mobsters.noneven" +
-      "tprotoB\021NoneventTaskProto"
+      "boardHeight\030\007 \001(\005\022\027\n\017groundImgPrefix\030\010 \001" +
+      "(\t\"f\n\024MinimumUserTaskProto\022\020\n\010userUuid\030\001",
+      " \001(\t\022\016\n\006taskId\030\002 \001(\005\022\026\n\016curTaskStageId\030\003" +
+      " \001(\005\022\024\n\014userTaskUuid\030\004 \001(\t\"\252\002\n\025TaskStage" +
+      "MonsterProto\022\021\n\tmonsterId\030\001 \001(\005\022=\n\013monst" +
+      "erType\030\002 \001(\0162(.proto.TaskStageMonsterPro" +
+      "to.MonsterType\022\021\n\texpReward\030\003 \001(\005\022\022\n\ncas" +
+      "hReward\030\004 \001(\005\022\021\n\toilReward\030\010 \001(\005\022\032\n\022puzz" +
+      "lePieceDropped\030\005 \001(\010\022\r\n\005level\030\006 \001(\005\022\016\n\006i" +
+      "temId\030\007 \001(\005\022\025\n\rdmgMultiplier\030\t \001(\002\"3\n\013Mo" +
+      "nsterType\022\013\n\007REGULAR\020\001\022\r\n\tMINI_BOSS\020\002\022\010\n" +
+      "\004BOSS\020\003\"\370\002\n\024PersistentEventProto\022\017\n\007even",
+      "tId\030\001 \001(\005\022+\n\tdayOfWeek\030\002 \001(\0162\020.proto.Day" +
+      "OfWeek:\006MONDAY\022\021\n\tstartHour\030\003 \001(\005\022\034\n\024eve" +
+      "ntDurationMinutes\030\004 \001(\005\022\016\n\006taskId\030\005 \001(\005\022" +
+      "\027\n\017cooldownMinutes\030\006 \001(\005\022M\n\004type\030\007 \001(\0162%" +
+      ".proto.PersistentEventProto.EventType:\030N" +
+      "O_PERSISTENT_EVENT_TYPE\0222\n\016monsterElemen" +
+      "t\030\010 \001(\0162\016.proto.Element:\nNO_ELEMENT\"E\n\tE" +
+      "ventType\022\013\n\007ENHANCE\020\001\022\r\n\tEVOLUTION\020\002\022\034\n\030" +
+      "NO_PERSISTENT_EVENT_TYPE\020\003\"X\n\030UserPersis" +
+      "tentEventProto\022\020\n\010userUuid\030\001 \001(\t\022\017\n\007even",
+      "tId\030\002 \001(\005\022\031\n\021coolDownStartTime\030\003 \001(\003\"\233\001\n" +
+      "\023TaskMapElementProto\022\024\n\014mapElementId\030\001 \001" +
+      "(\005\022\016\n\006taskId\030\002 \001(\005\022\014\n\004xPos\030\003 \001(\005\022\014\n\004yPos" +
+      "\030\004 \001(\005\022\037\n\007element\030\005 \001(\0162\016.proto.Element\022" +
+      "\014\n\004boss\030\006 \001(\010\022\023\n\013bossImgName\030\007 \001(\tB4\n\037co" +
+      "m.lvl6.mobsters.noneventprotoB\021NoneventT" +
+      "askProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4246,7 +5076,7 @@ public final class NoneventTaskProto {
           internal_static_proto_FullTaskProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_FullTaskProto_descriptor,
-              new java.lang.String[] { "TaskId", "Name", "Description", "PrerequisiteTaskId", "PrerequisiteQuestId", "BoardWidth", "BoardHeight", },
+              new java.lang.String[] { "TaskId", "Name", "Description", "PrerequisiteTaskId", "PrerequisiteQuestId", "BoardWidth", "BoardHeight", "GroundImgPrefix", },
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto.class,
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto.Builder.class);
           internal_static_proto_MinimumUserTaskProto_descriptor =
@@ -4281,6 +5111,14 @@ public final class NoneventTaskProto {
               new java.lang.String[] { "UserUuid", "EventId", "CoolDownStartTime", },
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.UserPersistentEventProto.class,
               com.lvl6.mobsters.noneventproto.NoneventTaskProto.UserPersistentEventProto.Builder.class);
+          internal_static_proto_TaskMapElementProto_descriptor =
+            getDescriptor().getMessageTypes().get(6);
+          internal_static_proto_TaskMapElementProto_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_proto_TaskMapElementProto_descriptor,
+              new java.lang.String[] { "MapElementId", "TaskId", "XPos", "YPos", "Element", "Boss", "BossImgName", },
+              com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto.class,
+              com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto.Builder.class);
           return null;
         }
       };
