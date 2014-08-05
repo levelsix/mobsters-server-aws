@@ -119,7 +119,7 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		// Derived properties computed when checking, then applied when updating
 		var User user
 		var StructureForUser sfu
-		var int userGems
+//		var int userGems
 		var int cashToSpend
 		var int oilToSpend
 		
@@ -176,7 +176,7 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 	
 			val spendPurpose = [| return String.format("to upgrade to structure=%s", nextLevelStruct.toString())]
 			
-			userGems = user.gems
+//			userGems = user.gems
 			user.checkCanSpendGems(gemsSpent, LOG, spendPurpose)
 		    
 		    switch (resourceType) {
@@ -254,7 +254,7 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 		//Derived properties computed when checking, then applied when updating
 		var User user
 		var StructureForUser sfu
-		var int userGems
+//		var int userGems
 		
 		
 		def void execute() {
@@ -286,7 +286,7 @@ public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureServ
 			
 			val spendPurpose = [| return String.format("to speed up upgrading userStructure=%s", sfu)]
 			
-			userGems = user.gems
+//			userGems = user.gems
 			user.checkCanSpendGems(gemCost, LOG, spendPurpose)
 		    
 		}
