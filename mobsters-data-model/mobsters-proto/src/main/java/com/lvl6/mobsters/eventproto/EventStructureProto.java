@@ -881,9 +881,9 @@ public final class EventStructureProto {
     boolean hasStatus();
     com.lvl6.mobsters.eventproto.EventStructureProto.PurchaseNormStructureResponseProto.PurchaseNormStructureStatus getStatus();
     
-    // optional int32 userStructId = 3;
-    boolean hasUserStructId();
-    int getUserStructId();
+    // optional string userStructUuid = 3;
+    boolean hasUserStructUuid();
+    String getUserStructUuid();
   }
   public static final class PurchaseNormStructureResponseProto extends
       com.google.protobuf.GeneratedMessage
@@ -1015,20 +1015,42 @@ public final class EventStructureProto {
       return status_;
     }
     
-    // optional int32 userStructId = 3;
-    public static final int USERSTRUCTID_FIELD_NUMBER = 3;
-    private int userStructId_;
-    public boolean hasUserStructId() {
+    // optional string userStructUuid = 3;
+    public static final int USERSTRUCTUUID_FIELD_NUMBER = 3;
+    private java.lang.Object userStructUuid_;
+    public boolean hasUserStructUuid() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
-    public int getUserStructId() {
-      return userStructId_;
+    public String getUserStructUuid() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          userStructUuid_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getUserStructUuidBytes() {
+      java.lang.Object ref = userStructUuid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        userStructUuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
     private void initFields() {
       sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
       status_ = com.lvl6.mobsters.eventproto.EventStructureProto.PurchaseNormStructureResponseProto.PurchaseNormStructureStatus.SUCCESS;
-      userStructId_ = 0;
+      userStructUuid_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1049,7 +1071,7 @@ public final class EventStructureProto {
         output.writeEnum(2, status_.getNumber());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, userStructId_);
+        output.writeBytes(3, getUserStructUuidBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1070,7 +1092,7 @@ public final class EventStructureProto {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, userStructId_);
+          .computeBytesSize(3, getUserStructUuidBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1205,7 +1227,7 @@ public final class EventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         status_ = com.lvl6.mobsters.eventproto.EventStructureProto.PurchaseNormStructureResponseProto.PurchaseNormStructureStatus.SUCCESS;
         bitField0_ = (bitField0_ & ~0x00000002);
-        userStructId_ = 0;
+        userStructUuid_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
@@ -1260,7 +1282,7 @@ public final class EventStructureProto {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.userStructId_ = userStructId_;
+        result.userStructUuid_ = userStructUuid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1283,8 +1305,8 @@ public final class EventStructureProto {
         if (other.hasStatus()) {
           setStatus(other.getStatus());
         }
-        if (other.hasUserStructId()) {
-          setUserStructId(other.getUserStructId());
+        if (other.hasUserStructUuid()) {
+          setUserStructUuid(other.getUserStructUuid());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1337,9 +1359,9 @@ public final class EventStructureProto {
               }
               break;
             }
-            case 24: {
+            case 26: {
               bitField0_ |= 0x00000004;
-              userStructId_ = input.readInt32();
+              userStructUuid_ = input.readBytes();
               break;
             }
           }
@@ -1462,25 +1484,40 @@ public final class EventStructureProto {
         return this;
       }
       
-      // optional int32 userStructId = 3;
-      private int userStructId_ ;
-      public boolean hasUserStructId() {
+      // optional string userStructUuid = 3;
+      private java.lang.Object userStructUuid_ = "";
+      public boolean hasUserStructUuid() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public int getUserStructId() {
-        return userStructId_;
+      public String getUserStructUuid() {
+        java.lang.Object ref = userStructUuid_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          userStructUuid_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setUserStructId(int value) {
-        bitField0_ |= 0x00000004;
-        userStructId_ = value;
+      public Builder setUserStructUuid(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        userStructUuid_ = value;
         onChanged();
         return this;
       }
-      public Builder clearUserStructId() {
+      public Builder clearUserStructUuid() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        userStructId_ = 0;
+        userStructUuid_ = getDefaultInstance().getUserStructUuid();
         onChanged();
         return this;
+      }
+      void setUserStructUuid(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000004;
+        userStructUuid_ = value;
+        onChanged();
       }
       
       // @@protoc_insertion_point(builder_scope:proto.PurchaseNormStructureResponseProto)
@@ -12937,117 +12974,117 @@ public final class EventStructureProto {
       "structId\030\003 \001(\005\022\026\n\016timeOfPurchase\030\004 \001(\003\022\021" +
       "\n\tgemsSpent\030\005 \001(\005\022\026\n\016resourceChange\030\006 \001(" +
       "\021\022/\n\014resourceType\030\007 \001(\0162\023.proto.Resource" +
-      "Type:\004CASH\"\312\002\n\"PurchaseNormStructureResp",
+      "Type:\004CASH\"\314\002\n\"PurchaseNormStructureResp",
       "onseProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minimu" +
       "mUserProto\022U\n\006status\030\002 \001(\0162E.proto.Purch" +
       "aseNormStructureResponseProto.PurchaseNo" +
-      "rmStructureStatus\022\024\n\014userStructId\030\003 \001(\005\"" +
-      "\215\001\n\033PurchaseNormStructureStatus\022\013\n\007SUCCE" +
-      "SS\020\001\022\032\n\026FAIL_INSUFFICIENT_CASH\020\002\022\032\n\026FAIL" +
-      "_INSUFFICIENT_GEMS\020\003\022\031\n\025FAIL_INSUFFICIEN" +
-      "T_OIL\020\004\022\016\n\nFAIL_OTHER\020\005\"\341\002\n%MoveOrRotate" +
-      "NormStructureRequestProto\022\'\n\006sender\030\001 \001(" +
-      "\0132\027.proto.MinimumUserProto\022\026\n\016userStruct",
-      "Uuid\030\002 \001(\t\022[\n\004type\030\003 \001(\0162G.proto.MoveOrR" +
-      "otateNormStructureRequestProto.MoveOrRot" +
-      "ateNormStructType:\004MOVE\0224\n\024curStructCoor" +
-      "dinates\030\004 \001(\0132\026.proto.CoordinateProto\022<\n" +
-      "\016orientationNew\030\005 \001(\0162\030.proto.StructOrie" +
-      "ntation:\nPOSITION_1\"&\n\032MoveOrRotateNormS" +
-      "tructType\022\010\n\004MOVE\020\001\"\360\001\n&MoveOrRotateNorm" +
-      "StructureResponseProto\022\'\n\006sender\030\001 \001(\0132\027" +
-      ".proto.MinimumUserProto\022]\n\006status\030\002 \001(\0162" +
-      "M.proto.MoveOrRotateNormStructureRespons",
-      "eProto.MoveOrRotateNormStructureStatus\">" +
-      "\n\037MoveOrRotateNormStructureStatus\022\013\n\007SUC" +
-      "CESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\326\001\n UpgradeNormSt" +
-      "ructureRequestProto\022\'\n\006sender\030\001 \001(\0132\027.pr" +
-      "oto.MinimumUserProto\022\026\n\016userStructUuid\030\002" +
-      " \001(\t\022\025\n\rtimeOfUpgrade\030\003 \001(\003\022\021\n\tgemsSpent" +
-      "\030\004 \001(\005\022\026\n\016resourceChange\030\005 \001(\021\022/\n\014resour" +
-      "ceType\030\006 \001(\0162\023.proto.ResourceType:\004CASH\"" +
-      "\215\003\n!UpgradeNormStructureResponseProto\022\'\n" +
-      "\006sender\030\001 \001(\0132\027.proto.MinimumUserProto\022S",
-      "\n\006status\030\002 \001(\0162C.proto.UpgradeNormStruct" +
-      "ureResponseProto.UpgradeNormStructureSta" +
-      "tus\"\351\001\n\032UpgradeNormStructureStatus\022\013\n\007SU" +
-      "CCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_CASH\020\002\022\031\n\025F" +
-      "AIL_INSUFFICENT_GEMS\020\003\022\031\n\025FAIL_INSUFFICI" +
-      "ENT_OIL\020\004\022 \n\034FAIL_CONSTRUCTION_INCOMPLET" +
-      "E\020\005\022\031\n\025FAIL_NOT_USERS_STRUCT\020\006\022\037\n\033FAIL_S" +
-      "TRUCTURE_AT_MAX_LEVEL\020\010\022\016\n\nFAIL_OTHER\020\t\"" +
-      "\244\001\n0FinishNormStructWaittimeWithDiamonds" +
-      "RequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Min",
-      "imumUserProto\022\026\n\016userStructUuid\030\002 \001(\t\022\025\n" +
-      "\rtimeOfSpeedup\030\003 \001(\003\022\030\n\020gemCostToSpeedup" +
-      "\030\004 \001(\005\"\237\002\n1FinishNormStructWaittimeWithD" +
-      "iamondsResponseProto\022\'\n\006sender\030\001 \001(\0132\027.p" +
-      "roto.MinimumUserProto\022g\n\006status\030\002 \001(\0162W." +
-      "proto.FinishNormStructWaittimeWithDiamon" +
-      "dsResponseProto.FinishNormStructWaittime" +
-      "Status\"X\n\036FinishNormStructWaittimeStatus" +
-      "\022\013\n\007SUCCESS\020\001\022\031\n\025FAIL_INSUFFICENT_GEMS\020\002" +
-      "\022\016\n\nFAIL_OTHER\020\003\"v\n\"NormStructWaitComple",
-      "teRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.M" +
-      "inimumUserProto\022\026\n\016userStructUuid\030\002 \003(\t\022" +
-      "\017\n\007curTime\030\003 \001(\003\"\271\002\n#NormStructWaitCompl" +
-      "eteResponseProto\022\'\n\006sender\030\001 \001(\0132\027.proto" +
-      ".MinimumUserProto\022W\n\006status\030\002 \001(\0162G.prot" +
-      "o.NormStructWaitCompleteResponseProto.No" +
-      "rmStructWaitCompleteStatus\0221\n\nuserStruct" +
-      "\030\003 \003(\0132\035.proto.FullUserStructureProto\"]\n" +
-      "\034NormStructWaitCompleteStatus\022\013\n\007SUCCESS" +
-      "\020\001\022 \n\034FAIL_CONSTRUCTION_INCOMPLETE\020\002\022\016\n\n",
-      "FAIL_OTHER\020\003\"\245\002\n-RetrieveCurrencyFromNor" +
-      "mStructureRequestProto\0227\n\006sender\030\001 \001(\0132\'" +
-      ".proto.MinimumUserProtoWithMaxResources\022" +
-      "^\n\020structRetrievals\030\002 \003(\0132D.proto.Retrie" +
-      "veCurrencyFromNormStructureRequestProto." +
-      "StructRetrieval\032[\n\017StructRetrieval\022\026\n\016us" +
-      "erStructUuid\030\001 \001(\t\022\027\n\017timeOfRetrieval\030\002 " +
-      "\001(\003\022\027\n\017amountCollected\030\003 \001(\005\"\240\002\n.Retriev" +
-      "eCurrencyFromNormStructureResponseProto\022" +
-      "7\n\006sender\030\001 \001(\0132\'.proto.MinimumUserProto",
-      "WithMaxResources\022m\n\006status\030\002 \001(\0162].proto" +
-      ".RetrieveCurrencyFromNormStructureRespon" +
-      "seProto.RetrieveCurrencyFromNormStructur" +
-      "eStatus\"F\n\'RetrieveCurrencyFromNormStruc" +
-      "tureStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"" +
-      "\220\001\n\031SpawnObstacleRequestProto\022\'\n\006sender\030" +
-      "\001 \001(\0132\027.proto.MinimumUserProto\0229\n\024prospe" +
-      "ctiveObstacles\030\002 \003(\0132\033.proto.MinimumObst" +
-      "acleProto\022\017\n\007curTime\030\003 \001(\003\"\364\001\n\032SpawnObst" +
-      "acleResponseProto\022\'\n\006sender\030\001 \001(\0132\027.prot",
-      "o.MinimumUserProto\0222\n\020spawnedObstacles\030\002" +
-      " \003(\0132\030.proto.UserObstacleProto\022E\n\006status" +
-      "\030\003 \001(\01625.proto.SpawnObstacleResponseProt" +
-      "o.SpawnObstacleStatus\"2\n\023SpawnObstacleSt" +
-      "atus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\322\001\n Be" +
-      "ginObstacleRemovalRequestProto\022\'\n\006sender" +
-      "\030\001 \001(\0132\027.proto.MinimumUserProto\022\017\n\007curTi" +
-      "me\030\002 \001(\003\022\021\n\tgemsSpent\030\003 \001(\005\022\026\n\016resourceC" +
-      "hange\030\004 \001(\021\022/\n\014resourceType\030\005 \001(\0162\023.prot" +
-      "o.ResourceType:\004CASH\022\030\n\020userObstacleUuid",
-      "\030\006 \001(\t\"\230\002\n!BeginObstacleRemovalResponseP" +
-      "roto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUser" +
-      "Proto\022S\n\006status\030\002 \001(\0162C.proto.BeginObsta" +
-      "cleRemovalResponseProto.BeginObstacleRem" +
-      "ovalStatus\"u\n\032BeginObstacleRemovalStatus" +
-      "\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020" +
-      "\002\022\036\n\032FAIL_INSUFFICIENT_RESOURCE\020\003\022\016\n\nFAI" +
-      "L_OTHER\020\004\"\265\001\n#ObstacleRemovalCompleteReq" +
-      "uestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Minimu" +
-      "mUserProto\022\017\n\007curTime\030\002 \001(\003\022\017\n\007speedUp\030\003",
-      " \001(\010\022\021\n\tgemsSpent\030\004 \001(\005\022\030\n\020userObstacleU" +
-      "uid\030\005 \001(\t\022\026\n\016atMaxObstacles\030\006 \001(\010\"\204\002\n$Ob" +
-      "stacleRemovalCompleteResponseProto\022\'\n\006se" +
-      "nder\030\001 \001(\0132\027.proto.MinimumUserProto\022Y\n\006s" +
-      "tatus\030\002 \001(\0162I.proto.ObstacleRemovalCompl" +
-      "eteResponseProto.ObstacleRemovalComplete" +
-      "Status\"X\n\035ObstacleRemovalCompleteStatus\022" +
-      "\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS\020\002" +
-      "\022\016\n\nFAIL_OTHER\020\003B3\n\034com.lvl6.mobsters.ev" +
-      "entprotoB\023EventStructureProto"
+      "rmStructureStatus\022\026\n\016userStructUuid\030\003 \001(" +
+      "\t\"\215\001\n\033PurchaseNormStructureStatus\022\013\n\007SUC" +
+      "CESS\020\001\022\032\n\026FAIL_INSUFFICIENT_CASH\020\002\022\032\n\026FA" +
+      "IL_INSUFFICIENT_GEMS\020\003\022\031\n\025FAIL_INSUFFICI" +
+      "ENT_OIL\020\004\022\016\n\nFAIL_OTHER\020\005\"\341\002\n%MoveOrRota" +
+      "teNormStructureRequestProto\022\'\n\006sender\030\001 " +
+      "\001(\0132\027.proto.MinimumUserProto\022\026\n\016userStru",
+      "ctUuid\030\002 \001(\t\022[\n\004type\030\003 \001(\0162G.proto.MoveO" +
+      "rRotateNormStructureRequestProto.MoveOrR" +
+      "otateNormStructType:\004MOVE\0224\n\024curStructCo" +
+      "ordinates\030\004 \001(\0132\026.proto.CoordinateProto\022" +
+      "<\n\016orientationNew\030\005 \001(\0162\030.proto.StructOr" +
+      "ientation:\nPOSITION_1\"&\n\032MoveOrRotateNor" +
+      "mStructType\022\010\n\004MOVE\020\001\"\360\001\n&MoveOrRotateNo" +
+      "rmStructureResponseProto\022\'\n\006sender\030\001 \001(\013" +
+      "2\027.proto.MinimumUserProto\022]\n\006status\030\002 \001(" +
+      "\0162M.proto.MoveOrRotateNormStructureRespo",
+      "nseProto.MoveOrRotateNormStructureStatus" +
+      "\">\n\037MoveOrRotateNormStructureStatus\022\013\n\007S" +
+      "UCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\326\001\n UpgradeNorm" +
+      "StructureRequestProto\022\'\n\006sender\030\001 \001(\0132\027." +
+      "proto.MinimumUserProto\022\026\n\016userStructUuid" +
+      "\030\002 \001(\t\022\025\n\rtimeOfUpgrade\030\003 \001(\003\022\021\n\tgemsSpe" +
+      "nt\030\004 \001(\005\022\026\n\016resourceChange\030\005 \001(\021\022/\n\014reso" +
+      "urceType\030\006 \001(\0162\023.proto.ResourceType:\004CAS" +
+      "H\"\215\003\n!UpgradeNormStructureResponseProto\022" +
+      "\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUserProto",
+      "\022S\n\006status\030\002 \001(\0162C.proto.UpgradeNormStru" +
+      "ctureResponseProto.UpgradeNormStructureS" +
+      "tatus\"\351\001\n\032UpgradeNormStructureStatus\022\013\n\007" +
+      "SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_CASH\020\002\022\031\n" +
+      "\025FAIL_INSUFFICENT_GEMS\020\003\022\031\n\025FAIL_INSUFFI" +
+      "CIENT_OIL\020\004\022 \n\034FAIL_CONSTRUCTION_INCOMPL" +
+      "ETE\020\005\022\031\n\025FAIL_NOT_USERS_STRUCT\020\006\022\037\n\033FAIL" +
+      "_STRUCTURE_AT_MAX_LEVEL\020\010\022\016\n\nFAIL_OTHER\020" +
+      "\t\"\244\001\n0FinishNormStructWaittimeWithDiamon" +
+      "dsRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.M",
+      "inimumUserProto\022\026\n\016userStructUuid\030\002 \001(\t\022" +
+      "\025\n\rtimeOfSpeedup\030\003 \001(\003\022\030\n\020gemCostToSpeed" +
+      "up\030\004 \001(\005\"\237\002\n1FinishNormStructWaittimeWit" +
+      "hDiamondsResponseProto\022\'\n\006sender\030\001 \001(\0132\027" +
+      ".proto.MinimumUserProto\022g\n\006status\030\002 \001(\0162" +
+      "W.proto.FinishNormStructWaittimeWithDiam" +
+      "ondsResponseProto.FinishNormStructWaitti" +
+      "meStatus\"X\n\036FinishNormStructWaittimeStat" +
+      "us\022\013\n\007SUCCESS\020\001\022\031\n\025FAIL_INSUFFICENT_GEMS" +
+      "\020\002\022\016\n\nFAIL_OTHER\020\003\"v\n\"NormStructWaitComp",
+      "leteRequestProto\022\'\n\006sender\030\001 \001(\0132\027.proto" +
+      ".MinimumUserProto\022\026\n\016userStructUuid\030\002 \003(" +
+      "\t\022\017\n\007curTime\030\003 \001(\003\"\271\002\n#NormStructWaitCom" +
+      "pleteResponseProto\022\'\n\006sender\030\001 \001(\0132\027.pro" +
+      "to.MinimumUserProto\022W\n\006status\030\002 \001(\0162G.pr" +
+      "oto.NormStructWaitCompleteResponseProto." +
+      "NormStructWaitCompleteStatus\0221\n\nuserStru" +
+      "ct\030\003 \003(\0132\035.proto.FullUserStructureProto\"" +
+      "]\n\034NormStructWaitCompleteStatus\022\013\n\007SUCCE" +
+      "SS\020\001\022 \n\034FAIL_CONSTRUCTION_INCOMPLETE\020\002\022\016",
+      "\n\nFAIL_OTHER\020\003\"\245\002\n-RetrieveCurrencyFromN" +
+      "ormStructureRequestProto\0227\n\006sender\030\001 \001(\013" +
+      "2\'.proto.MinimumUserProtoWithMaxResource" +
+      "s\022^\n\020structRetrievals\030\002 \003(\0132D.proto.Retr" +
+      "ieveCurrencyFromNormStructureRequestProt" +
+      "o.StructRetrieval\032[\n\017StructRetrieval\022\026\n\016" +
+      "userStructUuid\030\001 \001(\t\022\027\n\017timeOfRetrieval\030" +
+      "\002 \001(\003\022\027\n\017amountCollected\030\003 \001(\005\"\240\002\n.Retri" +
+      "eveCurrencyFromNormStructureResponseProt" +
+      "o\0227\n\006sender\030\001 \001(\0132\'.proto.MinimumUserPro",
+      "toWithMaxResources\022m\n\006status\030\002 \001(\0162].pro" +
+      "to.RetrieveCurrencyFromNormStructureResp" +
+      "onseProto.RetrieveCurrencyFromNormStruct" +
+      "ureStatus\"F\n\'RetrieveCurrencyFromNormStr" +
+      "uctureStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020" +
+      "\002\"\220\001\n\031SpawnObstacleRequestProto\022\'\n\006sende" +
+      "r\030\001 \001(\0132\027.proto.MinimumUserProto\0229\n\024pros" +
+      "pectiveObstacles\030\002 \003(\0132\033.proto.MinimumOb" +
+      "stacleProto\022\017\n\007curTime\030\003 \001(\003\"\364\001\n\032SpawnOb" +
+      "stacleResponseProto\022\'\n\006sender\030\001 \001(\0132\027.pr",
+      "oto.MinimumUserProto\0222\n\020spawnedObstacles" +
+      "\030\002 \003(\0132\030.proto.UserObstacleProto\022E\n\006stat" +
+      "us\030\003 \001(\01625.proto.SpawnObstacleResponsePr" +
+      "oto.SpawnObstacleStatus\"2\n\023SpawnObstacle" +
+      "Status\022\013\n\007SUCCESS\020\001\022\016\n\nFAIL_OTHER\020\002\"\322\001\n " +
+      "BeginObstacleRemovalRequestProto\022\'\n\006send" +
+      "er\030\001 \001(\0132\027.proto.MinimumUserProto\022\017\n\007cur" +
+      "Time\030\002 \001(\003\022\021\n\tgemsSpent\030\003 \001(\005\022\026\n\016resourc" +
+      "eChange\030\004 \001(\021\022/\n\014resourceType\030\005 \001(\0162\023.pr" +
+      "oto.ResourceType:\004CASH\022\030\n\020userObstacleUu",
+      "id\030\006 \001(\t\"\230\002\n!BeginObstacleRemovalRespons" +
+      "eProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumUs" +
+      "erProto\022S\n\006status\030\002 \001(\0162C.proto.BeginObs" +
+      "tacleRemovalResponseProto.BeginObstacleR" +
+      "emovalStatus\"u\n\032BeginObstacleRemovalStat" +
+      "us\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEM" +
+      "S\020\002\022\036\n\032FAIL_INSUFFICIENT_RESOURCE\020\003\022\016\n\nF" +
+      "AIL_OTHER\020\004\"\265\001\n#ObstacleRemovalCompleteR" +
+      "equestProto\022\'\n\006sender\030\001 \001(\0132\027.proto.Mini" +
+      "mumUserProto\022\017\n\007curTime\030\002 \001(\003\022\017\n\007speedUp",
+      "\030\003 \001(\010\022\021\n\tgemsSpent\030\004 \001(\005\022\030\n\020userObstacl" +
+      "eUuid\030\005 \001(\t\022\026\n\016atMaxObstacles\030\006 \001(\010\"\204\002\n$" +
+      "ObstacleRemovalCompleteResponseProto\022\'\n\006" +
+      "sender\030\001 \001(\0132\027.proto.MinimumUserProto\022Y\n" +
+      "\006status\030\002 \001(\0162I.proto.ObstacleRemovalCom" +
+      "pleteResponseProto.ObstacleRemovalComple" +
+      "teStatus\"X\n\035ObstacleRemovalCompleteStatu" +
+      "s\022\013\n\007SUCCESS\020\001\022\032\n\026FAIL_INSUFFICIENT_GEMS" +
+      "\020\002\022\016\n\nFAIL_OTHER\020\003B3\n\034com.lvl6.mobsters." +
+      "eventprotoB\023EventStructureProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -13067,7 +13104,7 @@ public final class EventStructureProto {
           internal_static_proto_PurchaseNormStructureResponseProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_PurchaseNormStructureResponseProto_descriptor,
-              new java.lang.String[] { "Sender", "Status", "UserStructId", },
+              new java.lang.String[] { "Sender", "Status", "UserStructUuid", },
               com.lvl6.mobsters.eventproto.EventStructureProto.PurchaseNormStructureResponseProto.class,
               com.lvl6.mobsters.eventproto.EventStructureProto.PurchaseNormStructureResponseProto.Builder.class);
           internal_static_proto_MoveOrRotateNormStructureRequestProto_descriptor =
