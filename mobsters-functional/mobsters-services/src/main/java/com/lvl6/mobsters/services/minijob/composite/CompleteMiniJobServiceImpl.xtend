@@ -3,10 +3,8 @@ package com.lvl6.mobsters.services.minijob.composite
 import com.lvl6.mobsters.dynamo.MiniJobForUser
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository
-import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
-import com.lvl6.mobsters.info.repository.StructureRepository
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.minijob.MiniJobExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
@@ -26,22 +24,19 @@ public class CompleteMiniJobServiceImpl implements CompleteMiniJobService {
 		LoggerFactory.getLogger(CompleteMiniJobServiceImpl)
 
 	@Autowired
-	private var UserRepository userRepository
+	@Property private var UserRepository userRepository
 	
 	@Autowired
-	private var MiniJobForUserRepository miniJobForUserRepository
+	@Property private var MiniJobForUserRepository miniJobForUserRepository
 	
 	@Autowired
-	private var StructureRepository structureRepository
-	
-	@Autowired
-	private var DataServiceTxManager txManager
+	@Property private var DataServiceTxManager txManager
 
 	@Autowired
-	extension MiniJobExtensionLib miniJobExtension
+	@Property extension MiniJobExtensionLib miniJobExtension
 	
 	@Autowired
-	extension UserExtensionLib userExtension
+	@Property extension UserExtensionLib userExtension
 	
 	// NON CRUD LOGIC
 
@@ -152,27 +147,11 @@ public class CompleteMiniJobServiceImpl implements CompleteMiniJobService {
 					mjfu !== null,
 					Lvl6MobstersStatusCode.FAIL_OTHER,
 					LOG,
-					"parameter passed in is null. mjfu=%s", 
-					user)
+					"parameter passed in is null. userMiniJobId=%s, user=%s", 
+					userMiniJobId, user)
 		}
 	
 	}
 
-	def void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository
-	}
-
-	def void setStructureForUserRepository(
-		StructureForUserRepository structureForUserRepository) {
-		this.structureForUserRepository = structureForUserRepository
-	}
-
-	def void setStructureRepository(StructureRepository structureRepository) {
-		this.structureRepository = structureRepository
-	}
-
-	def void setTxManager( DataServiceTxManager txManager) {
-		this.txManager = txManager
-	}
 	
 }

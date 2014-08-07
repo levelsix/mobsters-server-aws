@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static java.lang.String.*
-import static com.lvl6.mobsters.common.utils.StringUtils.*
+import static org.springframework.util.StringUtils.*
 import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 
 @Component
@@ -78,7 +78,7 @@ public class CompleteMiniJobController extends EventController
 		
 		// Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
-        if (isEmpty(userMiniJobId)) {
+        if (!hasText(userMiniJobId)) {
         	resBuilder.status = CompleteMiniJobStatus.FAIL_OTHER
         }
         
