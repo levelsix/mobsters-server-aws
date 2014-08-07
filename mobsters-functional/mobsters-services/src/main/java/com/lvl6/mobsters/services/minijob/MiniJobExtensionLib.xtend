@@ -3,12 +3,15 @@ package com.lvl6.mobsters.services.minijob
 import com.lvl6.mobsters.common.utils.AbstractIntComparable
 import com.lvl6.mobsters.common.utils.ImmutableIntKey
 import com.lvl6.mobsters.dynamo.MiniJobForUser
+import com.lvl6.mobsters.dynamo.MonsterForUser
 import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.info.IMonster
 import com.lvl6.mobsters.info.MiniJob
 import com.lvl6.mobsters.info.repository.MiniJobRepository
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import java.util.Collections
 import java.util.Date
+import java.util.List
 import java.util.Map
 import javax.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
@@ -71,6 +74,28 @@ class MiniJobExtensionLib {
 		return mjfu.completeMiniJob( completeTime )
 	}
 	
+	def void redeemMiniJob( MiniJobForUser mjfu, User u,
+		int maxCash, int maxOil, List<MonsterForUser> mfuList,
+		Map<String, Integer> mfuIdToHealth )
+	{
+		var MiniJob mj = mjfu.getMiniJob
+		
+		//update user currency
+		u.gainCash(mj.cashReward, maxCash)
+		u.gainOil(mj.oilReward, maxOil)
+		u.gems = mj.gemReward + u.gems
+		
+		//TODO: Update user's monsters with one extra piece
+		var IMonster monsterIdReward = mj.monsterReward
+			
+		//update monster health
+		mfuList.forEach[
+			MonsterForUser mfu |
+			mfu.currentHealth =  mfuIdToHealth.get(
+					mfu.monsterForUserUuid )
+		]
+		
+	}
 	
 	// StructureContext Attachment lookup map is empty until @PostConstruct phase calls
 	// doInitExtension() to load it from the config repo.
