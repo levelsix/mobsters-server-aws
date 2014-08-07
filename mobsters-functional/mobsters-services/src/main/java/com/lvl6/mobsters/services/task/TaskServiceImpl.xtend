@@ -6,6 +6,7 @@ import com.lvl6.mobsters.common.utils.ICallableAction
 import com.lvl6.mobsters.domainmodel.gameclient.Player
 import com.lvl6.mobsters.domainmodel.gameclient.PlayerTask
 import com.lvl6.mobsters.domainmodel.gameclient.UserResource
+import com.lvl6.mobsters.domainmodel.gameclient.UserResourceFactory
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.TaskStageForUser
@@ -53,7 +54,6 @@ import static java.lang.String.*
 
 import static extension java.lang.String.format
 import static com.lvl6.mobsters.services.task.TaskServiceImpl.*
-import com.lvl6.mobsters.domainmodel.gameclient.GameServer
 
 @Component
 class TaskServiceImpl extends AbstractService implements TaskService
@@ -97,7 +97,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	private var DataServiceTxManager txManager
 	
 	@Autowired
-	private var GameServer resourceFactory
+	private var UserResourceFactory resourceFactory
 
 	/**************************************************************************/
 	/* BEGIN NON-CRUD LOGIC **********************************************/
@@ -242,7 +242,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		int eventId, int gemsSpent, List<Integer> questIds, String elementName,
 		boolean forceEnemyElem, boolean alreadyCompletedMiniTutorialTask)
 	{
-		return new TaskServiceImpl.GenerateUserTaskActionImpl(this, userId, curTime,
+		return new TempßTasiceImpl.GenerateUserTaskActionImpl(this, userId, curTime,
 			taskId, isEvent, eventId, gemsSpent, questIds, elementName, forceEnemyElem,
 			alreadyCompletedMiniTutorialTask)
 	}
@@ -289,7 +289,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		
 		val extension ConfigExtensions configExtensionLib
 	
-		val GameServer resourceFactory
+		val UserResourceFactory resourceFactory
 		
 		// Derived state
 		//
@@ -344,18 +344,18 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	
 		def void verifySemantics()
 		{
-			aUser = userContainer.connect
+			aUser = userContainer.connectPlayer
 			checkNotNull(aUser)
 	
 			aTask = taskId.taskDef
 			checkNotNull(aTask)
 	
-			tasksToDelete = aUser..getOngoingTaskList()
+			tasksToDelete = aUser.getOngoingTaskList()
 			if (! tasksToDelete.nullOrEmpty)
 			{
 				LOG.warn(
 					format(
-						"(will continue processing, but) user has existing task(s).  None should exist when beginning another.  userId=%s, taskId=%d, userTask=%s",
+						"(will continue processing, but) user has existing task.  None should exist when beginning another.  userId=%s, taskId=%d, userTask=%s",
 						userId, taskId, tasksToDelete.format)
 				)
 			}
