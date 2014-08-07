@@ -126,8 +126,11 @@ public class CompleteMiniJobServiceImpl implements CompleteMiniJobService {
 				mjfu.completeMiniJob(nowDate)
 			} else {
 				mjfu.speedUpCompleteMiniJob(nowDate, user, gemsSpent)
+				userRepo.save(user)
 			}
-			 
+			
+			mjfuRepo.save(mjfu)
+			
 			return user
 		}
 		
