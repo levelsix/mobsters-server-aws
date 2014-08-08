@@ -17,6 +17,13 @@
   	<module>mobsters-test-data</module>
   </modules>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-commons</artifactId>
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>
