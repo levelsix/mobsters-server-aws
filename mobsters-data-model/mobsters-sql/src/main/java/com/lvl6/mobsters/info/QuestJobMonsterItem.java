@@ -3,7 +3,12 @@ package com.lvl6.mobsters.info;
 import java.util.Random;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
@@ -18,103 +23,99 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="QuestJobMonsterItem")
 @Table(name="quest_job_monster_item")
 @Proxy(lazy=true, proxyClass=IQuestJobMonsterItem.class)
-public class QuestJobMonsterItem extends BaseIntPersistentObject implements IQuestJobMonsterItem{
+public class QuestJobMonsterItem 
+	extends BaseIntPersistentObject 
+	implements IQuestJobMonsterItem
+{
 
 	private static final long serialVersionUID = 2792766000315300575L;
 
+
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=QuestJob.class)
+	@JoinColumn(
+		name = "quest_job_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private IQuestJob questJob;
 	
-	@Column(name = "quest_job_id")
-	private int questJobId;
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Monster.class)
+	@JoinColumn(
+		name = "monster_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private IMonster monster;
 	
-	@Column(name = "monster_id")
-	private int monsterId;
-	
-	@Column(name = "item_id")
-	private int itemId;
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Item.class)
+	@JoinColumn(
+		name = "item_id",
+		nullable = false,
+		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
+	private IItem item;
 	
 	@Column(name = "item_drop_rate")
 	private float itemDropRate;	
-	//convenience object
-
-	private Random rand = new Random();
 	
-	public QuestJobMonsterItem(){}
-	public QuestJobMonsterItem(int questJobId, int monsterId, int itemId,
-			float itemDropRate) {
+	public QuestJobMonsterItem()
+	{ }
+	
+	public QuestJobMonsterItem(
+		IQuestJob questJob, IMonster monster, IItem item, float itemDropRate) 
+	{
 		super();
-		this.questJobId = questJobId;
-		this.monsterId = monsterId;
-		this.itemId = itemId;
+		this.questJob = questJob;
+		this.monster = monster;
+		this.item = item;
 		this.itemDropRate = itemDropRate;
-	}
-
-	//covenience methods--------------------------------------------------------
-	public Random getRand() {
-		return rand;
-	}
-	
-	public void setRand(Random rand) {
-		this.rand = rand;
-	}
-	
-	public boolean didItemDrop() {
-		float randFloat = getRand().nextFloat();
-
-		if (randFloat < getItemDropRate()) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	//end covenience methods--------------------------------------------------------
 	
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getQuestJobId()
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getQuestJob()
 	 */
 	@Override
-	public int getQuestJobId() {
-		return questJobId;
+	public IQuestJob getQuestJob() {
+		return questJob;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setQuestJobId(int)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setQuestJob(int)
 	 */
 	@Override
-	public void setQuestJobId(int questJobId) {
-		this.questJobId = questJobId;
+	public void setQuestJob(IQuestJob questJob) {
+		this.questJob = questJob;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getMonsterId()
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getMonster()
 	 */
 	@Override
-	public int getMonsterId() {
-		return monsterId;
+	public IMonster getMonster() {
+		return monster;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setMonsterId(int)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setMonster(int)
 	 */
 	@Override
-	public void setMonsterId(int monsterId) {
-		this.monsterId = monsterId;
+	public void setMonster(IMonster monster) {
+		this.monster = monster;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getItemId()
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#getItem()
 	 */
 	@Override
-	public int getItemId() {
-		return itemId;
+	public IItem getItem() {
+		return item;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setItemId(int)
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem#setItem(int)
 	 */
 	@Override
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
+	public void setItem(IItem item) {
+		this.item = item;
 	}
 
 	/* (non-Javadoc)
@@ -135,9 +136,10 @@ public class QuestJobMonsterItem extends BaseIntPersistentObject implements IQue
 
 	@Override
 	public String toString() {
-		return "QuestJobMonsterItem [questJobId=" + questJobId + ", monsterId="
-				+ monsterId + ", itemId=" + itemId + ", itemDropRate="
-				+ itemDropRate + "]";
+		return 
+			String.format(
+				"QuestJobMonsterItem [questJobId=%d, monsterId=%d, itemId=%d, itemDropRate=%f",
+				questJob.getId(), monster.getId(), item.getId(), itemDropRate);
 	}
 	
 }

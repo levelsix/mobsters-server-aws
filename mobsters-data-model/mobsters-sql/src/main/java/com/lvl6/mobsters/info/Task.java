@@ -1,12 +1,18 @@
 package com.lvl6.mobsters.info;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
@@ -37,13 +43,23 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	@Column(name = "board_height")
 	private int boardHeight;
 	
+	@OneToMany(
+		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+		fetch=FetchType.EAGER,
+		mappedBy="task", 
+		orphanRemoval=true,
+		targetEntity=TaskStage.class)
+	@OrderBy("level ASC")
+	private List<ITaskStage> taskStages;
+	
 	public Task() {
 		super();
+		this.taskStages = new ArrayList<ITaskStage>(3);
 	}
 
 	public Task(final int id, final String name, final String description,
 			final ITask prerequisiteTask, final int boardWidth,
-			final int boardHeight)
+			final int boardHeight, List<ITaskStage> taskStages)
 	{
 		super(id);
 		this.name = name;
@@ -51,6 +67,11 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		this.prerequisiteTask = prerequisiteTask;
 		this.boardWidth = boardWidth;
 		this.boardHeight = boardHeight;
+		if( taskStages == null ) {
+			this.taskStages = new ArrayList<ITaskStage>(3);
+		} else {
+			this.taskStages = taskStages;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -119,6 +140,11 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	{
 		this.boardHeight = boardHeight;
 	}
+	
+	@Override
+	public List<ITaskStage> getTaskStages() {
+		return this.taskStages;
+	}
 
 	@Override
 	public String toString()
@@ -133,7 +159,8 @@ public class Task extends BaseIntPersistentObject implements ITask{
 			+ boardWidth
 			+ ", boardHeight="
 			+ boardHeight
+			+ ", taskStages="
+			+ taskStages.toString()
 			+ "]";
 	}
-
 }

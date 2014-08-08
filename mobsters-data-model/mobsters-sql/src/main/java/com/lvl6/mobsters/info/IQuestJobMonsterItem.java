@@ -2,21 +2,19 @@ package com.lvl6.mobsters.info;
 
 public interface IQuestJobMonsterItem extends IBaseIntPersistentObject
 {
+	public IQuestJob getQuestJob();
 
-	public int getQuestJobId();
+	public void setQuestJob( IQuestJob questJob );
 
-	public void setQuestJobId( int questJobId );
+	public IMonster getMonster();
 
-	public int getMonsterId();
+	public void setMonster( IMonster monster );
 
-	public void setMonsterId( int monsterId );
+	public IItem getItem();
 
-	public int getItemId();
-
-	public void setItemId( int itemId );
+	public void setItem( IItem item );
 
 	public float getItemDropRate();
 
 	public void setItemDropRate( float itemDropRate );
-
 }
