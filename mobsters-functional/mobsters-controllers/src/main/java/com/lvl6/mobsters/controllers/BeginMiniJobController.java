@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.common.utils.CollectionUtils;
-import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.BeginMiniJobRequestProto;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.BeginMiniJobResponseProto;
 import com.lvl6.mobsters.eventproto.EventMiniJobProto.BeginMiniJobResponseProto.BeginMiniJobStatus;
@@ -25,6 +24,7 @@ import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.minijob.MiniJobService;
 import com.lvl6.mobsters.services.minijob.MiniJobService.ModifyUserMiniJobsSpec;
 import com.lvl6.mobsters.services.minijob.MiniJobService.ModifyUserMiniJobsSpecBuilder;
+import com.lvl6.mobsters.utility.lambda.Director;
 
 @Component
 public class BeginMiniJobController extends EventController {

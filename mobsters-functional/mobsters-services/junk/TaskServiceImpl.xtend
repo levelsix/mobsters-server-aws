@@ -3,7 +3,6 @@ package com.lvl6.mobsters.services.task
 import com.google.common.base.Preconditions
 import com.lvl6.mobsters.common.utils.AbstractAction
 import com.lvl6.mobsters.common.utils.AbstractService
-import com.lvl6.mobsters.common.utils.Director
 import com.lvl6.mobsters.common.utils.ICallableAction
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
@@ -13,6 +12,7 @@ import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.utility.lambda.Director
 import com.lvl6.mobsters.validation.constraints.ConfigID
 import com.lvl6.mobsters.validation.constraints.DynamoID
 import java.util.ArrayList

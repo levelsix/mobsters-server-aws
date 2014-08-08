@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.dynamo.attachments;
+package com.lvl6.mobsters.utility.attachment;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ClassToInstanceMap;
