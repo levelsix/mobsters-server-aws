@@ -1,7 +1,6 @@
 package com.lvl6.mobsters.services.user
 
 import com.lvl6.mobsters.common.utils.CollectionUtils
-import com.lvl6.mobsters.common.utils.Director
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.UserCredential
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed
@@ -18,6 +17,7 @@ import com.lvl6.mobsters.services.structure.StructureService
 import com.lvl6.mobsters.services.structure.StructureService.CreateObstaclesReplyBuilder
 import com.lvl6.mobsters.services.structure.StructureService.CreateStructuresReplyBuilder
 import com.lvl6.mobsters.services.task.TaskService
+import com.lvl6.mobsters.utility.lambda.Director
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Date

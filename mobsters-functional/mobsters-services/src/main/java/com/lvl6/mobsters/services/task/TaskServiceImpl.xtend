@@ -3,26 +3,28 @@ package com.lvl6.mobsters.services.task
 import com.lvl6.mobsters.common.utils.AbstractAction
 import com.lvl6.mobsters.common.utils.AbstractService
 import com.lvl6.mobsters.common.utils.ICallableAction
+import com.lvl6.mobsters.domainmodel.gameclient.GameServer
 import com.lvl6.mobsters.domainmodel.gameclient.Player
 import com.lvl6.mobsters.domainmodel.gameclient.PlayerTask
 import com.lvl6.mobsters.domainmodel.gameclient.UserResource
-import com.lvl6.mobsters.domainmodel.gameclient.UserResourceFactory
+import com.lvl6.mobsters.domainmodel.gameimpl.AbstractClientEventListener
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.TaskStageForUser
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository
 import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository
+import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepositoryImpl
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.IQuestJobMonsterItem
+import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.ITaskStageMonster
-import com.lvl6.mobsters.info.Task
-import com.lvl6.mobsters.info.TaskStageMonster
 import com.lvl6.mobsters.info.repository.QuestRepository
+import com.lvl6.mobsters.info.repository.TaskRepository
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.server.ControllerConstants
 import com.lvl6.mobsters.services.user.UserExtensionLib
@@ -33,12 +35,9 @@ import com.lvl6.mobsters.validation.constraints.ConfigID
 import com.lvl6.mobsters.validation.constraints.DynamoID
 import java.sql.Timestamp
 import java.util.ArrayList
-import java.util.Collections
 import java.util.Date
 import java.util.HashMap
 import java.util.List
-import java.util.Map
-import java.util.Set
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -50,10 +49,9 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 import static com.google.common.base.Preconditions.*
-import static java.lang.String.*
+import static com.lvl6.mobsters.services.task.TaskServiceImpl.*
 
 import static extension java.lang.String.format
-import static com.lvl6.mobsters.services.task.TaskServiceImpl.*
 
 @Component
 class TaskServiceImpl extends AbstractService implements TaskService
@@ -75,8 +73,6 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	@Autowired
 	private var UserRepository userRepo
 
-	// @Autowired
-	// private var TaskRepository taskRepo
 	@Autowired
 	private var QuestRepository questRepo
 
@@ -97,7 +93,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	private var DataServiceTxManager txManager
 	
 	@Autowired
-	private var UserResourceFactory resourceFactory
+	private var GameServer resourceFactory
 
 	/**************************************************************************/
 	/* BEGIN NON-CRUD LOGIC **********************************************/
@@ -242,7 +238,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		int eventId, int gemsSpent, List<Integer> questIds, String elementName,
 		boolean forceEnemyElem, boolean alreadyCompletedMiniTutorialTask)
 	{
-		return new TempßTasiceImpl.GenerateUserTaskActionImpl(this, userId, curTime,
+		return new TaskServiceImpl.GenerateUserTaskActionImpl(this, userId, curTime,
 			taskId, isEvent, eventId, gemsSpent, questIds, elementName, forceEnemyElem,
 			alreadyCompletedMiniTutorialTask)
 	}
@@ -289,20 +285,21 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		
 		val extension ConfigExtensions configExtensionLib
 	
-		val UserResourceFactory resourceFactory
+		val GameServer gameServer
 		
 		// Derived state
 		//
 		var UserResource userContainer
 		var Player aUser
-		var Task aTask
+		var ITask taskMeta
+		var Iterable<IQuestJob> questJobsMeta
 		var PlayerTask newUserTask
-		var List<PlayerTask> tasksToDelete
+		var List<? extends PlayerTask> tasksToDelete
 		var boolean mayGenerateMonsterPieces
 	
-		val IntCounter expGained = new IntCounter()
-		val IntCounter cashGained = new IntCounter()
-		val IntCounter oilGained = new IntCounter()
+//		val IntCounter expGained = new IntCounter()
+//		val IntCounter cashGained = new IntCounter()
+//		val IntCounter oilGained = new IntCounter()
 	
 		new(TaskServiceImpl parentService, String userId, Date curTime, int taskId, boolean isEvent,
 			int eventId, int gemsSpent, List<Integer> questIds, String elementName,
@@ -326,42 +323,50 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			this.probExtensionLib = parentService.probExtensionLib
 			this.configExtensionLib = parentService.configExtensionLib
 
-			this.resourceFactory = parentService.resourceFactory
+			this.gameServer = parentService.resourceFactory
 		}
 	
 		override execute(TaskService.GenerateUserTaskListener resultBuilder)
 		{
-			this.userContainer = resourceFactory.getPlayerResource(this.userId)
-			this.userContainer.registerClientListener(resultBuilder)
+			checkArgument(
+				AbstractClientEventListener.isInstance(resultBuilder), 
+				"resultBuilder must implement listener interface and extend AbstractClientEventListener"
+			)
+			this.userContainer = gameServer.getUserResourceFor(this.userId)
+			this.userContainer.registerListener(
+				AbstractClientEventListener.cast(resultBuilder)
+			)
 			
 			verifySemantics()
 	
 			//calculate the SINGLE monster the user fights in each stage
-			generateStages(resultBuilder)
+			generateStages()
 	
-			evaluateResult(resultBuilder)
+			evaluateResult()
 		}
 	
 		def void verifySemantics()
 		{
-			aUser = userContainer.connectPlayer
+			aUser = userContainer.connect
 			checkNotNull(aUser)
 	
-			aTask = taskId.taskDef
-			checkNotNull(aTask)
+			taskMeta = taskId.taskMeta
+			checkNotNull(taskMeta)
+			
+			questJobsMeta = questIds.questMeta.map[return it.questJobs].flatten
+			checkNotNull(questJobsMeta, "No quests found")
+			checkArgument(questJobsMeta.size == questIds.size, "Not all quests found.  questIds=%s", questIds)
 	
-			tasksToDelete = aUser.getOngoingTaskList()
+			tasksToDelete = aUser.ongoingPlayerTasks
 			if (! tasksToDelete.nullOrEmpty)
 			{
 				LOG.warn(
-					format(
-						"(will continue processing, but) user has existing task.  None should exist when beginning another.  userId=%s, taskId=%d, userTask=%s",
-						userId, taskId, tasksToDelete.format)
+					"%s", [ | String::format(
+						"(will continue processing, but) user has existing task(s).  None should exist when beginning another.  userId=%s, taskId=%d, userTask=%s",
+						userId, taskId, tasksToDelete.map[it.format].join(", "))]
 				)
 			}
 			
-			newUserTask = aUser.beginNewTask(aTask)
-	
 			// if event, check if user has enough gems to reset event.  If not event, gemsSpent is zero.
 			aUser.checkCanSpendGems(gemsSpent, LOG)
 			
@@ -373,7 +378,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			} else {
 				if (
 					(alreadyCompletedMiniTutorialTask == false) &&
-					(aUser.hasCompletedTask(aTask) == false)
+					(aUser.hasCompleted(taskMeta) == false)
 				) {
 					LOG.info(
 						"Player is completing mini-tutorial for first time and so may collect monster pieces.  user=%s, task=%d",
@@ -388,16 +393,18 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			}
 		}
 	
-		def void evaluateResult(TaskService.GenerateUserTaskResponseBuilder resultBuilder)
+		def void evaluateResult()
 		{
 			//DELETE TASK AND STAGES AND RECORD INTO TASK HISTORY
 			tasksToDelete.forEach[it.cancelOngoingTask()]
 	
 			//record into user_task table, and emit change events that will be handled to generate
 			// protobuf and history table content.
+			newUserTask = aUser.beginTask(taskMeta, questJobsMeta, elementName, mayGenerateMonsterPieces)
 			newUserTask.saveOngoingTask()
 			
 			//start the cool down timer if for event
+			/* 
 			if (isEvent)
 			{
 				val int numInserted = InsertUtils.get().
@@ -416,6 +423,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 					currencyChange.put(MiscMethods.gems, u.getGems())
 				}
 			}
+			*/
 		}
 	
 		//stage can have multiple monsters; stage has a drop rate (but is useless for now); 
@@ -424,61 +432,9 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		//1a) determine if monster drops a puzzle piece
 		//2) create MonsterProto
 		//3) create TaskStageProto with the MonsterProto
-		def void generateStages(
-			TaskService.GenerateUserTaskStagesResponseBuilder resultBuilder)
+		def void generateStages( )
 		{
-			//quest monster items are dropped based on QUEST JOB IDS not quest ids
-			val List<IQuestJob> questJobs = 
-				parent.questRepo.findAll(questIds)
-					.map[it.questJobs].flatten.toList
-			val List<TaskStageForUser> userTaskStages = 
-				newUserTask.userTaskStages
-	
-			//for each stage, calculate the monster(s) the user will face and
-			//reward(s) that might be given if the user wins
-			aTask.taskStages.forEach [ stageMeta |
-				val List<ITaskStageMonster> taskStageMonsters = stageMeta.stageMonsters
-				
-				userTaskStages.add(
-					new TaskStageForUser() => [
-						it.stageNum = stageMeta.stageNum
-						var ITaskStageMonster stageMonster = null
-						var IQuestJobMonsterItem droppedItem = null
-						
-						if (forceEnemyElem) {
-							// select the element-matching monster.  This is the ONE monster for
-							// this stage.
-							stageMonster = 
-								taskStageMonsters.selectElementMonster()
-						} else {
-							//select one monster, at random. This is the ONE monster for this stage
-							stageMonster = taskStageMonsters
-								.selectWithoutReplacement(1)[it.chanceToAppear]
-								.get(0)
-						}
-						
-						if (taskId != ControllerConstants.MINI_TUTORIAL__GUARANTEED_MONSTER_DROP_TASK_ID) {
-							droppedItem = stageMonster.monster.rollForDroppedItem(questJobs)
-						}
-			
-						it.taskStageMonsterId = stageMonster.id
-						expGained.add(stageMonster.expReward)
-						cashGained.add(
-							rollValueInRange(stageMonster.minCashDrop, stageMonster.maxCashDrop)
-						)
-						oilGained.add(
-							rollValueInRange(stageMonster.minOilDrop, stageMonster.maxOilDrop)
-						)
-						
-						if (droppedItem != null) {
-							it.itemIdDropped = droppedItem.item.id
-							it.monsterPieceDropped = false
-						} else {
-							it.itemIdDropped = -1
-					  		it.monsterPieceDropped = mayGenerateMonsterPieces
-						}
-							
-
+			/* 
 						//create the proto
 						//					val TaskStageProto tsp = 
 						//						CreateInfoProtoUtils.createTaskStageProto(tsId, ts, spawnedTaskStageMonsters,
@@ -497,7 +453,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 						stageNumsToCash.put(stageMeta.stageNum, individualCash)
 						stageNumsToOil.put(stageMeta.stageNum, individualOil)
 						// stageNumsToPuzzlePieceDropped.put(stageNum, puzzlePiecesDropped)
-						stageNumsToTaskStageMonsters.put(stageMeta.stageNum, null/*spawnedTaskStageMonsters*/)
+						stageNumsToTaskStageMonsters.put(stageMeta.stageNum, spawnedTaskStageMonsters)
 						stageNumsToTsmIdToItemId.put(stageMeta.stageNum, tsmIdToItemId)
 					]
 				)
@@ -506,34 +462,9 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			// TODO
 			// LOG.info("monster(s) spawned=" + spawnedTaskStageMonsters)
 			return // stageNumsToProtos
+			*/
 		}
 	
-		def ITaskStageMonster selectElementMonster(List<ITaskStageMonster> taskStageMonsters)
-		{
-			return taskStageMonsters.findFirst[it.monster.element == elementName]
-		}
-	
-		/*picking without replacement*/
-		/*def ITaskStageMonster selectRandomMonster(List<ITaskStageMonster> taskStageMonsters)
-		{
-			val int size = taskStageMonsters.size()
-		  	//sum up chance to appear, and need to normalize all the probabilities
-		  	val float sumOfProbabilities = 
-		  		taskStageMonsters.fold(0f) [sum, stgMnstr|
-		  			return sum + stgMnstr.chanceToAppear]
-		  	val FloatCounter randFloat = new FloatCounter(rand.nextFloat())
-		  	taskStageMonsters.findFirst[
-		  		var retVal = false
-		  		val nextProb = it.chanceToAppear
-		  		if (randFloat.isLessThan(nextProb)) {
-		  			retVal = true;
-		  		} else {
-		  			randFloat.subtract(nextProb)
-		  		}
-		  		
-		  		return retVal
-		  	]
-		}*/
 		def void writeToUserCurrencyHistory()
 		{
 			var HashMap<String, Integer> currencyChange
@@ -580,6 +511,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			val boolean cancelled = true
 			val int taskStageId = aTaskForUser.getTaskStageId()
 	
+			/* 
 			var int num = DeleteUtils.get().deleteTaskForUserOngoingWithTaskForUserId(taskForUserId)
 			LOG.warn(
 				"deleted existing task_for_user. taskForUser=" + aTaskForUser +
@@ -591,13 +523,15 @@ class TaskServiceImpl extends AbstractService implements TaskService
 				taskStageId)
 			LOG.warn(
 				"inserted into task_history. taskForUser=" + aTaskForUser +
-					"\t (should be 1) numInserted=" + num)
+				"\t (should be 1) numInserted=" + num)
+			*/
 		}
 	
 	def void deleteExistingTaskStagesForUser(long taskForUserId)
 	{
-		val List<TaskStageForUser> taskStages = TaskStageForUserRetrieveUtils.
-			getTaskStagesForUserWithTaskForUserId(taskForUserId)
+		val List<TaskStageForUser> taskStages = null
+//			TaskStageForUserRetrieveUtils.
+//				getTaskStagesForUserWithTaskForUserId(taskForUserId)
 
 		val List<Long> userTaskStageId = new ArrayList<Long>()
 		val List<Long> userTaskId = new ArrayList<Long>()
@@ -613,8 +547,8 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		for (var int i = 0; i < taskStages.size(); i++)
 		{
 			val TaskStageForUser tsfu = taskStages.get(i)
-			userTaskStageId.add(tsfu.getId())
-			userTaskId.add(tsfu.getUserTaskId())
+			userTaskStageId.add(null/*tsfu.getId()*/)
+			userTaskId.add(null/*tsfu.getUserTaskId()*/)
 			stageNum.add(tsfu.getStageNum())
 
 			val int monsterId = tsfu.getTaskStageMonsterId()
@@ -629,6 +563,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 
 		}
 
+		/* 
 		var int num = DeleteUtils.get().deleteTaskStagesForUserWithIds(userTaskStageId)
 		LOG.warn(
 			"num task stage history rows deleted: num=" + num + "taskStageForUser=" + taskStages)
@@ -639,86 +574,87 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		LOG.warn(
 			"num task stage history rows inserted: num=" + num + "taskStageForUser=" +
 				taskStages)
+		*/
 	}
 
 	def boolean updateUser(User u, int gemChange)
 	{
-		if (!u.updateRelativeGemsNaive(gemChange))
-		{
-			LOG.error(
-				"unexpected error: problem with updating user gems to delete event cool down timer. gemChange=" +
-					gemChange + "user=" + u)
-			return false
-		}
+//		if (!u.updateRelativeGemsNaive(gemChange))
+//		{
+//			LOG.error(
+//				"unexpected error: problem with updating user gems to delete event cool down timer. gemChange=" +
+//					gemChange + "user=" + u)
+//			return false
+//		}
 		return true
 	}
 		
-	def void recordStages(long userTaskId, Map<Integer, List<Integer>> stageNumsToExps,
-		Map<Integer, List<Integer>> stageNumsToCash,
-		Map<Integer, List<Integer>> stageNumsToOil,
-		Map<Integer, List<Boolean>> stageNumsToPuzzlePiecesDropped,
-		Map<Integer, List<TaskStageMonster>> stageNumsToTaskStageMonsters,
-		Map<Integer, Map<Integer, Integer>> stageNumsToTsmIdToItemId)
-	{
-		val Set<Integer> stageNums = stageNumsToExps.keySet()
-		val List<Integer> stageNumList = new ArrayList<Integer>(stageNums)
-		Collections.sort(stageNumList)
-		val int size = stageNumList.size()
-
-		//	  LOG.info("inserting task_stage_for_user: userTaskId="
-		//	  		+ userTaskId + "\t stageNumsToSilvers=" + stageNumsToSilvers
-		//	  		+ "\t stageNumsToExps=" + stageNumsToExps
-		//	  		+ "\t stageNumsToPuzzlePiecesDropped=" + stageNumsToPuzzlePiecesDropped
-		//	  		+ "\t stageNumsToMonsterIds=" + stageNumsToMonsterIds)
-		//loop through the individual stages, saving each to the db.
-		for (val int i = 0; i < size; i++)
-		{
-			val int stageNum = stageNumList.get(i)
-			val List<TaskStageMonster> taskStageMonsters = stageNumsToTaskStageMonsters.get(
-				stageNum)
-			val List<Integer> expsGained = stageNumsToExps.get(stageNum)
-			val List<Integer> cashGained = stageNumsToCash.get(stageNum)
-			val List<Integer> oilGained = stageNumsToOil.get(stageNum)
-			val List<Boolean> monsterPiecesDropped = stageNumsToPuzzlePiecesDropped.get(stageNum)
-			val Map<Integer, Integer> tsmIdToItemId = stageNumsToTsmIdToItemId.get(stageNum)
-
-			val int numStageRows = taskStageMonsters.size()
-			val List<Long> userTaskIds = Collections.nCopies(numStageRows, userTaskId)
-			val List<Integer> repeatedStageNum = Collections.nCopies(numStageRows, stageNum)
-
-			val List<Integer> tsmIds = new ArrayList<Integer>()
-			val List<String> monsterTypes = new ArrayList<String>()
-			for (TaskStageMonster tsm : taskStageMonsters)
-			{
-				tsmIds.add(tsm.getId())
-				monsterTypes.add(tsm.getMonsterType())
-			}
-
-			val int num = InsertUtils.get().insertIntoUserTaskStage(userTaskIds,
-				repeatedStageNum, tsmIds, monsterTypes, expsGained, cashGained, oilGained,
-				monsterPiecesDropped, tsmIdToItemId)
-			LOG.info("for stageNum=%d, inserted %d rows", stageNum, num)
-		}
-	}
-		  
-		  def void setResponseBuilder(Builder resBuilder, List<Long> userTaskIdList,
-				  Map<Integer, TaskStageProto> stageNumsToProtos) {
-			  //stuff to send to the client
-			  val long userTaskId = userTaskIdList.get(0)
-			  resBuilder.setUserTaskId(userTaskId)
-			  
-			  //to handle the case if there are gaps in stageNums for a task, we
-			  //order the available stage numbers. Then we give it all to the client
-			  //sequentially, just because.
-			  val Set<Integer> stageNums = stageNumsToProtos.keySet()
-			  val List<Integer> stageNumsOrdered = new ArrayList<Integer>(stageNums)
-			  Collections.sort(stageNumsOrdered)
-			  
-			  for (val Integer i : stageNumsOrdered) {
-				  val TaskStageProto tsp = stageNumsToProtos.get(i)
-				  resBuilder.addTsp(tsp)
-			  }
-		  }
+//	def void recordStages(long userTaskId, Map<Integer, List<Integer>> stageNumsToExps,
+//		Map<Integer, List<Integer>> stageNumsToCash,
+//		Map<Integer, List<Integer>> stageNumsToOil,
+//		Map<Integer, List<Boolean>> stageNumsToPuzzlePiecesDropped,
+//		Map<Integer, List<TaskStageMonster>> stageNumsToTaskStageMonsters,
+//		Map<Integer, Map<Integer, Integer>> stageNumsToTsmIdToItemId)
+//	{
+//		val Set<Integer> stageNums = stageNumsToExps.keySet()
+//		val List<Integer> stageNumList = new ArrayList<Integer>(stageNums)
+//		Collections.sort(stageNumList)
+//		val int size = stageNumList.size()
+//
+//		//	  LOG.info("inserting task_stage_for_user: userTaskId="
+//		//	  		+ userTaskId + "\t stageNumsToSilvers=" + stageNumsToSilvers
+//		//	  		+ "\t stageNumsToExps=" + stageNumsToExps
+//		//	  		+ "\t stageNumsToPuzzlePiecesDropped=" + stageNumsToPuzzlePiecesDropped
+//		//	  		+ "\t stageNumsToMonsterIds=" + stageNumsToMonsterIds)
+//		//loop through the individual stages, saving each to the db.
+//		for (val int i = 0; i < size; i++)
+//		{
+//			val int stageNum = stageNumList.get(i)
+//			val List<TaskStageMonster> taskStageMonsters = stageNumsToTaskStageMonsters.get(
+//				stageNum)
+//			val List<Integer> expsGained = stageNumsToExps.get(stageNum)
+//			val List<Integer> cashGained = stageNumsToCash.get(stageNum)
+//			val List<Integer> oilGained = stageNumsToOil.get(stageNum)
+//			val List<Boolean> monsterPiecesDropped = stageNumsToPuzzlePiecesDropped.get(stageNum)
+//			val Map<Integer, Integer> tsmIdToItemId = stageNumsToTsmIdToItemId.get(stageNum)
+//
+//			val int numStageRows = taskStageMonsters.size()
+//			val List<Long> userTaskIds = Collections.nCopies(numStageRows, userTaskId)
+//			val List<Integer> repeatedStageNum = Collections.nCopies(numStageRows, stageNum)
+//
+//			val List<Integer> tsmIds = new ArrayList<Integer>()
+//			val List<String> monsterTypes = new ArrayList<String>()
+//			for (TaskStageMonster tsm : taskStageMonsters)
+//			{
+//				tsmIds.add(tsm.getId())
+//				monsterTypes.add(tsm.getMonsterType())
+//			}
+//
+//			val int num = InsertUtils.get().insertIntoUserTaskStage(userTaskIds,
+//				repeatedStageNum, tsmIds, monsterTypes, expsGained, cashGained, oilGained,
+//				monsterPiecesDropped, tsmIdToItemId)
+//			LOG.info("for stageNum=%d, inserted %d rows", stageNum, num)
+//		}
+//	}
+//		  
+//		  def void setResponseBuilder(Builder resBuilder, List<Long> userTaskIdList,
+//				  Map<Integer, TaskStageProto> stageNumsToProtos) {
+//			  //stuff to send to the client
+//			  val long userTaskId = userTaskIdList.get(0)
+//			  resBuilder.setUserTaskId(userTaskId)
+//			  
+//			  //to handle the case if there are gaps in stageNums for a task, we
+//			  //order the available stage numbers. Then we give it all to the client
+//			  //sequentially, just because.
+//			  val Set<Integer> stageNums = stageNumsToProtos.keySet()
+//			  val List<Integer> stageNumsOrdered = new ArrayList<Integer>(stageNums)
+//			  Collections.sort(stageNumsOrdered)
+//			  
+//			  for (val Integer i : stageNumsOrdered) {
+//				  val TaskStageProto tsp = stageNumsToProtos.get(i)
+//				  resBuilder.addTsp(tsp)
+//			  }
+//		  }
 	}
 
     /**************************************************************************/
@@ -727,11 +663,6 @@ class TaskServiceImpl extends AbstractService implements TaskService
     def void setUserRepository( UserRepository userRepo )
     {
     	this.userRepo = userRepo
-    }
-    
-    def void setTaskRepository( TaskRepository taskRepo )
-    {
-    	this.taskRepo = taskRepo
     }
     
     def void setTaskForUserCompletedRepository( TaskForUserCompletedRepositoryImpl taskForUserCompletedRepository )
@@ -762,5 +693,25 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	def void setDataServiceTxManager( DataServiceTxManager txManager )
 	{
 		this.txManager = txManager
+	}	
+	
+	def void setUserExtensionLib( UserExtensionLib userExtensionLib )
+	{
+		this.userExtensionLib = userExtensionLib
+	}	
+	
+	def void setTaskExtensionLib( TaskExtensionLib taskExtensionLib )
+	{
+		this.taskExtensionLib = taskExtensionLib
+	}	
+	
+	def void setConfigExtensionLib( ConfigExtensions configExtensionLib )
+	{
+		this.configExtensionLib = configExtensionLib
+	}	
+	
+	def void setProbabilityExtensionLib( ProbabilityExtensionLib probabilityExtensionLib )
+	{
+		this.probabilityExtensionLib = probabilityExtensionLib
 	}	
 }

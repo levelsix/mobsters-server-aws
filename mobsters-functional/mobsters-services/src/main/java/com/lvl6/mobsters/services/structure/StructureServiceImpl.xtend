@@ -1,7 +1,6 @@
 package com.lvl6.mobsters.services.structure
 
 import com.lvl6.mobsters.common.utils.CollectionUtils
-import com.lvl6.mobsters.common.utils.Director
 import com.lvl6.mobsters.dynamo.ObstacleForUser
 import com.lvl6.mobsters.dynamo.StructureForUser
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository
@@ -12,6 +11,7 @@ import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
 import com.lvl6.mobsters.services.common.Lvl6MobstersConditions
 import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.utility.lambda.Director
 import java.util.ArrayList
 import java.util.Date
 import java.util.List

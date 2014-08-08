@@ -1,8 +1,8 @@
 package com.lvl6.mobsters.services.structure
 
-import com.lvl6.mobsters.common.utils.Director
 import com.lvl6.mobsters.dynamo.StructureForUser
 import com.lvl6.mobsters.info.CoordinatePair
+import com.lvl6.mobsters.utility.lambda.Director
 import java.util.Date
 import java.util.List
 

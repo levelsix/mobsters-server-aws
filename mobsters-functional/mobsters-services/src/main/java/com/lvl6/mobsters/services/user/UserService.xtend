@@ -1,6 +1,6 @@
 package com.lvl6.mobsters.services.user
 
-import com.lvl6.mobsters.common.utils.Director
+import com.lvl6.mobsters.utility.lambda.Director
 
 interface UserService
 {

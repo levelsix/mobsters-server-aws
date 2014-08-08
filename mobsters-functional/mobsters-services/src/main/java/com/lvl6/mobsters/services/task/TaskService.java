@@ -3,12 +3,12 @@ package com.lvl6.mobsters.services.task;
 import java.util.Date;
 import java.util.List;
 
-import com.lvl6.mobsters.common.utils.Director;
 import com.lvl6.mobsters.common.utils.ICallableAction;
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
+import com.lvl6.mobsters.utility.lambda.Director;
 
 public interface TaskService {
 	/* BEGIN NON-CRUD METHODS **************************************************/
@@ -56,14 +56,46 @@ public interface TaskService {
     	CompleteTasksBuilder taskId(int taskId, Date timeOfEntry);
     }
 
-	public ICallableAction<GenerateUserTaskStagesResponseBuilder> generateUserTaskStages(
-			String userId, Date curTime, int taskId, boolean isEvent, int eventId, 
-			int gemsSpent, List<Integer> questIds, String string, boolean forceEnemyElem);
+	public ICallableAction<GenerateUserTaskListener> generateUserTaskStages(
+		String userId, Date curTime, int taskId, boolean isEvent, int eventId, int gemsSpent, 
+		List<Integer> questIds, String elementName, boolean forceEnemyElem, 
+		boolean alreadyCompletedMiniTutorialTask);
 
-	public interface GenerateUserTaskStagesResponseBuilder {
-		// TODO: Don't require echoing back input arguments
-		GenerateUserTaskStagesResponseBuilder taskId(int taskId);
+	public interface GenerateUserTaskListener // extends BeginAddUserTaskListener, AddUserTaskStageListener, FinishAddUserTaskListener
+	{
+		GenerateUserTaskListener beginUserTask(String userUuid, int taskId);
+		
+		GenerateUserTaskListener addUserTaskStage(
+			int stageNum, 
+			Director<AddStageGenerateUserTaskListener> optionsDirector
+		);
+		
+		GenerateUserTaskListener endUserTask( String userUuid, int taskId, String userTaskUuid);
 	}
-	
+
+	// TODO: This belongs in the event package and is merely reused by the impl from there.
+	public interface AddStageGenerateUserTaskListener {
+		AddStageGenerateUserTaskListener onAddStageMonster(
+			int stageNum, int monsterId, 
+			int monsterLevel, float dmgMulti,
+			int expGiven, int cashGiven, int oilGiven, 
+			int droppedItemId, boolean puzzlePieceGiven
+		);
+
+		AddStageGenerateUserTaskListener onAddStageMiniBoss(
+			int stageNum, int monsterId, 
+			int monsterLevel, float dmgMulti,
+			int expGiven, int cashGiven, int oilGiven, 
+			int droppedItemId, boolean puzzlePieceGiven
+		);
+
+		AddStageGenerateUserTaskListener onAddStageBosss(
+			int stageNum, int monsterId, 
+			int monsterLevel, float dmgMulti,
+			int expGiven, int cashGiven, int oilGiven, 
+			int droppedItemId, boolean puzzlePieceGiven
+		);
+	}
+
     /* END OF INTERFACE ********************************************************/    
 }

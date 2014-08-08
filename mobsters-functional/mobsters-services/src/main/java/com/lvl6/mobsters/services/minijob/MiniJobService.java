@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
-import com.lvl6.mobsters.common.utils.Director;
-import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.services.minijob.MiniJobServiceImpl.ModifyUserMiniJobsSpecBuilderImpl;
+import com.lvl6.mobsters.utility.lambda.Director;
+import com.lvl6.mobsters.utility.lambda.Function;
 
 public interface MiniJobService {
     

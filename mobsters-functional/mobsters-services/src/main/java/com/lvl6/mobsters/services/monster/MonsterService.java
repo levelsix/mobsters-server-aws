@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
-import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.MonsterEnhancingForUser;
 import com.lvl6.mobsters.dynamo.MonsterEvolvingForUser;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 import com.lvl6.mobsters.dynamo.MonsterHealingForUser;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.services.monster.MonsterServiceImpl.ModifyMonstersSpecBuilderImpl;
+import com.lvl6.mobsters.utility.lambda.Function;
 public interface MonsterService
 {
 	

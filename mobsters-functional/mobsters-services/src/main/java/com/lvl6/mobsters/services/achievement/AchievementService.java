@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Multimap;
-import com.lvl6.mobsters.common.utils.Function;
 import com.lvl6.mobsters.dynamo.AchievementForUser;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.services.achievement.AchievementServiceImpl.ModifyUserAchievementsSpecBuilderImpl;
+import com.lvl6.mobsters.utility.lambda.Function;
 
 public interface AchievementService {
 

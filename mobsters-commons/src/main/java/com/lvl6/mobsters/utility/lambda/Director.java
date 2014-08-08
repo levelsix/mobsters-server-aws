@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.common.utils;
+package com.lvl6.mobsters.utility.lambda;
 
 /**
  * Templated Director interface for use driving Builders from argument lambdas when applying the Gang of Four
