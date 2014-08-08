@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lvl6.mobsters.info.Obstacle;
 public interface ObstacleRepository extends JpaRepository<Obstacle, Integer>{
-
-		List<Obstacle> findByIdIn( Collection<Integer> idList );
+	List<Obstacle> findByIdIn( Collection<Integer> idList );
+	
+	List<Obstacle> findByIdIn( int[] idList );
+		
+	Obstacle findById(int id);
 }

@@ -9,4 +9,5 @@ public interface MonsterRepository extends JpaRepository<Monster, Integer>{
 
 	List<Monster> findByIdIn( Collection<Integer> idList );
 	
+	Monster findById(int id);
 }
