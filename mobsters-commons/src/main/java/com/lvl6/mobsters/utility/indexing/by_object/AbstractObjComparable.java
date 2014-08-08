@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.common.utils;
+package com.lvl6.mobsters.utility.indexing.by_object;
 
 public abstract class AbstractObjComparable<T extends Comparable<? super T>> 
 	implements Comparable<AbstractObjComparable<T>> {

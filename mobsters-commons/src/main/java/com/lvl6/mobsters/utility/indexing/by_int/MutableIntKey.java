@@ -1,8 +1,7 @@
-package com.lvl6.mobsters.common.utils;
+package com.lvl6.mobsters.utility.indexing.by_int;
 
 import com.google.common.base.Preconditions;
-import com.lvl6.mobsters.services.structure.StaticStructureContext;
-import com.lvl6.mobsters.services.structure.StructureExtensionLib;
+import com.lvl6.mobsters.utility.indexing.by_object.AbstractObjComparable;
 
 /**
  * Mutable IDComparable subtype that encapsulates only an ID of the required type.

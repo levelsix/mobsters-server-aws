@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.common.utils;
+package com.lvl6.mobsters.utility.indexing.by_int;
 
 public abstract class AbstractIntComparable 
 	implements Comparable<AbstractIntComparable> 
