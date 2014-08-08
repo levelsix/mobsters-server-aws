@@ -1,56 +1,62 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.lvl6</groupId>
-    <artifactId>mobsters-server-aws</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>mobsters-commons</artifactId>
-  <packaging>jar</packaging>
-  <name>Mobsters Common Utils</name>
-  <description>Module for utility frameworks and extensions meant for re-use throughout the platform</description>
-  
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<includes>
-						<include>**/test/*.java</include>
-						<include>**/Test*.java</include>
-						<include>**/E2ETest*.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-		</plugins>
-		
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
-	</build>
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.lvl6</groupId>
+		<artifactId>mobsters-server-aws</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>mobsters-commons</artifactId>
+	<packaging>jar</packaging>
+	<name>Mobsters Common Utils</name>
+	<description>Module for utility frameworks and extensions meant for re-use throughout the platform</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
+	</build>
 </project>
