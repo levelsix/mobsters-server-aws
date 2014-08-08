@@ -1,20 +1,21 @@
 package com.lvl6.mobsters.services.structure
 
-import com.lvl6.mobsters.common.utils.AbstractIntComparable
-import com.lvl6.mobsters.common.utils.ImmutableIntKey
 import com.lvl6.mobsters.dynamo.StructureForUser
+import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.info.CoordinatePair
 import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
+import com.lvl6.mobsters.services.user.UserExtensionLib
+import com.lvl6.mobsters.utility.indexing.by_int.AbstractIntComparable
+import com.lvl6.mobsters.utility.indexing.by_int.ImmutableIntKey
 import java.util.Collections
 import java.util.Date
 import java.util.Map
 import javax.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
 import static com.google.common.base.Preconditions.*
-import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.services.user.UserExtensionLib
 
 // TODO: Place all Extension Libraries in a parallel package structure
 //       and use CheckStyle to detect attempts to use them outside the
@@ -141,7 +142,7 @@ class StructureExtensionLib {
 		Collections.emptyMap
 	
 	public def Structure getStructure( StructureForUser sfu ) {
-		var StaticStructureContext retVal = sfu.getAttachment(StaticStructureContext);
+		var StaticStructureContext retVal = sfu.getAttachment(StaticStructureContext)
 		if (retVal === null) {
 			retVal = 
 				structureContextLookup.get(
