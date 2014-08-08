@@ -1,20 +1,13 @@
 package com.lvl6.mobsters.controllers;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.common.utils.AbstractAction;
-import com.lvl6.mobsters.common.utils.IAction;
 import com.lvl6.mobsters.common.utils.ICallableAction;
 import com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonRequestProto;
 import com.lvl6.mobsters.eventproto.EventDungeonProto.BeginDungeonResponseProto;
@@ -27,8 +20,10 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
+import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.task.TaskService;
-import com.lvl6.mobsters.services.task.TaskService.GenerateUserTaskStagesResponseBuilder;
+import com.lvl6.mobsters.services.task.TaskService.AddStageGenerateUserTaskListener;
+import com.lvl6.mobsters.services.task.TaskService.GenerateUserTaskListener;
 
 @Component
 public class BeginDungeonController extends EventController
@@ -82,39 +77,45 @@ public class BeginDungeonController extends EventController
 
 		//used for element tutorial, client sets what enemy monster element should appear
 		//and only that one guy should appear (quest tasks should have only one stage in db)
-		Element elem = reqProto.getElem();
+
 		// if not set, then go select monsters at random
 		boolean forceEnemyElem = reqProto.getForceEnemyElem();
-//			TreeMap<Integer, List<TaskStageForUser>> orderedStages = beginTaskService
-//				.generateUserTaskStages(userId, curTime, taskId, isEvent,
-//					eventId, gemsSpent, questIds, elem.name(), forceEnemyElem);
+		Element elem = reqProto.getElem();
 		
 		// Verify syntax validity of service call parameters.
-		ICallableAction<GenerateUserTaskStagesResponseBuilder> svcAction = 
+		ICallableAction<GenerateUserTaskListener> svcAction = 
 			taskService.generateUserTaskStages(
-				userId, curTime, taskId, isEvent, eventId, gemsSpent, questIds, 
-				(elem != null) ? elem.name() : "", forceEnemyElem
+				senderProto.getUserUuid(), 
+				TimeUtils.createDateFromTime(reqProto.getClientTime()), 
+				reqProto.getTaskId(),
+				reqProto.getIsEvent(),
+				reqProto.getPersistentEventId(),
+				reqProto.getGemsSpent(),
+				reqProto.getQuestIdsList(),
+				elem != null ? elem.name() : "",
+				reqProto.getForceEnemyElem(),
+				reqProto.hasAlreadyCompletedMiniTutorialTask()
 			);
 		checkSyntaxValidity(svcAction);
 
 		// Prepare to receive response values for sending to the client (via response proto),
 		// then call the service.
-		final GenerateUserTaskStagesResponseBuilderImpl responseEventBuilder = 
-			new GenerateUserTaskStagesResponseBuilderImpl(senderProto, event.getTag(), taskId);
-		svcAction.execute(responseEventBuilder);
+		final GenerateUserTaskListenerImpl responseListener = 
+			new GenerateUserTaskListenerImpl(senderProto, event.getTag(), taskId);
+		svcAction.execute(responseListener);
 		
 		// If no exception was thrown, result was a success.  Write response to client
-		final BeginDungeonResponseEvent responseEvent = responseEventBuilder.build();
+		final BeginDungeonResponseEvent responseEvent = responseListener.build();
 		LOG.info("Writing event: %s", responseEvent);
 		eventWriter.writeEvent(responseEvent);
 	}
 	
-	static class GenerateUserTaskStagesResponseBuilderImpl implements GenerateUserTaskStagesResponseBuilder {
+	static class GenerateUserTaskListenerImpl implements GenerateUserTaskListener {
 		private final BeginDungeonResponseProto.Builder resBuilder;
 		private final String userUuid;
 		private final int tag;
 		
-		GenerateUserTaskStagesResponseBuilderImpl(
+		GenerateUserTaskListenerImpl(
 			final MinimumUserProto senderProto, final int tag, final int taskId ) 
 		{
 			resBuilder = BeginDungeonResponseProto.newBuilder();
@@ -126,13 +127,29 @@ public class BeginDungeonController extends EventController
 			this.tag = tag;
 		}
 		
-		public GenerateUserTaskStagesResponseBuilder taskId(int taskId) {
-			resBuilder.setTaskId(taskId);
-			return this;
-		}
-		
 		BeginDungeonResponseEvent build() {
 			return new BeginDungeonResponseEvent(userUuid, tag, resBuilder);
+		}
+	}
+	
+	static class AddStageGenerateUserTaskListenerImpl implements AddStageGenerateUserTaskListener {
+		public AddStageGenerateUserTaskListenerImpl onAddStageMonster(
+			int stageNum. int monsterId, 
+			int monsterLevel, float dmgMulti,
+			int expGiven, int cashGiven, int oilGiven, 
+			int droppedItemId, boolean puzzlePieceGiven
+		) {
+			TaskStageProto.newBuilder()
+				.addStageMonsters(
+					TaskStageMonsterProto.newBuilder()
+						.setDmgMultiplier(1.0f)
+						.setCashReward(cashGiven)
+						.setExpReward(expGiven)
+						.setItemId(droppedItemId)
+						.setLevel(monsterLevel)
+						.setMonsterId(monsterId)
+						.setMonsterType(MonsterType.REGULAR)
+				)
 		}
 	}
 
