@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.dynamo.attachments;
+package com.lvl6.mobsters.utility.attachment;
 
 /**
  * An interface the indicates an object is able to store and return a "attachment" objects.  Attachments are keyed by their reflective

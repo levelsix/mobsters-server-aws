@@ -8,18 +8,14 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 
 @DynamoDBTable(tableName="EventPersistentForUser")
 public class EventPersistentForUser {
-
-
-
 	private String userId;
 	private int eventPersistentId;
 //	private String id;
 	private Long version;
-
-	
 	private Date timeOfEntry; // refers to time user started a daily event
 	public EventPersistentForUser(){}
-  public EventPersistentForUser(String userId, int eventPersistentId,
+
+	public EventPersistentForUser(String userId, int eventPersistentId,
 			Date timeOfEntry) {
 		super();
 		this.userId = userId;
@@ -35,7 +31,8 @@ public class EventPersistentForUser {
   
   
 	  @DynamoDBHashKey(attributeName = "userId")
-	  public String getUserId() {		return userId;
+	  public String getUserId() {
+		  return userId;
 	  }
 	  
 	  public void setUserId(String userId) {

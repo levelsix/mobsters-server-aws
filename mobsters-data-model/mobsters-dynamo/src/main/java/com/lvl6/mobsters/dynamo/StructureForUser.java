@@ -8,9 +8,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
-import com.lvl6.mobsters.dynamo.attachments.AbstractExtensibleObject;
-import com.lvl6.mobsters.dynamo.attachments.AtomicExtensibleObject;
-import com.lvl6.mobsters.dynamo.attachments.ExtensibleObject;
+import com.lvl6.mobsters.utility.attachment.AtomicExtensibleObject;
+import com.lvl6.mobsters.utility.attachment.ExtensibleObject;
 
 @DynamoDBTable(
 	tableName = "StructureForUser")
@@ -219,6 +218,22 @@ public class StructureForUser implements ExtensibleObject
 	{
 		this.fbInviteStructLvl = fbInviteStructLvl;
 	}
+
+	@Override
+	@DynamoDBIgnore
+	public <T> T getAttachment(Class<T> attachmentClass) {
+		return this.attachments.getAttachment(attachmentClass);
+	}
+
+	@Override
+	public <T> void putAttachment(Class<T> attachmentClass, T attachmentObject) {
+		this.attachments.putAttachment(attachmentClass, attachmentObject);
+	}
+
+	@Override
+	public <T> T clearAttachment(Class<T> attachmentClass) {
+		return this.attachments.clearAttachment(attachmentClass);
+	}
 	
 	@Override
 	public String toString()
@@ -280,21 +295,5 @@ public class StructureForUser implements ExtensibleObject
 		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
-	}
-
-	@Override
-	@DynamoDBIgnore
-	public <T> T getAttachment(Class<T> attachmentClass) {
-		return this.attachments.getAttachment(attachmentClass);
-	}
-
-	@Override
-	public <T> void putAttachment(Class<T> attachmentClass, T attachmentObject) {
-		this.attachments.putAttachment(attachmentClass, attachmentObject);
-	}
-
-	@Override
-	public <T> T clearAttachment(Class<T> attachmentClass) {
-		return this.attachments.clearAttachment(attachmentClass);
 	}
 }
