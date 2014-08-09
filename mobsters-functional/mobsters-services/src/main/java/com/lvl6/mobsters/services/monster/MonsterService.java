@@ -154,4 +154,6 @@ public interface MonsterService
 		}
 	}
 	*/
+	
+	public void restrictUserMonsters(String userId, List<String> userMonsterIds );
 }
