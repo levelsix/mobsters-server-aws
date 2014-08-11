@@ -9,8 +9,8 @@ import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.CoordinatePair
 import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
-import com.lvl6.mobsters.services.common.Lvl6MobstersConditions
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.lambda.Director
 import java.util.ArrayList
 import java.util.Date
@@ -19,9 +19,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static com.lvl6.mobsters.services.common.TimeUtils.*
-import static com.lvl6.mobsters.services.structure.StructureServiceImpl.*
 import static java.lang.String.*
 
 @Component

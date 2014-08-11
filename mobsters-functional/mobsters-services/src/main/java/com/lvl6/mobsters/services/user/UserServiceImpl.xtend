@@ -9,8 +9,6 @@ import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.server.ControllerConstants
-import com.lvl6.mobsters.services.common.Lvl6MobstersConditions
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.common.TimeUtils
 import com.lvl6.mobsters.services.monster.MonsterService
 import com.lvl6.mobsters.services.structure.StructureService
@@ -25,7 +23,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode.*
 
 @Component
 class UserServiceImpl implements UserService
@@ -105,7 +104,7 @@ class UserServiceImpl implements UserService
 			CollectionUtils::isEmptyOrNull(
 				userCredentialRepository.findByFacebookId(facebookId)
 			),
-			Lvl6MobstersStatusCode::FAIL_USER_WITH_FACEBOOK_ID_EXISTS,
+			FAIL_USER_WITH_FACEBOOK_ID_EXISTS,
 			'User(s) already exist with facebookId=%s', facebookId)
 			
 		val uc = new UserCredential()
@@ -126,7 +125,7 @@ class UserServiceImpl implements UserService
 		lvl6Precondition(
 			CollectionUtils::isEmptyOrNull(
 				userCredentialRepository.findByUdid(udid)),
-			Lvl6MobstersStatusCode::FAIL_USER_WITH_UDID_ALREADY_EXISTS,
+			FAIL_USER_WITH_UDID_ALREADY_EXISTS,
 			'User(s) already exist with udid=%s', udid)
 			
 		val uc = new UserCredential()
@@ -305,7 +304,7 @@ class UserServiceImpl implements UserService
 		val boolean isRootTx = txManager.requireTransaction()
 		try {
 			var user = userRepo.load(userId)
-			Lvl6MobstersConditions.lvl6Precondition(user !== null, Lvl6MobstersStatusCode.FAIL_OTHER, "no User for userId=%s", userId);
+			lvl6Precondition(user !== null, FAIL_OTHER, "no User for userId=%s", userId);
 			user.level = newLevel
 			userRepo.save(user)
 			success = true
@@ -332,7 +331,7 @@ class UserServiceImpl implements UserService
 		try {
 			userRepo.save(
 				userRepo.load(userId) => [ user |
-					lvl6Precondition(user !== null, Lvl6MobstersStatusCode.FAIL_OTHER, "no User for userId=%s", userId);
+					lvl6Precondition(user !== null, FAIL_OTHER, "no User for userId=%s", userId);
 					modifyUserOps.forEach[it.apply(user)]
 					userRepo.save(user)
 				]
@@ -369,7 +368,7 @@ class UserServiceImpl implements UserService
 				val oldGems = it.gems
 				lvl6Precondition(
 					oldGems >= gemsDelta, 
-					Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_GEMS, 
+					FAIL_INSUFFICIENT_GEMS, 
 					"User=%s cannot afford to spend %s gems", 
 					it.id, oldGems
 				);
@@ -398,7 +397,7 @@ class UserServiceImpl implements UserService
 				val oldCash = it.cash
 				lvl6Precondition(
 					oldCash >= cashDelta, 
-					Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_CASH, 
+					FAIL_INSUFFICIENT_CASH, 
 					"User=%s cannot afford to spend %s cash", 
 					it.id, oldCash
 				);
@@ -427,7 +426,7 @@ class UserServiceImpl implements UserService
 				val oldOil = it.oil
 				lvl6Precondition(
 					oldOil >= oilDelta, 
-					Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_OIL, 
+					FAIL_INSUFFICIENT_OIL, 
 					"User=%s cannot afford to spend %s oil", 
 					it.id, oldOil
 				);
@@ -479,7 +478,7 @@ class UserServiceImpl implements UserService
 			userDraRepo.save(
 				userDraRepo.load(userId) => [ udra |
 					lvl6Precondition( 
-						udra!== null, Lvl6MobstersStatusCode::FAIL_OTHER, 
+						udra!== null, FAIL_OTHER, 
 						"No UserDataRarelyAccessed object found for userUuid=%s", 
 						userId
 					)

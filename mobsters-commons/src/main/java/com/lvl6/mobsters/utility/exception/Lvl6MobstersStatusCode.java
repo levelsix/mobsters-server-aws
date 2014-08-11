@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.services.common;
+package com.lvl6.mobsters.utility.exception;
 
 public enum Lvl6MobstersStatusCode
 {

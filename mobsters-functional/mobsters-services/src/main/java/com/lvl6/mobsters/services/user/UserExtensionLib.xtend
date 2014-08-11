@@ -4,7 +4,7 @@ import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.info.Task
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.indexing.by_int.ImmutableIntKey
 import com.lvl6.mobsters.utility.indexing.by_int.IntKeyIndex
 import java.util.ArrayList
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static com.google.common.base.Preconditions.*
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 
 import static extension java.lang.String.*
 

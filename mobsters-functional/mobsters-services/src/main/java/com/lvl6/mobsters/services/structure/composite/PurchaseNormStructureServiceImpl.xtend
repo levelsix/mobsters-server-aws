@@ -8,7 +8,8 @@ import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.CoordinatePair
 import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import java.util.Date
@@ -17,11 +18,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum.*
-import static com.lvl6.mobsters.services.structure.composite.PurchaseNormStructureServiceImpl.*
 import static java.lang.String.*
-import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType
 
 @Component
 public class PurchaseNormStructureServiceImpl implements PurchaseNormStructureService {
@@ -125,7 +124,7 @@ public class PurchaseNormStructureServiceImpl implements PurchaseNormStructureSe
 		// Derived properties computed when checking, then applied when updating
 		var User user
 		var Structure struct
-		var ResourceType rsrcType
+		var Lvl6MobstersResourceEnum rsrcType
 		var int cashChange
 		var int oilChange
 		
@@ -134,7 +133,7 @@ public class PurchaseNormStructureServiceImpl implements PurchaseNormStructureSe
 			 val sfu = new StructureForUser
 			 sfu.structId = structId;
 			 struct = sfu.structure
-			 rsrcType = ResourceType.valueOf(resourceType)
+			 rsrcType = Lvl6MobstersResourceEnum::valueOf(resourceType)
 			 
 			 checkIfUserCanPurchase()
 			 

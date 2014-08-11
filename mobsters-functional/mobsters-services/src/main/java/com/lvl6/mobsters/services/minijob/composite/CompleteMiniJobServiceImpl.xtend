@@ -5,7 +5,6 @@ import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.minijob.MiniJobExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import java.util.Date
@@ -14,8 +13,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
-import static com.lvl6.mobsters.services.minijob.composite.CompleteMiniJobServiceImpl.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode.*
 
 @Component
 public class CompleteMiniJobServiceImpl implements CompleteMiniJobService {
@@ -134,7 +133,7 @@ public class CompleteMiniJobServiceImpl implements CompleteMiniJobService {
 			if (gemsSpent > 0) {
 				lvl6Precondition( 
 					user !== null,
-					Lvl6MobstersStatusCode.FAIL_OTHER,
+					FAIL_OTHER,
 					LOG,
 					"parameter passed in is null. user=%s", 
 					user)
@@ -145,7 +144,7 @@ public class CompleteMiniJobServiceImpl implements CompleteMiniJobService {
 			
 			lvl6Precondition( 
 					mjfu !== null,
-					Lvl6MobstersStatusCode.FAIL_OTHER,
+					FAIL_OTHER,
 					LOG,
 					"parameter passed in is null. userMiniJobId=%s, user=%s", 
 					userMiniJobId, user)

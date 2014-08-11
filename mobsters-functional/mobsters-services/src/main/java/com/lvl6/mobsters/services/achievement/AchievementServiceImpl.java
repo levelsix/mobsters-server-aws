@@ -20,8 +20,8 @@ import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.info.Achievement;
 import com.lvl6.mobsters.info.repository.AchievementRepository;
-import com.lvl6.mobsters.services.common.Lvl6MobstersException;
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
 @Component
 public class AchievementServiceImpl implements AchievementService {

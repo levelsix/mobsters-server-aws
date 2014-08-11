@@ -1,6 +1,7 @@
-package com.lvl6.mobsters.services.common;
+package com.lvl6.mobsters.utility.exception;
 
-import org.slf4j.Logger;
+import com.google.common.base.Preconditions
+import org.slf4j.Logger
 
 /**
  * Static utility class offering hotspot-friendly implementations of utility
@@ -27,7 +28,7 @@ import org.slf4j.Logger;
  * The coding pattern above is heavily used in java.util, e.g. in ArrayList.
  * There is a RangeCheckMicroBenchmark in the JDK that was used to test this.
  * 
- * @see com.google.common.base.Preconditions For Google's more general purpose
+ * @see Preconditions For Google's more general purpose
  *      utility class upon which this class is based.
  */
 final class Lvl6MobstersConditions

@@ -11,9 +11,9 @@ import com.lvl6.mobsters.dynamo.ObstacleForUser;
 import com.lvl6.mobsters.dynamo.User;
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
-import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum;
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
 @Component
 public class BeginObstacleRemovalServiceImpl implements BeginObstacleRemovalService {

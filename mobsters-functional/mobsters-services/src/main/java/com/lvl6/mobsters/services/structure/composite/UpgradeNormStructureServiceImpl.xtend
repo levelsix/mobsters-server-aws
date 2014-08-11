@@ -7,7 +7,7 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.repository.StructureRepository
 import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.common.TimeUtils
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
@@ -17,8 +17,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
-import static com.lvl6.mobsters.services.structure.composite.UpgradeNormStructureServiceImpl.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 
 @Component
 public class UpgradeNormStructureServiceImpl implements UpgradeNormStructureService {

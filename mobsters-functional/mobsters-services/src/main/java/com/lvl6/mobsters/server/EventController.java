@@ -17,8 +17,8 @@ import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.GameEvent;
 import com.lvl6.mobsters.events.RequestEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
-import com.lvl6.mobsters.services.common.Lvl6MobstersException;
 import com.lvl6.mobsters.services.common.TimeUtils;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.properties.Globals;
 
 @Component

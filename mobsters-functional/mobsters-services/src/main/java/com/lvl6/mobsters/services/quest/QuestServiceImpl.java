@@ -21,8 +21,8 @@ import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.info.QuestJob;
 import com.lvl6.mobsters.info.repository.QuestJobRepository;
 import com.lvl6.mobsters.info.repository.QuestRepository;
-import com.lvl6.mobsters.services.common.Lvl6MobstersException;
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
 @Component
 public class QuestServiceImpl implements QuestService, InitializingBean {
