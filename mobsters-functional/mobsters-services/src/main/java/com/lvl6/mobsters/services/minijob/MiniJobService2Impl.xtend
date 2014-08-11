@@ -5,7 +5,6 @@ import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
-import com.lvl6.mobsters.common.utils.CollectionUtils
 import com.lvl6.mobsters.dynamo.MiniJobForUser
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepositoryImpl
@@ -25,7 +24,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.minijob.MiniJobService2Impl.*
+import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
 
 @Component
 public class MiniJobService2Impl implements MiniJobService
@@ -247,7 +246,7 @@ public class MiniJobService2Impl implements MiniJobService
 	/**************************************************************************/
 	public override void spawnMiniJobsForUser(String userId, Date clientStartTime, int numToSpawn, int structId) {
 		val List<MiniJob> spawnedMiniJobs = spawnMiniJobs(numToSpawn, structId);
-        if (!CollectionUtils.lacksSubstance(spawnedMiniJobs)) {
+        if (spawnedMiniJobs.hasItems()) {
         	// The service call lambda 
         	createMiniJobsForUser(userId) [ 
         		// The innermost anonymous lambda's can always have "it"'s methods called

@@ -20,10 +20,11 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
-import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.task.TaskService;
 import com.lvl6.mobsters.services.task.TaskService.AddStageGenerateUserTaskListener;
 import com.lvl6.mobsters.services.task.TaskService.GenerateUserTaskListener;
+import com.lvl6.mobsters.utility.common.TimeUtils;
+import com.lvl6.mobsters.utility.lambda.Director;
 
 @Component
 public class BeginDungeonController extends EventController

@@ -17,8 +17,8 @@ import com.lvl6.mobsters.events.response.SpawnMiniJobResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
-import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.minijob.MiniJobService;
+import com.lvl6.mobsters.utility.common.TimeUtils;
 
 @Component
 public class SpawnMiniJobController extends EventController {

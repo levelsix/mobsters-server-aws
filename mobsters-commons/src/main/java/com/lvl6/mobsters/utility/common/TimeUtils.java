@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.services.common;
+package com.lvl6.mobsters.utility.common;
 
 import java.util.Calendar;
 import java.util.Date;

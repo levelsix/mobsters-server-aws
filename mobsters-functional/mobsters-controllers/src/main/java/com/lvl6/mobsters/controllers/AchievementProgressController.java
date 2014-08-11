@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementProgressRequestProto;
 import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementProgressResponseProto;
 import com.lvl6.mobsters.eventproto.EventAchievementProto.AchievementProgressResponseProto.AchievementProgressStatus;
@@ -23,7 +22,8 @@ import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.achievement.AchievementService;
 import com.lvl6.mobsters.services.achievement.AchievementService.ModifyUserAchievementsSpec;
 import com.lvl6.mobsters.services.achievement.AchievementService.ModifyUserAchievementsSpecBuilder;
-import com.lvl6.mobsters.services.common.TimeUtils;
+import com.lvl6.mobsters.utility.common.CollectionUtils;
+import com.lvl6.mobsters.utility.common.TimeUtils;
 
 @Component
 public class AchievementProgressController extends EventController {

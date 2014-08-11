@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.conditions.Director;
 import com.lvl6.mobsters.conditions.IIntConditionBuilder;
 import com.lvl6.mobsters.conditions.IStringConditionBuilder;
@@ -36,6 +35,7 @@ import com.lvl6.mobsters.info.IMonsterLevelInfo;
 import com.lvl6.mobsters.info.Monster;
 import com.lvl6.mobsters.info.repository.MonsterRepository;
 import com.lvl6.mobsters.info.xtension.ConfigExtensions;
+import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 

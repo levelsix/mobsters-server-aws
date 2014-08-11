@@ -1,6 +1,5 @@
 package com.lvl6.mobsters.services.user
 
-import com.lvl6.mobsters.common.utils.CollectionUtils
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.UserCredential
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed
@@ -9,12 +8,12 @@ import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.server.ControllerConstants
-import com.lvl6.mobsters.services.common.TimeUtils
 import com.lvl6.mobsters.services.monster.MonsterService
 import com.lvl6.mobsters.services.structure.StructureService
 import com.lvl6.mobsters.services.structure.StructureService.CreateObstaclesReplyBuilder
 import com.lvl6.mobsters.services.structure.StructureService.CreateStructuresReplyBuilder
 import com.lvl6.mobsters.services.task.TaskService
+import com.lvl6.mobsters.utility.common.TimeUtils
 import com.lvl6.mobsters.utility.lambda.Director
 import java.util.ArrayList
 import java.util.Collections
@@ -23,6 +22,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode.*
 
@@ -101,12 +101,10 @@ class UserServiceImpl implements UserService
 		optionsDirector.apply(optionsBuilder)
 		
 		lvl6Precondition(
-			CollectionUtils::isEmptyOrNull(
-				userCredentialRepository.findByFacebookId(facebookId)
-			),
+			userCredentialRepository.findByFacebookId(facebookId).emptyOrNull,
 			FAIL_USER_WITH_FACEBOOK_ID_EXISTS,
 			'User(s) already exist with facebookId=%s', facebookId)
-			
+
 		val uc = new UserCredential()
 		uc.facebookId = facebookId
 		doFacebookAgnosticWork(uc, true, udid, name, deviceToken, cash, oil, gems, createTime, optionsBuilder)
@@ -123,8 +121,7 @@ class UserServiceImpl implements UserService
 		optionsDirector.apply(optionsBuilder)
 		
 		lvl6Precondition(
-			CollectionUtils::isEmptyOrNull(
-				userCredentialRepository.findByUdid(udid)),
+			userCredentialRepository.findByUdid(udid).emptyOrNull,
 			FAIL_USER_WITH_UDID_ALREADY_EXISTS,
 			'User(s) already exist with udid=%s', udid)
 			

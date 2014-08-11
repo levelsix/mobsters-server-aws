@@ -20,8 +20,8 @@ import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 import com.lvl6.mobsters.server.EventController;
-import com.lvl6.mobsters.services.common.TimeUtils;
 import com.lvl6.mobsters.services.structure.BeginObstacleRemovalService;
+import com.lvl6.mobsters.utility.common.TimeUtils;
 
 @Component
 public class BeginObstacleRemovalController extends EventController {

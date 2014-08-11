@@ -12,7 +12,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;
@@ -21,6 +20,7 @@ import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.info.QuestJob;
 import com.lvl6.mobsters.info.repository.QuestJobRepository;
 import com.lvl6.mobsters.info.repository.QuestRepository;
+import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 

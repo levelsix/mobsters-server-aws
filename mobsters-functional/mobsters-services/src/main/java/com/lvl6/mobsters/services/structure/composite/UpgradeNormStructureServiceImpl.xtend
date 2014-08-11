@@ -8,7 +8,7 @@ import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.repository.StructureRepository
 import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
-import com.lvl6.mobsters.services.common.TimeUtils
+import com.lvl6.mobsters.utility.common.TimeUtils
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import java.util.Date

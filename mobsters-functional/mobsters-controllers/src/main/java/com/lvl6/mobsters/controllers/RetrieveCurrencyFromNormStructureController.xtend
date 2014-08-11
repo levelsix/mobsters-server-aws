@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.common.utils.CollectionUtils.*
+import static com.lvl6.mobsters.utility.common.CollectionUtils.*
 import com.lvl6.mobsters.services.structure.composite.CollectCurrencyFromNormStructureService
 
 @Component

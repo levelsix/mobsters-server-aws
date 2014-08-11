@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.List
 import java.util.Date
-import static com.lvl6.mobsters.common.utils.CollectionUtils.*
+import static com.lvl6.mobsters.utility.common.CollectionUtils.*
 
 @Component
 public class NormStructWaitCompleteController extends EventController

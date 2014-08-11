@@ -13,7 +13,7 @@ import com.lvl6.mobsters.eventproto.EventUserProto.UpdateClientUserResponseProto
 import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
-import com.lvl6.mobsters.services.common.TimeUtils;
+import com.lvl6.mobsters.utility.common.TimeUtils;
 
 public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 

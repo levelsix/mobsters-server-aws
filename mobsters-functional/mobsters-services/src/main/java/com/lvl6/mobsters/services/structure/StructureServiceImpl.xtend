@@ -1,6 +1,5 @@
 package com.lvl6.mobsters.services.structure
 
-import com.lvl6.mobsters.common.utils.CollectionUtils
 import com.lvl6.mobsters.dynamo.ObstacleForUser
 import com.lvl6.mobsters.dynamo.StructureForUser
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository
@@ -19,8 +18,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
-import static com.lvl6.mobsters.services.common.TimeUtils.*
+import static com.lvl6.mobsters.utility.common.TimeUtils.*
 import static java.lang.String.*
 
 @Component
@@ -356,7 +356,7 @@ class StructureServiceImpl implements StructureService
 		private def void checkIfUserCanFinishConstruction()
 		{
 			lvl6Precondition(
-				!CollectionUtils.lacksSubstance(sfus), //similar to assertTrue: must be true else error
+				sfus.hasItems, //similar to assertTrue: must be true else error
 				Lvl6MobstersStatusCode.FAIL_OTHER,
 				LOG,
 				"no StructureForUsers for ids=%s, userId=%s. clientTime=%t",

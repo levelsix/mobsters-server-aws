@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthRequestProto;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto;
 import com.lvl6.mobsters.eventproto.EventMonsterProto.UpdateMonsterHealthResponseProto.Builder;
@@ -24,6 +23,7 @@ import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.services.monster.MonsterService;
 import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpec;
 import com.lvl6.mobsters.services.monster.MonsterService.ModifyMonstersSpecBuilder;
+import com.lvl6.mobsters.utility.common.CollectionUtils;
 
 @Component
 // @Lvl6Controller(reqProto=EventProtocolRequest.C_UPDATE_MONSTER_HEALTH_EVENT,

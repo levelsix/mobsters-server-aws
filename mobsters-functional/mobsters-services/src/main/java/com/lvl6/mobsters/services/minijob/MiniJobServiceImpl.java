@@ -20,13 +20,13 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.lvl6.mobsters.common.utils.CollectionUtils;
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepositoryImpl;
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
 import com.lvl6.mobsters.info.MiniJob;
 import com.lvl6.mobsters.info.repository.MiniJobRepository;
+import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.lambda.Director;
 
 /**
