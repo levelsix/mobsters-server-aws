@@ -15,7 +15,7 @@ public class StructureForUserRepositoryImpl extends
 	
 	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
-			.getLogger(MiniJobForUserRepositoryImpl.class);
+			.getLogger(StructureForUserRepositoryImpl.class);
 
 	
 	public StructureForUserRepositoryImpl()
