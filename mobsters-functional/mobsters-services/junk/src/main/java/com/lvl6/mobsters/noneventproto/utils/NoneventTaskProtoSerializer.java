@@ -6,8 +6,10 @@ import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.info.ITask;
+import com.lvl6.mobsters.info.TaskMapElement;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageMonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.UserPersistentEventProto;
@@ -31,4 +33,5 @@ public interface NoneventTaskProtoSerializer
 
 	public UserPersistentEventProto createUserPersistentEventProto( EventPersistentForUser epfu );
 	
+	public TaskMapElementProto createTaskMapElementProto(TaskMapElement tme);
 }

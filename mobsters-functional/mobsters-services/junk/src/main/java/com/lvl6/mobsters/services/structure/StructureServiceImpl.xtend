@@ -293,8 +293,8 @@ class StructureServiceImpl implements StructureService
 	override finishConstructingCompletedUserStructures( 
 		String userId, List<String> userStructIdList, Date now) 
 	{
-		val StructureServiceImpl.ConstructNormStructureAction action =
-			new StructureServiceImpl.ConstructNormStructureAction(
+		val StructureServiceImpl.MarkNormStructureAsBuiltAction action =
+			new StructureServiceImpl.MarkNormStructureAsBuiltAction(
 				userId, userStructIdList, now, structureForUserRepository, structExtension 
 			);
 			
@@ -313,7 +313,7 @@ class StructureServiceImpl implements StructureService
 		
 	}
 	
-	static class ConstructNormStructureAction
+	static class MarkNormStructureAsBuiltAction
 	{
 		
 		val String userId
@@ -395,9 +395,10 @@ class StructureServiceImpl implements StructureService
 				var Date timeBuildFinishes = createDateAddMinutes( purchaseDate, struct.minutesToBuild );
 				if (isFirstEarlierThanSecond( timeBuildFinishes, clientTime ))
 				{
-					LOG.warn( format( "the building is not done yet. userstruct=%s, purchase time=%t,
-							 timeBuildFinishes=%t, struct=%s, client time=%t,",
-							 sfu, purchaseDate, timeBuildFinishes, struct, clientTime) );
+					LOG.warn( 
+						format( "the building is not done yet. userstruct=%s, purchase time=%t,
+							 	timeBuildFinishes=%t, struct=%s, client time=%t,",
+							 	sfu, purchaseDate, timeBuildFinishes, struct, clientTime) );
 					return;					
 				}
 				

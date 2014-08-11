@@ -25,6 +25,7 @@ message FullTaskProto {
 	optional int32 prerequisiteQuestId = 5;
 	optional int32 boardWidth = 6;
 	optional int32 boardHeight = 7;
+	optional string groundImgPrefix = 8;
 }
 
 //------------------------------------------------------------------------------------------
@@ -90,3 +91,15 @@ message UserPersistentEventProto {
 	optional int32 eventId = 2;
 	optional int64 coolDownStartTime = 3;
 }
+
+//------------------------------------------------------------------------------------------
+
+message TaskMapElementProto {
+	optional int32 mapElementId = 1;
+	optional int32 taskId = 2;
+	optional int32 xPos = 3;
+	optional int32 yPos = 4;
+	optional Element element = 5;
+	optional bool boss = 6;
+	optional string bossImgName = 7;
+} 

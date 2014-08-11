@@ -13,12 +13,15 @@ import com.lvl6.mobsters.dynamo.TaskStageForUser;
 import com.lvl6.mobsters.info.ITask;
 import com.lvl6.mobsters.info.ITaskStageMonster;
 import com.lvl6.mobsters.info.Item;
+import com.lvl6.mobsters.info.TaskMapElement;
 import com.lvl6.mobsters.info.TaskStage;
 import com.lvl6.mobsters.info.repository.ItemRepository;
 import com.lvl6.mobsters.info.repository.TaskStageMonsterRepository;
 import com.lvl6.mobsters.info.repository.TaskStageRepository;
+import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.FullTaskProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.MinimumUserTaskProto;
+import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskMapElementProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageMonsterProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageMonsterProto.MonsterType;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
@@ -63,6 +66,11 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		builder.setBoardHeight(task.getBoardHeight());
 		builder.setBoardWidth(task.getBoardWidth());
 
+		str = task.getGroundImgPrefix();
+		if (null != str) {
+			builder.setGroundImgPrefix(str);
+		}
+		
 		return builder.build();
 	}
 
@@ -163,6 +171,33 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 
 		return upepb.build();
 	}
+	
+	@Override
+	public TaskMapElementProto createTaskMapElementProto(TaskMapElement tme)
+	{
+		  TaskMapElementProto.Builder tmepb = TaskMapElementProto.newBuilder();
+		  tmepb.setMapElementId(tme.getId());
+		  tmepb.setTaskId(tme.getTask().getId());
+		  tmepb.setXPos(tme.getxPos());
+		  tmepb.setYPos(tme.getyPos());
+
+		  String monsterElement = tme.getElement();
+		  try {
+			  Element me = Element.valueOf(monsterElement);
+			  tmepb.setElement(me);
+		  } catch (Exception e){
+			  log.error("invalid element. task map element=" + tme);
+		  }
+
+		  tmepb.setBoss(tme.isBoss());
+
+		  String bossImgName = tme.getBossImgName();
+		  if (null != bossImgName) {
+			tmepb.setBossImgName(bossImgName);
+		  }
+		  
+		  return tmepb.build();
+	  }
 	
 	public TaskStageRepository getTaskStageRepository()
 	{

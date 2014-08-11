@@ -1,4 +1,4 @@
-/*package com.lvl6.mobsters.controllers;
+package com.lvl6.mobsters.controllers;
 
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.eventproto.EventStructureProto.RetrieveCurrencyFromNormStructureRequestProto.StructRetrieval
@@ -14,7 +14,6 @@ import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolReq
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithMaxResources
 import com.lvl6.mobsters.server.EventController
-import java.util.AbstractMap.SimpleEntry
 import java.util.Date
 import java.util.HashMap
 import java.util.List
@@ -25,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static com.lvl6.mobsters.common.utils.CollectionUtils.*
+import com.lvl6.mobsters.services.structure.composite.CollectCurrencyFromNormStructureService
 
 @Component
 public class RetrieveCurrencyFromNormStructureController extends EventController
@@ -78,7 +78,7 @@ public class RetrieveCurrencyFromNormStructureController extends EventController
 		
 		// Check values client sent for syntax errors. Call service only if
         // syntax checks out ok; prepare arguments for service
-        val Map<String, Map.Entry<Date, Integer>> sfuIdToCollectTimeAndAmount =
+        val Map<String, Pair<Date, Integer>> sfuIdToCollectTimeAndAmount =
         	new HashMap(); 
 		if (lacksSubstance(structRetrievals)) {
 			LOG.error("client did not send times and amounts collected from structs");
@@ -90,11 +90,21 @@ public class RetrieveCurrencyFromNormStructureController extends EventController
 				val String structureForUserId = structureRetrieval.userStructUuid;
 				
 				//Java has no Pair, so using Map.Entry
-				val Map.Entry<Date, Integer> entry = new SimpleEntry(
-					new Date(structureRetrieval.timeOfRetrieval),
+				val Pair<Date, Integer> entry = 
+					new Date(structureRetrieval.timeOfRetrieval) ->
 					structureRetrieval.amountCollected
-				);
-				sfuIdToCollectTimeAndAmount.put(structureForUserId, entry);
+				
+				
+				if (sfuIdToCollectTimeAndAmount.containsKey(structureForUserId))
+				{
+					var String msg = String.format(
+						"duplicate userStructId, keeping first. first=%s, second=%s",
+						sfuIdToCollectTimeAndAmount.get(structureForUserId), 
+						structureRetrieval);
+					LOG.warn(msg);
+				} else {
+					sfuIdToCollectTimeAndAmount.put(structureForUserId, entry);
+				}
 			]			
 		}
 
@@ -106,7 +116,7 @@ public class RetrieveCurrencyFromNormStructureController extends EventController
 		if (RetrieveCurrencyFromNormStructureStatus.SUCCESS.equals(resBuilder.status)) {
 			try {
 				// TODO: Keep track of the user currency history somehow
-				u = collectCurrencyFromNormStructureService.collectResourcesFromNormStructure(
+				u = collectCurrencyFromNormStructureService.collectResources(
 					userUuid, maxCash, maxOil, curTime, sfuIdToCollectTimeAndAmount
 				);
 				
@@ -132,4 +142,3 @@ public class RetrieveCurrencyFromNormStructureController extends EventController
 	}
 	
 }
-*/

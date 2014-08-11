@@ -25,6 +25,9 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public abstract int getBoardWidth();
 
-	List<ITaskStage> getTaskStages();
+	public abstract void setGroundImgPrefix( String groundImgPrefix );
 
+	public abstract String getGroundImgPrefix();
+
+	List<ITaskStage> getTaskStages();
 }

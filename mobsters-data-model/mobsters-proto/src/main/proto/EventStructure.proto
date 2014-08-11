@@ -32,7 +32,7 @@ message PurchaseNormStructureRequestProto {
 message PurchaseNormStructureResponseProto {
 	optional MinimumUserProto sender = 1;
 	optional PurchaseNormStructureStatus status = 2;
-	optional int32 userStructId = 3;
+	optional string userStructUuid = 3;
 	
 	enum PurchaseNormStructureStatus {
 		SUCCESS = 1;
