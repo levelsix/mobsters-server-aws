@@ -6,10 +6,8 @@ import java.util.List
 import org.eclipse.xtend.lib.macro.AbstractFieldProcessor
 import org.eclipse.xtend.lib.macro.Active
 import org.eclipse.xtend.lib.macro.TransformationContext
-import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
-import org.eclipse.xtext.junit4.GlobalRegistries.GlobalStateMemento
 
 @Target(ElementType.FIELD)
 @Active(SemanticPassthroughProcessor)
@@ -24,12 +22,12 @@ annotation SemanticPassthrough {
 
 class SemanticPassthroughProcessor extends AbstractFieldProcessor {
 	public override doTransform(List<? extends MutableFieldDeclaration> annotatedFields, @Extension TransformationContext context) {
-		val Iterable<AnnotationReference> iterOne = annotatedFields.map[
+		/*val Iterable<AnnotationReference> iterOne = annotatedFields.map[
 			it.annotations.findFirst[
 				return it.annotationTypeDeclaration.simpleName == "SemanticPassthrough"
 			]
 		]
-		/*iterOne.map[it.getClassValue("clientInterface")].toSet.forEach[
+		iterOne.map[it.getClassValue("clientInterface")].toSet.forEach[
 			context.findInterface(
 				it.type.qualifiedName
 			).addMethod("getDuid") [

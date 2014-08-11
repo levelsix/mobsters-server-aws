@@ -14,24 +14,15 @@ import org.eclipse.xtend.lib.macro.declaration.Visibility
 
 @Target(ElementType.METHOD)
 @Active(EventFactoryProcessor)
-annotation EventFactory {
-    ListenerKind targetListeners = ListenerKind.UNSET	
-}
+annotation EventFactory 
+{ }
 
-enum ListenerKind {
-	UNSET,
-	CLIENT,
-	SERVER,
-	BOTH
-}
-
-class EventFactoryProcessor extends AbstractMethodProcessor {
-
+class EventFactoryProcessor extends AbstractMethodProcessor 
+{
 	override doRegisterGlobals(MethodDeclaration annotatedMethod, RegisterGlobalsContext context) {
 		val String eventName = annotatedMethod.eventName
-		context.registerClass(eventName.eventClassName);
 		context.registerInterface(eventName.eventInterfaceName);
-		context.registerInterface(eventName.listenerInterfaceName);
+		context.registerClass(eventName.eventInterfaceName + "Impl");
 	}
 	
 	def String getEventName(MethodDeclaration eventMethod) {
@@ -39,15 +30,11 @@ class EventFactoryProcessor extends AbstractMethodProcessor {
 	}
 	
 	def String getEventClassName(String eventName) {
-		return "com.lvl6.mobsters.semanticmodel.events.coarse.impl."+eventName+"Impl"
+		return "com.lvl6.mobsters.domain.game.events." + eventName + "Impl"
 	}
 	
 	def String getEventInterfaceName(String eventName) {
-		return "com.lvl6.mobsters.semanticmodel.events.coarse."+eventName
-	}
-	
-	def String getListenerInterfaceName(String eventName) {
-		return "com.lvl6.mobsters.semanticmodel.listener.coarse."+eventName+"Listener"
+		return "com.lvl6.mobsters.domain.game.events." + eventName
 	}
 			
 	override doTransform(MutableMethodDeclaration annotatedMethod, extension TransformationContext context) {
@@ -56,28 +43,24 @@ class EventFactoryProcessor extends AbstractMethodProcessor {
 		
 		val MutableInterfaceDeclaration eventInterfaceType = 
 			findInterface(eventName.eventInterfaceName)
-		val MutableInterfaceDeclaration listenerInterfaceType = 
-			findInterface(eventName.listenerInterfaceName)
 		val MutableClassDeclaration classType = 
 			findClass(eventClassName)
 
-		// val Type baseListenerInterface = 
-		// 	findTypeGlobally("com.lvl6.mobsters.semanticmodel.IEventListener")
-		// val baseListernerType = findClass("com.lvl6.mobsters.semanticmodel.framework.AbstractEventListener")
-				
-		// add the interface to the list of implemented interfaces
+		// add the event interface to the event class's otherwise empty list of implemented interfaces
 		classType.implementedInterfaces = #[eventInterfaceType.newTypeReference]
 		classType.extendedClass = 
 			context
-				.findTypeGlobally("com.lvl6.mobsters.domainmodel.gameclient.event.ClientGameEvent")
+				.findTypeGlobally("com.lvl6.mobsters.domain.game.event.AbstractGameEvent")
 				.newTypeReference()
 		
-		// add the public methods to the interface
+		// Add getter methods on the event interface for each of its fields.
 		for (param : annotatedMethod.parameters) {
 			eventInterfaceType.addMethod("get" + param.simpleName.toFirstUpper()) [
 				returnType = param.type
 			]
 		}
+		
+		// Add field declarations on the event class for each of its fields.
 		for (param : annotatedMethod.parameters) {
 			classType.addField(param.simpleName) [
 				visibility = Visibility.PRIVATE
@@ -85,6 +68,8 @@ class EventFactoryProcessor extends AbstractMethodProcessor {
 				final = true
 			]
 		}
+		
+		// Add a constructor method that takes all arguments in one go.
 		classType.addConstructor[
 			for (param : annotatedMethod.parameters) {
 				addParameter(param.simpleName, param.type)
@@ -97,6 +82,8 @@ class EventFactoryProcessor extends AbstractMethodProcessor {
 			'''
 			visibility = Visibility.PUBLIC
 		]
+		
+		// Add getter methods on the Event class for each of its fields.
 		for (param : annotatedMethod.parameters) {
 			classType.addMethod("get" + param.simpleName.toFirstUpper()) 
 			[		
@@ -108,7 +95,7 @@ class EventFactoryProcessor extends AbstractMethodProcessor {
 			]
 		}
 		
-		// TODO: Distinguish between client and server events
+		// Publish event body--construct an instance and call publish() from AbstractSemanticObject
 		annotatedMethod.body = '''
 			«eventClassName» newEvent = new «eventClassName»(
 				«annotatedMethod.parameters.map[it.simpleName].join(', ')»
@@ -116,11 +103,5 @@ class EventFactoryProcessor extends AbstractMethodProcessor {
 			publish(newEvent);
 			return;
 		'''
-		
-		// listenerInterfaceType.extendedInterfaces = #[baseListenerInterface.newTypeReference]
-		listenerInterfaceType.addMethod("on" + eventName) [
-			visibility = Visibility.PUBLIC
-			addParameter("event", eventInterfaceType.newTypeReference)
-		]
 	}
 }
