@@ -1,13 +1,11 @@
 package com.lvl6.eventhandlers;
 
-import java.io.FileNotFoundException;
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.lvl6.eventdispatcher.ClientEventDispatcher;
 import com.lvl6.eventdispatcher.ClientEventDispatcherImpl;
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
 import com.lvl6.mobsters.events.EventsToDispatch;
@@ -17,7 +15,7 @@ import com.lvl6.mobsters.info.ConnectedPlayer;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.server.EventController;
 import com.lvl6.mobsters.server.ServerInstance;
-import com.lvl6.mobsters.services.common.TimeUtils;
+import com.lvl6.mobsters.utility.common.TimeUtils;
 import com.lvl6.mobsters.websockets.SessionMap;
 
 public class GameEventHandler extends AbstractGameEventHandler {
@@ -37,7 +35,7 @@ public class GameEventHandler extends AbstractGameEventHandler {
 	
 	
 	@Autowired
-	protected ClientEventDispatcherImpl eventDispatcher;
+	protected ClientEventDispatcher eventDispatcher;
 	
 
 	@Override
@@ -118,11 +116,11 @@ public class GameEventHandler extends AbstractGameEventHandler {
 		this.sessionMap = sessionMap;
 	}
 
-	public ClientEventDispatcherImpl getEventDispatcher() {
+	public ClientEventDispatcher getEventDispatcher() {
 		return eventDispatcher;
 	}
 
-	public void setEventDispatcher(ClientEventDispatcherImpl eventDispatcher) {
+	public void setEventDispatcher(ClientEventDispatcher eventDispatcher) {
 		this.eventDispatcher = eventDispatcher;
 	}
 

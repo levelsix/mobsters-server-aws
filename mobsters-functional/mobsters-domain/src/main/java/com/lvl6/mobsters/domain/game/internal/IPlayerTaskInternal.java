@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domain.gameserver;
+package com.lvl6.mobsters.domain.game.internal;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
@@ -12,9 +12,9 @@ public interface IPlayerTaskInternal {
 	
 	ITask getTaskMeta();
 	
-	boolean cancelOngoingTask();
+	void cancelOngoingTask();
 	
-	boolean completeOngoingTask();
+	void completeOngoingTask();
 	
 	void saveOngoingTask();
 	

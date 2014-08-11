@@ -8,9 +8,11 @@ public interface IPlayerTask {
 	
 	ITask getTaskMeta();
 
-	boolean completeOngoingTask();
+	boolean isOngoingTask();
+	
+	void completeOngoingTask();
 
-	boolean cancelOngoingTask();
+	void cancelOngoingTask();
 	
 	void saveOngoingTask();
 }

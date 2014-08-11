@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domain.gameserver;
+package com.lvl6.mobsters.domain.game.internal;
 
 import java.util.List;
 import java.util.concurrent.Callable;

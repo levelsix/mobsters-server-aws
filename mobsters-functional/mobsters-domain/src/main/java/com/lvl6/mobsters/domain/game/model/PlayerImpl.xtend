@@ -1,33 +1,36 @@
-package com.lvl6.mobsters.domain.game
+package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
 import com.lvl6.mobsters.domain.game.api.IPlayer
-import com.lvl6.mobsters.domain.gameserver.IPlayerInternal
+import com.lvl6.mobsters.domain.game.internal.IPlayerInternal
+import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
+import com.lvl6.mobsters.domain.game.internal.IUserResourceInternal
 import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.indexing.by_int.IntKeyIndex
 import java.util.List
 import java.util.concurrent.Callable
 import org.slf4j.Logger
 
-import static com.lvl6.mobsters.exception.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 
-class SemanticPlayer 
+//@ExtractInterfaces(
+//	api="com.lvl6.mobsters.domain.game.api.IPlayer",
+//	internal="com.lvl6.mobsters.domain.game.internal.IPlayerInternal"
+//)
+class PlayerImpl 
 	extends AbstractSemanticObject 
 	implements IPlayer, IPlayerInternal
 {
-	// @SemanticPassthrough(idProperty="id", clientInterface=Player, serverInterface=ServerPlayer)
 	var User user
-
 	var IntKeyIndex<SemanticPlayerTask> completedPlayerTasks
-
 	var List<SemanticPlayerTask> ongoingPlayerTasks
 
-	new(ServerUserResource resourceContainer, User user) {
-		super(resourceContainer)
+	new(IRepoRegistry repoRegistry, IUserResourceInternal resourceContainer, User user) {
+		super(repoRegistry, resourceContainer)
 		this.user = user;
 		this.completedPlayerTasks = null
 		this.ongoingPlayerTasks = null
@@ -82,7 +85,7 @@ class SemanticPlayer
 		return completedPlayerTasks.get(aTask.id) != null
 	}
 
-	override SemanticPlayer checkCanSpendGems(
+	override PlayerImpl checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda) 
 	{
 		lvl6Precondition(
@@ -98,7 +101,7 @@ class SemanticPlayer
 		return this
 	}
 
-	override SemanticPlayer checkCanSpendGems(int gemsToSpend, Logger log) {
+	override PlayerImpl checkCanSpendGems(int gemsToSpend, Logger log) {
 		lvl6Precondition(
 			this.canSpendGems(gemsToSpend),
 			Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_GEMS,
@@ -111,7 +114,7 @@ class SemanticPlayer
 		return this
 	}
 
-	override SemanticPlayer checkCanSpendCash(
+	override PlayerImpl checkCanSpendCash(
 		int cashToSpend,
 		Logger log,
 		Callable<String> spendPurposeLambda
@@ -129,7 +132,7 @@ class SemanticPlayer
 		return this
 	}
 
-	override SemanticPlayer checkCanSpendCash(int cashToSpend, Logger log) {
+	override PlayerImpl checkCanSpendCash(int cashToSpend, Logger log) {
 		lvl6Precondition(
 			this.canSpendCash(cashToSpend),
 			Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_CASH,
@@ -142,7 +145,7 @@ class SemanticPlayer
 		return this
 	}
 
-	override SemanticPlayer checkCanSpendOil(
+	override PlayerImpl checkCanSpendOil(
 		int oilToSpend,
 		Logger log,
 		Callable<String> spendPurposeLambda
@@ -160,7 +163,7 @@ class SemanticPlayer
 		return this
 	}
 
-	override SemanticPlayer checkCanSpendOil(int oilToSpend, Logger log) {
+	override PlayerImpl checkCanSpendOil(int oilToSpend, Logger log) {
 		lvl6Precondition(
 			this.canSpendOil(oilToSpend),
 			Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_OIL,
@@ -191,7 +194,7 @@ class SemanticPlayer
 		return (user.oil >= oilToSpend)
 	}
 
-	override SemanticPlayer spendGems(int gemsToSpend, Logger log) {
+	override PlayerImpl spendGems(int gemsToSpend, Logger log) {
 		this.checkCanSpendGems(gemsToSpend, log)
 		user.gems = user.gems - gemsToSpend
 		return this
@@ -207,7 +210,7 @@ class SemanticPlayer
 		return retVal
 	}
 
-	override SemanticPlayer spendCash(int cashToSpend, Logger log) {
+	override PlayerImpl spendCash(int cashToSpend, Logger log) {
 		this.checkCanSpendCash(cashToSpend, log)
 		user.cash = user.cash - cashToSpend
 		return this
@@ -223,7 +226,7 @@ class SemanticPlayer
 		return retVal
 	}
 
-	override SemanticPlayer spendOil(int oilToSpend, Logger log) {
+	override PlayerImpl spendOil(int oilToSpend, Logger log) {
 		this.checkCanSpendOil(oilToSpend, log)
 		user.oil = user.oil - oilToSpend
 		return this
@@ -251,7 +254,7 @@ class SemanticPlayer
 
 	private def void loadCompletedTasks() {
 		this.completedPlayerTasks = new IntKeyIndex<SemanticPlayerTask> [return it.taskMeta.id]
-		this.tfuCompleteRepo
+		this.repoRegistry.tfuCompleteRepo
 			.findByUserId(getUserUuid())
 			.forEach[
 				this.completedPlayerTasks.put(

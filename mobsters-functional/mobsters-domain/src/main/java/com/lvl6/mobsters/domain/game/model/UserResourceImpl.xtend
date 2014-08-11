@@ -1,46 +1,36 @@
-package com.lvl6.mobsters.domain.game
+package com.lvl6.mobsters.domain.game.model
 
-import com.google.common.base.Preconditions
-import com.google.common.eventbus.AsyncEventBus
-import com.google.common.eventbus.EventBus
-import com.lvl6.mobsters.domain.game.event.EventListener
-import com.lvl6.mobsters.domain.gameserver.IGameServerInternal
+import com.lvl6.mobsters.domain.game.api.IUserResource
+import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
+import com.lvl6.mobsters.domain.game.internal.IUserResourceInternal
 import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.events.GameEvent
-import com.lvl6.mobsters.semanticmodel.annotation.EventFactory
-import com.lvl6.mobsters.semanticmodel.annotation.ExtractInterfaces
-import java.util.Date
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
-@ExtractInterfaces(
-	api="com.lvl6.mobsters.domain.game.api.IUserResource",
-	internal="com.lvl6.mobsters.domain.game.internal.IUserResourceInternal"
-) 
-//	interfaceName="com.lvl6.mobsters.semanticmodel.framework.IEventFactory", methodMarker=typeof(EventFactory)
-//)
-class UserResourceImpl { 
-	private val EventBus syncEventBus
-	private val EventBus asyncEventBus
-	private val Executor asyncThreadPool = Executors.newCachedThreadPool
-	private val IGameServerInternal repoRegistry
+//@ExtractInterfaces(
+//	api="com.lvl6.mobsters.domain.game.api.IUserResource",
+//	internal="com.lvl6.mobsters.domain.game.internal.IUserResourceInternal"
+//) 
+class UserResourceImpl 
+implements IUserResource, IUserResourceInternal 
+{ 
+	private var PlayerImpl connectedPlayer
+	private val IRepoRegistry repoRegistry
 	private val String userUuid
-	
-	private var SemanticPlayer connectedPlayer
-	
-	new(IGameServerInternal gameServer, String userUuid) {
-		syncEventBus = new EventBus()
-		asyncEventBus = new AsyncEventBus(asyncThreadPool)
-		this.repoRegistry = gameServer
+		
+	new(IRepoRegistry repoRegistry, String userUuid) {
 		this.connectedPlayer = null
+		this.repoRegistry = repoRegistry
 		this.userUuid = userUuid
 	}
 	
-	override SemanticPlayer connect() {
+	//@SplitReturn(
+	//	api="com.lvl6.mobsters.domain.game.api.IPlayer",
+	//	internal="com.lvl6.mobsters.domain.game.internal.IPlayerInternal"
+	//)
+	override PlayerImpl connect() {
 		if (connectedPlayer == null) {
 			val User aUser = repoRegistry.userRepo.load(userUuid)
-			connectedPlayer = new SemanticPlayer(this, aUser)
-			publishUserConnected(this.userUuid, TimeUtils::createNow())
+			connectedPlayer = new PlayerImpl(this.repoRegistry, this, aUser)
+			// publishUserConnected(this.userUuid, TimeUtils::createNow())
 		} else {
 			// TODO: Log connect when already connected
 		}
@@ -48,59 +38,36 @@ class UserResourceImpl {
 		return connectedPlayer
 	}
 	
-	override SemanticPlayer isConnected() 
+	//@SplitReturn(
+	//	api="com.lvl6.mobsters.domain.game.api.IPlayer",
+	//	internal="com.lvl6.mobsters.domain.game.internal.IPlayerInternal"
+	//)
+	override PlayerImpl isConnected() 
 	{
 		return connectedPlayer
 	}
 		
+	// @ExposeTo( api=true, internal=true )
 	override void disconnect() {
 		// TODO: Log disconnect if already disconnected
 		this.connectedPlayer = null		
 	}
 	
+	
+	// @ExposeTo( api=true, internal=true )
 	override String getUserUuid() {
 		return userUuid
 	}
 	
-	@EventFactory
-	private def void publishUserConnected(String userUuid, Date dateTime)
-	{ }
+	// @EventFactory
+	// private def void publishUserConnected(String userUuid, Date dateTime)
+	// { }
 	
-	override void registerListeneSync(EventListener listener) {
-		Preconditions.checkState(connectedPlayer != null)
-
-		syncEventBus.register(listener)
-		
-		return
-	}
-	
-	override void registerListeneAsync(EventListener listener) {
-		Preconditions.checkState(connectedPlayer != null)
-
-		asyncEventBus.register(listener)
-		
-		return
-	}
-	
-	override void deregisterListener(EventListener listener) {
-		Preconditions.checkState(connectedPlayer != null)
-
-		syncEventBus.unregister(listener)
-		asyncEventBus.unregister(listener)
-		
-		return
-	}
-		
-	override void publish(GameEvent event) {
-		Preconditions.checkState(connectedPlayer != null)
-
-		asyncEventBus.post(event);
-		syncEventBus.post(event);
-		
-		return
-	}
-	
-	override IGameServerInternal getGameServer() {
-		return this.repoRegistry;
-	}	
+	//@SplitReturn(
+	//	api="com.lvl6.mobsters.domain.game.api.IGameServer",
+	//	internal="com.lvl6.mobsters.domain.game.internal.IGameServerInternal"
+	//)
+	//override GameServerImpl getGameServer() {
+	//	return this.gameServer;
+	//}	
 }

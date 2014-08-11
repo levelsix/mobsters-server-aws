@@ -1,25 +1,25 @@
-package com.lvl6.mobsters.domain.game
+package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
-import com.lvl6.mobsters.domain.gameserver.IPlayerTaskInternal
+import com.lvl6.mobsters.domain.game.internal.IPlayerInternal
+import com.lvl6.mobsters.domain.game.internal.IPlayerTaskInternal
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
-import com.lvl6.mobsters.semanticmodel.annotation.EventFactory
-import com.lvl6.mobsters.services.task.TaskExtensionLib
+import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import java.util.List
 
-@ExtractInterfaces(
-	api="com.lvl6.mobsters.domain.game.api.IPlayerTask", 
-	internal="com.lvl6.mobsters.domain.game.IPlayerTaskInternal"
-)
+//@ExtractInterfaces(
+//	api="com.lvl6.mobsters.domain.game.api.IPlayerTask", 
+//	internal="com.lvl6.mobsters.domain.game.IPlayerTaskInternal"
+//)
 class SemanticPlayerTask 
 	extends AbstractSemanticObject 
 	implements IPlayerTask, IPlayerTaskInternal
 {
-	private val SemanticPlayer parent
+	private val IPlayerInternal parent
 	
 //	@SemanticPassthrough(
 //		idProperty="taskForUserId",
@@ -32,12 +32,12 @@ class SemanticPlayerTask
 	
 	private val ITask taskMeta
 	
-	private val List<com.lvl6.mobsters.domainmodel.gameimpl.SemanticPlayerTaskStage> playerTaskStages
+	private val List<SemanticPlayerTaskStage> playerTaskStages
 	
 	/**
 	 * Constructor for "wrap pre-existing"
 	 */
-	new( SemanticPlayer parent, TaskForUserOngoing ongoingTask, TaskForUserCompleted completedTask )
+	new( PlayerImpl parent, TaskForUserOngoing ongoingTask, TaskForUserCompleted completedTask )
 	{
 		super(parent)
 		
@@ -48,7 +48,7 @@ class SemanticPlayerTask
 			"Tasks must be either ongoing or complete, not both"
 		)
 
-		val extension configExtensionLib = repoRegistry.configExtensionLib
+		val extension ConfigExtensions configExtensionLib = repoRegistry.configExtensionLib
 		
 		if (ongoingTask != null ) {
 			this.taskMeta = ongoingTask.taskId.taskMeta
@@ -65,7 +65,7 @@ class SemanticPlayerTask
 	/**
 	 * Constructor for "create and wrap"
 	 */
-	new( SemanticPlayer parent, ITask taskMeta, Iterable<IQuestJob> questJobs, 
+	new( PlayerImpl parent, ITask taskMeta, Iterable<IQuestJob> questJobs, 
 		String elementName, boolean mayGeneratePieces )
 	{
 		super(parent)
@@ -89,7 +89,7 @@ class SemanticPlayerTask
 			// 3) calculate currency changes
 			// NOTE: quest monster items are dropped based on QUEST JOB ID, not quest id
 			taskMeta.taskStages.map [ stageMeta |
-				new com.lvl6.mobsters.domainmodel.gameimpl.SemanticPlayerTaskStage(this, stageMeta, questJobs, elementName, mayGeneratePieces)
+				new SemanticPlayerTaskStage(this, stageMeta, questJobs, elementName, mayGeneratePieces)
 			]
 	}
 	
@@ -97,7 +97,7 @@ class SemanticPlayerTask
 		return (this.ongoingTask != null)
 	}
 	
-	override cancelOngoingTask() {
+	override void cancelOngoingTask() {
 		Preconditions.checkState(
 			ongoingTask != null, 
 			"Cannot cancel a completed task.  taskId=%s", 
@@ -107,7 +107,7 @@ class SemanticPlayerTask
 		throw new UnsupportedOperationException("TODO: Not implemented yet")
 	}
 
-	override completeOngoingTask() {
+	override void completeOngoingTask() {
 		Preconditions.checkState(
 			ongoingTask != null, 
 			"Cannot cancel a completed task.  taskId=%s", 
@@ -143,17 +143,17 @@ class SemanticPlayerTask
 	// Server events
 	//
 	
-	@EventFactory(targetListeners=ListenerKind.BOTH)
-	public def void publishBeginAddUserTask(
-		String userUuid, int taskId )
-	{
-	}
-	
-	@EventFactory(targetListeners=ListenerKind.BOTH)
-	public def void publishFinishAddUserTask(
-		String userUuid, int taskId, String userTaskUuid )
-	{
-	}
+//	@EventFactory(targetListeners=ListenerKind.BOTH)
+//	public def void publishBeginAddUserTask(
+//		String userUuid, int taskId )
+//	{
+//	}
+//	
+//	@EventFactory(targetListeners=ListenerKind.BOTH)
+//	public def void publishFinishAddUserTask(
+//		String userUuid, int taskId, String userTaskUuid )
+//	{
+//	}
 	
 		
 	// Semantic Passthrough Methods
@@ -172,15 +172,5 @@ class SemanticPlayerTask
 		// probably related to a choice to not store redundant passes through the same task peyond the first.
 		
 		return retVal
-	}
-	
-	// String getUuid() is added by virtue of the active annotation processor on @SemanticPassthrough, but not until
-	// compilation time.
-	
-	// Dependency Injection
-	//
-	
-	def void setTaskExtensionLib( TaskExtensionLib taskExtensionLib ) {
-		this.taskExtensionLib = taskExtensionLib
 	}
 }

@@ -7,7 +7,6 @@ import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
-import com.lvl6.mobsters.server.ControllerConstants
 import com.lvl6.mobsters.services.monster.MonsterService
 import com.lvl6.mobsters.services.structure.StructureService
 import com.lvl6.mobsters.services.structure.StructureService.CreateObstaclesReplyBuilder
@@ -15,6 +14,7 @@ import com.lvl6.mobsters.services.structure.StructureService.CreateStructuresRep
 import com.lvl6.mobsters.services.task.TaskService
 import com.lvl6.mobsters.utility.common.TimeUtils
 import com.lvl6.mobsters.utility.lambda.Director
+import com.lvl6.properties.ControllerConstants
 import java.util.ArrayList
 import java.util.Collections
 import java.util.Date
@@ -22,9 +22,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode.*
+
+import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
 
 @Component
 class UserServiceImpl implements UserService

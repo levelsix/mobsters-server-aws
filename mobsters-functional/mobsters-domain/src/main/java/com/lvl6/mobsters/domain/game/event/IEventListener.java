@@ -16,7 +16,7 @@ package com.lvl6.mobsters.domain.game.event;
  * 
  * For more details and feature documentation, see {@link EventBus} and {@link AsyncEventBus}
  */
-public interface EventListener {
+public interface IEventListener {
 	/**
 	 * Service layer interactions are called "Conversations" in this API Javadoc.  The
 	 * {@link beginConversation(String) }  and {@link endConversation(String)} methods are

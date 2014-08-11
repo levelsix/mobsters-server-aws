@@ -1,14 +1,13 @@
-package com.lvl6.mobsters.domain.game
+package com.lvl6.mobsters.domain.game.model
 
 import com.lvl6.mobsters.domain.game.api.IPlayerTaskStage
-import com.lvl6.mobsters.domain.gameserver.IPlayerTaskStageInternal
+import com.lvl6.mobsters.domain.game.internal.IPlayerTaskStageInternal
 import com.lvl6.mobsters.dynamo.TaskStageForUser
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.IQuestJobMonsterItem
 import com.lvl6.mobsters.info.ITaskStage
 import com.lvl6.mobsters.info.ITaskStageMonster
-import com.lvl6.mobsters.semanticmodel.annotation.EventFactory
-import com.lvl6.mobsters.semanticmodel.annotation.ListenerKind
+import com.lvl6.properties.ControllerConstants
 import java.util.List
 
 class SemanticPlayerTaskStage 
@@ -85,10 +84,7 @@ class SemanticPlayerTaskStage
 				it.monsterPieceDropped = mayGeneratePieces
 			}
 			
-			publishAddUserTaskStage(
-				userUuid, stageMeta.stageNum, it.taskStageMonsterId, stageMonster.monsterType,
-				it.expGained, it.cashGained, it.oilGained, it.itemIdDropped, it.monsterPieceDropped
-			)
+//			Øß
 		]		
 	}
 	
@@ -96,12 +92,12 @@ class SemanticPlayerTaskStage
 	// Game events
 	//
 		
-	@EventFactory(targetListeners=ListenerKind.CLIENT)
-	public def void publishAddUserTaskStage(
-		String userTaskUuid, int stageNum, 
-		int taskStageMonsterId, String monsterType, 
-		int expGained, int cashGained, int oilGained, 
-		int droppedItemId, boolean monsterPieceDropped ) 
-	{
-	}	
+//	@EventFactory(targetListeners=ListenerKind.CLIENT)
+//	public def void publishAddUserTaskStage(
+//		String userTaskUuid, int stageNum, 
+//		int taskStageMonsterId, String monsterType, 
+//		int expGained, int cashGained, int oilGained, 
+//		int droppedItemId, boolean monsterPieceDropped ) 
+//	{
+//	}	
 }

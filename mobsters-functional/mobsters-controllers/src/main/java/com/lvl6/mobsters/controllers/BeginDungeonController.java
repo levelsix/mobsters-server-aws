@@ -131,16 +131,36 @@ public class BeginDungeonController extends EventController
 		BeginDungeonResponseEvent build() {
 			return new BeginDungeonResponseEvent(userUuid, tag, resBuilder);
 		}
+
+		@Override
+		public GenerateUserTaskListener beginUserTask(String userUuid, int taskId) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public GenerateUserTaskListener addUserTaskStage(int stageNum,
+				Director<AddStageGenerateUserTaskListener> optionsDirector) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public GenerateUserTaskListener endUserTask(String userUuid,
+				int taskId, String userTaskUuid) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	static class AddStageGenerateUserTaskListenerImpl implements AddStageGenerateUserTaskListener {
-		public AddStageGenerateUserTaskListenerImpl onAddStageMonster(
-			int stageNum. int monsterId, 
+		public AddStageGenerateUserTaskListener onAddStageMonster(
+			int stageNum, int monsterId, 
 			int monsterLevel, float dmgMulti,
 			int expGiven, int cashGiven, int oilGiven, 
 			int droppedItemId, boolean puzzlePieceGiven
 		) {
-			TaskStageProto.newBuilder()
+			/*TaskStageProto.newBuilder()
 				.addStageMonsters(
 					TaskStageMonsterProto.newBuilder()
 						.setDmgMultiplier(1.0f)
@@ -150,7 +170,8 @@ public class BeginDungeonController extends EventController
 						.setLevel(monsterLevel)
 						.setMonsterId(monsterId)
 						.setMonsterType(MonsterType.REGULAR)
-				)
+				)*/
+			return this;
 		}
 	}
 

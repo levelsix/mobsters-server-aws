@@ -3,11 +3,11 @@ package com.lvl6.mobsters.services.task
 import com.lvl6.mobsters.common.utils.AbstractAction
 import com.lvl6.mobsters.common.utils.AbstractService
 import com.lvl6.mobsters.common.utils.ICallableAction
-import com.lvl6.mobsters.domainmodel.gameclient.GameServer
-import com.lvl6.mobsters.domainmodel.gameclient.Player
-import com.lvl6.mobsters.domainmodel.gameclient.PlayerTask
-import com.lvl6.mobsters.domainmodel.gameclient.UserResource
-import com.lvl6.mobsters.domainmodel.gameimpl.AbstractClientEventListener
+import com.lvl6.mobsters.domain.game.api.IGameServer
+import com.lvl6.mobsters.domain.game.api.IPlayer
+import com.lvl6.mobsters.domain.game.api.IPlayerTask
+import com.lvl6.mobsters.domain.game.api.IUserResource
+import com.lvl6.mobsters.domain.game.event.IEventListener
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.TaskStageForUser
@@ -20,11 +20,8 @@ import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.IQuestJob
-import com.lvl6.mobsters.info.IQuestJobMonsterItem
 import com.lvl6.mobsters.info.ITask
-import com.lvl6.mobsters.info.ITaskStageMonster
 import com.lvl6.mobsters.info.repository.QuestRepository
-import com.lvl6.mobsters.info.repository.TaskRepository
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import com.lvl6.mobsters.utility.lambda.Director
@@ -73,9 +70,6 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	private var UserRepository userRepo
 
 	@Autowired
-	private var QuestRepository questRepo
-
-	@Autowired
 	private var extension UserExtensionLib userExtensionLib
 
 	@Autowired
@@ -92,7 +86,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	private var DataServiceTxManager txManager
 	
 	@Autowired
-	private var GameServer resourceFactory
+	private var IGameServer resourceFactory
 
 	/**************************************************************************/
 	/* BEGIN NON-CRUD LOGIC **********************************************/
@@ -284,16 +278,16 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		
 		val extension ConfigExtensions configExtensionLib
 	
-		val GameServer gameServer
+		val IGameServer gameServer
 		
 		// Derived state
 		//
-		var UserResource userContainer
-		var Player aUser
+		var IUserResource userContainer
+		var IPlayer aUser
 		var ITask taskMeta
 		var Iterable<IQuestJob> questJobsMeta
-		var PlayerTask newUserTask
-		var List<? extends PlayerTask> tasksToDelete
+		var IPlayerTask newUserTask
+		var List<? extends IPlayerTask> tasksToDelete
 		var boolean mayGenerateMonsterPieces
 	
 //		val IntCounter expGained = new IntCounter()
@@ -328,12 +322,11 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		override execute(TaskService.GenerateUserTaskListener resultBuilder)
 		{
 			checkArgument(
-				AbstractClientEventListener.isInstance(resultBuilder), 
+				IEventListener.isInstance(resultBuilder), 
 				"resultBuilder must implement listener interface and extend AbstractClientEventListener"
 			)
-			this.userContainer = gameServer.getUserResourceFor(this.userId)
-			this.userContainer.registerListener(
-				AbstractClientEventListener.cast(resultBuilder)
+			gameServer.registerListenerSync(
+				IEventListener.cast(resultBuilder)
 			)
 			
 			verifySemantics()

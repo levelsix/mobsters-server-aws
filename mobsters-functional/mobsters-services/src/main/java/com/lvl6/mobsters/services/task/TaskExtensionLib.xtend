@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.services.task
 
 import com.google.common.base.Preconditions
-import com.lvl6.mobsters.domainmodel.gameclient.PlayerTask
+import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.TaskStageForUser
@@ -59,7 +59,7 @@ class TaskExtensionLib {
 	@Autowired
 	TaskStageForUserRepository taskForUserStageRepo;
 
-	public def String format(PlayerTask task) {
+	public def String format(IPlayerTask task) {
 		return "PlayerTask[%s(%d)]".format(task.taskForUserId, task.taskMeta.id)
 	}
 

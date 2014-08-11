@@ -82,7 +82,7 @@ public interface TaskService {
 			int droppedItemId, boolean puzzlePieceGiven
 		);
 
-		AddStageGenerateUserTaskListener onAddStageMiniBoss(
+		/*AddStageGenerateUserTaskListener onAddStageMiniBoss(
 			int stageNum, int monsterId, 
 			int monsterLevel, float dmgMulti,
 			int expGiven, int cashGiven, int oilGiven, 
@@ -94,7 +94,7 @@ public interface TaskService {
 			int monsterLevel, float dmgMulti,
 			int expGiven, int cashGiven, int oilGiven, 
 			int droppedItemId, boolean puzzlePieceGiven
-		);
+		);*/
 	}
 
     /* END OF INTERFACE ********************************************************/    

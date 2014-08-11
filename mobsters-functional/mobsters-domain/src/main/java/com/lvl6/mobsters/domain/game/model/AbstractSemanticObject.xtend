@@ -1,37 +1,40 @@
-package com.lvl6.mobsters.domain.game
+package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
-import com.lvl6.mobsters.domain.gameserver.IGameServerInternal
+import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
+import com.lvl6.mobsters.domain.game.internal.IUserResourceInternal
 import com.lvl6.mobsters.events.GameEvent
 
 abstract class AbstractSemanticObject {
-	private val ServerUserResource resourceServices
-	protected val AbstractSemanticObject container
+	private val IUserResourceInternal resourceService
+	private val IRepoRegistry repoRegistryService
+	private val AbstractSemanticObject container
 	
-	protected new(ServerUserResource resourceServices)
+	protected new(
+		IRepoRegistry repoRegistryService,
+		IUserResourceInternal resourceService 
+	)
 	{
-		Preconditions.checkNotNull(resourceServices)
-		this.resourceServices = resourceServices
+		Preconditions.checkNotNull(repoRegistryService)
+		Preconditions.checkNotNull(resourceService)
+		
+		this.repoRegistryService = repoRegistryService
+		this.resourceService = resourceService
 		this.container = this
 	}
 	
 	protected new(AbstractSemanticObject parent) {
 		Preconditions.checkNotNull(parent)
-		this.resourceServices = parent.resourceServices
+		this.repoRegistryService = parent.repoRegistryService
+		this.resourceService = parent.resourceService
 		this.container = parent
 	}
 	
-	protected def void publish(GameEvent event)
-	{
-		resourceServices.publish(event)
+	protected def IRepoRegistry getRepoRegistry() {
+		return repoRegistryService
 	}
-	
-	protected def IGameServerInternal getGameServer() {
-		return resourceServices.gameServer
-	}
-	
-	
+
 	protected def String getUserUuid() {
-		return resourceServices.getUserUuid()
+		return resourceService.getUserUuid()
 	}
 }
