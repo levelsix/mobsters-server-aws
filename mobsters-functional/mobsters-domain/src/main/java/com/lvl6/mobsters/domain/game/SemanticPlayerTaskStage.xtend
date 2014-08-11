@@ -1,7 +1,7 @@
-package com.lvl6.mobsters.domainmodel.gameimpl
+package com.lvl6.mobsters.domain.game
 
-import com.lvl6.mobsters.domainmodel.gameclient.PlayerTaskStage
-import com.lvl6.mobsters.domainmodel.gameserver.ServerPlayerTaskStage
+import com.lvl6.mobsters.domain.game.api.IPlayerTaskStage
+import com.lvl6.mobsters.domain.gameserver.IPlayerTaskStageInternal
 import com.lvl6.mobsters.dynamo.TaskStageForUser
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.IQuestJobMonsterItem
@@ -9,12 +9,11 @@ import com.lvl6.mobsters.info.ITaskStage
 import com.lvl6.mobsters.info.ITaskStageMonster
 import com.lvl6.mobsters.semanticmodel.annotation.EventFactory
 import com.lvl6.mobsters.semanticmodel.annotation.ListenerKind
-import com.lvl6.mobsters.server.ControllerConstants
 import java.util.List
 
 class SemanticPlayerTaskStage 
 	extends AbstractSemanticObject 
-	implements PlayerTaskStage, ServerPlayerTaskStage {
+	implements IPlayerTaskStage, IPlayerTaskStageInternal {
 	
 	val ITaskStage stageMeta
 	val TaskStageForUser playerTaskStage

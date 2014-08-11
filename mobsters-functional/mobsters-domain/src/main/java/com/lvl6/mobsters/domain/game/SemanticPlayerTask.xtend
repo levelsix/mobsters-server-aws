@@ -1,20 +1,23 @@
-package com.lvl6.mobsters.domainmodel.gameimpl
+package com.lvl6.mobsters.domain.game
 
 import com.google.common.base.Preconditions
-import com.lvl6.mobsters.domainmodel.gameclient.PlayerTask
-import com.lvl6.mobsters.domainmodel.gameserver.ServerPlayerTask
+import com.lvl6.mobsters.domain.game.api.IPlayerTask
+import com.lvl6.mobsters.domain.gameserver.IPlayerTaskInternal
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.semanticmodel.annotation.EventFactory
-import com.lvl6.mobsters.semanticmodel.annotation.ListenerKind
 import com.lvl6.mobsters.services.task.TaskExtensionLib
 import java.util.List
 
+@ExtractInterfaces(
+	api="com.lvl6.mobsters.domain.game.api.IPlayerTask", 
+	internal="com.lvl6.mobsters.domain.game.IPlayerTaskInternal"
+)
 class SemanticPlayerTask 
 	extends AbstractSemanticObject 
-	implements PlayerTask, ServerPlayerTask
+	implements IPlayerTask, IPlayerTaskInternal
 {
 	private val SemanticPlayer parent
 	
@@ -29,7 +32,7 @@ class SemanticPlayerTask
 	
 	private val ITask taskMeta
 	
-	private val List<SemanticPlayerTaskStage> playerTaskStages
+	private val List<com.lvl6.mobsters.domainmodel.gameimpl.SemanticPlayerTaskStage> playerTaskStages
 	
 	/**
 	 * Constructor for "wrap pre-existing"
@@ -86,11 +89,11 @@ class SemanticPlayerTask
 			// 3) calculate currency changes
 			// NOTE: quest monster items are dropped based on QUEST JOB ID, not quest id
 			taskMeta.taskStages.map [ stageMeta |
-				new SemanticPlayerTaskStage(this, stageMeta, questJobs, elementName, mayGeneratePieces)
+				new com.lvl6.mobsters.domainmodel.gameimpl.SemanticPlayerTaskStage(this, stageMeta, questJobs, elementName, mayGeneratePieces)
 			]
 	}
 	
-	public def boolean isOngoingTask() { 
+	override boolean isOngoingTask() { 
 		return (this.ongoingTask != null)
 	}
 	

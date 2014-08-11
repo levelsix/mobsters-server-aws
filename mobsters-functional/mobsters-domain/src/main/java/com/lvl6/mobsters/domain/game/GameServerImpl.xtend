@@ -1,7 +1,7 @@
-package com.lvl6.mobsters.domainmodel.gameimpl
+package com.lvl6.mobsters.domain.game
 
-import com.lvl6.mobsters.domainmodel.gameclient.GameServer
-import com.lvl6.mobsters.domainmodel.gameserver.ServerUserResourceFactory
+import com.lvl6.mobsters.domain.game.api.IGameServer
+import com.lvl6.mobsters.domain.gameserver.IGameServerInternal
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository
 import com.lvl6.mobsters.dynamo.repository.LocationRepository
@@ -28,13 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class UserResourceFactoryImpl 
-	implements GameServer, ServerUserResourceFactory, IRepoRegistry
+class GameServerImpl 
+	implements IGameServer, IGameServerInternal
 {
 	// TODO: Idle timeout purging and explicit close cleanup modes, some of which can already be
 	//        found in Kelly's contributions.
 	ObjKeyIndex<String, UserResourceImpl> resourceMap = 
-		new ObjKeyIndex<String, UserResourceImpl>([it|return it.getUserUuid()]);
+		new ObjKeyIndex<String, UserResourceImpl>[UserResourceImpl it|return it.getUserUuid()];
 
 	@Autowired
 	UserRepository userRepo

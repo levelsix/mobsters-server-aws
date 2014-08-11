@@ -1,5 +1,6 @@
-package com.lvl6.mobsters.domainmodel.gameimpl;
+package com.lvl6.mobsters.domain.gameserver;
 
+import com.lvl6.mobsters.domain.game.ServerUserResource;
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.LocationRepository;
@@ -22,7 +23,8 @@ import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 import com.lvl6.mobsters.services.task.TaskExtensionLib;
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib;
 
-interface IRepoRegistry {
+public interface IGameServerInternal {
+	public ServerUserResource getUserResourceFor(String userUuid);
 	//
 	// User artifact registries
 	//

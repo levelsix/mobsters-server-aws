@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domainmodel.gameclient;
+package com.lvl6.mobsters.domain.game.api;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -9,31 +9,31 @@ import com.lvl6.mobsters.info.IQuestJob;
 import com.lvl6.mobsters.info.ITask;
 
 
-public interface Player {
-	public List<? extends PlayerTask> getOngoingPlayerTasks();
+public interface IPlayer {
+	public List<? extends IPlayerTask> getOngoingPlayerTasks();
 	
-	public PlayerTask getOngoingPlayerTask(ITask taskMeta);
+	public IPlayerTask getOngoingPlayerTask(ITask taskMeta);
 	
 	public boolean hasCompleted(ITask taskMeta);
 	
-	public PlayerTask beginTask(
+	public IPlayerTask beginTask(
 		ITask taskMeta, Iterable<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
 
-	public Player checkCanSpendGems(
+	public IPlayer checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda);
 
-	public Player checkCanSpendGems( int gemsToSpend, Logger log );
+	public IPlayer checkCanSpendGems( int gemsToSpend, Logger log );
 	
-	public Player checkCanSpendCash(
+	public IPlayer checkCanSpendCash(
 		int cashToSpend, Logger log, Callable<String> spendPurposeLambda);
 	
-	public Player checkCanSpendCash( int cashToSpend, Logger log );
+	public IPlayer checkCanSpendCash( int cashToSpend, Logger log );
 	
-	public Player checkCanSpendOil(
+	public IPlayer checkCanSpendOil(
 		int oilToSpend, Logger log, Callable<String> spendPurposeLambda
 	);
 	
-	public Player checkCanSpendOil( int oilToSpend, Logger log );
+	public IPlayer checkCanSpendOil( int oilToSpend, Logger log );
 	
 	public boolean canSpendGems( int gemsToSpend );
 	

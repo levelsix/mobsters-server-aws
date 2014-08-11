@@ -1,8 +1,8 @@
-package com.lvl6.mobsters.domainmodel.gameimpl
+package com.lvl6.mobsters.domain.game
 
 import com.google.common.base.Preconditions
-import com.lvl6.mobsters.domainmodel.gameclient.event.ClientGameEvent
-import com.lvl6.mobsters.domainmodel.gameserver.event.ServerGameEvent
+import com.lvl6.mobsters.domain.gameserver.IGameServerInternal
+import com.lvl6.mobsters.events.GameEvent
 
 abstract class AbstractSemanticObject {
 	private val ServerUserResource resourceServices
@@ -21,18 +21,13 @@ abstract class AbstractSemanticObject {
 		this.container = parent
 	}
 	
-	protected def void publish(ClientGameEvent event)
+	protected def void publish(GameEvent event)
 	{
 		resourceServices.publish(event)
 	}
 	
-	protected def void publish(ServerGameEvent event)
-	{
-		resourceServices.publish(event)
-	}
-	
-	protected def IRepoRegistry getRepoRegistry() {
-		return resourceServices.getRepoRegistry()
+	protected def IGameServerInternal getGameServer() {
+		return resourceServices.gameServer
 	}
 	
 	

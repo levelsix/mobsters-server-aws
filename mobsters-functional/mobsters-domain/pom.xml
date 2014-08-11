@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.lvl6</groupId>
+		<artifactId>mobsters-functional</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>mobsters-domain</artifactId>
+	<name>Mobsters Domain</name>
+	<description>Module for Mobsters Domain Layer, an Object Oriented Encapsulation of game logic.
+	Immediate consumer of Data Layer below.  Immediate provider to Service Layer above.</description>
+
+
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-dynamo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-sql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-test-data</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

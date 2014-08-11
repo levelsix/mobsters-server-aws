@@ -1,9 +1,9 @@
-package com.lvl6.mobsters.domainmodel.gameclient;
+package com.lvl6.mobsters.domain.game.api;
 
 import com.lvl6.mobsters.info.ITask;
 
 
-public interface PlayerTask {
+public interface IPlayerTask {
 	String getTaskForUserId();
 	
 	ITask getTaskMeta();

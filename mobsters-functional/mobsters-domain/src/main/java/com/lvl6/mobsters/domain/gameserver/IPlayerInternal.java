@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domainmodel.gameserver;
+package com.lvl6.mobsters.domain.gameserver;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -9,31 +9,31 @@ import com.lvl6.mobsters.info.IQuestJob;
 import com.lvl6.mobsters.info.ITask;
 
 
-public interface ServerPlayer {
-	public List<? extends ServerPlayerTask> getOngoingPlayerTasks();
+public interface IPlayerInternal {
+	public List<? extends IPlayerTaskInternal> getOngoingPlayerTasks();
 	
-	public ServerPlayerTask getOngoingPlayerTask(ITask taskMeta);
+	public IPlayerTaskInternal getOngoingPlayerTask(ITask taskMeta);
 	
 	public boolean hasCompleted(ITask taskMeta);
 	
-	public ServerPlayerTask beginTask(
+	public IPlayerTaskInternal beginTask(
 		ITask taskMeta, Iterable<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
 
-	public ServerPlayer checkCanSpendGems(
+	public IPlayerInternal checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda);
 	
-	public ServerPlayer checkCanSpendGems( int gemsToSpend, Logger log );
+	public IPlayerInternal checkCanSpendGems( int gemsToSpend, Logger log );
 	
-	public ServerPlayer checkCanSpendCash(
+	public IPlayerInternal checkCanSpendCash(
 		int cashToSpend, Logger log, Callable<String> spendPurposeLambda);
 	
-	public ServerPlayer checkCanSpendCash( int cashToSpend, Logger log );
+	public IPlayerInternal checkCanSpendCash( int cashToSpend, Logger log );
 	
-	public ServerPlayer checkCanSpendOil(
+	public IPlayerInternal checkCanSpendOil(
 		int oilToSpend, Logger log, Callable<String> spendPurposeLambda
 	);
 	
-	public ServerPlayer checkCanSpendOil( int oilToSpend, Logger log );
+	public IPlayerInternal checkCanSpendOil( int oilToSpend, Logger log );
 	
 	public boolean canSpendGems( int gemsToSpend );
 	
@@ -41,15 +41,15 @@ public interface ServerPlayer {
 	
 	public boolean canSpendOil( int oilToSpend );
 	
-	public ServerPlayer spendGems( int gemsToSpend, Logger log );
+	public IPlayerInternal spendGems( int gemsToSpend, Logger log );
 	
 	public boolean spendGems( int gemsToSpend );
 	
-	public ServerPlayer spendCash( int cashToSpend, Logger log);
+	public IPlayerInternal spendCash( int cashToSpend, Logger log);
 	
 	public boolean spendCash( int cashToSpend );
 	
-	public ServerPlayer spendOil(int oilToSpend, Logger log);
+	public IPlayerInternal spendOil(int oilToSpend, Logger log);
 	
 	boolean spendOil(int oilToSpend);
 

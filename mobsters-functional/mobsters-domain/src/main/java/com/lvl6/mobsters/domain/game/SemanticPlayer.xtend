@@ -1,23 +1,23 @@
-package com.lvl6.mobsters.domainmodel.gameimpl
+package com.lvl6.mobsters.domain.game
 
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
-import com.lvl6.mobsters.domainmodel.gameclient.Player
-import com.lvl6.mobsters.domainmodel.gameserver.ServerPlayer
+import com.lvl6.mobsters.domain.game.api.IPlayer
+import com.lvl6.mobsters.domain.gameserver.IPlayerInternal
 import com.lvl6.mobsters.dynamo.User
+import com.lvl6.mobsters.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.indexing.by_int.IntKeyIndex
 import java.util.List
 import java.util.concurrent.Callable
 import org.slf4j.Logger
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.exception.Lvl6MobstersConditions.*
 
 class SemanticPlayer 
 	extends AbstractSemanticObject 
-	implements Player, ServerPlayer
+	implements IPlayer, IPlayerInternal
 {
 	// @SemanticPassthrough(idProperty="id", clientInterface=Player, serverInterface=ServerPlayer)
 	var User user
@@ -38,8 +38,7 @@ class SemanticPlayer
 			loadOngoingTasks();
 		}
 		
-		return ImmutableList.copyOf(
-			this.ongoingPlayerTasks)
+		return ImmutableList.copyOf(this.ongoingPlayerTasks)
 	}
 	
 	override SemanticPlayerTask getOngoingPlayerTask(ITask taskMeta) {
@@ -252,7 +251,7 @@ class SemanticPlayer
 
 	private def void loadCompletedTasks() {
 		this.completedPlayerTasks = new IntKeyIndex<SemanticPlayerTask> [return it.taskMeta.id]
-		this.repoRegistry.tfuCompleteRepo
+		this.tfuCompleteRepo
 			.findByUserId(getUserUuid())
 			.forEach[
 				this.completedPlayerTasks.put(
