@@ -5,12 +5,12 @@ import java.util.HashMap
 
 class ObjKeyIndex<K extends Comparable<K>, V>
 {
-	val HashMap<AbstractObjComparable<K>, ObjKeyWrapper<K, V>> lookupMap
+	val HashMap<ImmutableObjKey<K>, V> lookupMap
 	val (V)=>K valueToKey
 
 	new( (V)=>K valueToKey ) {
 		Preconditions::checkNotNull(valueToKey)
-		lookupMap = new HashMap<AbstractObjComparable<K>, ObjKeyWrapper<K, V>>()
+		lookupMap = new HashMap<ImmutableObjKey<K>, V>()
 		this.valueToKey = valueToKey
 	}
 	
@@ -23,22 +23,17 @@ class ObjKeyIndex<K extends Comparable<K>, V>
 	def V get(AbstractObjComparable<K> key)
 	{
 		Preconditions::checkNotNull(key)
-		val wrapper = lookupMap.get(key)
-		
-		var V retVal = null
-		if (wrapper !== null) {
-			retVal = wrapper.wrappedValue
-		}
-		return retVal
+		return lookupMap.get(key)
 	}
 
 	def void put(V value)
 	{
 		Preconditions::checkNotNull(value)
 		val K key = valueToKey.apply(value)
-		Preconditions::checkNotNull(key)
+		Preconditions::checkNotNull(key)		
 		
-		var wrapper = new ObjKeyWrapper<K, V>(value, valueToKey)
-		lookupMap.put(wrapper, wrapper)
+		lookupMap.put(
+			new ImmutableObjKey<K>(key), value
+		)
 	}
 }

@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.services.minijob
 
-import com.lvl6.mobsters.common.utils.AbstractIntComparable
-import com.lvl6.mobsters.common.utils.ImmutableIntKey
 import com.lvl6.mobsters.dynamo.MiniJobForUser
 import com.lvl6.mobsters.dynamo.MonsterForUser
 import com.lvl6.mobsters.dynamo.User
@@ -9,6 +7,8 @@ import com.lvl6.mobsters.info.IMonster
 import com.lvl6.mobsters.info.MiniJob
 import com.lvl6.mobsters.info.repository.MiniJobRepository
 import com.lvl6.mobsters.services.user.UserExtensionLib
+import com.lvl6.mobsters.utility.indexing.by_int.AbstractIntComparable
+import com.lvl6.mobsters.utility.indexing.by_int.ImmutableIntKey
 import java.util.Collections
 import java.util.Date
 import java.util.List

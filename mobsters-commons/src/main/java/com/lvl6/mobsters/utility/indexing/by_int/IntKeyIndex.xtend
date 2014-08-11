@@ -3,42 +3,32 @@ package com.lvl6.mobsters.utility.indexing.by_int
 import java.util.HashMap
 
 class IntKeyIndex<T> {
-	val HashMap<AbstractIntComparable, IntKeyWrapper<T>> structureContextLookup
+	val HashMap<ImmutableIntKey, T> structureContextLookup
+	val (T)=>int valueToKey
 
 	new((T)=>int valueToKey) {
-		this.structureContextLookup = new HashMap<AbstractIntComparable, IntKeyWrapper<T>>()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		this.structureContextLookup = new HashMap<ImmutableIntKey, T>()
+		this.valueToKey = valueToKey
 	}
 
-	def get(int key) {
-		get(new ImmutableIntKey(key))
+	def T get(int key) {
+		return get(new ImmutableIntKey(key))
 	}
 
-	def get(AbstractIntComparable key) {
-		val wrapper = structureContextLookup.get(key)
-		var T retVal = null
-		if (wrapper !== null) {
-			retVal = wrapper.wrappedValue
-		}
-		retVal
+	def T get(AbstractIntComparable key) {
+		return structureContextLookup.get(key)
 	}
 
-	def put(T metadata) {
-		var wrapper = new IntKeyWrapper<T>(metadata)
-		structureContextLookup.put(wrapper, wrapper)
+	def T get(Integer key) {
+		return structureContextLookup.get(key)
+	}
+
+	def T put(T metadata) {
+		return structureContextLookup.put(
+			new ImmutableIntKey(
+				valueToKey.apply(metadata)
+			), metadata
+		)
 	}
 }
+ 

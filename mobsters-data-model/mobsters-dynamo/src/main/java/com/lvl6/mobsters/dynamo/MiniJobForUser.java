@@ -9,8 +9,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
-import com.lvl6.mobsters.dynamo.attachments.AtomicExtensibleObject;
-import com.lvl6.mobsters.dynamo.attachments.ExtensibleObject;
+import com.lvl6.mobsters.utility.attachment.AtomicExtensibleObject;
+import com.lvl6.mobsters.utility.attachment.ExtensibleObject;
 
 @DynamoDBTable(tableName = "MiniJobForUser")
 public class MiniJobForUser implements ExtensibleObject
@@ -45,13 +45,13 @@ public class MiniJobForUser implements ExtensibleObject
     private Date timeCompleted;
 
     public MiniJobForUser() {
-        //super();
-		 // Select default implementation if not is provided
+        super();
+		// Select default implementation if not is provided
 		attachments = new AtomicExtensibleObject();
     }
     
     public MiniJobForUser(ExtensibleObject attachments) {
-        //super();
+        super();
         if (attachments == null) {
 			this.attachments = new AtomicExtensibleObject();
 		} else {
@@ -182,6 +182,22 @@ public class MiniJobForUser implements ExtensibleObject
         this.timeCompleted = timeCompleted;
     }
 
+	@Override
+	@DynamoDBIgnore
+	public <T> T getAttachment(Class<T> attachmentClass) {
+		return this.attachments.getAttachment(attachmentClass);
+	}
+
+	@Override
+	public <T> void putAttachment(Class<T> attachmentClass, T attachmentObject) {
+		this.attachments.putAttachment(attachmentClass, attachmentObject);
+	}
+
+	@Override
+	public <T> T clearAttachment(Class<T> attachmentClass) {
+		return this.attachments.clearAttachment(attachmentClass);
+	}
+
     @Override
     public String toString()
     {
@@ -246,21 +262,4 @@ public class MiniJobForUser implements ExtensibleObject
 		}
         return true;
     }
-
-	@Override
-	@DynamoDBIgnore
-	public <T> T getAttachment(Class<T> attachmentClass) {
-		return this.attachments.getAttachment(attachmentClass);
-	}
-
-	@Override
-	public <T> void putAttachment(Class<T> attachmentClass, T attachmentObject) {
-		this.attachments.putAttachment(attachmentClass, attachmentObject);
-	}
-
-	@Override
-	public <T> T clearAttachment(Class<T> attachmentClass) {
-		return this.attachments.clearAttachment(attachmentClass);
-	}
-
 }
