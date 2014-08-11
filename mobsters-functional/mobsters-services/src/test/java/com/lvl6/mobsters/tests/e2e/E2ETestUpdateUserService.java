@@ -18,7 +18,7 @@ import com.lvl6.mobsters.tests.fixture.InitWorldService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring-db.xml", "classpath:spring-redis.xml", "classpath:spring-dynamo.xml", "classpath:spring-services.xml"/*, "classpath:spring-testdata.xml"*/})
+@ContextConfiguration({"classpath:spring-commons.xml", "classpath:spring-db.xml", "classpath:spring-redis.xml", "classpath:spring-dynamo.xml", "classpath:spring-services.xml"/*, "classpath:spring-testdata.xml"*/})
 @TransactionConfiguration(transactionManager="lvl6Txm", defaultRollback=true)
 public class E2ETestUpdateUserService { 
 	// Subject under test

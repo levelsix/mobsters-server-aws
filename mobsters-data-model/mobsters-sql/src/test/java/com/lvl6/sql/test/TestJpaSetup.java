@@ -16,10 +16,8 @@ import com.lvl6.mobsters.info.repository.AchievementRepository;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-db.xml")
+@ContextConfiguration({"classpath:spring-commons.xml", "classpath:spring-db.xml"})
 public class TestJpaSetup {
-
-	
 	@Autowired
 	protected AchievementRepository achRepo;
 	
