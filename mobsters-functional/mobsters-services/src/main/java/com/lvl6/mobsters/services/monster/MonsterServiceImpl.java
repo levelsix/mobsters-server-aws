@@ -39,6 +39,8 @@ import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
+import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*;
+
 @Component
 public class MonsterServiceImpl implements MonsterService
 {
@@ -547,6 +549,72 @@ public class MonsterServiceImpl implements MonsterService
 		}
 	}
 	*/
+	
+	@Override
+	public void restrictUserMonsters( String userId, List<String> userMonsterIds )
+	{
+		RestrictUserMonsterAction action =
+			new RestrictUserMonsterAction(
+				userId, userMonsterIds, monsterForUserRepository);
+		
+		boolean success = false;
+		txManager.beginTransaction();
+		try {
+			action.execute();
+			success = true;
+		} finally {
+			if (success) {
+				txManager.commit();
+			} else {
+				txManager.rollback();
+			}
+		}
+	}
+	
+	static class RestrictUserMonsterAction
+	{
+		private String userId;
+		private List<String> userMonsterIds;
+		
+		private MonsterForUserRepository mfuRepo;
+
+		public RestrictUserMonsterAction(
+			String userId,
+			List<String> userMonsterIds,
+			MonsterForUserRepository mfuRepo )
+		{
+			super();
+			this.userId = userId;
+			this.userMonsterIds = userMonsterIds;
+			this.mfuRepo = mfuRepo;
+		}
+		
+		// Derived properties computed when checking, then applied when updating
+		List<MonsterForUser> mfuList;
+		
+		void execute() {
+			mfuList = mfuRepo.loadEach(userId, userMonsterIds);
+			
+			checkIfUserCanRestrictMonsters();
+			
+			//TODO: Consider moving to extension library
+			for( MonsterForUser mfu : mfuList )
+			{
+				mfu.setRestricted(true);
+			}
+			
+			mfuRepo.saveEach(mfuList);
+		}
+		
+		void checkIfUserCanRestrictMonsters() {
+			lvl6Precondition(
+				!CollectionUtils.lacksSubstance(mfuList),
+				Lvl6MobstersStatusCode.FAIL_OTHER,
+				LOG,
+				"no unrestricted monsters_for_user exist with ids=%s",
+				userMonsterIds );
+		}
+	}
 	
 	public void setMonsterForUserRepository( MonsterForUserRepository monsterForUserRepository )
 	{

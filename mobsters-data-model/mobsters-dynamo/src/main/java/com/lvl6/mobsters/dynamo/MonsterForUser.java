@@ -34,6 +34,8 @@ public class MonsterForUser {
     private int teamSlotNum;
 
 //    private String sourceOfPieces;
+    
+    private boolean restricted;
 
     public MonsterForUser() {}
 
@@ -46,7 +48,8 @@ public class MonsterForUser {
         int numPieces,
         boolean isComplete,
         Date combineStartTime,
-        int teamSlotNum )
+        int teamSlotNum,
+        boolean restricted )
 //        String sourceOfPieces )
     {
         super();
@@ -60,6 +63,7 @@ public class MonsterForUser {
         this.combineStartTime = combineStartTime;
         this.teamSlotNum = teamSlotNum;
 //        this.sourceOfPieces = sourceOfPieces;
+        this.restricted = restricted;
     }
 
     @DynamoDBHashKey(attributeName = "userId")
@@ -164,33 +168,45 @@ public class MonsterForUser {
     }
     */
     
-    @Override
-    public String toString()
-    {
-    	return "MonsterForUser [userId="
-    		+ userId
-    		+ ", monsterForUserUuid="
-    		+ monsterForUserUuid
-    		+ ", monsterId="
-    		+ monsterId
-    		+ ", currentExp="
-    		+ currentExp
-    		+ ", currentLvl="
-    		+ currentLvl
-    		+ ", currentHealth="
-    		+ currentHealth
-    		+ ", numPieces="
-    		+ numPieces
-    		+ ", isComplete="
-    		+ isComplete
-    		+ ", combineStartTime="
-    		+ combineStartTime
-    		+ ", teamSlotNum="
-    		+ teamSlotNum
-    		+ "]";
-    }
+    public boolean isRestricted()
+	{
+		return restricted;
+	}
 
-    @Override
+	public void setRestricted( boolean restricted )
+	{
+		this.restricted = restricted;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "MonsterForUser [userId="
+			+ userId
+			+ ", monsterForUserUuid="
+			+ monsterForUserUuid
+			+ ", monsterId="
+			+ monsterId
+			+ ", currentExp="
+			+ currentExp
+			+ ", currentLvl="
+			+ currentLvl
+			+ ", currentHealth="
+			+ currentHealth
+			+ ", numPieces="
+			+ numPieces
+			+ ", isComplete="
+			+ isComplete
+			+ ", combineStartTime="
+			+ combineStartTime
+			+ ", teamSlotNum="
+			+ teamSlotNum
+			+ ", restricted="
+			+ restricted
+			+ "]";
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
