@@ -10,6 +10,7 @@
   <name>Mobsters Functional</name>
   <description>Module for Functionality Layers</description>
   <modules>
+  	<module>mobsters-domain</module>
   	<module>mobsters-services</module>
   	<module>mobsters-controllers</module>
   	<module>mobsters-api-events</module>

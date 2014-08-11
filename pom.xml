@@ -191,12 +191,12 @@
 								<goal>testCompile</goal>
 								<goal>xtend-test-install-debug-info</goal>
 							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/generated-sources/xtend-gen</outputDirectory>
+								<testOutputDirectory>${project.build.directory}/generated-test-sources/xtend-gen</testOutputDirectory>
+							</configuration>
 						</execution>
 					</executions>
-					<configuration>
-						<outputDirectory>${project.build.directory}/generated-sources/xtend-gen</outputDirectory>
-						<testOutputDirectory>${project.build.directory}/generated-test-sources/xtend-gen</testOutputDirectory>
-					</configuration>
 				</plugin>
 
 				<plugin>
@@ -282,6 +282,11 @@
 			<dependency>
 				<groupId>com.lvl6</groupId>
 				<artifactId>mobsters-api-events</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-domain</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

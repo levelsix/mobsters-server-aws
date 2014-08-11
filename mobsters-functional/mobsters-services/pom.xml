@@ -24,6 +24,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-test-data</artifactId>
 			<scope>test</scope>
 		</dependency>
