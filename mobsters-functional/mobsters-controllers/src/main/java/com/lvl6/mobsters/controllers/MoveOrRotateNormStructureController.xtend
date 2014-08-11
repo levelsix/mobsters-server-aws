@@ -6,11 +6,11 @@ import com.lvl6.mobsters.events.EventsToDispatch
 import com.lvl6.mobsters.events.RequestEvent
 import com.lvl6.mobsters.events.request.MoveOrRotateNormStructureRequestEvent
 import com.lvl6.mobsters.events.response.MoveOrRotateNormStructureResponseEvent
-import com.lvl6.mobsters.info.CoordinatePair
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
 import com.lvl6.mobsters.server.EventController
 import com.lvl6.mobsters.services.structure.StructureService
+import com.lvl6.mobsters.utility.values.CoordinatePair
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

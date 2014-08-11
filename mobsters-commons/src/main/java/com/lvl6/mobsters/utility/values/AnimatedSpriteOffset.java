@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.info;
+package com.lvl6.mobsters.utility.values;
 import java.io.Serializable;
 
 public class AnimatedSpriteOffset implements Serializable {

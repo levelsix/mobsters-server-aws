@@ -1,6 +1,5 @@
 package com.lvl6.mobsters.noneventproto.utils;
 
-import com.lvl6.mobsters.info.CoordinatePair;
 import com.lvl6.mobsters.info.IStructure;
 import com.lvl6.mobsters.info.Obstacle;
 import com.lvl6.mobsters.info.StructureHospital;
@@ -22,6 +21,7 @@ import com.lvl6.mobsters.noneventproto.NoneventStructureProto.ResourceStoragePro
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TownHallProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProto;
+import com.lvl6.mobsters.utility.values.CoordinatePair;
 
 public interface NoneventStructureProtoSerializer
 {

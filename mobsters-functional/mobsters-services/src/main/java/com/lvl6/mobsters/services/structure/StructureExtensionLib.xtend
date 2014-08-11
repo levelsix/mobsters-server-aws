@@ -2,12 +2,12 @@ package com.lvl6.mobsters.services.structure
 
 import com.lvl6.mobsters.dynamo.StructureForUser
 import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.info.CoordinatePair
 import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import com.lvl6.mobsters.utility.indexing.by_int.AbstractIntComparable
 import com.lvl6.mobsters.utility.indexing.by_int.ImmutableIntKey
+import com.lvl6.mobsters.utility.values.CoordinatePair
 import java.util.Collections
 import java.util.Date
 import java.util.Map

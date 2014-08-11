@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.info;
+package com.lvl6.mobsters.utility.values;
 
 
 //@Entity

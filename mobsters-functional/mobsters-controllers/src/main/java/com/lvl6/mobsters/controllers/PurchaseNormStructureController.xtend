@@ -8,12 +8,13 @@ import com.lvl6.mobsters.events.EventsToDispatch
 import com.lvl6.mobsters.events.RequestEvent
 import com.lvl6.mobsters.events.request.PurchaseNormStructureRequestEvent
 import com.lvl6.mobsters.events.response.PurchaseNormStructureResponseEvent
-import com.lvl6.mobsters.info.CoordinatePair
+import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.ResourceType
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
 import com.lvl6.mobsters.server.EventController
 import com.lvl6.mobsters.services.structure.composite.PurchaseNormStructureService
+import com.lvl6.mobsters.utility.values.CoordinatePair
 import java.util.Date
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static java.lang.String.*
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 
 @Component
 public class PurchaseNormStructureController extends EventController

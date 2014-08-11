@@ -5,12 +5,12 @@ import com.lvl6.mobsters.dynamo.StructureForUser
 import com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepository
 import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
-import com.lvl6.mobsters.info.CoordinatePair
 import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.lambda.Director
+import com.lvl6.mobsters.utility.values.CoordinatePair
 import java.util.ArrayList
 import java.util.Date
 import java.util.List
@@ -18,10 +18,12 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
-import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.services.structure.StructureServiceImpl.*
 import static com.lvl6.mobsters.utility.common.TimeUtils.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static java.lang.String.*
+
+import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
 
 @Component
 class StructureServiceImpl implements StructureService

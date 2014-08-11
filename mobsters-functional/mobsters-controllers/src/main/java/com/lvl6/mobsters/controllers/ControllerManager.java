@@ -1,6 +1,6 @@
 package com.lvl6.mobsters.controllers;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.server.EventController;
 
@@ -27,18 +29,59 @@ public class ControllerManager {
 	 */
 	@Autowired
 	private List<EventController> eventControllerList;
-	private Hashtable<EventProtocolRequest, EventController> eventControllers;
+	
+	/**
+	 * Exchange point between this class and the inner class that owns the constructed HashMap.
+	 */
+	private static final ImmutableMap.Builder<EventProtocolRequest,EventController> mapBuilder =
+		ImmutableMap.<EventProtocolRequest,EventController>builder();
 
+	/**
+	 * Creates the map of evenType --> eventController, protected by the JVM Classloader's mutex.
+	 * 
+	 * Given:
+	 * 1)  This class is only loaded when first referenced
+	 * 2)  The JVM does all classloading single threaded and protected by an internal mutex.
+	 * 3)  This class is only referenced by {@link #getEventControllerByEventType(EventProtocolRequest)}
+	 * 4)  Spring guarantees that {@link #setup()} is called once before any calls to 
+	 *     {@link #getEventControllerByEventType(EventProtocolRequest)} can occur.
+	 * 5)  Spring _cannot_ guarantee that the threads that use the controller map are invoked 
+	 * 6)  {@link #setup()} populates ecListForMapConstuct.
+	 * 7)  This class's static block reads ecListForMapConstuct to populate its eventControllers Map.
+	 * 
+	 * Result:
+	 * Without this class, 
+	 */
+	static class MapContainer {
+		private static final ImmutableMap<EventProtocolRequest, EventController> eventControllers =
+			mapBuilder.build();
+	}
+	
 	public void setEventControllerList(List<EventController> eventControllerList) {
 		this.eventControllerList = eventControllerList;
+		
+		// This could equivalently occur in setup(), but doing it here concedes to paranoia
+		// over whether Spring uses the same thread to inject as it does to @PostConstruct.
+		for( final EventController ec : eventControllerList ) {
+			mapBuilder.put(ec.getEventType(), ec);
+		}
 	}
 
 	/**
-	 * The event controllers map is create during spring initialization. After that it never changes. No need for it to be Atomic.
+	 * The event controllers map contents are permanently set in stone during spring initialization.
+	 * 
+	 * Spring cannot guarantee that this happens before any threads that will use the hash get spawned,
+	 * so an inner class is used to guard construction of the map with the JVM's classloading mutex, 
+	 * avoid necessity of a synchronized data structure when de-referencing the map.
+	 * 
+	 * Use of an immutable map is sufficient to guarantee visibility on the contents of the map, but 
+	 * not the reference to it.  The inner class, however, is able to close that gap.
 	 */
 	@PostConstruct
 	public void setup() {
-		loadEventControllers();
+		log.info(
+			"Populated {} event controllers into eventRequestType-->eventController map", 
+			MapContainer.eventControllers.size());
 	}
 	
 
@@ -46,11 +89,10 @@ public class ControllerManager {
 	 * Lookup EventController from map by type
 	 */
 	public EventController getEventControllerByEventType(EventProtocolRequest eventType) {
-		if (eventType == null) {
-			throw new RuntimeException("EventProtocolRequest (eventType) is null");
-		}
-		if (eventControllers.containsKey(eventType)) {
-			EventController ec = eventControllers.get(eventType);
+		Preconditions.checkNotNull(eventType, "EventProtocolRequest (eventType) is null");
+		
+		if (MapContainer.eventControllers.containsKey(eventType)) {
+			EventController ec = MapContainer.eventControllers.get(eventType);
 			if (ec == null) {
 				log.error("no eventcontroller for eventType: " + eventType);
 				throw new RuntimeException("EventController of type: " + eventType + " not found");
@@ -59,16 +101,4 @@ public class ControllerManager {
 		}
 		throw new RuntimeException("EventController of type: " + eventType + " not found");
 	}
-
-	/**
-	 * Creates the map of evenType --> eventController
-	 */
-	private void loadEventControllers() {
-		log.info("Adding {} event controllers to eventControllers controllerType-->controller map", eventControllerList.size());
-		for (EventController ec : eventControllerList) {
-			eventControllers.put(ec.getEventType(), ec);
-		}
-	}
-
-
 }

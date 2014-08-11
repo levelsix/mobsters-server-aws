@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.services.structure.composite
 
 import com.lvl6.mobsters.dynamo.User
-import com.lvl6.mobsters.info.CoordinatePair
+import com.lvl6.mobsters.utility.values.CoordinatePair
 import java.util.Date
 
 interface PurchaseNormStructureService {

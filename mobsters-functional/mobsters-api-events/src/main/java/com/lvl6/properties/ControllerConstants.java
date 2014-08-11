@@ -1,7 +1,7 @@
-package com.lvl6.mobsters.server;
+package com.lvl6.properties;
 
-import com.lvl6.mobsters.info.AnimatedSpriteOffset;
-import com.lvl6.properties.Globals;
+import com.lvl6.mobsters.utility.values.AnimatedSpriteOffset;
+
 
 public class ControllerConstants
 {
