@@ -7,6 +7,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 
+//consider making the reverse table, class, repository:
+//hashKey = facebookId
+//rangeKey = userId
+//Purpose is to make another table to record a facebook user's pursuers
+//rather than a user's invites to facebook users
 @DynamoDBTable(tableName = "UserFacebookInviteForSlot")
 public class UserFacebookInviteForSlot
 {
@@ -20,7 +25,7 @@ public class UserFacebookInviteForSlot
 	private String recipientFacebookId;
 	private Date timeOfInvite;
 	private Date timeAccepted;
-	private int userStructId;
+	private String userStructId;
 	private int userStructFbLvl;
 	private Date timeRedeemed;
 
@@ -28,9 +33,9 @@ public class UserFacebookInviteForSlot
 	{
 	}
 
-	public UserFacebookInviteForSlot( final int id, final String userId,
+	public UserFacebookInviteForSlot( final String userId,
 	    final String recipientFacebookId, final Date timeOfInvite,
-	    final Date timeAccepted, final int userStructId,
+	    final Date timeAccepted, final String userStructId,
 	    final int userStructFbLvl, final Date timeRedeemed )
 	{
 		super();
@@ -120,12 +125,12 @@ public class UserFacebookInviteForSlot
 		this.timeAccepted = timeAccepted;
 	}
 
-	public int getUserStructId()
+	public String getUserStructId()
 	{
 		return userStructId;
 	}
 
-	public void setUserStructId( final int userStructId )
+	public void setUserStructId( final String userStructId )
 	{
 		this.userStructId = userStructId;
 	}
