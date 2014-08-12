@@ -14,10 +14,10 @@
 //import com.lvl6.mobsters.info.IStructure;
 //import com.lvl6.mobsters.info.Structure;
 //import com.lvl6.mobsters.info.repository.StructureRepository;
-//import com.lvl6.mobsters.services.common.Lvl6MobstersException;
-//import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum;
-//import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode;
-//import com.lvl6.mobsters.services.common.TimeUtils;
+//import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
+//import com.lvl6.mobsters.utility.exception.Lvl6MobstersResourceEnum;
+//import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
+//import com.lvl6.mobsters.utility.common.TimeUtils;
 //import com.lvl6.mobsters.services.structure.StructureService;
 //import com.lvl6.mobsters.services.user.UserService;
 //import com.lvl6.mobsters.services.user.UserService.ModifyUserSpec;

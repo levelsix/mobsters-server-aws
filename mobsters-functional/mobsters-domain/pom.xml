@@ -21,6 +21,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-api-events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-dynamo</artifactId>
 		</dependency>
 		<dependency>

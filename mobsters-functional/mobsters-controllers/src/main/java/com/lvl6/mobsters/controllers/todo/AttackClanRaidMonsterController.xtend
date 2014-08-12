@@ -21,7 +21,7 @@
 //import com.lvl6.mobsters.noneventproto.NoneventMonsterProto.UserCurrentMonsterTeamProto
 //import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto
 //import com.lvl6.mobsters.server.EventController
-//import com.lvl6.mobsters.services.common.TimeUtils
+//import com.lvl6.mobsters.utility.common.TimeUtils
 //import java.sql.Timestamp
 //import java.util.ArrayList
 //import java.util.Date

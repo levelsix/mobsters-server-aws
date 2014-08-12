@@ -39,7 +39,7 @@ import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*;
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*;
 
 @Component
 public class MonsterServiceImpl implements MonsterService
