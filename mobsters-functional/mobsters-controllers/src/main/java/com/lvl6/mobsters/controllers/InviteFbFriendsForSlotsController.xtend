@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.controllers;
 
-import static com.lvl6.mobsters.common.utils.CollectionUtils.*
-import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.eventproto.EventMonsterProto.InviteFbFriendsForSlotsRequestProto.FacebookInviteStructure
 import com.lvl6.mobsters.eventproto.EventMonsterProto.InviteFbFriendsForSlotsResponseProto
 import com.lvl6.mobsters.eventproto.EventMonsterProto.InviteFbFriendsForSlotsResponseProto.InviteFbFriendsForSlotsStatus
@@ -10,18 +8,19 @@ import com.lvl6.mobsters.events.EventsToDispatch
 import com.lvl6.mobsters.events.RequestEvent
 import com.lvl6.mobsters.events.request.InviteFbFriendsForSlotsRequestEvent
 import com.lvl6.mobsters.events.response.InviteFbFriendsForSlotsResponseEvent
-import com.lvl6.mobsters.events.response.UpdateClientUserResponseEvent
 import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithFacebookId
 import com.lvl6.mobsters.server.EventController
+import com.lvl6.mobsters.services.facebookinvite.FacebookInviteService
 import java.util.Date
 import java.util.List
+import java.util.Map
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import com.lvl6.mobsters.services.facebookinvite.FacebookInviteService
-import java.util.Map
+
+import static com.lvl6.mobsters.utility.common.CollectionUtils.*
 
 @Component
 public class InviteFbFriendsForSlotsController extends EventController

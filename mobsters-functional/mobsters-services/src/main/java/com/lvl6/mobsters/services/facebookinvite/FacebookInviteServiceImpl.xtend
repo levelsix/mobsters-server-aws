@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component
 
 import static com.lvl6.mobsters.services.facebookinvite.FacebookInviteServiceImpl.*
 
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode.*
+
 @Component
 public class FacebookInviteServiceImpl implements FacebookInviteService {
 
@@ -139,7 +142,7 @@ public class FacebookInviteServiceImpl implements FacebookInviteService {
 			
 			lvl6Precondition( 
 				fbIdToUserStruct.size > existingInvites.size,
-				Lvl6MobstersStatusCode.FAIL_OTHER,
+				FAIL_OTHER,
 				LOG,
 				"all the facebook ids have been used already. existingFbIds=%s, requestedFbIds=%s", 
 				existingInvites, fbIdToUserStruct)
