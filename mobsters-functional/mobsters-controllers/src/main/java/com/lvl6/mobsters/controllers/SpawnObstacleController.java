@@ -26,7 +26,7 @@
 //import com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructOrientation;
 //import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 //import com.lvl6.mobsters.server.EventController;
-//import com.lvl6.mobsters.services.common.TimeUtils;
+//import com.lvl6.mobsters.utility.common.TimeUtils;
 //import com.lvl6.mobsters.services.structure.StructureService;
 //import com.lvl6.mobsters.services.structure.StructureService.CreateObstacleCollectionBuilder;
 //import com.lvl6.mobsters.services.structure.StructureService.CreateObstaclesReplyBuilder;

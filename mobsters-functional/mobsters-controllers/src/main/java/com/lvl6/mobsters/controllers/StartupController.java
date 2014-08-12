@@ -15,7 +15,7 @@
 //import org.springframework.stereotype.Component;
 //import org.springframework.util.StringUtils;
 //
-//import com.lvl6.mobsters.common.utils.CollectionUtils;
+//import com.lvl6.mobsters.utility.common.CollectionUtils;
 //import com.lvl6.mobsters.controllers.utils.ConfigurationDataUtil;
 //import com.lvl6.mobsters.dynamo.AchievementForUser;
 //import com.lvl6.mobsters.dynamo.ClanForUser;
@@ -111,7 +111,7 @@
 //import com.lvl6.mobsters.server.EventController;
 //import com.lvl6.mobsters.services.achievement.AchievementService;
 //import com.lvl6.mobsters.services.clan.ClanService;
-//import com.lvl6.mobsters.services.common.TimeUtils;
+//import com.lvl6.mobsters.utility.common.TimeUtils;
 //import com.lvl6.mobsters.services.minijob.MiniJobService;
 //import com.lvl6.mobsters.services.monster.MonsterService;
 //import com.lvl6.mobsters.services.quest.QuestService;

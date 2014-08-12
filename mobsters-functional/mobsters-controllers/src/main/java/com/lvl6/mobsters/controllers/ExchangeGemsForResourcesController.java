@@ -23,8 +23,8 @@
 //import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto;
 //import com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoWithMaxResources;
 //import com.lvl6.mobsters.server.EventController;
-//import com.lvl6.mobsters.services.common.Lvl6MobstersException;
-//import com.lvl6.mobsters.services.common.Lvl6MobstersResourceEnum;
+//import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
+//import com.lvl6.mobsters.utility.exception.Lvl6MobstersResourceEnum;
 //import com.lvl6.mobsters.services.user.UserService;
 //import com.lvl6.mobsters.services.user.UserService.ModifyUserSpec;
 //import com.lvl6.mobsters.services.user.UserService.ModifyUserSpecBuilder;

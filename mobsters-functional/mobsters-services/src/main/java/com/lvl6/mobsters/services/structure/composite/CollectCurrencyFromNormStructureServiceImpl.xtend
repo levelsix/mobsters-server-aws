@@ -7,9 +7,9 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.Structure
 import com.lvl6.mobsters.info.repository.StructureRepository
-import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.structure.StructureExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import java.util.ArrayList
 import java.util.Date
 import java.util.List

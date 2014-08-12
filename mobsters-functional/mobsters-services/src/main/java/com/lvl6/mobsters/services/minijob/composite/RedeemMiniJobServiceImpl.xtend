@@ -7,7 +7,7 @@ import com.lvl6.mobsters.dynamo.repository.StructureForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.repository.StructureRepository
-import com.lvl6.mobsters.services.common.Lvl6MobstersStatusCode
+import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.services.minijob.MiniJobExtensionLib
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import java.util.Date
@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import static com.lvl6.mobsters.services.common.Lvl6MobstersConditions.*
+import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static com.lvl6.mobsters.services.minijob.composite.RedeemMiniJobServiceImpl.*
 import java.util.Map
 import com.lvl6.mobsters.dynamo.repository.MonsterForUserRepository
 import com.lvl6.mobsters.dynamo.MonsterForUser
 import java.util.List
-import com.lvl6.mobsters.services.common.TimeUtils
-import com.lvl6.mobsters.common.utils.CollectionUtils
+import com.lvl6.mobsters.utility.common.TimeUtils
+import com.lvl6.mobsters.utility.common.CollectionUtils
 
 @Component
 public class RedeemMiniJobServiceImpl implements RedeemMiniJobService {
