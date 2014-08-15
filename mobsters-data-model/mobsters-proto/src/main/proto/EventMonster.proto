@@ -337,6 +337,8 @@ message InviteFbFriendsForSlotsResponseProto {
 	optional MinimumUserProtoWithFacebookId sender = 1;
 	optional InviteFbFriendsForSlotsStatus status = 2;
 	
+	//only purpose was for the id/primary-key, but primary key is now
+	//duple(userId, recipientFbId), so perhaps this is not needed now 
 	repeated UserFacebookInviteForSlotProto invitesNew = 3;
 	
 	enum InviteFbFriendsForSlotsStatus {
