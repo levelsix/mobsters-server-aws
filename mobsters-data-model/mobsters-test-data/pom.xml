@@ -19,6 +19,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-dynamo</artifactId>
 		</dependency>
 	</dependencies>

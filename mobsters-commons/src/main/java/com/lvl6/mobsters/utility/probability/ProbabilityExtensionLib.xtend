@@ -1,12 +1,12 @@
 package com.lvl6.mobsters.utility.probability
 
+import com.google.common.base.Preconditions
 import com.lvl6.mobsters.utility.lambda.FloatCounter
 import com.lvl6.mobsters.utility.lambda.FloatTaggedObject
 import java.util.List
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
-import com.google.common.base.Preconditions
 
 @Component
 class ProbabilityExtensionLib {

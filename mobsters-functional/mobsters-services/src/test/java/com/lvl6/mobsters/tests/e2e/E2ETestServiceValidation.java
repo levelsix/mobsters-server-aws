@@ -22,9 +22,9 @@ import com.lvl6.mobsters.tests.fixture.dummy.IDummyService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:spring-commons.xml",
-		"classpath:spring-db.xml", "classpath:spring-redis.xml",
-		"classpath:spring-dynamo.xml", "classpath:spring-services.xml",
-		"classpath:spring-local-test-fixtures.xml" })
+	"classpath:spring-db.xml", "classpath:spring-redis.xml",
+	"classpath:spring-dynamo.xml", "classpath:spring-domain.xml",
+	"classpath:spring-services.xml", "classpath:spring-local-test-fixtures.xml" })
 @TransactionConfiguration(transactionManager="lvl6Txm", defaultRollback=true)
 public class E2ETestServiceValidation { 
 	// Subject under test -- Includes the base object of this field's class and the AbstractAction base class of its children.

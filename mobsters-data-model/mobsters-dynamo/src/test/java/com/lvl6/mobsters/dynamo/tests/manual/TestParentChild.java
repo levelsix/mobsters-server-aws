@@ -47,14 +47,16 @@ public class TestParentChild
 	{
 		variantOne.getRepository()
 		    .checkTables();
-		doLoadData("Unpartitioned", variantOne);
+		parentIdsOne =
+			doLoadData("Unpartitioned", variantOne);
 
 		variantTwo.getRepository()
 		    .checkTables();
-		doLoadData("Partitioned", variantTwo);
+		parentIdsTwo =
+			doLoadData("Partitioned", variantTwo);
 	}
 
-	private void doLoadData( final String name,
+	private String[] doLoadData( final String name,
 	    final VariantStrategy<?, ? extends ChildDataAttrs> nextVariant )
 	{
 		System.out.println("Populating "
@@ -65,11 +67,12 @@ public class TestParentChild
 		    + NUM_CHILDREN_PER_PARENT
 		    + " children each.  This may take a while...");
 		// txManager.beginTransaction();
-		parentIds = new String[NUM_PARENTS];
+		String[] parentIds = new String[NUM_PARENTS];
 		for (int ii = 0; ii < NUM_PARENTS; ii++) {
 			parentIds[ii] = nextVariant.getNextParent(NUM_CHILDREN_PER_PARENT);
 			for (int jj = 0; jj < NUM_CHILDREN_PER_PARENT; jj++) {
 				final ChildDataAttrs nextChild = nextVariant.addNextChild();
+				
 				nextChild.setCombineStartTime(new Date());
 				nextChild.setComplete((jj % 2) == 0);
 				nextChild.setCurrentExp(24689);
@@ -88,7 +91,15 @@ public class TestParentChild
 		// txManager.commit();
 		System.out.println("Populated "
 		    + parentIds.length
-		    + " parents.");
+		    + ".  parent ids = { " 
+		    + parentIds[0] 
+		    + ", "
+		    + parentIds[1] 
+		    + ", "
+		    + parentIds[2] 
+		    + '}');
+		
+		return parentIds;
 	}
 
 	@After
@@ -102,11 +113,14 @@ public class TestParentChild
 	}
 
 	@Test
+	@SuppressWarnings("unused")
 	public void testSinglePartition()
 	{
 		final LoopingReader loaderOne =
-		    new LoopingReader(txManager, variantOne.getRepository(), RUN_ITERS_PER_TASK,
-		        parentIds, READ_INDICES_ORDER);
+		    new LoopingReader(
+		    	txManager, variantOne.getRepository(),
+		    	RUN_ITERS_PER_TASK, parentIdsOne,
+		    	READ_INDICES_ORDER);
 
 		final int requestCount;
 		if ((RUN_ITERS_PER_TASK % 5) > 0) {
@@ -139,11 +153,14 @@ public class TestParentChild
 	}
 
 	@Test
+	@SuppressWarnings("unused")
 	public void testFourPartitions()
 	{
 		final LoopingReader loader =
-		    new LoopingReader(txManager, variantTwo.getRepository(), RUN_ITERS_PER_TASK,
-		        parentIds, READ_INDICES_ORDER);
+		    new LoopingReader(
+		    	txManager, variantTwo.getRepository(),
+		    	RUN_ITERS_PER_TASK, parentIdsTwo,
+		    	READ_INDICES_ORDER);
 
 		final int requestCount;
 		if ((RUN_ITERS_PER_TASK % 5) > 0) {
@@ -259,10 +276,10 @@ public class TestParentChild
 	@Autowired
 	@Qualifier("VariantOne")
 	private VariantStrategy<ParentOne, ChildOne> variantOne;
+	private String[] parentIdsOne;
 
 	@Autowired
 	@Qualifier("VariantTwo")
 	private VariantStrategy<ParentTwo, ChildTwo> variantTwo;
-
-	private String[] parentIds;
+	private String[] parentIdsTwo;
 }
