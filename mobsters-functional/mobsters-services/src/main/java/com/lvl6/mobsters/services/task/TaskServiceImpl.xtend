@@ -3,7 +3,6 @@ package com.lvl6.mobsters.services.task
 import com.lvl6.mobsters.common.utils.AbstractAction
 import com.lvl6.mobsters.common.utils.AbstractService
 import com.lvl6.mobsters.common.utils.ICallableAction
-import com.lvl6.mobsters.domain.game.api.IGameServer
 import com.lvl6.mobsters.domain.game.api.IPlayer
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.domain.game.api.IUserResource
@@ -21,7 +20,6 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
-import com.lvl6.mobsters.info.repository.QuestRepository
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import com.lvl6.mobsters.utility.lambda.Director
@@ -41,13 +39,13 @@ import org.hibernate.validator.constraints.ScriptAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 import static com.google.common.base.Preconditions.*
 import static com.lvl6.mobsters.services.task.TaskServiceImpl.*
 
 import static extension java.lang.String.format
+import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
 
 @Component
 class TaskServiceImpl extends AbstractService implements TaskService
@@ -76,7 +74,6 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	private var extension TaskExtensionLib taskExtensionLib
 
 	@Autowired
-	@Qualifier("concurrent")
 	private var extension ProbabilityExtensionLib probExtensionLib
 
 	@Autowired
@@ -86,7 +83,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	private var DataServiceTxManager txManager
 	
 	@Autowired
-	private var IGameServer resourceFactory
+	private var IUserResourceFactory resourceFactory
 
 	/**************************************************************************/
 	/* BEGIN NON-CRUD LOGIC **********************************************/
@@ -278,7 +275,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		
 		val extension ConfigExtensions configExtensionLib
 	
-		val IGameServer gameServer
+		val IUserResourceFactory gameServer
 		
 		// Derived state
 		//
@@ -325,9 +322,13 @@ class TaskServiceImpl extends AbstractService implements TaskService
 				IEventListener.isInstance(resultBuilder), 
 				"resultBuilder must implement listener interface and extend AbstractClientEventListener"
 			)
-			gameServer.registerListenerSync(
-				IEventListener.cast(resultBuilder)
-			)
+			
+			// There is a need around here to ensure we're prepared to receive any outcome events needed
+			// to prepare a response event for the game client to be sent via the Asynchronous future that
+			// we sent to for its I/O thread to expect a callback through.
+//			gameServer.registerListenerSync(
+//				IEventListener.cast(resultBuilder)
+//			)
 			
 			verifySemantics()
 	
