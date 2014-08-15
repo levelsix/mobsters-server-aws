@@ -12,4 +12,6 @@
 		">
 
 	<context:component-scan base-package="com.lvl6.mobsters.controllers"/>
+
+    <import resource="classpath:/spring-configuration.xml"/>
 </beans>

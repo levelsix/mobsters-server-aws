@@ -34,10 +34,7 @@ class EventFactoryProcessor extends AbstractClassProcessor
 	}
 	
 	def String getFactoryInterfaceName(ClassDeclaration factoryClass) {
-		return 
-			factoryClass.qualifiedName
-				.replace(factoryClass.simpleName, "I" + factoryClass.simpleName)
-				.replace("Impl", "")
+		return factoryClass.qualifiedName + ".IModelEventPublisher"
 	}
 	
 	def String getEventSimpleName(MethodDeclaration eventMethod) {
@@ -96,7 +93,7 @@ class EventFactoryProcessor extends AbstractClassProcessor
 					«m.parameters.map[it.simpleName].join(', ')»
 				);
 				
-				_eventPublisher.publish(newEvent);
+				this.doPublish(newEvent);
 				return;
 			'''
 			

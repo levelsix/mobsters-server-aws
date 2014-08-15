@@ -2,7 +2,6 @@ package com.lvl6.mobsters.domain.game.internal;
 
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository;
-import com.lvl6.mobsters.dynamo.repository.LocationRepository;
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterEnhancingForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository;
@@ -29,7 +28,7 @@ public interface IRepoRegistry {
 
 	public UserDataRarelyAccessedRepository getUdraRepo();
 
-	public LocationRepository getLocationRepo();
+	// public LocationRepository getLocationRepo();
 
 	public EventPersistentForUserRepository getEventRepo();
 

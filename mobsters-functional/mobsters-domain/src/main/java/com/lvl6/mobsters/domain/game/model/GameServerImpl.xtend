@@ -1,16 +1,10 @@
 package com.lvl6.mobsters.domain.game.model
 
-import com.google.common.eventbus.AsyncEventBus
-import com.google.common.eventbus.EventBus
-import com.lvl6.mobsters.domain.game.api.IGameServer
 import com.lvl6.mobsters.domain.game.api.IUserResource
-import com.lvl6.mobsters.domain.game.event.IEventListener
-import com.lvl6.mobsters.domain.game.event.IEventPublisher
-import com.lvl6.mobsters.domain.game.event.IGameEvent
+import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
 import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository
-import com.lvl6.mobsters.dynamo.repository.LocationRepository
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository
 import com.lvl6.mobsters.dynamo.repository.MonsterEnhancingForUserRepository
 import com.lvl6.mobsters.dynamo.repository.MonsterEvolvingForUserRepository
@@ -29,27 +23,32 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.utility.indexing.by_object.ObjKeyIndex
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 
-@Component
-//@ExtractInterfaces(
-//	api="com.lvl6.mobsters.domain.game.api.IGameServer",
-//	internal="com.lvl6.mobsters.domain.game.internal.IGameServerInternal"
-//)
+/**
+ * A singleton facade class that serves several purposes that should probably get distributed to
+ * a collection of singletons for a healthier separation of concerns:
+ * 
+ * <ol>
+ *   <li>It plays the role of a ResourceSet by providing an entry point for the service layer to access
+ *       a UserResource that can be opened/connected to gain access to the game state of a connected player</li>
+ *   <li>It delegates interactions with observers and listeners to the EventBus components used to carve out
+ *       a allow services to send structures responses back to the controller layer without either layer becoming
+ *       dependent on or synchronous with the other./li>
+ *   <li>It acts as a registry for data layer artifacts that all semantic layer artifacts can access through a single
+ *       stored reference, keeping data layer access from having excessive storage overhead.</li>
+ * </ol>
+ */
+@Component("userResourceFactory")
 class GameServerImpl 
-implements IGameServer, IEventPublisher, IRepoRegistry
+implements IUserResourceFactory, IRepoRegistry
 {
 	// TODO: Idle timeout purging and explicit close cleanup behaviors, some of which can already be
 	//        found in Kelly's contributions.
 	private val ObjKeyIndex<String, UserResourceImpl> resourceMap = 
 		new ObjKeyIndex<String, UserResourceImpl>[it.getUserUuid()];
-	
-	private val EventBus syncEventBus
-	private val EventBus asyncEventBus
-	private val ExecutorService asyncThreadPool = Executors.newCachedThreadPool
 	
 	@Autowired
 	@Property
@@ -63,9 +62,9 @@ implements IGameServer, IEventPublisher, IRepoRegistry
 	@Property
 	UserDataRarelyAccessedRepository udraRepo
 	
-	@Autowired
-	@Property
-	LocationRepository locationRepo
+//	@Autowired
+//	@Property
+//	LocationRepository locationRepo
 	
 	@Autowired
 	@Property
@@ -134,43 +133,6 @@ implements IGameServer, IEventPublisher, IRepoRegistry
 //	@Autowired
 //	@Property
 //	var TaskExtensionLib taskExtensionLib
-	
-	@Autowired
-	@Property
-	var IEventPublisher eventPublisher
-	
-	new() {
-		syncEventBus = new EventBus()
-		asyncEventBus = new AsyncEventBus(asyncThreadPool)
-	}
-		
-	// @ExposeTo( api=true, internal=true )
-	override void registerListenerSync(IEventListener listener) {
-		syncEventBus.register(listener)
-		return
-	}
-	
-	// @ExposeTo( api=true, internal=true )
-	override void registerListenerAsync(IEventListener listener) {
-		asyncEventBus.register(listener)		
-		return
-	}
-	
-	// @ExposeTo( api=true, internal=true )
-	override void deregisterListener(IEventListener listener) {
-		syncEventBus.unregister(listener)
-		asyncEventBus.unregister(listener)
-		
-		return
-	}
-		
-	// @ExposeTo( api=false, internal=true )
-	override void publish(IGameEvent event) {
-		asyncEventBus.post(event);
-		syncEventBus.post(event);
-		
-		return
-	}
 	
 	//
 	// Provide all semantic objects and their canvas access to the repository objects

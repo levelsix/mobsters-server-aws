@@ -3,7 +3,6 @@ package com.lvl6.mobsters.domain.game.model
 import com.google.common.base.Preconditions
 import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
 import com.lvl6.mobsters.domain.game.internal.IUserResourceInternal
-import com.lvl6.mobsters.events.GameEvent
 
 abstract class AbstractSemanticObject {
 	private val IUserResourceInternal resourceService
