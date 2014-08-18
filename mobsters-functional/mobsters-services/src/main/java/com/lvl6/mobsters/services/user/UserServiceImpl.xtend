@@ -4,7 +4,6 @@ import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.UserCredential
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository
-import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.services.monster.MonsterService
@@ -26,6 +25,7 @@ import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode.*
 
 import static extension com.lvl6.mobsters.utility.common.CollectionUtils.*
+import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepositoryImpl
 
 @Component
 class UserServiceImpl implements UserService
@@ -36,7 +36,7 @@ class UserServiceImpl implements UserService
 	var UserRepository userRepo
 
 	@Autowired
-	var UserDataRarelyAccessedRepository userDraRepo
+	var UserDataRarelyAccessedRepositoryImpl userDraRepo
 
 	@Autowired
 	var UserCredentialRepository userCredentialRepository
@@ -539,7 +539,7 @@ class UserServiceImpl implements UserService
 		this.userRepo = userRepo
 	}
 
-	def void setUserDraRepo(UserDataRarelyAccessedRepository userDraRepo)
+	def void setUserDraRepo(UserDataRarelyAccessedRepositoryImpl userDraRepo)
 	{
 		this.userDraRepo = userDraRepo
 	}
