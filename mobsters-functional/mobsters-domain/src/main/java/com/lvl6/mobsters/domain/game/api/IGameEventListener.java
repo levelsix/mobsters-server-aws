@@ -1,4 +1,9 @@
-package com.lvl6.mobsters.domain.game.event;
+package com.lvl6.mobsters.domain.game.api;
+
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+import com.lvl6.mobsters.domain.game.api.events.IGameEvent;
+import com.lvl6.mobsters.event.IEventListener;
 
 /**
  * Primarily a marker interface for classes with event handler methods for events emitted 
@@ -16,7 +21,7 @@ package com.lvl6.mobsters.domain.game.event;
  * 
  * For more details and feature documentation, see {@link EventBus} and {@link AsyncEventBus}
  */
-public interface IEventListener {
+public interface IGameEventListener extends IEventListener<IGameEvent> {
 	/**
 	 * Service layer interactions are called "Conversations" in this API Javadoc.  The
 	 * {@link beginConversation(String) }  and {@link endConversation(String)} methods are

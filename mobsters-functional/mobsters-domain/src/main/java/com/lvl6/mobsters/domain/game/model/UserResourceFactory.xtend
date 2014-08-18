@@ -2,7 +2,6 @@ package com.lvl6.mobsters.domain.game.model
 
 import com.lvl6.mobsters.domain.game.api.IUserResource
 import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
-import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository
 import com.lvl6.mobsters.dynamo.repository.MiniJobForUserRepository
@@ -18,14 +17,14 @@ import com.lvl6.mobsters.dynamo.repository.TaskForUserCompletedRepository
 import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository
-import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.utility.indexing.by_object.ObjKeyIndex
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
+import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepositoryImpl
 
 /**
  * A singleton facade class that serves several purposes that should probably get distributed to
@@ -42,7 +41,7 @@ import org.springframework.stereotype.Component
  * </ol>
  */
 @Component("userResourceFactory")
-class GameServerImpl 
+class UserResourceFactory 
 implements IUserResourceFactory, IRepoRegistry
 {
 	// TODO: Idle timeout purging and explicit close cleanup behaviors, some of which can already be
@@ -60,7 +59,7 @@ implements IUserResourceFactory, IRepoRegistry
 	
 	@Autowired
 	@Property
-	UserDataRarelyAccessedRepository udraRepo
+	UserDataRarelyAccessedRepositoryImpl udraRepo
 	
 //	@Autowired
 //	@Property
@@ -134,6 +133,14 @@ implements IUserResourceFactory, IRepoRegistry
 //	@Property
 //	var TaskExtensionLib taskExtensionLib
 	
+	@Autowired
+	@Property
+	var IGameEventMediator gameEventMediator
+	
+	@Autowired
+	@Property
+	var DataServiceTxManager txManager;
+	
 	//
 	// Provide all semantic objects and their canvas access to the repository objects
 	//
@@ -151,6 +158,18 @@ implements IUserResourceFactory, IRepoRegistry
 		}
 		
 		return resource
+	}
+	
+	override beginTransaction() {
+		txManager.beginTransaction()
+	}
+	
+	override commitTransaction() {
+		txManager.commit()
+	}
+	
+	override rollbackTransaction() {
+		txManager.rollback()
 	}
 	
 }

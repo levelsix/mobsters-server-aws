@@ -1,7 +1,6 @@
 package com.lvl6.mobsters.domain.game.model
 
 import com.lvl6.mobsters.domain.game.api.IPlayerTaskStage
-import com.lvl6.mobsters.domain.game.internal.IPlayerTaskStageInternal
 import com.lvl6.mobsters.dynamo.TaskStageForUser
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.IQuestJobMonsterItem
@@ -10,7 +9,7 @@ import com.lvl6.mobsters.info.ITaskStageMonster
 import com.lvl6.properties.ControllerConstants
 import java.util.List
 
-class SemanticPlayerTaskStage 
+class PlayerTaskStage 
 	extends AbstractSemanticObject 
 	implements IPlayerTaskStage, IPlayerTaskStageInternal {
 	
@@ -18,9 +17,9 @@ class SemanticPlayerTaskStage
 	val TaskStageForUser playerTaskStage
 	
 	protected new(
-		SemanticPlayerTask parent, 
+		PlayerTask parent, 
 		ITaskStage taskStageMeta,
-		Iterable<IQuestJob> questJobs,
+		List<IQuestJob> questJobs,
 		String elementName,
 		boolean mayGeneratePieces
 	) {
@@ -30,7 +29,7 @@ class SemanticPlayerTaskStage
 	}
 	
 	protected new(
-		SemanticPlayerTask parent, 
+		PlayerTask parent, 
 		TaskStageForUser playerTaskStage
 	) {
 		super(parent)
@@ -83,8 +82,6 @@ class SemanticPlayerTaskStage
 				it.itemIdDropped = -1
 				it.monsterPieceDropped = mayGeneratePieces
 			}
-			
-//			Øß
 		]		
 	}
 	
@@ -100,4 +97,11 @@ class SemanticPlayerTaskStage
 //		int droppedItemId, boolean monsterPieceDropped ) 
 //	{
 //	}	
+			
+	// Unwrap methods for internal access
+	
+	override getTaskStageForUser() {
+		return playerTaskStage;
+	}
+	
 }

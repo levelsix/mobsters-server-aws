@@ -32,9 +32,6 @@
 	     Alternately, emphasize the importance that the consumer configure
 	     this thread pool for their own needs since its given defaults
 	     represent an uneducated best guess. -->
-	<task:executor id="asyncEventPool" 
-	 keep-alive="10" pool-size="1-3" queue-capacity="128"
-	 rejection-policy="CALLER_RUNS"/>
-
-    <import resource="classpath:/spring-configuration.xml"/>
+	<task:executor id="asyncEventPool" rejection-policy="CALLER_RUNS"
+	 keep-alive="10" pool-size="1-3" queue-capacity="128"/>
 </beans>

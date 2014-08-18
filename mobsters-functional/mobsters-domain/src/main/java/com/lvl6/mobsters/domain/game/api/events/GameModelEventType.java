@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domain.game.event;
+package com.lvl6.mobsters.domain.game.api.events;
 
 
 public enum GameModelEventType {

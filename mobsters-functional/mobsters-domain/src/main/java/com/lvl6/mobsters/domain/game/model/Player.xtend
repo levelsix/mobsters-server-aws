@@ -3,40 +3,34 @@ package com.lvl6.mobsters.domain.game.model
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
 import com.lvl6.mobsters.domain.game.api.IPlayer
-import com.lvl6.mobsters.domain.game.internal.IPlayerInternal
-import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
-import com.lvl6.mobsters.domain.game.internal.IUserResourceInternal
 import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.indexing.by_int.IntKeyIndex
+import java.util.ArrayList
 import java.util.List
 import java.util.concurrent.Callable
 import org.slf4j.Logger
 
 import static com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions.*
 
-//@ExtractInterfaces(
-//	api="com.lvl6.mobsters.domain.game.api.IPlayer",
-//	internal="com.lvl6.mobsters.domain.game.internal.IPlayerInternal"
-//)
-class PlayerImpl 
+class Player 
 	extends AbstractSemanticObject 
 	implements IPlayer, IPlayerInternal
 {
 	var User user
-	var IntKeyIndex<SemanticPlayerTask> completedPlayerTasks
-	var List<SemanticPlayerTask> ongoingPlayerTasks
+	var IntKeyIndex<PlayerTask> completedPlayerTasks
+	var List<PlayerTask> ongoingPlayerTasks
 
-	new(IRepoRegistry repoRegistry, IUserResourceInternal resourceContainer, User user) {
+	new(IRepoRegistry repoRegistry, UserResourceImpl resourceContainer, User user) {
 		super(repoRegistry, resourceContainer)
 		this.user = user;
 		this.completedPlayerTasks = null
 		this.ongoingPlayerTasks = null
 	}
 	
-	override List<SemanticPlayerTask> getOngoingPlayerTasks() {
+	override List<PlayerTask> getOngoingPlayerTasks() {
 		if (this.ongoingPlayerTasks == null ) {
 			loadOngoingTasks();
 		}
@@ -44,7 +38,7 @@ class PlayerImpl
 		return ImmutableList.copyOf(this.ongoingPlayerTasks)
 	}
 	
-	override SemanticPlayerTask getOngoingPlayerTask(ITask taskMeta) {
+	override PlayerTask getOngoingPlayerTask(ITask taskMeta) {
 		if (this.ongoingPlayerTasks == null ) {
 			loadOngoingTasks();
 		}
@@ -52,8 +46,8 @@ class PlayerImpl
 		return this.ongoingPlayerTasks.findFirst[return it.taskMeta === taskMeta]		
 	}
 	
-	override SemanticPlayerTask beginTask(
-		ITask taskMeta, Iterable<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces
+	override PlayerTask beginTask(
+		ITask taskMeta, List<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces
 	) {
 		Preconditions.checkNotNull(taskMeta)
 
@@ -70,8 +64,8 @@ class PlayerImpl
 		// ongoingPlayerTasks.forEach[it.cancelOngoingTask()]
 		ongoingPlayerTasks.clear
 		
-		var SemanticPlayerTask newSemanticTask = 
-			new SemanticPlayerTask(this, taskMeta, questJobs, elementName, mayGeneratePieces)
+		var PlayerTask newSemanticTask = 
+			new PlayerTask(this, taskMeta, questJobs, elementName, mayGeneratePieces)
 		ongoingPlayerTasks.add(newSemanticTask)
 		
 		return newSemanticTask
@@ -85,7 +79,7 @@ class PlayerImpl
 		return completedPlayerTasks.get(aTask.id) != null
 	}
 
-	override PlayerImpl checkCanSpendGems(
+	override Player checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda) 
 	{
 		lvl6Precondition(
@@ -101,7 +95,7 @@ class PlayerImpl
 		return this
 	}
 
-	override PlayerImpl checkCanSpendGems(int gemsToSpend, Logger log) {
+	override Player checkCanSpendGems(int gemsToSpend, Logger log) {
 		lvl6Precondition(
 			this.canSpendGems(gemsToSpend),
 			Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_GEMS,
@@ -114,7 +108,7 @@ class PlayerImpl
 		return this
 	}
 
-	override PlayerImpl checkCanSpendCash(
+	override Player checkCanSpendCash(
 		int cashToSpend,
 		Logger log,
 		Callable<String> spendPurposeLambda
@@ -132,7 +126,7 @@ class PlayerImpl
 		return this
 	}
 
-	override PlayerImpl checkCanSpendCash(int cashToSpend, Logger log) {
+	override Player checkCanSpendCash(int cashToSpend, Logger log) {
 		lvl6Precondition(
 			this.canSpendCash(cashToSpend),
 			Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_CASH,
@@ -145,7 +139,7 @@ class PlayerImpl
 		return this
 	}
 
-	override PlayerImpl checkCanSpendOil(
+	override Player checkCanSpendOil(
 		int oilToSpend,
 		Logger log,
 		Callable<String> spendPurposeLambda
@@ -163,7 +157,7 @@ class PlayerImpl
 		return this
 	}
 
-	override PlayerImpl checkCanSpendOil(int oilToSpend, Logger log) {
+	override Player checkCanSpendOil(int oilToSpend, Logger log) {
 		lvl6Precondition(
 			this.canSpendOil(oilToSpend),
 			Lvl6MobstersStatusCode::FAIL_INSUFFICIENT_OIL,
@@ -194,7 +188,7 @@ class PlayerImpl
 		return (user.oil >= oilToSpend)
 	}
 
-	override PlayerImpl spendGems(int gemsToSpend, Logger log) {
+	override Player spendGems(int gemsToSpend, Logger log) {
 		this.checkCanSpendGems(gemsToSpend, log)
 		user.gems = user.gems - gemsToSpend
 		return this
@@ -210,7 +204,7 @@ class PlayerImpl
 		return retVal
 	}
 
-	override PlayerImpl spendCash(int cashToSpend, Logger log) {
+	override Player spendCash(int cashToSpend, Logger log) {
 		this.checkCanSpendCash(cashToSpend, log)
 		user.cash = user.cash - cashToSpend
 		return this
@@ -226,7 +220,7 @@ class PlayerImpl
 		return retVal
 	}
 
-	override PlayerImpl spendOil(int oilToSpend, Logger log) {
+	override Player spendOil(int oilToSpend, Logger log) {
 		this.checkCanSpendOil(oilToSpend, log)
 		user.oil = user.oil - oilToSpend
 		return this
@@ -244,21 +238,22 @@ class PlayerImpl
 	}
 	
 	private def void loadOngoingTasks() {
-		this.ongoingPlayerTasks = this.repoRegistry.tfuOngoingRepo
-			.findByUserId(getUserUuid())
-			.map[return new SemanticPlayerTask(this, it, null)]
-			.toList
+		this.ongoingPlayerTasks = new ArrayList<PlayerTask>(
+			this.repoRegistry.tfuOngoingRepo
+				.findByUserId(getUserUuid())
+				.map[return new PlayerTask(this, it, null)]
+		);
 
 		return
 	}
 
 	private def void loadCompletedTasks() {
-		this.completedPlayerTasks = new IntKeyIndex<SemanticPlayerTask> [return it.taskMeta.id]
+		this.completedPlayerTasks = new IntKeyIndex<PlayerTask> [return it.taskMeta.id]
 		this.repoRegistry.tfuCompleteRepo
 			.findByUserId(getUserUuid())
 			.forEach[
 				this.completedPlayerTasks.put(
-					new SemanticPlayerTask(this, null, it))]            
+					new PlayerTask(this, null, it))]            
 
 		return
 	}

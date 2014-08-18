@@ -45,11 +45,11 @@ class EventFactoryProcessor extends AbstractClassProcessor
 	}
 		
 	def String getEventClassName(MethodDeclaration eventMethod) {		
-		return "com.lvl6.mobsters.domain.game.event." + eventMethod.eventSimpleName
+		return "com.lvl6.mobsters.domain.game.event.impl." + eventMethod.eventSimpleName
 	}
 	
 	def String getEventInterfaceName(MethodDeclaration eventMethod) {
-		return "com.lvl6.mobsters.domain.game.event.I" + eventMethod.eventSimpleName
+		return "com.lvl6.mobsters.domain.game.event.impl.I" + eventMethod.eventSimpleName
 	}
 	
 	def Iterable<MethodDeclaration> getEventMethods(ClassDeclaration annotatedClass)
@@ -115,7 +115,7 @@ class EventFactoryProcessor extends AbstractClassProcessor
 		eventClassType.implementedInterfaces =
 			#[eventInterfaceType.newTypeReference]
 		eventInterfaceType.extendedInterfaces = 
-			#[context.findTypeGlobally("com.lvl6.mobsters.domain.game.event.IGameEvent")
+			#[context.findTypeGlobally("com.lvl6.mobsters.domain.game.event.api.IGameEvent")
 				.newTypeReference()]
 		
 		eventInterfaceType.visibility = Visibility.PUBLIC
@@ -165,30 +165,4 @@ class EventFactoryProcessor extends AbstractClassProcessor
 			]
 		}
 	}
-	
-//	def ConstructorDeclaration findConstructor(MutableFieldDeclaration fld) 
-//	{
-//		return fld.type.type.compilationUnit.sourceTypeDeclarations.map[
-//			it.declaredConstructors.filter[
-//				it.declaringType.qualifiedName == fld.type.type.qualifiedName
-//			]
-//		].flatten.reduce[best, next |
-//			var retVal = best
-//			if (next.parameters.size > best.parameters.size) {
-//				retVal = next
-//			}
-//			return retVal
-//		]
-//	}
-//	
-//	def TypeReference findInterface(MutableFieldDeclaration fld) {
-//		return
-//			fld.type.type.compilationUnit.sourceTypeDeclarations
-//			.map[src | src.declaredClasses
-//				.filter[cls | cls.qualifiedName == fld.type.type.qualifiedName]
-//				.map[cls | cls.implementedInterfaces]
-//				.get(0)]
-//			.flatten
-//			.get(0)
-//	}
 }

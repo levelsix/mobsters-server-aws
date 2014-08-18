@@ -17,7 +17,7 @@ public interface IPlayer {
 	public boolean hasCompleted(ITask taskMeta);
 	
 	public IPlayerTask beginTask(
-		ITask taskMeta, Iterable<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
+		ITask taskMeta, List<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
 
 	public IPlayer checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda);

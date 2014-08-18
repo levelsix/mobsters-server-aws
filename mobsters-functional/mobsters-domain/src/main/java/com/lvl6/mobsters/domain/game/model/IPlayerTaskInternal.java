@@ -1,11 +1,11 @@
-package com.lvl6.mobsters.domain.game.internal;
+package com.lvl6.mobsters.domain.game.model;
 
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
 import com.lvl6.mobsters.info.ITask;
 
 
-public interface IPlayerTaskInternal {
+interface IPlayerTaskInternal {
 	// String getUuid();
 	
 	String getTaskForUserId();

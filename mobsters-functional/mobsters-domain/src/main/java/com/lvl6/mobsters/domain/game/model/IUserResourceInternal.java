@@ -1,6 +1,6 @@
-package com.lvl6.mobsters.domain.game.internal;
+package com.lvl6.mobsters.domain.game.model;
 
-public interface IUserResourceInternal {
+interface IUserResourceInternal {
 	public String getUserUuid();
 
 	public IPlayerInternal connect();

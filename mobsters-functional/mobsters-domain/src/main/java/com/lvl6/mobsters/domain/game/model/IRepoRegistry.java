@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domain.game.internal;
+package com.lvl6.mobsters.domain.game.model;
 
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.EventPersistentForUserRepository;
@@ -20,7 +20,7 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib;
 
-public interface IRepoRegistry {
+interface IRepoRegistry {
 
 	public UserRepository getUserRepo();
 
@@ -58,7 +58,15 @@ public interface IRepoRegistry {
 
 	public AchievementForUserRepository getAchievementRepo();
 
+	public void beginTransaction();
+	
+	public void commitTransaction();
+	
+	public void rollbackTransaction();
+	
 	public ConfigExtensions getConfigExtensionLib();
 
 	public ProbabilityExtensionLib getProbabilityExtensionLib();
+
+	public IGameEventMediator getGameEventMediator();
 }

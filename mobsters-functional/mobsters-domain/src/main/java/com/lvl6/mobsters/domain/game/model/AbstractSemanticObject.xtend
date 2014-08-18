@@ -1,17 +1,16 @@
 package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
-import com.lvl6.mobsters.domain.game.internal.IRepoRegistry
-import com.lvl6.mobsters.domain.game.internal.IUserResourceInternal
+import com.lvl6.mobsters.domain.game.api.events.IGameEvent
 
 abstract class AbstractSemanticObject {
-	private val IUserResourceInternal resourceService
+	private val UserResourceImpl resourceService
 	private val IRepoRegistry repoRegistryService
 	private val AbstractSemanticObject container
 	
 	protected new(
 		IRepoRegistry repoRegistryService,
-		IUserResourceInternal resourceService 
+		UserResourceImpl resourceService 
 	)
 	{
 		Preconditions.checkNotNull(repoRegistryService)
@@ -35,5 +34,9 @@ abstract class AbstractSemanticObject {
 
 	protected def String getUserUuid() {
 		return resourceService.getUserUuid()
+	}
+	
+	protected def void publish(IGameEvent evt) {
+		repoRegistryService.getGameEventMediator().publish(evt)
 	}
 }

@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.domain.game.internal;
+package com.lvl6.mobsters.domain.game.model;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -9,7 +9,7 @@ import com.lvl6.mobsters.info.IQuestJob;
 import com.lvl6.mobsters.info.ITask;
 
 
-public interface IPlayerInternal {
+interface IPlayerInternal {
 	public List<? extends IPlayerTaskInternal> getOngoingPlayerTasks();
 	
 	public IPlayerTaskInternal getOngoingPlayerTask(ITask taskMeta);
@@ -17,7 +17,7 @@ public interface IPlayerInternal {
 	public boolean hasCompleted(ITask taskMeta);
 	
 	public IPlayerTaskInternal beginTask(
-		ITask taskMeta, Iterable<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
+		ITask taskMeta, List<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
 
 	public IPlayerInternal checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda);

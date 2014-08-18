@@ -2,8 +2,6 @@ package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
-import com.lvl6.mobsters.domain.game.internal.IPlayerInternal
-import com.lvl6.mobsters.domain.game.internal.IPlayerTaskInternal
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.info.IQuestJob
@@ -11,33 +9,22 @@ import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import java.util.List
 
-//@ExtractInterfaces(
-//	api="com.lvl6.mobsters.domain.game.api.IPlayerTask", 
-//	internal="com.lvl6.mobsters.domain.game.IPlayerTaskInternal"
-//)
-class SemanticPlayerTask 
+class PlayerTask 
 	extends AbstractSemanticObject 
 	implements IPlayerTask, IPlayerTaskInternal
 {
-	private val IPlayerInternal parent
-	
-//	@SemanticPassthrough(
-//		idProperty="taskForUserId",
-//		clientInterface=PlayerTask,
-//		serverInterface=ServerPlayerTask
-//	)
 	private val TaskForUserOngoing ongoingTask
 	
 	private val TaskForUserCompleted completedTask
 	
 	private val ITask taskMeta
 	
-	private val List<SemanticPlayerTaskStage> playerTaskStages
+	private val List<PlayerTaskStage> playerTaskStages
 	
 	/**
 	 * Constructor for "wrap pre-existing"
 	 */
-	new( PlayerImpl parent, TaskForUserOngoing ongoingTask, TaskForUserCompleted completedTask )
+	new( Player parent, TaskForUserOngoing ongoingTask, TaskForUserCompleted completedTask )
 	{
 		super(parent)
 		
@@ -56,7 +43,6 @@ class SemanticPlayerTask
 			this.taskMeta = completedTask.taskId.taskMeta
 		}
 		
-		this.parent = parent
 		this.ongoingTask = ongoingTask
 		this.completedTask = completedTask
 		this.playerTaskStages = null
@@ -65,7 +51,7 @@ class SemanticPlayerTask
 	/**
 	 * Constructor for "create and wrap"
 	 */
-	new( PlayerImpl parent, ITask taskMeta, Iterable<IQuestJob> questJobs, 
+	new( Player parent, ITask taskMeta, List<IQuestJob> questJobs, 
 		String elementName, boolean mayGeneratePieces )
 	{
 		super(parent)
@@ -75,9 +61,9 @@ class SemanticPlayerTask
 		Preconditions.checkNotNull(questJobs)
 		// Element Name may be null--it indicates select randomly rather than force selection.
 		
-		this.parent = parent
 		this.taskMeta = taskMeta
 		this.ongoingTask = new TaskForUserOngoing() => [
+			it.userId = this.userUuid
 			it.taskId = taskMeta.id
 		]
 		this.completedTask = null
@@ -89,7 +75,7 @@ class SemanticPlayerTask
 			// 3) calculate currency changes
 			// NOTE: quest monster items are dropped based on QUEST JOB ID, not quest id
 			taskMeta.taskStages.map [ stageMeta |
-				new SemanticPlayerTaskStage(this, stageMeta, questJobs, elementName, mayGeneratePieces)
+				new PlayerTaskStage(this, stageMeta, questJobs, elementName, mayGeneratePieces)
 			]
 	}
 	
@@ -124,7 +110,14 @@ class SemanticPlayerTask
 			Integer.toString(taskMeta.id)
 		)
 		
-		repoRegistry.tfuOngoingRepo.save(ongoingTask)
+		repoRegistry => [
+			beginTransaction()
+			tfuOngoingRepo.save(ongoingTask)
+			taskStageForUserRepo.saveEach(
+				playerTaskStages.map[it.taskStageForUser]
+			)
+			commitTransaction()
+		]
 		return
 	}
 
