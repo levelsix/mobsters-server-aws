@@ -2,21 +2,18 @@ package com.lvl6.mobsters.info;
 
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
-// @Entity(name="TaskMapElement")
-// @Table(name="task_map_element")
-@Embeddable
-@Proxy(lazy=true, proxyClass=ITaskMapElement.class)
+@Entity(name="Task")
+@Table(name="task")
+@Proxy(lazy=true, proxyClass=ITask.class)
 public class TaskMapElement extends BaseIntPersistentObject implements ITaskMapElement{
 
 	private static final long serialVersionUID = 8026080003793182493L;
@@ -139,11 +136,19 @@ public class TaskMapElement extends BaseIntPersistentObject implements ITaskMapE
 	@Override
 	public String toString()
 	{
-		return 
-			String.format(
-				"TaskMapElement [task=%d, xPos=%d, yPos=%d, element=%s, boss=%s, bossImgName=%s]",
-				task.getId(), xPos, yPos, element, boss, bossImgName
-			);
+		return "TaskMapElement [task="
+			+ task
+			+ ", xPos="
+			+ xPos
+			+ ", yPos="
+			+ yPos
+			+ ", element="
+			+ element
+			+ ", boss="
+			+ boss
+			+ ", bossImgName="
+			+ bossImgName
+			+ "]";
 	}
 
 }

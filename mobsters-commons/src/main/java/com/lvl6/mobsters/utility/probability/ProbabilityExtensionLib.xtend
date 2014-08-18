@@ -17,29 +17,19 @@ class ProbabilityExtensionLib {
 	public def <T> List<T> selectWithoutReplacement(
 		Iterable<T> source, int quantity, (T)=>float relativeFrequency)
 	{
-		val int size = source.size()
-		if (size == quantity) {
-			return source.toList
-		}
-		Preconditions.checkArgument(
-			size > quantity,
-			String.format(
-				"Cannot return <%d> elements without replacement from a source collection of only <%d> candidates: <%s>",
-				quantity, size, source.toList.toString
-			)
-		)
-
-		val FloatCounter sumOfProbabilities = new FloatCounter()
+		val FloatCounter sumOfProbabilities = 
+			new FloatCounter()
 		val List<FloatTaggedObject<T>> freqSource =
 			source.map[
 				val float chanceToAppear = relativeFrequency.apply(it)
 				sumOfProbabilities.add(chanceToAppear)
 				return new FloatTaggedObject(it, chanceToAppear)
 			].toList
+		val int size = freqSource.size()
 		
 	  	//sum up chance to appear, and need to normalize all the probabilities
 	  	val FloatCounter randFloat = new FloatCounter();
-	  	return (0..<quantity).map[
+	  	return (0..size).map[
 	  		randFloat.set(
 	  			randomSource.nextFloat() * sumOfProbabilities.read()
 	  		)

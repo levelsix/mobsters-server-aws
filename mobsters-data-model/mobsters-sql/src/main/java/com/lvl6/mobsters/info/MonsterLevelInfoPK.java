@@ -2,18 +2,23 @@ package com.lvl6.mobsters.info;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class MonsterLevelInfoPK implements Serializable {
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + level;
-		result = prime * result + monsterId;
+		result = prime * result + ((monster == null) ? 0 : monster.getId());
 		return result;
 	}
 
@@ -29,7 +34,13 @@ public class MonsterLevelInfoPK implements Serializable {
 		if (level != other.level) {
 			return false;
 		}
-		if (monsterId != other.monsterId) {
+		if (monster == null) {
+			if (other.monster != null) {
+				return false;
+			}
+		} else if (other.monster == null) {
+			return false;
+		} else if (monster.getId() != other.monster.getId()) {
 			return false;
 		}
 		
@@ -37,9 +48,8 @@ public class MonsterLevelInfoPK implements Serializable {
 	}
 
 	/**
-	 * 
 	 */
-	private static final long serialVersionUID = -7333608374903575813L;
+	private static final long serialVersionUID = -3560950509517997610L;
 
 //	@JoinColumn(
 //		name = "monster_id",
@@ -50,18 +60,37 @@ public class MonsterLevelInfoPK implements Serializable {
 //		updatable = false,
 //		unique = false
 //	)
-	@Column(nullable=false, name="monster_id")
-    int monsterId;
+//    int monster_id;
+    
+	@ManyToOne(
+		fetch = FetchType.LAZY, 
+		targetEntity = Monster.class, 
+		optional = false, 
+		cascade = CascadeType.REFRESH
+	)
+	@JoinColumn(
+		name = "monster_id", 
+		referencedColumnName = "id", 
+		nullable = false, 
+		foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT), 
+		insertable = true, 
+		updatable = false, 
+		unique = false
+	)
+	IMonster monster;
 
-	@Column(name = "level", nullable = false)	
+	@Column(
+		name = "level",
+		nullable = false
+	)	
 	int level;
 
-	public int getMonsterId() {
-		return monsterId;
+	public IMonster getMonster() {
+		return monster;
 	}
 
-	public void setMonsterId(int monsterId) {
-		this.monsterId = monsterId;
+	public void setMonster(IMonster monster) {
+		this.monster = monster;
 	}
 
 	public int getLevel() {

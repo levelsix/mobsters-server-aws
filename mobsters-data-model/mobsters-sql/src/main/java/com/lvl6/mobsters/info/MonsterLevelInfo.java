@@ -1,14 +1,9 @@
 package com.lvl6.mobsters.info;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -27,22 +22,8 @@ public class MonsterLevelInfo implements IMonsterLevelInfo{
 	@EmbeddedId
 	private MonsterLevelInfoPK id;
 
-	@MapsId("monster_id")
-	@ManyToOne(
-			fetch = FetchType.LAZY, 
-			targetEntity = Monster.class, 
-			optional = false, 
-			cascade = CascadeType.REFRESH
-		)
-		@JoinColumn(
-			name = "monster_id", 
-			referencedColumnName = "id", 
-			nullable = false, 
-			foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT), 
-			insertable = true, 
-			updatable = false, 
-			unique = false
-		)
+	@MapsId("monster")
+	@ManyToOne(targetEntity=Monster.class)
 	private IMonster monster;
 	
 	@Column(name = "hp")
@@ -84,9 +65,8 @@ public class MonsterLevelInfo implements IMonsterLevelInfo{
 			float expLvlDivisor, float expLvlExponent, int sellAmount) {
 		super();
 		this.id = new MonsterLevelInfoPK();
-		this.id.monsterId = monster.getId();
+		this.id.monster = monster;
 		this.id.level = level;
-		this.monster = monster;
 		this.hp = hp;
 		this.curLvlRequiredExp = curLvlRequiredExp;
 		this.feederExp = feederExp;
@@ -126,7 +106,7 @@ public class MonsterLevelInfo implements IMonsterLevelInfo{
 	@Override
 	public IMonster getMonster()
 	{
-		return this.monster;
+		return this.id.getMonster();
 	}
 	/* (non-Javadoc)
 	 * @see com.lvl6.mobsters.info.IMonsterLevelInfo#setMonster(com.lvl6.mobsters.info.Monster)
@@ -134,7 +114,7 @@ public class MonsterLevelInfo implements IMonsterLevelInfo{
 	@Override
 	public void setMonster( IMonster monster )
 	{
-		this.monster = monster;
+		this.id.setMonster(monster);
 	}
 	
 	/* (non-Javadoc)
@@ -412,7 +392,7 @@ public class MonsterLevelInfo implements IMonsterLevelInfo{
 	}
 	@Override
 	public String toString() {
-		return "MonsterLevelInfo [monsterId=" + monster.getId() 
+		return "MonsterLevelInfo [monsterId=" + id.getMonster().getId() 
 				+ ", level=" + id.getLevel()
 				+ ", hp=" + hp + ", curLvlRequiredExp=" + curLvlRequiredExp
 				+ ", feederExp=" + feederExp + ", fireDmg=" + fireDmg

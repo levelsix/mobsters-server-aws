@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface ITask extends IBaseIntPersistentObject
 {
+
 	public String getName();
 
 	public void setName( String name );
@@ -16,19 +17,17 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public void setPrerequisiteTask( ITask prerequisiteTask );
 
-	public void setBoardHeight( int boardHeight );
+	public abstract void setBoardHeight( int boardHeight );
 
-	public int getBoardHeight();
+	public abstract int getBoardHeight();
 
-	public void setBoardWidth( int boardWidth );
+	public abstract void setBoardWidth( int boardWidth );
 
-	public int getBoardWidth();
+	public abstract int getBoardWidth();
 
-	public void setGroundImgPrefix( String groundImgPrefix );
+	public abstract void setGroundImgPrefix( String groundImgPrefix );
 
-	public String getGroundImgPrefix();
-	
-	public List<ITaskMapElement> getTaskMapElements();
+	public abstract String getGroundImgPrefix();
 
-	public List<ITaskStage> getTaskStages();
+	List<ITaskStage> getTaskStages();
 }

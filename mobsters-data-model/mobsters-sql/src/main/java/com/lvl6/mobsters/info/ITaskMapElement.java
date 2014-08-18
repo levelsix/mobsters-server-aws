@@ -2,6 +2,7 @@ package com.lvl6.mobsters.info;
 
 public interface ITaskMapElement extends IBaseIntPersistentObject
 {
+
 	public abstract void setBossImgName( String bossImgName );
 
 	public abstract String getBossImgName();

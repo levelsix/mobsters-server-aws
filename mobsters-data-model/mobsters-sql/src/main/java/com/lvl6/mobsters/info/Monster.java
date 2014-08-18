@@ -49,14 +49,14 @@ public class Monster extends BaseIntPersistentObject implements IMonster
 	@Column(name = "max_level")
 	private int maxLevel; //aka max enhancing level
 	
-	@OneToOne(fetch=FetchType.EAGER, targetEntity=Monster.class)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "evolution_monster_id",
 		nullable = true,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
 	private IMonster evolutionMonster;
 	
-	@OneToOne(fetch=FetchType.EAGER, targetEntity=Monster.class)
+	@OneToOne(fetch=FetchType.LAZY, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "evolution_catalyst_monster_id",
 			nullable = true,
@@ -658,9 +658,9 @@ public class Monster extends BaseIntPersistentObject implements IMonster
 			+ ", maxLevel="
 			+ maxLevel
 			+ ", evolutionMonster=Monster[id="
-			+ ((evolutionMonster == null) ? "null" : evolutionMonster.getId())
+			+ evolutionMonster.getId()
 			+ "], evolutionCatalystMonster=Monster[id="
-			+ ((evolutionCatalystMonster == null) ? "null" : evolutionCatalystMonster.getId())
+			+ evolutionCatalystMonster.getId()
 			+ "], minutesToEvolve="
 			+ minutesToEvolve
 			+ ", numCatalystsRequired="
@@ -692,7 +692,7 @@ public class Monster extends BaseIntPersistentObject implements IMonster
 			+ ", lvlInfo="
 			+ lvlInfo.toString()
 			+ ", battleDialogue="
-			+ battleDialogue == null ? "null" : battleDialogue.toString()
+			+ battleDialogue.toString()
 			+ ", shadowScaleFactor="
 			+ shadowScaleFactor
 			+ "]";

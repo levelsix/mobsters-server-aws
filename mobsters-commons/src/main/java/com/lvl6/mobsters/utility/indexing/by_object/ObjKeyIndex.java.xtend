@@ -17,7 +17,7 @@ class ObjKeyIndex<K extends Comparable<K>, V>
 	def V get(K key)
 	{
 		Preconditions::checkNotNull(key)
-		return lookupMap.get(key)
+		return get(key)
 	}
 
 	def V get(AbstractObjComparable<K> key)
