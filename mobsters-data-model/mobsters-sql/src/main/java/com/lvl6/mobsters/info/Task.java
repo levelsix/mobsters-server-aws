@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -52,17 +53,28 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		mappedBy="task", 
 		orphanRemoval=true,
 		targetEntity=TaskStage.class)
-	@OrderBy("level ASC")
+	@OrderBy("stage_num ASC")
 	private List<ITaskStage> taskStages;
+
+//	@OneToMany(
+//		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
+//		fetch=FetchType.LAZY,
+//		mappedBy="task", 
+//		orphanRemoval=true,
+//		targetEntity=TaskMapElement.class)
+	@ElementCollection(fetch=FetchType.LAZY, targetClass=TaskMapElement.class)
+	private List<ITaskMapElement> taskMapElements;
 	
 	public Task() {
 		super();
-		this.taskStages = new ArrayList<ITaskStage>(3);
+		this.taskStages = new ArrayList<ITaskStage>(2);
+		this.taskMapElements = new ArrayList<ITaskMapElement>(2);
 	}
 
 	public Task(final int id, final String name, final String description,
 			final ITask prerequisiteTask, final int boardWidth,
-			final int boardHeight, final String groundImgPrefix, List<ITaskStage> taskStages)
+			final int boardHeight, final String groundImgPrefix, 
+			List<ITaskStage> taskStages, List<ITaskMapElement> taskMapElements)
 	{
 		super(id);
 		this.name = name;
@@ -71,11 +83,16 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		this.boardWidth = boardWidth;
 		this.boardHeight = boardHeight;
 		this.groundImgPrefix = groundImgPrefix;
-		if( taskStages == null ) {
-			this.taskStages = new ArrayList<ITaskStage>(3);
+		if (taskStages == null) {
+			this.taskStages = new ArrayList<ITaskStage>(2);
 		} else {
 			this.taskStages = taskStages;
-	}
+		}
+		if(taskMapElements == null) {
+			this.taskMapElements = new ArrayList<ITaskMapElement>(2);
+		} else {
+			this.taskMapElements = taskMapElements;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -152,6 +169,11 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	}
 
 	@Override
+	public List<ITaskMapElement> getTaskMapElements() {
+		return this.taskMapElements;
+	}
+		
+	@Override
 	public String getGroundImgPrefix()
 	{
 		return groundImgPrefix;
@@ -180,6 +202,8 @@ public class Task extends BaseIntPersistentObject implements ITask{
 			+ groundImgPrefix
 			+ ", taskStages="
 			+ taskStages.toString()
+			+ ", taskMapElements="
+			+ taskMapElements.toString()
 			+ "]";
 	}
 }

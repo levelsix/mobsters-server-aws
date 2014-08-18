@@ -3,6 +3,7 @@ package com.lvl6.mobsters.dynamo.repository;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -127,7 +128,12 @@ public abstract class BaseDynamoCollectionRepositoryImpl<T,R> extends BaseDynamo
 			// final PaginatedQueryList<T> retVal = query(query);
 			// retVal.loadAllResults();
 			// return retVal;
-			return query(query);
+			final PaginatedQueryList<T> retSrc = query(query);
+			retSrc.loadAllResults();
+
+			final ArrayList<T> retVal = new ArrayList<T>(retSrc.size());
+			Collections.copy(retVal, retSrc);
+			return retVal;
 		}
 
 		/**
@@ -206,9 +212,12 @@ public abstract class BaseDynamoCollectionRepositoryImpl<T,R> extends BaseDynamo
 					.withConsistentRead(true);
 
 			LOG.info("Query: {}", query);
-			final PaginatedQueryList<T> objectsForHashKey = query(query);
-			objectsForHashKey.loadAllResults();
-			return objectsForHashKey;
+			final PaginatedQueryList<T> retSrc = query(query);
+			retSrc.loadAllResults();
+
+			final ArrayList<T> retVal = new ArrayList<T>(retSrc.size());
+			Collections.copy(retVal, retSrc);
+			return retVal;
 		}
 //		private static Function<T, String> CHILD_TO_ID_FUNCTION =
 //		    new Function<T, String>() {

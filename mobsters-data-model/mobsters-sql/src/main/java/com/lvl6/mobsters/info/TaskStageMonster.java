@@ -10,6 +10,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Proxy;
 
@@ -20,7 +21,7 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 
 	private static final long serialVersionUID = -6321506459007617514L;
 
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=TaskStage.class)
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=TaskStage.class)
 	@JoinColumn(
 		name = "stage_id",
 		nullable = false,
@@ -56,6 +57,7 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 	@Column(name = "dmg_multiplier")
 	private float dmgMultiplier;
 	
+	@Transient
 	private Random rand = new Random();
 	
 	public TaskStageMonster(){}
