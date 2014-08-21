@@ -30,6 +30,7 @@
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
 		<!-- module>mobsters-modeling</module -->
+		<module>mobsters-webapp</module>
 	</modules>
 
 	<organization>
@@ -329,6 +330,11 @@
 			<dependency>
 				<groupId>com.lvl6</groupId>
 				<artifactId>mobsters-amqp</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-webapp</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<!-- /Lvl6 -->
