@@ -321,6 +321,16 @@
 				<artifactId>mobsters-controllers</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-http</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-amqp</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 			<!-- /Lvl6 -->
 
 			<!-- Third Party -->
