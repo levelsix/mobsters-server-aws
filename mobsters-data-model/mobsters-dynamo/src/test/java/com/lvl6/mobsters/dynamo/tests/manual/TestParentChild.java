@@ -22,7 +22,7 @@ import com.lvl6.mobsters.dynamo.tests.manual.SingleHashKeyStrategy.ParentOne;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
-    "classpath:spring-dynamo.xml", "classpath:spring-test-parentChild.xml"
+	"classpath:spring-configuration.xml", "classpath:spring-dynamo.xml", "classpath:spring-test-parentChild.xml"
 })
 public class TestParentChild
 {
@@ -118,7 +118,7 @@ public class TestParentChild
 	{
 		final LoopingReader loaderOne =
 		    new LoopingReader(
-		    	txManager, variantOne.getRepository(),
+		    	variantOne.getRepository(),
 		    	RUN_ITERS_PER_TASK, parentIdsOne,
 		    	READ_INDICES_ORDER);
 
@@ -158,7 +158,7 @@ public class TestParentChild
 	{
 		final LoopingReader loader =
 		    new LoopingReader(
-		    	txManager, variantTwo.getRepository(),
+		    	variantTwo.getRepository(),
 		    	RUN_ITERS_PER_TASK, parentIdsTwo,
 		    	READ_INDICES_ORDER);
 
@@ -197,13 +197,13 @@ public class TestParentChild
 		private final int loopCount;
 		private final String[] readIdsOrder;
 		private final BaseParentChildRepository<?, ? extends ChildDataAttrs> repoStrategy;
-		private final Lvl6TxManager txManager;
+		// private final Lvl6TxManager txManager;
 
-		LoopingReader( final Lvl6TxManager txManager,
+		LoopingReader( // final Lvl6TxManager txManager,
 		    final BaseParentChildRepository<?, ? extends ChildDataAttrs> repoStrategy,
 		    final int loopCount, final String[] parentIds, final int[] readIndicesOrder )
 		{
-			this.txManager = txManager;
+			// this.txManager = txManager;
 			this.repoStrategy = repoStrategy;
 			this.loopCount = loopCount;
 
