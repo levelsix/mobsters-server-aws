@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
+
+	<websocket:handlers>
+		<websocket:mapping path="/gameevents" handler="subProtoWebSocketHandler" />
+	</websocket:handlers>
+
+	<websocket:message-broker application-destination-prefix="/app">
+	<websocket:broker-channel prefix="/broke">
+		<websocket:executor/>
+		<websocket:interceptors>
+		</websocket:interceptors>
+	<websocket:client-inbound-channel></websocket:client-inbound-channel>
+	<websocket:client-outbound-channel></websocket:client-outbound-channel>
+	<websocket:message-converters></websocket:message-converters>
+	<websocket:stomp-endpoint></websocket:stomp-endpoint>
+	<websocket:stomp-broker-relay></websocket:stomp-broker-relay>
+		<websocket:stomp-endpoint path="/hello"/>
+		<websocket:simple-broker prefix="/topic,/queue" />
+	</websocket:message-broker>
+	
+	<websocket-
+	
+	
+	<!--
+			<!--websocket:sockjs />
+		</websocket:stomp-endpoint-->
+	HandshakeHandler
+	HandshakeInterceptor
+	-->
+	
+	
+	<bean id="subProtoWebSocketHandler" autowire-candidate="true" lazy-init="false"
+	      class="org.springframework.web.socket.messaging.SubProtocolWebSocketHandler"></bean>
+	<bean id "stompSubProtoHandler" autowire-candidate="true" lazy-init="false"
+	      class="org.springframework.web.socket.messaging.StompSubProtocolHandler"></bean>
+
+	<!-- bean id="stompWebSocketSubProtoExtension" autowire-candidate="true" lazy-init="false"
+	      class="org.springframework.web.socket.messaging.StompWebSocketExtension"></bean-->
+
+	<bean class="org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator"></bean>
+	<bean class="org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator"></bean>
+</beans>

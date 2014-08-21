@@ -251,10 +251,13 @@
 					<version>${maven-war.plugin-version}</version>
 					<configuration>
 						<archiveClasses>true</archiveClasses>
+						<webappDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webappDirectory>
+						<failOnMissingWebXml>true</failOnMissingWebXml>
+						<primaryArtifact>true</primaryArtifact>
+						<resourceEncoding>utf-8</resourceEncoding>
 						<webResources>
 							<resource>
 								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
-								<webappDirectory>${project.build.directory}/${project.artifactId}-${project.version}/</webappDirectory>
 								<filtering>false</filtering>
 								<targetPath>WEB-INF</targetPath>
 								<includes>
