@@ -20,7 +20,7 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 
 	private static final long serialVersionUID = -6321506459007617514L;
 
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=TaskStage.class)
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=TaskStage.class)
 	@JoinColumn(
 		name = "stage_id",
 		nullable = false,

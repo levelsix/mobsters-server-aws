@@ -45,7 +45,7 @@ public class Quest extends BaseIntPersistentObject implements IQuest {
 	private int monsterIdReward;
 	@Column(name = "is_complete_monster")
 	private boolean isCompleteMonster;
-	@ManyToMany(fetch=FetchType.LAZY, targetEntity=Quest.class)
+	@ManyToMany(fetch=FetchType.EAGER, targetEntity=Quest.class)
 	@Column(name = "quests_required_for_this")
 	private List<IQuest> questsRequiredForThis;
 	@Column(name = "quest_giver_name")

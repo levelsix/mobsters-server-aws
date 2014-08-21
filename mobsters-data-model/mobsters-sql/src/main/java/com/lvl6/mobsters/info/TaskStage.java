@@ -23,7 +23,7 @@ public class TaskStage extends BaseIntPersistentObject implements ITaskStage{
 
 	private static final long serialVersionUID = -4763468164533816643L;
 	
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Quest.class)
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Task.class)
 	@JoinColumn(
 		name = "task_id",
 		nullable = false,
@@ -35,7 +35,7 @@ public class TaskStage extends BaseIntPersistentObject implements ITaskStage{
 	
 	@OneToMany(
 		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
-		fetch=FetchType.LAZY,
+		fetch=FetchType.EAGER,
 		mappedBy="stage", 
 		orphanRemoval=true,
 		targetEntity=TaskStageMonster.class)
