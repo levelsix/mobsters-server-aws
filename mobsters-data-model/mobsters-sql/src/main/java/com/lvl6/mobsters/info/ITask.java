@@ -4,7 +4,6 @@ import java.util.List;
 
 public interface ITask extends IBaseIntPersistentObject
 {
-
 	public String getName();
 
 	public void setName( String name );
@@ -28,6 +27,8 @@ public interface ITask extends IBaseIntPersistentObject
 	public void setGroundImgPrefix( String groundImgPrefix );
 
 	public String getGroundImgPrefix();
+	
+	public List<ITaskMapElement> getTaskMapElements();
 
 	public List<ITaskStage> getTaskStages();
 }
