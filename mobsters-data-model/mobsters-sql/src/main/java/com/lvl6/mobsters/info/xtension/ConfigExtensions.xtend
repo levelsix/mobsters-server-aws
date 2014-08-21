@@ -72,6 +72,7 @@ public class ConfigExtensions {
 		return qjmiRepo.findByMonsterAndQuestJobIn(m, qJobs)
 			.selectFirstIndependentEvent[return it.itemDropRate]		
 	}
+
 	
 	/** Task Extensions ************************/
 	  
@@ -91,33 +92,40 @@ public class ConfigExtensions {
 	}
 
 	
-	/** Configuration Lookup Indices */
+	/** Configuration Lookup Indices ***********/
 
-	public def ITask getTaskMeta(int taskId) {
+	public def ITask getTaskMeta(int taskId)
+	{
 		return taskRepo.findById(taskId)
 	}
 
-	public def IQuest getQuestMeta(int questId) {
+	public def IQuest getQuestMeta(int questId)
+	{
 		return questRepo.findById(questId)
 	}
 
-	public def List<Quest> getQuestMeta(int[] questIds) {
+	public def List<Quest> getQuestMeta(int[] questIds)
+	{
 		return questRepo.findByIdIn(questIds)
 	}
 
-	public def IMonster getMonsterMeta(int monsterId) {
+	public def IMonster getMonsterMeta(int monsterId)
+	{
 		return monsterRepo.findById(monsterId)
 	}
 
-	public def List<Monster> getMonsterMeta(int[] monsterIds) {
+	public def List<Monster> getMonsterMeta(int[] monsterIds)
+	{
 		return monsterRepo.findByIdIn(monsterIds)
 	}
 
-	public def IStructure getStructreMeta(int structureId) {
+	public def IStructure getStructreMeta(int structureId)
+	{
 		return structureRepo.findById(structureId)
 	}
 
-	public def IObstacle getObstacleMeta(int obstacleId) {
+	public def IObstacle getObstacleMeta(int obstacleId)
+	{
 		return obstacleRepo.findById(obstacleId)
 	}
 

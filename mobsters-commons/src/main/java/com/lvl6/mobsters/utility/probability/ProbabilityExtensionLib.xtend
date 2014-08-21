@@ -125,10 +125,12 @@ class ProbabilityExtensionLib implements IRandomHelper
 			return minValue
 		}
 		
-		//example goal: [min,max]=[5, 10], transform range to start at 0.
-    	//[min-min, max-min] = [0,max-min] = [0,10-5] = [0,5]
-    	//this means there are (10-5)+1 possible numbers
-    	return minValue + randomSource.nextInt(1 + maxValue - minValue)
+		// example goal: [min,max]=[5, 10], transform range to start at 0.
+		// [min-min, max-min] = [0,max-min] = [0,10-5] = [0,5]
+		// this means there are (10-5)+1 possible numbers
+		return minValue + randomSource.nextInt(1 + maxValue - minValue)
+	}
+	
 	override nextBoolean()
 	{
 		return randomSource.nextBoolean()

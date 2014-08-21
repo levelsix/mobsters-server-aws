@@ -17,17 +17,17 @@ public interface ITask extends IBaseIntPersistentObject
 
 	public void setPrerequisiteTask( ITask prerequisiteTask );
 
-	public abstract void setBoardHeight( int boardHeight );
+	public void setBoardHeight( int boardHeight );
 
-	public abstract int getBoardHeight();
+	public int getBoardHeight();
 
-	public abstract void setBoardWidth( int boardWidth );
+	public void setBoardWidth( int boardWidth );
 
-	public abstract int getBoardWidth();
+	public int getBoardWidth();
 
-	public abstract void setGroundImgPrefix( String groundImgPrefix );
+	public void setGroundImgPrefix( String groundImgPrefix );
 
-	public abstract String getGroundImgPrefix();
+	public String getGroundImgPrefix();
 
-	List<ITaskStage> getTaskStages();
+	public List<ITaskStage> getTaskStages();
 }
