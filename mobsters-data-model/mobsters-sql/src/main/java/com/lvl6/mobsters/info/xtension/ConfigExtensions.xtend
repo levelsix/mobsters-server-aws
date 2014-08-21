@@ -72,6 +72,24 @@ public class ConfigExtensions {
 			.selectFirstIndependentEvent[return it.itemDropRate]		
 	}
 	
+	/** Task Extensions ************************/
+	  
+	public def int rollCashDrop(TaskStageMonster stageMonster)
+	{
+		return rollValueInRange(stageMonster.minCashDrop, stageMonster.maxCashDrop)
+	}
+
+	public def int rollOilDrop(TaskStageMonster stageMonster)
+	{
+		return rollValueInRange(stageMonster.minOilDrop, stageMonster.maxOilDrop)
+	}
+
+	public def boolean didPuzzlePieceDrop(TaskStageMonster stageMonster)
+	{
+		return (nextFloat() < stageMonster.puzzlePieceDropRate)
+	}
+
+	
 	/** Configuration Lookup Indices */
 
 	public def ITask getTaskMeta(int taskId) {

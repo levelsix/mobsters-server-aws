@@ -10,6 +10,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Proxy;
 
@@ -56,6 +57,7 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 	@Column(name = "dmg_multiplier")
 	private float dmgMultiplier;
 	
+	@Transient
 	private Random rand = new Random();
 	
 	public TaskStageMonster(){}
@@ -78,7 +80,13 @@ public class TaskStageMonster extends BaseIntPersistentObject implements ITaskSt
 	this.dmgMultiplier = dmgMultiplier;
 	}
 
-//covenience methods--------------------------------------------------------
+  // Convenience Methods--------------------------------------------------------
+	
+  // TODO: This has its heart in the right place, but allocating storage for a Random reference has
+  //       storage overhead and is error-prone, especially since the injection methods do not belong
+  //       in ITask.  Not removing these in order to avoid a re-factoring task, but please favor 
+  //       their equivalents in ConfigExtensions in the meantime.
+	
   public Random getRand() {
     return rand;
   }
