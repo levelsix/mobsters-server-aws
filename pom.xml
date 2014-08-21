@@ -99,6 +99,7 @@
 		<!-- Maven Plugin Versions -->
 		<maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
 		<maven-surefire.plugin-version>2.15</maven-surefire.plugin-version>
+		<maven-war.plugin-version>2.4</maven-war.plugin-version>
 		<xtend.plugin-version>2.6.1</xtend.plugin-version>
 		<xtext.plugin-version>2.6.1</xtext.plugin-version>
 
@@ -240,6 +241,26 @@
 							<version>0.0.1-SNAPSHOT</version>
 						</dependency>
 					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven-war.plugin-version}</version>
+					<configuration>
+						<archiveClasses>true</archiveClasses>
+						<webResources>
+							<resource>
+								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+								<webappDirectory>${project.build.directory}/${project.artifactId}-${project.version}/</webappDirectory>
+								<filtering>false</filtering>
+								<targetPath>WEB-INF</targetPath>
+								<includes>
+									<include>**/spring-*.xml</include>
+									<include>mobsters.properties</include>
+								</includes>
+							</resource>
+						</webResources>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
