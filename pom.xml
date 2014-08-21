@@ -150,7 +150,7 @@
 		<spring.integration.version>4.0.3.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
 
-		<tomcat.version>7.0.27</tomcat.version>
+		<tomcat.version>7.0.55</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
 
 		<xbase.version>2.6.1</xbase.version>
