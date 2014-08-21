@@ -235,7 +235,7 @@
 					</configuration>
 					<dependencies>
 						<!-- add a dependency to the language core bundle, this will only be 
-							needed during geneeration and will not pollute your project's classpath. -->
+							needed during generation and will not pollute your project's classpath. -->
 						<dependency>
 							<groupId>com.lvl6.modeling</groupId>
 							<artifactId>mobsters-service-dsl</artifactId>
