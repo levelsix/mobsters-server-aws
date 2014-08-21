@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("concurrentRandomHelper")
 @Qualifier("concurrent")
 public class ConcurrentRandomHelper implements IRandomHelper {
 	@SuppressWarnings("unused")

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("basicRandomHelper")
 @Qualifier("basic")
 public class BasicRandomHelper implements IRandomHelper {
 	@SuppressWarnings("unused")

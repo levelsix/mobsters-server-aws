@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import sun.security.jca.Providers;
 
-@Component
+@Component("cryptoRandomHelper")
 @Qualifier("crypto")
 @SuppressWarnings("restriction")
 public class CryptoRandomHelper implements IRandomHelper {
