@@ -71,13 +71,13 @@
 	</bean>
 
 	<bean id="setupDynamoDB" class="com.lvl6.mobsters.dynamo.setup.SetupDynamoDB"
-	      scope="singleton" lazy-init="false">
+	      scope="singleton" lazy-init="false" autowire-candidate="true">
 		<property name="checkTables" value="${aws.dynamo.checkTables}" />
 		<property name="dynamoClient" ref="dynamoClient" />
 	</bean>
 
 	<bean id="dynamoTxManager" class="com.lvl6.mobsters.dynamo.setup.Lvl6TxManager"
-	      scope="singleton" lazy-init="false">
+	      scope="singleton" lazy-init="false" autowire-candidate="true">
 		<constructor-arg index="0" ref="dynamoClient" />
 		<constructor-arg index="1" ref="dynamoMapperConfig" />
 	</bean>
