@@ -11,6 +11,7 @@ import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.ITaskStageMonster
 import com.lvl6.mobsters.info.Monster
 import com.lvl6.mobsters.info.Quest
+import com.lvl6.mobsters.info.TaskStageMonster
 import com.lvl6.mobsters.info.repository.MonsterRepository
 import com.lvl6.mobsters.info.repository.ObstacleRepository
 import com.lvl6.mobsters.info.repository.QuestJobMonsterItemRepository
