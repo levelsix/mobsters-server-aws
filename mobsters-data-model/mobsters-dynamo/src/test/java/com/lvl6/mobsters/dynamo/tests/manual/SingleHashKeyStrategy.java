@@ -467,13 +467,15 @@ public class SingleHashKeyStrategy implements VariantStrategy<ParentOne, ChildOn
 			if (t1 != null) {
 				for (final ChildOne obj : children) {
 					obj.setUserId(parentHashKey);
+					obj.setId(UUID.randomUUID().toString());
 					t1.save(obj);
 				}
 			} else {
 				for (final ChildOne obj : children) {
-					// Avoiding batchSave() because it does not check optimistic
-					// lock versions.
+					// Avoiding batchSave() because it does not check 
+					// optimistic lock versions.
 					obj.setUserId(parentHashKey);
+					obj.setId(UUID.randomUUID().toString());
 					mapper.save(obj);
 					
 					System.out.println(

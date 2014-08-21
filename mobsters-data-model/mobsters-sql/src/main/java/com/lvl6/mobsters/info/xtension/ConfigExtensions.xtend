@@ -11,6 +11,7 @@ import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.ITaskStageMonster
 import com.lvl6.mobsters.info.Monster
 import com.lvl6.mobsters.info.Quest
+import com.lvl6.mobsters.info.TaskStageMonster
 import com.lvl6.mobsters.info.repository.MonsterRepository
 import com.lvl6.mobsters.info.repository.ObstacleRepository
 import com.lvl6.mobsters.info.repository.QuestJobMonsterItemRepository
@@ -71,34 +72,60 @@ public class ConfigExtensions {
 		return qjmiRepo.findByMonsterAndQuestJobIn(m, qJobs)
 			.selectFirstIndependentEvent[return it.itemDropRate]		
 	}
-	
-	/** Configuration Lookup Indices */
 
-	public def ITask getTaskMeta(int taskId) {
+	
+	/** Task Extensions ************************/
+	  
+	public def int rollCashDrop(TaskStageMonster stageMonster)
+	{
+		return rollValueInRange(stageMonster.minCashDrop, stageMonster.maxCashDrop)
+	}
+
+	public def int rollOilDrop(TaskStageMonster stageMonster)
+	{
+		return rollValueInRange(stageMonster.minOilDrop, stageMonster.maxOilDrop)
+	}
+
+	public def boolean didPuzzlePieceDrop(TaskStageMonster stageMonster)
+	{
+		return (nextFloat() < stageMonster.puzzlePieceDropRate)
+	}
+
+	
+	/** Configuration Lookup Indices ***********/
+
+	public def ITask getTaskMeta(int taskId)
+	{
 		return taskRepo.findById(taskId)
 	}
 
-	public def IQuest getQuestMeta(int questId) {
+	public def IQuest getQuestMeta(int questId)
+	{
 		return questRepo.findById(questId)
 	}
 
-	public def List<Quest> getQuestMeta(int[] questIds) {
+	public def List<Quest> getQuestMeta(int[] questIds)
+	{
 		return questRepo.findByIdIn(questIds)
 	}
 
-	public def IMonster getMonsterMeta(int monsterId) {
+	public def IMonster getMonsterMeta(int monsterId)
+	{
 		return monsterRepo.findById(monsterId)
 	}
 
-	public def List<Monster> getMonsterMeta(int[] monsterIds) {
+	public def List<Monster> getMonsterMeta(int[] monsterIds)
+	{
 		return monsterRepo.findByIdIn(monsterIds)
 	}
 
-	public def IStructure getStructreMeta(int structureId) {
+	public def IStructure getStructreMeta(int structureId)
+	{
 		return structureRepo.findById(structureId)
 	}
 
-	public def IObstacle getObstacleMeta(int obstacleId) {
+	public def IObstacle getObstacleMeta(int obstacleId)
+	{
 		return obstacleRepo.findById(obstacleId)
 	}
 

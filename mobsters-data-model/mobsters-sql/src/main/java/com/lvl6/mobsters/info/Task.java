@@ -52,12 +52,12 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		mappedBy="task", 
 		orphanRemoval=true,
 		targetEntity=TaskStage.class)
-	@OrderBy("level ASC")
+	@OrderBy("stage_num ASC")
 	private List<ITaskStage> taskStages;
 	
 	public Task() {
 		super();
-		this.taskStages = new ArrayList<ITaskStage>(3);
+		this.taskStages = new ArrayList<ITaskStage>(2);
 	}
 
 	public Task(final int id, final String name, final String description,
@@ -71,11 +71,11 @@ public class Task extends BaseIntPersistentObject implements ITask{
 		this.boardWidth = boardWidth;
 		this.boardHeight = boardHeight;
 		this.groundImgPrefix = groundImgPrefix;
-		if( taskStages == null ) {
-			this.taskStages = new ArrayList<ITaskStage>(3);
+		if (taskStages == null) {
+			this.taskStages = new ArrayList<ITaskStage>(2);
 		} else {
 			this.taskStages = taskStages;
-	}
+		}
 	}
 	
 	/* (non-Javadoc)

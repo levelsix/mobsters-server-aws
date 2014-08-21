@@ -30,6 +30,7 @@
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
 		<!-- module>mobsters-modeling</module -->
+		<module>mobsters-webapp</module>
 	</modules>
 
 	<organization>
@@ -79,7 +80,7 @@
 		<!-- Hibernate -->
 		<!-- Production deployment will likely want to set this to 'none'. Developers 
 			content with their own schema may also wish to set 'none' in their custom 
-			profile to avoid spending time in an update phase on Hibernate-dependenent 
+			profile to avoid spending time in an update phase on Hibernate-dependent 
 			tests unless their changes are schema-impacting. -->
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
 		<!-- Developers may toggle these flags on in their local profile to get 
@@ -99,6 +100,7 @@
 		<!-- Maven Plugin Versions -->
 		<maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
 		<maven-surefire.plugin-version>2.15</maven-surefire.plugin-version>
+		<maven-war.plugin-version>2.4</maven-war.plugin-version>
 		<xtend.plugin-version>2.6.1</xtend.plugin-version>
 		<xtext.plugin-version>2.6.1</xtext.plugin-version>
 
@@ -139,15 +141,16 @@
 		<powermock.version>1.5.4</powermock.version>
 
 		<rabbitmq.version>1.3.0</rabbitmq.version>
+		<reactor.version>1.1.3.RELEASE</reactor.version>
 
 		<slf4j.version>1.6.6</slf4j.version>
-		<spring.version>4.0.3.RELEASE</spring.version>
+		<spring.version>4.0.6.RELEASE</spring.version>
 		<spring.amqp.version>1.3.5.RELEASE</spring.amqp.version>
 		<spring.data-jpa.version>1.6.0.RELEASE</spring.data-jpa.version>
-		<spring.integration.version>3.0.2.RELEASE</spring.integration.version>
+		<spring.integration.version>4.0.3.RELEASE</spring.integration.version>
 		<spring.support.version>2.0.8.RELEASE</spring.support.version>
 
-		<tomcat.version>7.0.27</tomcat.version>
+		<tomcat.version>7.0.55</tomcat.version>
 		<tycho.version>4.2.0</tycho.version>
 
 		<xbase.version>2.6.1</xbase.version>
@@ -233,13 +236,37 @@
 					</configuration>
 					<dependencies>
 						<!-- add a dependency to the language core bundle, this will only be 
-							needed during geneeration and will not pollute your project's classpath. -->
+							needed during generation and will not pollute your project's classpath. -->
 						<dependency>
 							<groupId>com.lvl6.modeling</groupId>
 							<artifactId>mobsters-service-dsl</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 						</dependency>
 					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven-war.plugin-version}</version>
+					<configuration>
+						<archiveClasses>true</archiveClasses>
+						<webappDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webappDirectory>
+						<failOnMissingWebXml>true</failOnMissingWebXml>
+						<primaryArtifact>true</primaryArtifact>
+						<resourceEncoding>utf-8</resourceEncoding>
+						<webResources>
+							<resource>
+								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+								<filtering>false</filtering>
+								<targetPath>WEB-INF</targetPath>
+								<includes>
+									<include>**/spring-*.xml</include>
+									<include>mobsters.properties</include>
+								</includes>
+							</resource>
+						</webResources>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -297,6 +324,21 @@
 			<dependency>
 				<groupId>com.lvl6</groupId>
 				<artifactId>mobsters-controllers</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-http</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-amqp</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvl6</groupId>
+				<artifactId>mobsters-webapp</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<!-- /Lvl6 -->
@@ -399,6 +441,21 @@
 				<version>${hibernate-validator.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-core</artifactId>
+				<version>${spring.integration.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-event</artifactId>
+				<version>${spring.integration.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-ip</artifactId>
+				<version>${spring.integration.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 				<version>${spring.version}</version>
@@ -415,6 +472,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-messaging</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
@@ -424,19 +486,14 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.integration</groupId>
-				<artifactId>spring-integration-core</artifactId>
-				<version>${spring.integration.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.integration</groupId>
-				<artifactId>spring-integration-ip</artifactId>
-				<version>${spring.integration.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.springframework.amqp</groupId>
 				<artifactId>spring-amqp</artifactId>
 				<version>${spring.amqp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectreactor.spring</groupId>
+				<artifactId>reactor-spring-context</artifactId>
+				<version>${reactor.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>

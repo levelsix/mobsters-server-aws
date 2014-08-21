@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.lvl6</groupId>
+		<artifactId>mobsters-server-aws</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>mobsters-webapp</artifactId>
+	<packaging>war</packaging>
+	<name>Mobsters Game Server Webapp</name>
+	<description>Module for combining Mobsters Game Server components to yield a deployable webapp</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-controllers</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-api-events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-dynamo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-sql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-proto</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-commons</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
+	</build>
+</project>

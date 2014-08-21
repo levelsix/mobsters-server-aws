@@ -6,9 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,17 +21,19 @@ import com.lvl6.mobsters.info.Quest;
 import com.lvl6.mobsters.info.QuestJob;
 import com.lvl6.mobsters.info.repository.QuestJobRepository;
 import com.lvl6.mobsters.info.repository.QuestRepository;
+import com.lvl6.mobsters.info.xtension.ConfigExtensions;
 import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
 @Component
-public class QuestServiceImpl implements QuestService, InitializingBean {
+public class QuestServiceImpl implements QuestService {
     
-    private static Logger LOG = LoggerFactory.getLogger(QuestServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(QuestServiceImpl.class);
     
-    // TODO: Figure out another way to construct a questGraph
-    private static QuestGraph questGraph;
+    // TODO: As implemented, this could readily be ported to ConfigExtensions, but unless its reused that
+    //       may be overkill...
+    private QuestGraph questGraph;
 
     @Autowired
     private QuestForUserRepository questForUserRepository;
@@ -44,23 +47,26 @@ public class QuestServiceImpl implements QuestService, InitializingBean {
     @Autowired
     private QuestJobRepository questJobRepository;
     
+    @Autowired
+    private ConfigExtensions configExtensions;
 
     //NON CRUD LOGIC******************************************************************
-    List<Integer> getAvailableQuestIdsFromQuests(List<Integer> redeemedQuestIds, List<Integer> inProgressQuestIds) {
-    	
-    	if (null == questGraph) {
+    private List<Integer> getAvailableQuestIdsFromQuests(
+    	List<Integer> redeemedQuestIds, List<Integer> inProgressQuestIds
+    ) {
+    	if (questGraph == null) {
     		try {
-				afterPropertiesSet();
+				init();
 			} catch (Exception e) {
 				LOG.error("error when initializing static QuestGraph");
 			}
     		return new ArrayList<Integer>();
     	} else {
-    		return questGraph.getQuestsAvailable(redeemedQuestIds, inProgressQuestIds);
+    		return questGraph.getQuestsAvailable(redeemedQuestIds, inProgressQuestIds, configExtensions);
     	}
     }
     
-    //CRUD LOGIC******************************************************************
+    // CRUD LOGIC*****************************************************************************
 
     // BEGIN READ ONLY LOGIC******************************************************************
 	
@@ -171,9 +177,8 @@ public class QuestServiceImpl implements QuestService, InitializingBean {
 	    	+ questId);
 	}
 	
-	//InitializingBean, so the private static map can be initialized
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    @PostConstruct
+    public void init() throws Exception {
     	questGraph = new QuestGraph(questRepository.findAll());
     }
 	
@@ -216,11 +221,6 @@ public class QuestServiceImpl implements QuestService, InitializingBean {
 		return questGraph;
 	}
 
-	public void setQuestGraph( QuestGraph questGraph )
-	{
-		QuestServiceImpl.questGraph = questGraph;
-	}
-
 	public QuestJobRepository getQuestJobRepository()
 	{
 		return questJobRepository;
@@ -231,4 +231,8 @@ public class QuestServiceImpl implements QuestService, InitializingBean {
 		this.questJobRepository = questJobRepository;
 	}
 
+	public void setConfigExtensions( ConfigExtensions configExtensions )
+	{
+		this.configExtensions = configExtensions;
+	}
 }

@@ -6,7 +6,7 @@ import com.lvl6.mobsters.common.utils.ICallableAction
 import com.lvl6.mobsters.domain.game.api.IPlayer
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.domain.game.api.IUserResource
-import com.lvl6.mobsters.domain.game.event.IEventListener
+import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.TaskStageForUser
@@ -18,6 +18,7 @@ import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.event.IEventListener
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
@@ -45,7 +46,6 @@ import static com.google.common.base.Preconditions.*
 import static com.lvl6.mobsters.services.task.TaskServiceImpl.*
 
 import static extension java.lang.String.format
-import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
 
 @Component
 class TaskServiceImpl extends AbstractService implements TaskService
@@ -234,8 +234,10 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	}
 
 	// TODO: Is gem spending mandatory when this "is an event"?
-	@ScriptAssert.List(@ScriptAssert(lang="javascript", script="if (_this.forceEnemyElem) { return(_this.elementName !== null && _this.elementName !== '');}; return true;", message="elementName must not be blank or null when forceEnemyElem is set true"),
-	@ScriptAssert(lang="javascript", script="if (_this.isEvent) { return(_this.eventId > 0); } else { return(_this.gemsSpent == 0); }", message="If this is an event, then eventId must be a positive value."))
+	// @ScriptAssert.List(
+		// @ScriptAssert(lang="javascript", script="if (_this.forceEnemyElem) { return(_this.elementName !== null && _this.elementName !== '');}; return true;", message="elementName must not be blank or null when forceEnemyElem is set true")
+		// @ScriptAssert(lang="javascript", script="var retVal = false; if (_this.isEvent) { retVal = _this.eventId > 0; } else { retVal = _this.gemsSpent == 0; }; return retVal; ", message="If this is an event, then eventId must be a positive value.")
+	// )
 	static class GenerateUserTaskActionImpl 
 		extends AbstractAction 
 		implements ICallableAction<TaskService.GenerateUserTaskListener>
@@ -282,7 +284,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		var IUserResource userContainer
 		var IPlayer aUser
 		var ITask taskMeta
-		var Iterable<IQuestJob> questJobsMeta
+		var List<IQuestJob> questJobsMeta
 		var IPlayerTask newUserTask
 		var List<? extends IPlayerTask> tasksToDelete
 		var boolean mayGenerateMonsterPieces
@@ -318,10 +320,10 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	
 		override execute(TaskService.GenerateUserTaskListener resultBuilder)
 		{
-			checkArgument(
-				IEventListener.isInstance(resultBuilder), 
-				"resultBuilder must implement listener interface and extend AbstractClientEventListener"
-			)
+			// checkArgument(
+			// 	IEventListener.isInstance(resultBuilder), 
+			// 	"resultBuilder must implement listener interface and extend AbstractClientEventListener"
+			// )
 			
 			// There is a need around here to ensure we're prepared to receive any outcome events needed
 			// to prepare a response event for the game client to be sent via the Asynchronous future that
@@ -340,15 +342,20 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	
 		def void verifySemantics()
 		{
+			userContainer = gameServer.getUserResourceFor(userId);
 			aUser = userContainer.connect
 			checkNotNull(aUser)
 	
 			taskMeta = taskId.taskMeta
 			checkNotNull(taskMeta)
 			
-			questJobsMeta = questIds.questMeta.map[return it.questJobs].flatten
-			checkNotNull(questJobsMeta, "No quests found")
-			checkArgument(questJobsMeta.size == questIds.size, "Not all quests found.  questIds=%s", questIds)
+			val questMeta = questIds.questMeta
+			questJobsMeta = questMeta
+				.map[return it.questJobs]
+				.flatten
+				.toList
+			checkNotNull(questMeta, "No quests found")
+			checkArgument(questMeta.size == questIds.size, "Not all quests found.  questIds=%s", questIds)
 	
 			tasksToDelete = aUser.ongoingPlayerTasks
 			if (! tasksToDelete.nullOrEmpty)
@@ -365,8 +372,9 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			
 			if(taskId != ControllerConstants.MINI_TUTORIAL__GUARANTEED_MONSTER_DROP_TASK_ID) {
 				LOG.info(
-					"Player is completing a post-mini-tutorial task and so may collect monster pieces.  user=%s, task=%d",
-					userId, taskId)
+					String.format(
+						"Player is completing a post-mini-tutorial task and so may collect monster pieces.  user=%s, task=%d",
+						userId, taskId));
 				mayGenerateMonsterPieces = true
 			} else {
 				if (
