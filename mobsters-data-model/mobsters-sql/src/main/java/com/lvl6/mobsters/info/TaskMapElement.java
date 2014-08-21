@@ -11,8 +11,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
-@Entity(name="Task")
-@Table(name="task")
+@Entity(name="TaskMapElement")
+@Table(name="task_map_element")
 @Proxy(lazy=true, proxyClass=ITask.class)
 public class TaskMapElement extends BaseIntPersistentObject implements ITaskMapElement{
 
