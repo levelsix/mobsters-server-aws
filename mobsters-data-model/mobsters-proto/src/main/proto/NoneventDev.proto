@@ -1,0 +1,21 @@
+//ALL REQUEST PROTOS SHOULD INCLUDE A MinimumUserProto AS optional that represents which client sent it/triggered it 
+//DO NO START PROPERTY METHODS WITH THE WORDS NEW OR COPY
+
+package proto;
+
+option java_package = "com.lvl6.mobsters.noneventproto";
+option java_outer_classname = "NoneventDevProto";
+//DO NOT USE ID AS THE NAME OF A PROPERTY IN ANY PROTO
+
+//------------------------------------------------------------------------------------------
+
+enum DevRequest {
+	RESET_ACCOUNT = 1;
+	GET_MONZTER = 2;
+	F_B_GET_CASH = 3;
+	F_B_GET_OIL = 4;
+	F_B_GET_GEMS = 5;
+	F_B_GET_CASH_OIL_GEMS = 6;
+}
+
+//------------------------------------------------------------------------------------------

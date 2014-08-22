@@ -96,6 +96,7 @@ message FullUserMonsterProto {
 	optional int64 combineStartTime = 9;
 	optional int32 teamSlotNum = 10;
 	//optional string sourceOfPieces = 11;	//not needed for client
+	optional bool isRestrictd = 12;
 }
 
 message MinimumUserMonsterProto {
@@ -154,6 +155,7 @@ message UserMonsterCurrentExpProto {
 	optional string userMonsterUuid = 1;
 	optional int32 expectedExperience = 2;
 	optional int32 expectedLevel = 3;
+	optional int32 expectedHp = 4;
 }
 
 //------------------------------------------------------------------------------------------

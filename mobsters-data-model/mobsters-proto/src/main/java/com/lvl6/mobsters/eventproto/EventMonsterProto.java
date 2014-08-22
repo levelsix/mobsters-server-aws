@@ -20138,6 +20138,1100 @@ public final class EventMonsterProto {
     // @@protoc_insertion_point(class_scope:proto.RestrictUserMonsterResponseProto)
   }
   
+  public interface UnrestrictUserMonsterRequestProtoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // optional .proto.MinimumUserProto sender = 1;
+    boolean hasSender();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
+    
+    // repeated string userMonsterIds = 3;
+    java.util.List<String> getUserMonsterIdsList();
+    int getUserMonsterIdsCount();
+    String getUserMonsterIds(int index);
+  }
+  public static final class UnrestrictUserMonsterRequestProto extends
+      com.google.protobuf.GeneratedMessage
+      implements UnrestrictUserMonsterRequestProtoOrBuilder {
+    // Use UnrestrictUserMonsterRequestProto.newBuilder() to construct.
+    private UnrestrictUserMonsterRequestProto(Builder builder) {
+      super(builder);
+    }
+    private UnrestrictUserMonsterRequestProto(boolean noInit) {}
+    
+    private static final UnrestrictUserMonsterRequestProto defaultInstance;
+    public static UnrestrictUserMonsterRequestProto getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public UnrestrictUserMonsterRequestProto getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterRequestProto_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterRequestProto_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // optional .proto.MinimumUserProto sender = 1;
+    public static final int SENDER_FIELD_NUMBER = 1;
+    private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_;
+    public boolean hasSender() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
+      return sender_;
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
+      return sender_;
+    }
+    
+    // repeated string userMonsterIds = 3;
+    public static final int USERMONSTERIDS_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList userMonsterIds_;
+    public java.util.List<String>
+        getUserMonsterIdsList() {
+      return userMonsterIds_;
+    }
+    public int getUserMonsterIdsCount() {
+      return userMonsterIds_.size();
+    }
+    public String getUserMonsterIds(int index) {
+      return userMonsterIds_.get(index);
+    }
+    
+    private void initFields() {
+      sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+      userMonsterIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, sender_);
+      }
+      for (int i = 0; i < userMonsterIds_.size(); i++) {
+        output.writeBytes(3, userMonsterIds_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, sender_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userMonsterIds_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(userMonsterIds_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getUserMonsterIdsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProtoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterRequestProto_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterRequestProto_fieldAccessorTable;
+      }
+      
+      // Construct using com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getSenderFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (senderBuilder_ == null) {
+          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+        } else {
+          senderBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        userMonsterIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto.getDescriptor();
+      }
+      
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto getDefaultInstanceForType() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto.getDefaultInstance();
+      }
+      
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto build() {
+        com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto buildPartial() {
+        com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto result = new com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (senderBuilder_ == null) {
+          result.sender_ = sender_;
+        } else {
+          result.sender_ = senderBuilder_.build();
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          userMonsterIds_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              userMonsterIds_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.userMonsterIds_ = userMonsterIds_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto) {
+          return mergeFrom((com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto other) {
+        if (other == com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto.getDefaultInstance()) return this;
+        if (other.hasSender()) {
+          mergeSender(other.getSender());
+        }
+        if (!other.userMonsterIds_.isEmpty()) {
+          if (userMonsterIds_.isEmpty()) {
+            userMonsterIds_ = other.userMonsterIds_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureUserMonsterIdsIsMutable();
+            userMonsterIds_.addAll(other.userMonsterIds_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder();
+              if (hasSender()) {
+                subBuilder.mergeFrom(getSender());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setSender(subBuilder.buildPartial());
+              break;
+            }
+            case 26: {
+              ensureUserMonsterIdsIsMutable();
+              userMonsterIds_.add(input.readBytes());
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // optional .proto.MinimumUserProto sender = 1;
+      private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> senderBuilder_;
+      public boolean hasSender() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
+        if (senderBuilder_ == null) {
+          return sender_;
+        } else {
+          return senderBuilder_.getMessage();
+        }
+      }
+      public Builder setSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
+        if (senderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          sender_ = value;
+          onChanged();
+        } else {
+          senderBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setSender(
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder builderForValue) {
+        if (senderBuilder_ == null) {
+          sender_ = builderForValue.build();
+          onChanged();
+        } else {
+          senderBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
+        if (senderBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              sender_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance()) {
+            sender_ =
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder(sender_).mergeFrom(value).buildPartial();
+          } else {
+            sender_ = value;
+          }
+          onChanged();
+        } else {
+          senderBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearSender() {
+        if (senderBuilder_ == null) {
+          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+          onChanged();
+        } else {
+          senderBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder getSenderBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getSenderFieldBuilder().getBuilder();
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
+        if (senderBuilder_ != null) {
+          return senderBuilder_.getMessageOrBuilder();
+        } else {
+          return sender_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> 
+          getSenderFieldBuilder() {
+        if (senderBuilder_ == null) {
+          senderBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder>(
+                  sender_,
+                  getParentForChildren(),
+                  isClean());
+          sender_ = null;
+        }
+        return senderBuilder_;
+      }
+      
+      // repeated string userMonsterIds = 3;
+      private com.google.protobuf.LazyStringList userMonsterIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureUserMonsterIdsIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          userMonsterIds_ = new com.google.protobuf.LazyStringArrayList(userMonsterIds_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      public java.util.List<String>
+          getUserMonsterIdsList() {
+        return java.util.Collections.unmodifiableList(userMonsterIds_);
+      }
+      public int getUserMonsterIdsCount() {
+        return userMonsterIds_.size();
+      }
+      public String getUserMonsterIds(int index) {
+        return userMonsterIds_.get(index);
+      }
+      public Builder setUserMonsterIds(
+          int index, String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserMonsterIdsIsMutable();
+        userMonsterIds_.set(index, value);
+        onChanged();
+        return this;
+      }
+      public Builder addUserMonsterIds(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserMonsterIdsIsMutable();
+        userMonsterIds_.add(value);
+        onChanged();
+        return this;
+      }
+      public Builder addAllUserMonsterIds(
+          java.lang.Iterable<String> values) {
+        ensureUserMonsterIdsIsMutable();
+        super.addAll(values, userMonsterIds_);
+        onChanged();
+        return this;
+      }
+      public Builder clearUserMonsterIds() {
+        userMonsterIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      void addUserMonsterIds(com.google.protobuf.ByteString value) {
+        ensureUserMonsterIdsIsMutable();
+        userMonsterIds_.add(value);
+        onChanged();
+      }
+      
+      // @@protoc_insertion_point(builder_scope:proto.UnrestrictUserMonsterRequestProto)
+    }
+    
+    static {
+      defaultInstance = new UnrestrictUserMonsterRequestProto(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:proto.UnrestrictUserMonsterRequestProto)
+  }
+  
+  public interface UnrestrictUserMonsterResponseProtoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // optional .proto.MinimumUserProto sender = 1;
+    boolean hasSender();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender();
+    com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder();
+    
+    // optional .proto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus status = 2;
+    boolean hasStatus();
+    com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus getStatus();
+  }
+  public static final class UnrestrictUserMonsterResponseProto extends
+      com.google.protobuf.GeneratedMessage
+      implements UnrestrictUserMonsterResponseProtoOrBuilder {
+    // Use UnrestrictUserMonsterResponseProto.newBuilder() to construct.
+    private UnrestrictUserMonsterResponseProto(Builder builder) {
+      super(builder);
+    }
+    private UnrestrictUserMonsterResponseProto(boolean noInit) {}
+    
+    private static final UnrestrictUserMonsterResponseProto defaultInstance;
+    public static UnrestrictUserMonsterResponseProto getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public UnrestrictUserMonsterResponseProto getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterResponseProto_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterResponseProto_fieldAccessorTable;
+    }
+    
+    public enum UnrestrictUserMonsterStatus
+        implements com.google.protobuf.ProtocolMessageEnum {
+      SUCCESS(0, 1),
+      FAIL_OTHER(1, 2),
+      ;
+      
+      public static final int SUCCESS_VALUE = 1;
+      public static final int FAIL_OTHER_VALUE = 2;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static UnrestrictUserMonsterStatus valueOf(int value) {
+        switch (value) {
+          case 1: return SUCCESS;
+          case 2: return FAIL_OTHER;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<UnrestrictUserMonsterStatus>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<UnrestrictUserMonsterStatus>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<UnrestrictUserMonsterStatus>() {
+              public UnrestrictUserMonsterStatus findValueByNumber(int number) {
+                return UnrestrictUserMonsterStatus.valueOf(number);
+              }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final UnrestrictUserMonsterStatus[] VALUES = {
+        SUCCESS, FAIL_OTHER, 
+      };
+      
+      public static UnrestrictUserMonsterStatus valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      
+      private final int index;
+      private final int value;
+      
+      private UnrestrictUserMonsterStatus(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      // @@protoc_insertion_point(enum_scope:proto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus)
+    }
+    
+    private int bitField0_;
+    // optional .proto.MinimumUserProto sender = 1;
+    public static final int SENDER_FIELD_NUMBER = 1;
+    private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_;
+    public boolean hasSender() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
+      return sender_;
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
+      return sender_;
+    }
+    
+    // optional .proto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus status = 2;
+    public static final int STATUS_FIELD_NUMBER = 2;
+    private com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus status_;
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus getStatus() {
+      return status_;
+    }
+    
+    private void initFields() {
+      sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+      status_ = com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus.SUCCESS;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, sender_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeEnum(2, status_.getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, sender_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, status_.getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProtoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterResponseProto_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.internal_static_proto_UnrestrictUserMonsterResponseProto_fieldAccessorTable;
+      }
+      
+      // Construct using com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getSenderFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (senderBuilder_ == null) {
+          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+        } else {
+          senderBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        status_ = com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus.SUCCESS;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.getDescriptor();
+      }
+      
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto getDefaultInstanceForType() {
+        return com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.getDefaultInstance();
+      }
+      
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto build() {
+        com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto buildPartial() {
+        com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto result = new com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (senderBuilder_ == null) {
+          result.sender_ = sender_;
+        } else {
+          result.sender_ = senderBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.status_ = status_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto) {
+          return mergeFrom((com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto other) {
+        if (other == com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.getDefaultInstance()) return this;
+        if (other.hasSender()) {
+          mergeSender(other.getSender());
+        }
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder();
+              if (hasSender()) {
+                subBuilder.mergeFrom(getSender());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setSender(subBuilder.buildPartial());
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+              com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus value = com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                status_ = value;
+              }
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // optional .proto.MinimumUserProto sender = 1;
+      private com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> senderBuilder_;
+      public boolean hasSender() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto getSender() {
+        if (senderBuilder_ == null) {
+          return sender_;
+        } else {
+          return senderBuilder_.getMessage();
+        }
+      }
+      public Builder setSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
+        if (senderBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          sender_ = value;
+          onChanged();
+        } else {
+          senderBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setSender(
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder builderForValue) {
+        if (senderBuilder_ == null) {
+          sender_ = builderForValue.build();
+          onChanged();
+        } else {
+          senderBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeSender(com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto value) {
+        if (senderBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              sender_ != com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance()) {
+            sender_ =
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.newBuilder(sender_).mergeFrom(value).buildPartial();
+          } else {
+            sender_ = value;
+          }
+          onChanged();
+        } else {
+          senderBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearSender() {
+        if (senderBuilder_ == null) {
+          sender_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.getDefaultInstance();
+          onChanged();
+        } else {
+          senderBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder getSenderBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getSenderFieldBuilder().getBuilder();
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder getSenderOrBuilder() {
+        if (senderBuilder_ != null) {
+          return senderBuilder_.getMessageOrBuilder();
+        } else {
+          return sender_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder> 
+          getSenderFieldBuilder() {
+        if (senderBuilder_ == null) {
+          senderBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder, com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProtoOrBuilder>(
+                  sender_,
+                  getParentForChildren(),
+                  isClean());
+          sender_ = null;
+        }
+        return senderBuilder_;
+      }
+      
+      // optional .proto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus status = 2;
+      private com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus status_ = com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus.SUCCESS;
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus getStatus() {
+        return status_;
+      }
+      public Builder setStatus(com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        status_ = com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.UnrestrictUserMonsterStatus.SUCCESS;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:proto.UnrestrictUserMonsterResponseProto)
+    }
+    
+    static {
+      defaultInstance = new UnrestrictUserMonsterResponseProto(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:proto.UnrestrictUserMonsterResponseProto)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_proto_EvolveMonsterRequestProto_descriptor;
   private static
@@ -20283,6 +21377,16 @@ public final class EventMonsterProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_proto_RestrictUserMonsterResponseProto_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_proto_UnrestrictUserMonsterRequestProto_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_proto_UnrestrictUserMonsterRequestProto_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_proto_UnrestrictUserMonsterResponseProto_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_proto_UnrestrictUserMonsterResponseProto_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -20461,8 +21565,16 @@ public final class EventMonsterProto {
       "\002 \001(\0162A.proto.RestrictUserMonsterRespons" +
       "eProto.RestrictUserMonsterStatus\"8\n\031Rest" +
       "rictUserMonsterStatus\022\013\n\007SUCCESS\020\001\022\016\n\nFA" +
-      "IL_OTHER\020\002B1\n\034com.lvl6.mobsters.eventpro",
-      "toB\021EventMonsterProto"
+      "IL_OTHER\020\002\"d\n!UnrestrictUserMonsterReque",
+      "stProto\022\'\n\006sender\030\001 \001(\0132\027.proto.MinimumU" +
+      "serProto\022\026\n\016userMonsterIds\030\003 \003(\t\"\340\001\n\"Unr" +
+      "estrictUserMonsterResponseProto\022\'\n\006sende" +
+      "r\030\001 \001(\0132\027.proto.MinimumUserProto\022U\n\006stat" +
+      "us\030\002 \001(\0162E.proto.UnrestrictUserMonsterRe" +
+      "sponseProto.UnrestrictUserMonsterStatus\"" +
+      ":\n\033UnrestrictUserMonsterStatus\022\013\n\007SUCCES" +
+      "S\020\001\022\016\n\nFAIL_OTHER\020\002B1\n\034com.lvl6.mobsters" +
+      ".eventprotoB\021EventMonsterProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -20701,6 +21813,22 @@ public final class EventMonsterProto {
               new java.lang.String[] { "Sender", "Status", },
               com.lvl6.mobsters.eventproto.EventMonsterProto.RestrictUserMonsterResponseProto.class,
               com.lvl6.mobsters.eventproto.EventMonsterProto.RestrictUserMonsterResponseProto.Builder.class);
+          internal_static_proto_UnrestrictUserMonsterRequestProto_descriptor =
+            getDescriptor().getMessageTypes().get(28);
+          internal_static_proto_UnrestrictUserMonsterRequestProto_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_proto_UnrestrictUserMonsterRequestProto_descriptor,
+              new java.lang.String[] { "Sender", "UserMonsterIds", },
+              com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto.class,
+              com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterRequestProto.Builder.class);
+          internal_static_proto_UnrestrictUserMonsterResponseProto_descriptor =
+            getDescriptor().getMessageTypes().get(29);
+          internal_static_proto_UnrestrictUserMonsterResponseProto_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_proto_UnrestrictUserMonsterResponseProto_descriptor,
+              new java.lang.String[] { "Sender", "Status", },
+              com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.class,
+              com.lvl6.mobsters.eventproto.EventMonsterProto.UnrestrictUserMonsterResponseProto.Builder.class);
           return null;
         }
       };
