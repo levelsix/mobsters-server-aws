@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.dynamo.repository;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,6 +15,7 @@ import com.lvl6.mobsters.dynamo.setup.DataRepositoryTxManager;
 
 public abstract class BaseDynamoItemRepositoryImpl<T> extends BaseDynamoRepositoryImpl<T> implements BaseDynamoItemRepository<T>
 {
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory.getLogger(BaseDynamoItemRepositoryImpl.class);
 
 	@Autowired

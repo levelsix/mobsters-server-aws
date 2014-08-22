@@ -3,13 +3,10 @@ package com.lvl6.mobsters.info;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 

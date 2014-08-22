@@ -20,7 +20,6 @@ import com.lvl6.mobsters.conditions.IBooleanConditionBuilder;
 import com.lvl6.mobsters.conditions.IConditionsBuilder;
 import com.lvl6.mobsters.conditions.IIntConditionBuilder;
 import com.lvl6.mobsters.conditions.IStringConditionBuilder;
-import com.lvl6.mobsters.conditions.dynamo.QueryFilterConditionStrategy;
 import com.lvl6.mobsters.dynamo.MonsterForUser;
 
 @Component

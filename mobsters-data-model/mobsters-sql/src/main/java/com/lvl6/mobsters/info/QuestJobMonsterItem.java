@@ -1,7 +1,5 @@
 package com.lvl6.mobsters.info;
 
-import java.util.Random;
-
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;

@@ -22,9 +22,11 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="Task")
 @Table(name="task")
 @Proxy(lazy=true, proxyClass=ITask.class)
-public class Task extends BaseIntPersistentObject implements ITask{
-
-	private static final long serialVersionUID = 7155509336427769742L;
+public class Task
+	extends BaseIntPersistentObject
+	implements ITask
+{
+	private static final long serialVersionUID = 3583191663615290648L;
 
 	@Column(name = "name")
 	private String name;
@@ -57,16 +59,16 @@ public class Task extends BaseIntPersistentObject implements ITask{
 	@OrderBy("stage_num ASC")
 	private List<ITaskStage> taskStages;
 
-//	@OneToMany(
-//		cascade={CascadeType.PERSIST, CascadeType.REFRESH},
-//		fetch=FetchType.LAZY,
-//		mappedBy="task", 
-//		orphanRemoval=true,
-//		targetEntity=TaskMapElement.class)
 	@ElementCollection(fetch=FetchType.LAZY, targetClass=TaskMapElement.class)
-	@CollectionTable(name="task_map_element", joinColumns={
-		@JoinColumn(name="id")
-	})
+	@CollectionTable(
+		name="task_map_element",
+		joinColumns={
+			@JoinColumn(
+				name="id",
+				foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT)
+			)
+		}
+	)
 	private List<ITaskMapElement> taskMapElements;
 	
 	public Task() {
