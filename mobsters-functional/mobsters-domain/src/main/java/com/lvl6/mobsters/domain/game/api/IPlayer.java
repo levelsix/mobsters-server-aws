@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.domain.game.api;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ public interface IPlayer {
 	public boolean hasCompleted(ITask taskMeta);
 	
 	public IPlayerTask beginTask(
-		ITask taskMeta, List<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
+		ITask taskMeta, Set<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces);
 
 	public IPlayer checkCanSpendGems(
 		int gemsToSpend, Logger log, Callable<String> spendPurposeLambda);

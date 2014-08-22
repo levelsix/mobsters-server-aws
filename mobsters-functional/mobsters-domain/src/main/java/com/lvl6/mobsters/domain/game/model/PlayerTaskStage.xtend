@@ -8,6 +8,7 @@ import com.lvl6.mobsters.info.ITaskStage
 import com.lvl6.mobsters.info.ITaskStageMonster
 import com.lvl6.properties.ControllerConstants
 import java.util.List
+import java.util.Set
 
 class PlayerTaskStage 
 	extends AbstractSemanticObject 
@@ -19,7 +20,7 @@ class PlayerTaskStage
 	protected new(
 		PlayerTask parent, 
 		ITaskStage taskStageMeta,
-		List<IQuestJob> questJobs,
+		Set<IQuestJob> questJobs,
 		String elementName,
 		boolean mayGeneratePieces
 	) {
@@ -42,7 +43,7 @@ class PlayerTaskStage
 	}
 	
 	private def TaskStageForUser generateStage(
-		Iterable<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces)
+		Set<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces)
 	{
 		val extension configExtensionLib = repoRegistry.configExtensionLib
 		val extension probabilityExtensionLib = repoRegistry.probabilityExtensionLib

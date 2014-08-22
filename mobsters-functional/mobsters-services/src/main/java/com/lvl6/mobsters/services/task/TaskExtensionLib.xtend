@@ -80,35 +80,6 @@ class TaskExtensionLib {
 		return ctxt.getUserTaskStages()
 	}
 
-	// TaskContext attachment lookup map is empty until @PostConstruct phase calls
-	// doInitExtension() to load it with configuration objects.  There's no reason anyone 
-	// should be able to call getTask() before then, since this extension library should 
-	// not get injected anywhere until after its @PostConstruct method returns.
-	private var IntKeyIndex<Task> taskContextMap = new IntKeyIndex<Task>[return it.id]
-
-	public def Task getTaskDef(TaskForUserOngoing tfu) {
-		var Task retVal = tfu.getAttachment(Task)
-		if (retVal == null) {
-			retVal = taskContextMap.get(tfu.taskId)
-			if (retVal != null) {
-				tfu.putAttachment(Task, retVal)
-			}
-		}
-
-		return retVal
-	}
-
-	public def Task getTaskDef(int taskId) {
-		return taskContextMap.get(taskId)
-	}
-
-	@PostConstruct
-	def void doInitExtension() {
-		// Read Task config and construct taskMap contents.
-		taskDefRepo.findAll().forEach[Task s|taskContextMap.put(s)]
-		return
-	}
-
 	private def SemanticTaskForUser getDerivedContext(TaskForUserOngoing tfu) {
 		var SemanticTaskForUser ctxt = tfu.getAttachment(SemanticTaskForUser)
 		if (ctxt == null) {

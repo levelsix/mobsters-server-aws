@@ -8,6 +8,7 @@ import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import java.util.List
+import java.util.Set
 
 class PlayerTask 
 	extends AbstractSemanticObject 
@@ -51,7 +52,7 @@ class PlayerTask
 	/**
 	 * Constructor for "create and wrap"
 	 */
-	new( Player parent, ITask taskMeta, List<IQuestJob> questJobs, 
+	new( Player parent, ITask taskMeta, Set<IQuestJob> questJobs, 
 		String elementName, boolean mayGeneratePieces )
 	{
 		super(parent)

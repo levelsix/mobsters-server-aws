@@ -18,7 +18,6 @@ import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
-import com.lvl6.mobsters.event.IEventListener
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.info.xtension.ConfigExtensions
@@ -33,10 +32,10 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.HashMap
 import java.util.List
+import java.util.Set
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
-import org.hibernate.validator.constraints.ScriptAssert
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,36 +51,47 @@ class TaskServiceImpl extends AbstractService implements TaskService
 {
 	private static val Logger LOG = LoggerFactory.getLogger(TaskServiceImpl)
 
+	@Property
 	@Autowired
 	private var TaskForUserCompletedRepository taskForUserCompletedRepository
 
+	@Property
 	@Autowired
 	private var TaskForUserOngoingRepository taskForUserOngoingRepository
 
+	@Property
 	@Autowired
 	private var TaskStageForUserRepository taskStageForUserRepository
 
+	@Property
 	@Autowired
 	private var EventPersistentForUserRepository eventPersistentForUserRepository
 
+	@Property
 	@Autowired
 	private var UserRepository userRepo
 
+	@Property
 	@Autowired
 	private var extension UserExtensionLib userExtensionLib
 
+	@Property
 	@Autowired
 	private var extension TaskExtensionLib taskExtensionLib
 
+	@Property
 	@Autowired
 	private var extension ProbabilityExtensionLib probExtensionLib
 
+	@Property
 	@Autowired
 	private var extension ConfigExtensions configExtensionLib
 
+	@Property
 	@Autowired
 	private var DataServiceTxManager txManager
 	
+	@Property
 	@Autowired
 	private var IUserResourceFactory resourceFactory
 
@@ -266,25 +276,25 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	
 		val boolean alreadyCompletedMiniTutorialTask
 	
-		@NotNull
+		// @NotNull
 		val TaskServiceImpl parent
 	
-		val extension UserExtensionLib userExtensionLib
+		// val extension UserExtensionLib userExtensionLib
 	
-		val extension TaskExtensionLib taskExtensionLib
+		// val extension TaskExtensionLib taskExtensionLib
 	
-		val extension ProbabilityExtensionLib probExtensionLib
+		// val extension ProbabilityExtensionLib probExtensionLib
 		
-		val extension ConfigExtensions configExtensionLib
+		// val extension ConfigExtensions configExtensionLib
 	
-		val IUserResourceFactory gameServer
+		// val IUserResourceFactory gameServer
 		
 		// Derived state
 		//
 		var IUserResource userContainer
 		var IPlayer aUser
 		var ITask taskMeta
-		var List<IQuestJob> questJobsMeta
+		var Set<IQuestJob> questJobsMeta
 		var IPlayerTask newUserTask
 		var List<? extends IPlayerTask> tasksToDelete
 		var boolean mayGenerateMonsterPieces
@@ -310,12 +320,11 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			this.alreadyCompletedMiniTutorialTask = alreadyCompletedMiniTutorialTask
 	
 			this.parent = parentService
-			this.userExtensionLib = parentService.userExtensionLib
-			this.taskExtensionLib = parentService.taskExtensionLib
-			this.probExtensionLib = parentService.probExtensionLib
-			this.configExtensionLib = parentService.configExtensionLib
-
-			this.gameServer = parentService.resourceFactory
+			// this.userExtensionLib = parentService.userExtensionLib
+			// this.taskExtensionLib = parentService.taskExtensionLib
+			// this.probExtensionLib = parentService.probExtensionLib
+			// this.configExtensionLib = parentService.configExtensionLib
+			// this.gameServer = parentService.resourceFactory
 		}
 	
 		override execute(TaskService.GenerateUserTaskListener resultBuilder)
@@ -342,10 +351,12 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	
 		def void verifySemantics()
 		{
-			userContainer = gameServer.getUserResourceFor(userId);
+			userContainer = parent.resourceFactory.getUserResourceFor(userId);
 			aUser = userContainer.connect
 			checkNotNull(aUser)
 	
+			val extension ConfigExtensions configExtensions = parent.configExtensionLib
+			
 			taskMeta = taskId.taskMeta
 			checkNotNull(taskMeta)
 			
@@ -353,10 +364,11 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			questJobsMeta = questMeta
 				.map[return it.questJobs]
 				.flatten
-				.toList
+				.toSet
 			checkNotNull(questMeta, "No quests found")
 			checkArgument(questMeta.size == questIds.size, "Not all quests found.  questIds=%s", questIds)
-	
+
+			val extension TaskExtensionLib taskExtensions = parent.taskExtensionLib
 			tasksToDelete = aUser.ongoingPlayerTasks
 			if (! tasksToDelete.nullOrEmpty)
 			{

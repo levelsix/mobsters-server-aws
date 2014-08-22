@@ -10,6 +10,7 @@ import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode
 import com.lvl6.mobsters.utility.indexing.by_int.IntKeyIndex
 import java.util.ArrayList
 import java.util.List
+import java.util.Set
 import java.util.concurrent.Callable
 import org.slf4j.Logger
 
@@ -47,7 +48,7 @@ class Player
 	}
 	
 	override PlayerTask beginTask(
-		ITask taskMeta, List<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces
+		ITask taskMeta, Set<IQuestJob> questJobs, String elementName, boolean mayGeneratePieces
 	) {
 		Preconditions.checkNotNull(taskMeta)
 
@@ -248,7 +249,7 @@ class Player
 	}
 
 	private def void loadCompletedTasks() {
-		this.completedPlayerTasks = new IntKeyIndex<PlayerTask> [return it.taskMeta.id]
+		this.completedPlayerTasks = IntKeyIndex.createIndex[return it.taskMeta.id]
 		this.repoRegistry.tfuCompleteRepo
 			.findByUserId(getUserUuid())
 			.forEach[
