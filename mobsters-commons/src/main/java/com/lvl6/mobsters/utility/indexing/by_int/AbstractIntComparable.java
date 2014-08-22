@@ -8,9 +8,7 @@ public abstract class AbstractIntComparable
 	@Override
 	public int hashCode() 
 	{
-		final int prime = 31;
-		int result = prime * getOrderingInt();
-		return result;
+		return 31 * getOrderingInt();
 	}
 
 	@Override

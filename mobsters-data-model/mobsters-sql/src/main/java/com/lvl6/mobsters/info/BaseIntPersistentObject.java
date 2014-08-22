@@ -3,13 +3,17 @@ package com.lvl6.mobsters.info;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.lvl6.mobsters.utility.indexing.by_int.AbstractIntComparable;
+
 @MappedSuperclass
-public abstract class BaseIntPersistentObject implements IBaseIntPersistentObject {
-
-    private static final long serialVersionUID = 970907783140746344L;
-
+public abstract class BaseIntPersistentObject
+	extends AbstractIntComparable
+	implements IBaseIntPersistentObject
+{
     
-    @Id 
+	private static final long serialVersionUID = 3540073633234904633L;
+
+	@Id 
 	protected int id;
 
 	protected BaseIntPersistentObject() { }
@@ -21,33 +25,18 @@ public abstract class BaseIntPersistentObject implements IBaseIntPersistentObjec
 	public int getId() {
 		return id;
 	}
-
-	public void setId(final int id) {
-		this.id = id;
+	
+	protected int getOrderingInt() {
+		return id;
 	}
 
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object obj )
-    {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        BaseIntPersistentObject other = (BaseIntPersistentObject) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
-
+	/**
+	 * Frameworks like Hibernate need a mutator, but its a unsafe thing to expose here due to equality being
+	 * affected.  Fortunately, Hibernate understands this risk and manages it accordingly.
+	 * 
+	 * @param id
+	 */
+	void setId(final int id) {
+		this.id = id;
+	}
 }

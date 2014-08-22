@@ -17,7 +17,9 @@ import com.lvl6.mobsters.utility.indexing.by_object.MutableObjKey
 final class IntKeyWrapper<V> extends AbstractIntComparable {
   val int key
   val V value
-  new(  V value){
+
+  new( V value)
+  {
     Preconditions::checkNotNull(value)
     this.key=0
     this.value=value
