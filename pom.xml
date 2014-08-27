@@ -118,6 +118,8 @@
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool.version>1.5.3</commons-pool.version>
 
+		<disruptor-google.version>2.7.1</disruptor-google.version>
+		<disruptor-lmax.version>3.2.1</disruptor-lmax.version>
 		<easymock.version>3.2</easymock.version>
 		<guava.version>12.0</guava.version>
 
@@ -251,10 +253,12 @@
 					<version>${maven-war.plugin-version}</version>
 					<configuration>
 						<archiveClasses>true</archiveClasses>
-						<webappDirectory>${project.build.directory}/${project.artifactId}-${project.version}</webappDirectory>
-						<failOnMissingWebXml>true</failOnMissingWebXml>
+						<warName>${project.build.finalName}</warName>
+						<warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
+						<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 						<primaryArtifact>true</primaryArtifact>
 						<resourceEncoding>utf-8</resourceEncoding>
+						<failOnMissingWebXml>true</failOnMissingWebXml>
 						<webResources>
 							<resource>
 								<directory>${basedir}/src/main/webapp/WEB-INF</directory>
@@ -348,6 +352,7 @@
 				<groupId>javax.el</groupId>
 				<artifactId>javax.el-api</artifactId>
 				<version>${javax.el.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
@@ -356,14 +361,15 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-				<version>${javax.mail.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>javax.websocket</groupId>
 				<artifactId>javax.websocket-api</artifactId>
 				<version>${javax.websocket.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>${javax.mail.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.validation</groupId>
@@ -467,6 +473,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-websocket</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
@@ -482,7 +493,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
+				<artifactId>spring-expression</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aspects</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
@@ -491,8 +507,33 @@
 				<version>${spring.amqp.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectreactor.spring</groupId>
+				<artifactId>reactor-spring-core</artifactId>
+				<version>${reactor.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.projectreactor.spring</groupId>
 				<artifactId>reactor-spring-context</artifactId>
+				<version>${reactor.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectreactor.spring</groupId>
+				<artifactId>reactor-spring-messaging</artifactId>
+				<version>${reactor.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectreactor</groupId>
+				<artifactId>reactor-core</artifactId>
+				<version>${reactor.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.projectreactor</groupId>
+				<artifactId>reactor-net</artifactId>
 				<version>${reactor.version}</version>
 			</dependency>
 			<dependency>
@@ -514,6 +555,16 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${disruptor-lmax.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.googlecode.disruptor</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>${disruptor-google.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
@@ -557,11 +608,13 @@
 				<version>${hibernate-validator.version}</version>
 			</dependency>
 			<!-- Next dependency may be unnecessary if Tomcat 7.0.27 provides a JSR-341 implementation -->
+			<!--
 			<dependency>
 				<groupId>org.glassfish.web</groupId>
 				<artifactId>javax.el</artifactId>
 				<version>${javax.el.version}</version>
 			</dependency>
+			-->
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
