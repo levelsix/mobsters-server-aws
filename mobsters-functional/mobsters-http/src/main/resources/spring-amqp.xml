@@ -74,38 +74,35 @@
 	<rabbit:listener-container
 		connection-factory="amqpConnectionFactory" 
 		concurrency="3"
-		error-handler="amqpErrorHandler"
-		<rabbit:listener queues="normalEventsQueue" ref="eventsFromOtherServersDispatcher"	method="handleNormalEvent" />
+		error-handler="amqpErrorHandler">
+		<rabbit:listener queues="normalEventsQueue" ref="eventsFromOtherServersDispatcher" method="handleNormalEvent" />
 	</rabbit:listener-container>
 
 	<rabbit:listener-container
 		connection-factory="amqpConnectionFactory" 
 		concurrency="3"
-		error-handler="amqpErrorHandler"
+		error-handler="amqpErrorHandler">
 		<rabbit:listener queues="preDatabaseEventsQueue" ref="eventsFromOtherServersDispatcher"	method="handlePreDatabaseEvent" />
 	</rabbit:listener-container>
 
 	<rabbit:listener-container
 		connection-factory="amqpConnectionFactory" 
 		concurrency="3"
-		error-handler="amqpErrorHandler"
+		error-handler="amqpErrorHandler">
 		<rabbit:listener queues="broadcastEventsQueue" ref="eventsFromOtherServersDispatcher"	method="handleBroadcastEvent" />
 	</rabbit:listener-container>
-
-
 
 	<rabbit:template id="serverMessagesTemplate"
 		connection-factory="amqpConnectionFactory" 
 		channel-transacted="true"
 		exchange="serverMessages"  />
 <!-- 
-
 	<rabbit:listener-container
 		connection-factory="amqpConnectionFactory" 
 		concurrency="42" 
 		prefetch="42"
 		error-handler="amqpErrorHandler">
-		<rabbit:listener queues="clientMessages" ref="clientEventHandler"	method="onMessage" />
+		<rabbit:listener queues="clientMessages" ref="clientEventHandler" method="onMessage" />
 	</rabbit:listener-container> -->
 
 <!-- 
@@ -113,7 +110,7 @@
 		connection-factory="amqpConnectionFactory" 
 		channel-transacted="true"
 		exchange="${amqp.chat.exchange}" />
- -->
+-->
 	<bean id="serverEventHandler" class="com.lvl6.eventhandlers.AmqpServerEventHandler" />
 	<bean id="amqpErrorHandler" class="com.lvl6.eventhandlers.AmqpErrorHandler" />
 
