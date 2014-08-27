@@ -4,6 +4,7 @@ import com.lvl6.mobsters.dynamo.User
 import com.lvl6.mobsters.dynamo.UserCredential
 import com.lvl6.mobsters.dynamo.UserDataRarelyAccessed
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository
+import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.services.monster.MonsterService
@@ -36,7 +37,7 @@ class UserServiceImpl implements UserService
 	var UserRepository userRepo
 
 	@Autowired
-	var UserDataRarelyAccessedRepositoryImpl userDraRepo
+	var UserDataRarelyAccessedRepository userDraRepo
 
 	@Autowired
 	var UserCredentialRepository userCredentialRepository
