@@ -51,6 +51,18 @@
 	</websocket:message-broker>
 
 	
+	<!-- WebSocketContainer configuration factory and protocol resource properties -->
+	<bean
+		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"
+		name="wsServletContainerFactory" lazy-init="false" autowire-candidate="true"
+		scope="singleton" abstract="false">
+		<!-- For STOMP: 16K + 512 wiggle room -->
+		<property name="maxTextMessageBufferSize" value="16896"/>
+		<!-- For MobstersBinary: (16 * 64 * 1024) + 12 for header -->
+		<property name="maxBinaryMessageBufferSize" value="1048588"/>
+	</bean>
+
+
 	-->
 	
 	
