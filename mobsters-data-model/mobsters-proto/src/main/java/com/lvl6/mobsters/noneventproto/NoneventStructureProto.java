@@ -4965,6 +4965,10 @@ public final class NoneventStructureProto {
     // optional int32 resourceCapacity = 11;
     boolean hasResourceCapacity();
     int getResourceCapacity();
+    
+    // optional int32 numEvoChambers = 12;
+    boolean hasNumEvoChambers();
+    int getNumEvoChambers();
   }
   public static final class TownHallProto extends
       com.google.protobuf.GeneratedMessage
@@ -5108,6 +5112,16 @@ public final class NoneventStructureProto {
       return resourceCapacity_;
     }
     
+    // optional int32 numEvoChambers = 12;
+    public static final int NUMEVOCHAMBERS_FIELD_NUMBER = 12;
+    private int numEvoChambers_;
+    public boolean hasNumEvoChambers() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    public int getNumEvoChambers() {
+      return numEvoChambers_;
+    }
+    
     private void initFields() {
       structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
       numResourceOneGenerators_ = 0;
@@ -5120,6 +5134,7 @@ public final class NoneventStructureProto {
       numLabs_ = 0;
       pvpQueueCashCost_ = 0;
       resourceCapacity_ = 0;
+      numEvoChambers_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5165,6 +5180,9 @@ public final class NoneventStructureProto {
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         output.writeInt32(11, resourceCapacity_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeInt32(12, numEvoChambers_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -5218,6 +5236,10 @@ public final class NoneventStructureProto {
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(11, resourceCapacity_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(12, numEvoChambers_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5370,6 +5392,8 @@ public final class NoneventStructureProto {
         bitField0_ = (bitField0_ & ~0x00000200);
         resourceCapacity_ = 0;
         bitField0_ = (bitField0_ & ~0x00000400);
+        numEvoChambers_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
       
@@ -5456,6 +5480,10 @@ public final class NoneventStructureProto {
           to_bitField0_ |= 0x00000400;
         }
         result.resourceCapacity_ = resourceCapacity_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.numEvoChambers_ = numEvoChambers_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5504,6 +5532,9 @@ public final class NoneventStructureProto {
         }
         if (other.hasResourceCapacity()) {
           setResourceCapacity(other.getResourceCapacity());
+        }
+        if (other.hasNumEvoChambers()) {
+          setNumEvoChambers(other.getNumEvoChambers());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -5593,6 +5624,11 @@ public final class NoneventStructureProto {
             case 88: {
               bitField0_ |= 0x00000400;
               resourceCapacity_ = input.readInt32();
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000800;
+              numEvoChambers_ = input.readInt32();
               break;
             }
           }
@@ -5897,6 +5933,27 @@ public final class NoneventStructureProto {
       public Builder clearResourceCapacity() {
         bitField0_ = (bitField0_ & ~0x00000400);
         resourceCapacity_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 numEvoChambers = 12;
+      private int numEvoChambers_ ;
+      public boolean hasNumEvoChambers() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      public int getNumEvoChambers() {
+        return numEvoChambers_;
+      }
+      public Builder setNumEvoChambers(int value) {
+        bitField0_ |= 0x00000800;
+        numEvoChambers_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearNumEvoChambers() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        numEvoChambers_ = 0;
         onChanged();
         return this;
       }
@@ -10864,6 +10921,854 @@ public final class NoneventStructureProto {
     // @@protoc_insertion_point(class_scope:proto.UserObstacleProto)
   }
   
+  public interface EvoChamberProtoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // optional .proto.StructureInfoProto structInfo = 1;
+    boolean hasStructInfo();
+    com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo();
+    com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder();
+  }
+  public static final class EvoChamberProto extends
+      com.google.protobuf.GeneratedMessage
+      implements EvoChamberProtoOrBuilder {
+    // Use EvoChamberProto.newBuilder() to construct.
+    private EvoChamberProto(Builder builder) {
+      super(builder);
+    }
+    private EvoChamberProto(boolean noInit) {}
+    
+    private static final EvoChamberProto defaultInstance;
+    public static EvoChamberProto getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public EvoChamberProto getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_EvoChamberProto_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_EvoChamberProto_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // optional .proto.StructureInfoProto structInfo = 1;
+    public static final int STRUCTINFO_FIELD_NUMBER = 1;
+    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto structInfo_;
+    public boolean hasStructInfo() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo() {
+      return structInfo_;
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder() {
+      return structInfo_;
+    }
+    
+    private void initFields() {
+      structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, structInfo_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, structInfo_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProtoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_EvoChamberProto_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_EvoChamberProto_fieldAccessorTable;
+      }
+      
+      // Construct using com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getStructInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (structInfoBuilder_ == null) {
+          structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+        } else {
+          structInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto.getDescriptor();
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto getDefaultInstanceForType() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto.getDefaultInstance();
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto build() {
+        com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto buildPartial() {
+        com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto result = new com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (structInfoBuilder_ == null) {
+          result.structInfo_ = structInfo_;
+        } else {
+          result.structInfo_ = structInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto) {
+          return mergeFrom((com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto other) {
+        if (other == com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto.getDefaultInstance()) return this;
+        if (other.hasStructInfo()) {
+          mergeStructInfo(other.getStructInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.newBuilder();
+              if (hasStructInfo()) {
+                subBuilder.mergeFrom(getStructInfo());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setStructInfo(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // optional .proto.StructureInfoProto structInfo = 1;
+      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder> structInfoBuilder_;
+      public boolean hasStructInfo() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo() {
+        if (structInfoBuilder_ == null) {
+          return structInfo_;
+        } else {
+          return structInfoBuilder_.getMessage();
+        }
+      }
+      public Builder setStructInfo(com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto value) {
+        if (structInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          structInfo_ = value;
+          onChanged();
+        } else {
+          structInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setStructInfo(
+          com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder builderForValue) {
+        if (structInfoBuilder_ == null) {
+          structInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          structInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeStructInfo(com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto value) {
+        if (structInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              structInfo_ != com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance()) {
+            structInfo_ =
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.newBuilder(structInfo_).mergeFrom(value).buildPartial();
+          } else {
+            structInfo_ = value;
+          }
+          onChanged();
+        } else {
+          structInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearStructInfo() {
+        if (structInfoBuilder_ == null) {
+          structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+          onChanged();
+        } else {
+          structInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder getStructInfoBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getStructInfoFieldBuilder().getBuilder();
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder() {
+        if (structInfoBuilder_ != null) {
+          return structInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return structInfo_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder> 
+          getStructInfoFieldBuilder() {
+        if (structInfoBuilder_ == null) {
+          structInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder>(
+                  structInfo_,
+                  getParentForChildren(),
+                  isClean());
+          structInfo_ = null;
+        }
+        return structInfoBuilder_;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:proto.EvoChamberProto)
+    }
+    
+    static {
+      defaultInstance = new EvoChamberProto(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:proto.EvoChamberProto)
+  }
+  
+  public interface TeamCenterProtoOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // optional .proto.StructureInfoProto structInfo = 1;
+    boolean hasStructInfo();
+    com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo();
+    com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder();
+  }
+  public static final class TeamCenterProto extends
+      com.google.protobuf.GeneratedMessage
+      implements TeamCenterProtoOrBuilder {
+    // Use TeamCenterProto.newBuilder() to construct.
+    private TeamCenterProto(Builder builder) {
+      super(builder);
+    }
+    private TeamCenterProto(boolean noInit) {}
+    
+    private static final TeamCenterProto defaultInstance;
+    public static TeamCenterProto getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public TeamCenterProto getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_TeamCenterProto_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_TeamCenterProto_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // optional .proto.StructureInfoProto structInfo = 1;
+    public static final int STRUCTINFO_FIELD_NUMBER = 1;
+    private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto structInfo_;
+    public boolean hasStructInfo() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo() {
+      return structInfo_;
+    }
+    public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder() {
+      return structInfo_;
+    }
+    
+    private void initFields() {
+      structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, structInfo_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, structInfo_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProtoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_TeamCenterProto_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.internal_static_proto_TeamCenterProto_fieldAccessorTable;
+      }
+      
+      // Construct using com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getStructInfoFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (structInfoBuilder_ == null) {
+          structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+        } else {
+          structInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto.getDescriptor();
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto getDefaultInstanceForType() {
+        return com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto.getDefaultInstance();
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto build() {
+        com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto buildPartial() {
+        com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto result = new com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (structInfoBuilder_ == null) {
+          result.structInfo_ = structInfo_;
+        } else {
+          result.structInfo_ = structInfoBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto) {
+          return mergeFrom((com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto other) {
+        if (other == com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto.getDefaultInstance()) return this;
+        if (other.hasStructInfo()) {
+          mergeStructInfo(other.getStructInfo());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder subBuilder = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.newBuilder();
+              if (hasStructInfo()) {
+                subBuilder.mergeFrom(getStructInfo());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setStructInfo(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // optional .proto.StructureInfoProto structInfo = 1;
+      private com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder> structInfoBuilder_;
+      public boolean hasStructInfo() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto getStructInfo() {
+        if (structInfoBuilder_ == null) {
+          return structInfo_;
+        } else {
+          return structInfoBuilder_.getMessage();
+        }
+      }
+      public Builder setStructInfo(com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto value) {
+        if (structInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          structInfo_ = value;
+          onChanged();
+        } else {
+          structInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setStructInfo(
+          com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder builderForValue) {
+        if (structInfoBuilder_ == null) {
+          structInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          structInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeStructInfo(com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto value) {
+        if (structInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              structInfo_ != com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance()) {
+            structInfo_ =
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.newBuilder(structInfo_).mergeFrom(value).buildPartial();
+          } else {
+            structInfo_ = value;
+          }
+          onChanged();
+        } else {
+          structInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearStructInfo() {
+        if (structInfoBuilder_ == null) {
+          structInfo_ = com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.getDefaultInstance();
+          onChanged();
+        } else {
+          structInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder getStructInfoBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getStructInfoFieldBuilder().getBuilder();
+      }
+      public com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder getStructInfoOrBuilder() {
+        if (structInfoBuilder_ != null) {
+          return structInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return structInfo_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder> 
+          getStructInfoFieldBuilder() {
+        if (structInfoBuilder_ == null) {
+          structInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProto.Builder, com.lvl6.mobsters.noneventproto.NoneventStructureProto.StructureInfoProtoOrBuilder>(
+                  structInfo_,
+                  getParentForChildren(),
+                  isClean());
+          structInfo_ = null;
+        }
+        return structInfoBuilder_;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:proto.TeamCenterProto)
+    }
+    
+    static {
+      defaultInstance = new TeamCenterProto(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:proto.TeamCenterProto)
+  }
+  
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_proto_StructureInfoProto_descriptor;
   private static
@@ -10934,6 +11839,16 @@ public final class NoneventStructureProto {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_proto_UserObstacleProto_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_proto_EvoChamberProto_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_proto_EvoChamberProto_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_proto_TeamCenterProto_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_proto_TeamCenterProto_fieldAccessorTable;
   
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -10982,7 +11897,7 @@ public final class NoneventStructureProto {
       "numBonusMonsterSlots\030\003 \001(\005\022\027\n\017numGemsReq" +
       "uired\030\004 \001(\005\022\034\n\024numAcceptedFbInvites\030\005 \001(" +
       "\005\022\026\n\016occupationName\030\006 \001(\t\022\021\n\timgSuffix\030\007" +
-      " \001(\t\"\315\002\n\rTownHallProto\022-\n\nstructInfo\030\001 \001",
+      " \001(\t\"\345\002\n\rTownHallProto\022-\n\nstructInfo\030\001 \001",
       "(\0132\031.proto.StructureInfoProto\022 \n\030numReso" +
       "urceOneGenerators\030\002 \001(\005\022\036\n\026numResourceOn" +
       "eStorages\030\003 \001(\005\022 \n\030numResourceTwoGenerat" +
@@ -10990,42 +11905,46 @@ public final class NoneventStructureProto {
       "\005\022\024\n\014numHospitals\030\006 \001(\005\022\025\n\rnumResidences" +
       "\030\007 \001(\005\022\027\n\017numMonsterSlots\030\010 \001(\005\022\017\n\007numLa" +
       "bs\030\t \001(\005\022\030\n\020pvpQueueCashCost\030\n \001(\005\022\030\n\020re" +
-      "sourceCapacity\030\013 \001(\005\"\201\001\n\022MiniJobCenterPr" +
-      "oto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Structur" +
-      "eInfoProto\022\031\n\021generatedJobLimit\030\002 \001(\005\022!\n",
-      "\031hoursBetweenJobGeneration\030\003 \001(\005\"\234\002\n\026Ful" +
-      "lUserStructureProto\022\026\n\016userStructUuid\030\001 " +
-      "\001(\t\022\020\n\010userUuid\030\002 \001(\t\022\020\n\010structId\030\003 \001(\005\022" +
-      "\025\n\rlastRetrieved\030\004 \001(\003\022\024\n\014purchaseTime\030\005" +
-      " \001(\003\022\022\n\nisComplete\030\006 \001(\010\022+\n\013coordinates\030" +
-      "\007 \001(\0132\026.proto.CoordinateProto\022=\n\013orienta" +
-      "tion\030\010 \001(\0162\030.proto.StructOrientation:\016NO" +
-      "_ORIENTATION\022\031\n\021fbInviteStructLvl\030\t \001(\005\"" +
-      "\'\n\017CoordinateProto\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002" +
-      "\"S\n\023TutorialStructProto\022\020\n\010structId\030\001 \001(",
-      "\005\022*\n\ncoordinate\030\002 \001(\0132\026.proto.Coordinate" +
-      "Proto\"\346\002\n\rObstacleProto\022\022\n\nobstacleId\030\001 " +
-      "\001(\005\022\014\n\004name\030\002 \001(\t\0229\n\017removalCostType\030\003 \001" +
-      "(\0162\023.proto.ResourceType:\013NO_RESOURCE\022\014\n\004" +
-      "cost\030\004 \001(\005\022\027\n\017secondsToRemove\030\005 \001(\005\022\r\n\005w" +
-      "idth\030\006 \001(\005\022\016\n\006height\030\007 \001(\005\022\017\n\007imgName\030\010 " +
-      "\001(\t\022\036\n\026imgVerticalPixelOffset\030\t \001(\002\022\023\n\013d" +
-      "escription\030\n \001(\t\022\026\n\016chanceToAppear\030\013 \001(\002" +
-      "\022\025\n\rshadowImgName\030\014 \001(\t\022\034\n\024shadowVertica" +
-      "lOffset\030\r \001(\002\022\037\n\027shadowHorizontalOfffset",
-      "\030\016 \001(\002\"\225\001\n\024MinimumObstacleProto\022\022\n\nobsta" +
-      "cleId\030\001 \001(\005\022*\n\ncoordinate\030\002 \001(\0132\026.proto." +
-      "CoordinateProto\022=\n\013orientation\030\003 \001(\0162\030.p" +
-      "roto.StructOrientation:\016NO_ORIENTATION\"\331" +
-      "\001\n\021UserObstacleProto\022\030\n\020userObstacleUuid" +
-      "\030\001 \001(\t\022\020\n\010userUuid\030\002 \001(\t\022\022\n\nobstacleId\030\003" +
-      " \001(\005\022+\n\013coordinates\030\004 \001(\0132\026.proto.Coordi" +
-      "nateProto\022=\n\013orientation\030\005 \001(\0162\030.proto.S" +
-      "tructOrientation:\016NO_ORIENTATION\022\030\n\020remo" +
-      "valStartTime\030\006 \001(\003*G\n\021StructOrientation\022",
-      "\022\n\016NO_ORIENTATION\020\003\022\016\n\nPOSITION_1\020\001\022\016\n\nP" +
-      "OSITION_2\020\002B9\n\037com.lvl6.mobsters.noneven" +
-      "tprotoB\026NoneventStructureProto"
+      "sourceCapacity\030\013 \001(\005\022\026\n\016numEvoChambers\030\014" +
+      " \001(\005\"\201\001\n\022MiniJobCenterProto\022-\n\nstructInf" +
+      "o\030\001 \001(\0132\031.proto.StructureInfoProto\022\031\n\021ge",
+      "neratedJobLimit\030\002 \001(\005\022!\n\031hoursBetweenJob" +
+      "Generation\030\003 \001(\005\"\234\002\n\026FullUserStructurePr" +
+      "oto\022\026\n\016userStructUuid\030\001 \001(\t\022\020\n\010userUuid\030" +
+      "\002 \001(\t\022\020\n\010structId\030\003 \001(\005\022\025\n\rlastRetrieved" +
+      "\030\004 \001(\003\022\024\n\014purchaseTime\030\005 \001(\003\022\022\n\nisComple" +
+      "te\030\006 \001(\010\022+\n\013coordinates\030\007 \001(\0132\026.proto.Co" +
+      "ordinateProto\022=\n\013orientation\030\010 \001(\0162\030.pro" +
+      "to.StructOrientation:\016NO_ORIENTATION\022\031\n\021" +
+      "fbInviteStructLvl\030\t \001(\005\"\'\n\017CoordinatePro" +
+      "to\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\"S\n\023TutorialStru",
+      "ctProto\022\020\n\010structId\030\001 \001(\005\022*\n\ncoordinate\030" +
+      "\002 \001(\0132\026.proto.CoordinateProto\"\346\002\n\rObstac" +
+      "leProto\022\022\n\nobstacleId\030\001 \001(\005\022\014\n\004name\030\002 \001(" +
+      "\t\0229\n\017removalCostType\030\003 \001(\0162\023.proto.Resou" +
+      "rceType:\013NO_RESOURCE\022\014\n\004cost\030\004 \001(\005\022\027\n\017se" +
+      "condsToRemove\030\005 \001(\005\022\r\n\005width\030\006 \001(\005\022\016\n\006he" +
+      "ight\030\007 \001(\005\022\017\n\007imgName\030\010 \001(\t\022\036\n\026imgVertic" +
+      "alPixelOffset\030\t \001(\002\022\023\n\013description\030\n \001(\t" +
+      "\022\026\n\016chanceToAppear\030\013 \001(\002\022\025\n\rshadowImgNam" +
+      "e\030\014 \001(\t\022\034\n\024shadowVerticalOffset\030\r \001(\002\022\037\n",
+      "\027shadowHorizontalOfffset\030\016 \001(\002\"\225\001\n\024Minim" +
+      "umObstacleProto\022\022\n\nobstacleId\030\001 \001(\005\022*\n\nc" +
+      "oordinate\030\002 \001(\0132\026.proto.CoordinateProto\022" +
+      "=\n\013orientation\030\003 \001(\0162\030.proto.StructOrien" +
+      "tation:\016NO_ORIENTATION\"\331\001\n\021UserObstacleP" +
+      "roto\022\030\n\020userObstacleUuid\030\001 \001(\t\022\020\n\010userUu" +
+      "id\030\002 \001(\t\022\022\n\nobstacleId\030\003 \001(\005\022+\n\013coordina" +
+      "tes\030\004 \001(\0132\026.proto.CoordinateProto\022=\n\013ori" +
+      "entation\030\005 \001(\0162\030.proto.StructOrientation" +
+      ":\016NO_ORIENTATION\022\030\n\020removalStartTime\030\006 \001",
+      "(\003\"@\n\017EvoChamberProto\022-\n\nstructInfo\030\001 \001(" +
+      "\0132\031.proto.StructureInfoProto\"@\n\017TeamCent" +
+      "erProto\022-\n\nstructInfo\030\001 \001(\0132\031.proto.Stru" +
+      "ctureInfoProto*G\n\021StructOrientation\022\022\n\016N" +
+      "O_ORIENTATION\020\003\022\016\n\nPOSITION_1\020\001\022\016\n\nPOSIT" +
+      "ION_2\020\002B9\n\037com.lvl6.mobsters.noneventpro" +
+      "toB\026NoneventStructureProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -11085,7 +12004,7 @@ public final class NoneventStructureProto {
           internal_static_proto_TownHallProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_TownHallProto_descriptor,
-              new java.lang.String[] { "StructInfo", "NumResourceOneGenerators", "NumResourceOneStorages", "NumResourceTwoGenerators", "NumResourceTwoStorages", "NumHospitals", "NumResidences", "NumMonsterSlots", "NumLabs", "PvpQueueCashCost", "ResourceCapacity", },
+              new java.lang.String[] { "StructInfo", "NumResourceOneGenerators", "NumResourceOneStorages", "NumResourceTwoGenerators", "NumResourceTwoStorages", "NumHospitals", "NumResidences", "NumMonsterSlots", "NumLabs", "PvpQueueCashCost", "ResourceCapacity", "NumEvoChambers", },
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.TownHallProto.class,
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.TownHallProto.Builder.class);
           internal_static_proto_MiniJobCenterProto_descriptor =
@@ -11144,6 +12063,22 @@ public final class NoneventStructureProto {
               new java.lang.String[] { "UserObstacleUuid", "UserUuid", "ObstacleId", "Coordinates", "Orientation", "RemovalStartTime", },
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.UserObstacleProto.class,
               com.lvl6.mobsters.noneventproto.NoneventStructureProto.UserObstacleProto.Builder.class);
+          internal_static_proto_EvoChamberProto_descriptor =
+            getDescriptor().getMessageTypes().get(14);
+          internal_static_proto_EvoChamberProto_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_proto_EvoChamberProto_descriptor,
+              new java.lang.String[] { "StructInfo", },
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto.class,
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.EvoChamberProto.Builder.class);
+          internal_static_proto_TeamCenterProto_descriptor =
+            getDescriptor().getMessageTypes().get(15);
+          internal_static_proto_TeamCenterProto_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_proto_TeamCenterProto_descriptor,
+              new java.lang.String[] { "StructInfo", },
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto.class,
+              com.lvl6.mobsters.noneventproto.NoneventStructureProto.TeamCenterProto.Builder.class);
           return null;
         }
       };

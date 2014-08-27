@@ -1,0 +1,147 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
+
+	<websocket:handlers order="1">
+		<websocket:mapping path="/gameevents" handler="mobstersBinaryWebsocket"/>
+		<websocket:handshake-handler ref="mobstersHandshakeHandler"/>
+		<websocket:handshake-interceptors>
+			<ref bean="httpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+
+    <!--
+	<websocket:message-broker application-destination-prefix="/app">
+		<websocket:transport message-size="1048588" send-buffer-size="1048588" send-timeout="15000"/>
+
+		<websocket:stomp-endpoint path="/portfolio">
+			<!- Use this to defer to authentication already done at the HTTP layer, and INITIATE the process of
+				 ensuring player is not logged in anywhere else and that we have the latest for message sequencing
+				 and there are at least two nodes in the cache layer prepared to follow along the event sequence
+				 by loading consistent copies of the message sequence position, object graph, and pseudorandom
+				 generator seed reflecting all changes up to the latest. ->
+			<websocket:handshake-handler ref="mobstersHandshakeHandler"/>
+		</websocket:stomp-endpoint>
+
+		<websocket:stomp-broker-relay
+			relay-host="localhost" relay-port="61613" prefix="/queue, /topic" virtual-host="devmobsters"
+			client-login="lvl6client" client-passcode="abc123" system-login="lvl6server" system-passcode="abc123"
+			heartbeat-receive-interval="45000" heartbeat-send-interval="45000"/>
+
+		<websocket:message-converters register-defaults="true">
+			<bean name="binaryProtobufDecoder" lazy-init="false"
+				class="com.lvl6.mobsters.websockets.MobstersBinaryWebSocketHandler"
+				autowire-candidate="default" scope="singleton"
+				abstract="false" />
+		</websocket:message-converters>
+
+		<websocket:client-inbound-channel>
+			<!- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. ->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+		</websocket:client-inbound-channel>
+
+		<websocket:client-outbound-channel>
+			<!- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. ->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+		</websocket:client-outbound-channel>
+	   
+		<websocket:broker-channel>
+			<!- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. ->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+		</websocket:broker-channel>
+	</websocket:message-broker>
+	-->
+
+	
+	<!-- WebSocketContainer configuration factory and protocol resource properties -->
+	<bean
+		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"
+		name="wsServletContainerFactory" lazy-init="false" autowire-candidate="true"
+		scope="singleton" abstract="false">
+		<!-- For STOMP: 16K + 512 wiggle room -->
+		<property name="maxTextMessageBufferSize" value="16896"/>
+		<!-- For MobstersBinary: (16 * 64 * 1024) + 12 for header -->
+		<property name="maxBinaryMessageBufferSize" value="1048588"/>
+	</bean>
+	
+	<bean name="mobstersBinaryWebsocket" lazy-init="false" scope="singleton"
+	    class="com.lvl6.mobsters.websockets.AltByteStreaming" />
+
+	<bean name="mobstersHandshakeHandler" lazy-init="false"
+		autowire-candidate="true"
+		class="com.lvl6.mobsters.websockets.MobstersHandshakeHandler"
+		scope="singleton" abstract="false" />
+		
+	<int:annotation-config/>
+
+	<!-- Explicit registration of two default built-in web-socket handler decorators for logging
+		 and close-on-Exception behavior 
+	<bean class="org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator"
+		  lazy-init="false" autowire-candidate="true"/>
+	<bean class="org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator"
+		  lazy-init="false" autowire-candidate="true"/>
+	-->
+
+	
+	<!-- The "Subprotocol" aware WebSocketHandler for mapping to the request end-point for
+		 binding incoming connections that complete a WS handshake. -->
+	<!-- The subprotocol handler is a template/strategy consumer.  It needs a sub-protocol 
+		 plugin wired to it in order to operate as a complete and functional transport
+		 over a web socket protocol. -->
+	<!--
+	<bean id="subProtoWebSocketHandler" autowire-candidate="true" lazy-init="false"
+		  class="org.springframework.web.socket.messaging.SubProtocolWebSocketHandler" />
+	<bean id="stompSubProtoHandler" autowire-candidate="true" lazy-init="false"
+		  class="org.springframework.web.socket.messaging.StompSubProtocolHandler"/>
+	-->
+
+
+	<!--  Another built-in bean, this time for injecting logic within the session handshake
+		  We probably want to build something at this layer to bootstrap game state at this
+		  phase and/or interact with the ConnectedPlayer Jedis cache. -->
+		<bean id="httpSessionHandshakeInterceptor" scope="singleton" lazy-init="false"
+		 class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+
+	<!-- TBD.  Not sure if this is needed or what yet. -->
+	<!-- bean id="stompWebSocketSubProtoExtension" autowire-candidate="true" lazy-init="false"
+		  class="org.springframework.web.socket.messaging.StompWebSocketExtension"></bean-->
+
+<!--
+	<int:filter input-channel="serviceChannel"
+		 output-channel="idempotentServiceChannel"
+	 	 discard-channel="discardChannel"
+	 	 expression="@metadataStore.get(headers.businessKey) == null"/>
+	<int:publish-subscribe-channel id="idempotentServiceChannel" />
+	<int:outbound-channel-adapter channel="idempotentServiceChannel"
+		 expression="@metadataStore.put(headers.businessKey, '')" />
+	<int:service-activator input-channel="idempotentServiceChannel" ref="service" />
+-->
+
+	<!--
+	<int:annotation-config />
+	<int:channel id="channel1"></int:channel>
+	<int:claim-check-in input-channel="channel1" output-channel="channel2"></int:claim-check-in>
+	<int:resequencer input-channel="channel2" discard-channel="channel3" output-channel="channel3"></int:resequencer>
+	<int:channel id="channel2">
+		<int:interceptors>
+			<int:wire-tap channel="channel4" />
+		</int:interceptors>
+	</int:channel>
+
+	<int:header-value-router></int:header-value-router>
+	<int:chain>
+		<int:claim-check-in />
+		<int:resequencer></int:resequencer>
+	</int:chain>
+	<int:router></int:router>
+	<int:channel id="channel4"></int:channel>
+	-->
+	<int:channel id="channel1"></int:channel>
+</beans>

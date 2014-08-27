@@ -24,11 +24,14 @@ message ClanProto {
 
 //------------------------------------------------------------------------------------------
 
+//In legacy mobsters, MinimumUserProto and MinimumUserProtoWithLevel
+//was combined to make up this proto
 message MinimumUserProto {
 	optional string userUuid = 1;
 	optional string name = 2;
 	optional ClanProto clan = 3;
 	optional int32 level = 4;
+	optional int32 avatarMonsterId = 5;
 }
 
 //------------------------------------------------------------------------------------------

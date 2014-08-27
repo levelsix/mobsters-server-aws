@@ -9,6 +9,7 @@ import "EventChat.proto";
 import "EventCity.proto";
 import "EventClan.proto";
 import "EventDungeon.proto";
+import "EventDev.proto";
 import "EventInAppPurchase.proto";
 import "EventMiniJob.proto";
 import "EventMonster.proto";
@@ -23,6 +24,7 @@ import "NoneventAchievement.proto";
 import "NoneventBoosterPack.proto";
 import "NoneventChat.proto";
 import "NoneventClan.proto";
+import "NoneventDev.proto";
 import "NoneventInAppPurchase.proto";
 import "NoneventMiniJob.proto";
 import "NoneventMonster.proto";
@@ -135,6 +137,7 @@ enum EventProtocolRequest {
 	
 	C_SET_AVATAR_MONSTER_EVENT = 74;
 	C_RESTRICT_USER_MONSTER_EVENT = 75;
+	C_UNRESTRICT_USER_MONSTER_EVENT = 76;
 	
 	//STOP AT 99, SKIP TO 200
 	C_LOGOUT_EVENT = 101;
@@ -237,6 +240,7 @@ enum EventProtocolResponse {
 
 	S_SET_AVATAR_MONSTER_EVENT = 74;
 	S_RESTRICT_USER_MONSTER_EVENT = 75;
+	S_UNRESTRICT_USER_MONSTER_EVENT = 76;
 
 	//STOP AT 99, SKIP TO 200
 	S_UPDATE_CLIENT_USER_EVENT = 101;
@@ -248,4 +252,6 @@ enum EventProtocolResponse {
 	S_RECEIVED_RARE_BOOSTER_PURCHASE_EVENT = 107;
 	S_AWARD_CLAN_RAID_STAGE_REWARD_EVENT = 108;
 	S_FORCE_LOGOUT_EVENT = 109;
+	
+	S_DEV_EVENT = 200;
 }

@@ -855,6 +855,10 @@ public final class NoneventUserProto {
     // optional int32 level = 4;
     boolean hasLevel();
     int getLevel();
+    
+    // optional int32 avatarMonsterId = 5;
+    boolean hasAvatarMonsterId();
+    int getAvatarMonsterId();
   }
   public static final class MinimumUserProto extends
       com.google.protobuf.GeneratedMessage
@@ -972,11 +976,22 @@ public final class NoneventUserProto {
       return level_;
     }
     
+    // optional int32 avatarMonsterId = 5;
+    public static final int AVATARMONSTERID_FIELD_NUMBER = 5;
+    private int avatarMonsterId_;
+    public boolean hasAvatarMonsterId() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public int getAvatarMonsterId() {
+      return avatarMonsterId_;
+    }
+    
     private void initFields() {
       userUuid_ = "";
       name_ = "";
       clan_ = com.lvl6.mobsters.noneventproto.NoneventUserProto.ClanProto.getDefaultInstance();
       level_ = 0;
+      avatarMonsterId_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1002,6 +1017,9 @@ public final class NoneventUserProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(4, level_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt32(5, avatarMonsterId_);
+      }
       getUnknownFields().writeTo(output);
     }
     
@@ -1026,6 +1044,10 @@ public final class NoneventUserProto {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, level_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, avatarMonsterId_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1164,6 +1186,8 @@ public final class NoneventUserProto {
         bitField0_ = (bitField0_ & ~0x00000004);
         level_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        avatarMonsterId_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -1222,6 +1246,10 @@ public final class NoneventUserProto {
           to_bitField0_ |= 0x00000008;
         }
         result.level_ = level_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.avatarMonsterId_ = avatarMonsterId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1249,6 +1277,9 @@ public final class NoneventUserProto {
         }
         if (other.hasLevel()) {
           setLevel(other.getLevel());
+        }
+        if (other.hasAvatarMonsterId()) {
+          setAvatarMonsterId(other.getAvatarMonsterId());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1303,6 +1334,11 @@ public final class NoneventUserProto {
             case 32: {
               bitField0_ |= 0x00000008;
               level_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              avatarMonsterId_ = input.readInt32();
               break;
             }
           }
@@ -1490,6 +1526,27 @@ public final class NoneventUserProto {
       public Builder clearLevel() {
         bitField0_ = (bitField0_ & ~0x00000008);
         level_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // optional int32 avatarMonsterId = 5;
+      private int avatarMonsterId_ ;
+      public boolean hasAvatarMonsterId() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public int getAvatarMonsterId() {
+        return avatarMonsterId_;
+      }
+      public Builder setAvatarMonsterId(int value) {
+        bitField0_ |= 0x00000010;
+        avatarMonsterId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearAvatarMonsterId() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        avatarMonsterId_ = 0;
         onChanged();
         return this;
       }
@@ -8044,45 +8101,46 @@ public final class NoneventUserProto {
       "o\022\020\n\010clanUuid\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\022\n\ncre" +
       "ateTime\030\004 \001(\003\022\023\n\013description\030\005 \001(\t\022\013\n\003ta" +
       "g\030\006 \001(\t\022\035\n\025requestToJoinRequired\030\007 \001(\010\022\022" +
-      "\n\nclanIconId\030\010 \001(\005\"a\n\020MinimumUserProto\022\020" +
+      "\n\nclanIconId\030\010 \001(\005\"z\n\020MinimumUserProto\022\020" +
       "\n\010userUuid\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\036\n\004clan\030\003" +
-      " \001(\0132\020.proto.ClanProto\022\r\n\005level\030\004 \001(\005\"c\n" +
-      "\036MinimumUserProtoWithFacebookId\022-\n\014minUs" +
-      "erProto\030\001 \001(\0132\027.proto.MinimumUserProto\022\022" +
-      "\n\nfacebookId\030\002 \001(\t\"r\n MinimumUserProtoWi",
-      "thMaxResources\022-\n\014minUserProto\030\001 \001(\0132\027.p" +
-      "roto.MinimumUserProto\022\017\n\007maxCash\030\002 \001(\005\022\016" +
-      "\n\006maxOil\030\003 \001(\005\"\370\001\n\036UserFacebookInviteFor" +
-      "SlotProto\022\022\n\ninviteUuid\030\001 \001(\t\0226\n\007inviter" +
-      "\030\002 \001(\0132%.proto.MinimumUserProtoWithFaceb" +
-      "ookId\022\033\n\023recipientFacebookId\030\003 \001(\t\022\024\n\014ti" +
-      "meOfInvite\030\004 \001(\003\022\024\n\014timeAccepted\030\005 \001(\003\022\026" +
-      "\n\016userStructUuid\030\006 \001(\t\022\023\n\013structFbLvl\030\007 " +
-      "\001(\005\022\024\n\014redeemedTime\030\010 \001(\003\"\250\001\n\tUserProto\022" +
-      "\020\n\010userUuid\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007isAdm",
-      "in\030\003 \001(\010\022\r\n\005level\030\004 \001(\005\022\014\n\004gems\030\005 \001(\005\022\014\n" +
-      "\004cash\030\006 \001(\005\022\013\n\003oil\030\007 \001(\005\022\022\n\nexperience\030\010" +
-      " \001(\005\022\036\n\004clan\030\t \001(\0132\020.proto.ClanProto\"I\n\023" +
-      "UserCredentialProto\022\020\n\010userUuid\030\001 \001(\t\022\014\n" +
-      "\004udid\030\002 \001(\t\022\022\n\nfacebookId\030\003 \001(\t\"\207\002\n\027User" +
-      "DataRarelyUsedProto\022\020\n\010userUuid\030\001 \001(\t\022\026\n" +
-      "\016udidForHistory\030\002 \001(\t\022\024\n\014gameCenterId\030\003 " +
-      "\001(\t\022\023\n\013deviceToken\030\004 \001(\t\022\033\n\023fbIdSetOnUse" +
-      "rCreate\030\005 \001(\010\022\021\n\tlastLogin\030\006 \001(\003\022\022\n\nlast" +
-      "Logout\030\007 \001(\003\022\022\n\ncreateTime\030\010 \001(\003\022\035\n\025last",
-      "ObstacleSpawnTime\030\t \001(\003\022 \n\030lastMiniJobGe" +
-      "neratedTime\030\n \001(\003\"\267\001\n\rFullUserProto\022\034\n\002u" +
-      "p\030\001 \001(\0132\020.proto.UserProto\022\'\n\003ucp\030\002 \001(\0132\032" +
-      ".proto.UserCredentialProto\022-\n\005udrup\030\003 \001(" +
-      "\0132\036.proto.UserDataRarelyUsedProto\0220\n\rpvp" +
-      "LeagueInfo\030\004 \001(\0132\031.proto.UserPvpLeaguePr" +
-      "oto\"E\n\030StaticUserLevelInfoProto\022\r\n\005level" +
-      "\030\001 \001(\005\022\032\n\022requiredExperience\030\002 \001(\005\"\223\001\n\022U" +
-      "serPvpLeagueProto\022\020\n\010userUuid\030\001 \001(\t\022\020\n\010l" +
-      "eagueId\030\002 \001(\005\022\014\n\004rank\030\003 \001(\005\022\013\n\003elo\030\004 \001(\005",
-      "\022\022\n\nbattlesWon\030\005 \001(\005\022\023\n\013battlesLost\030\006 \001(" +
-      "\005\022\025\n\rshieldEndTime\030\007 \001(\003B4\n\037com.lvl6.mob" +
-      "sters.noneventprotoB\021NoneventUserProto"
+      " \001(\0132\020.proto.ClanProto\022\r\n\005level\030\004 \001(\005\022\027\n" +
+      "\017avatarMonsterId\030\005 \001(\005\"c\n\036MinimumUserPro" +
+      "toWithFacebookId\022-\n\014minUserProto\030\001 \001(\0132\027" +
+      ".proto.MinimumUserProto\022\022\n\nfacebookId\030\002 ",
+      "\001(\t\"r\n MinimumUserProtoWithMaxResources\022" +
+      "-\n\014minUserProto\030\001 \001(\0132\027.proto.MinimumUse" +
+      "rProto\022\017\n\007maxCash\030\002 \001(\005\022\016\n\006maxOil\030\003 \001(\005\"" +
+      "\370\001\n\036UserFacebookInviteForSlotProto\022\022\n\nin" +
+      "viteUuid\030\001 \001(\t\0226\n\007inviter\030\002 \001(\0132%.proto." +
+      "MinimumUserProtoWithFacebookId\022\033\n\023recipi" +
+      "entFacebookId\030\003 \001(\t\022\024\n\014timeOfInvite\030\004 \001(" +
+      "\003\022\024\n\014timeAccepted\030\005 \001(\003\022\026\n\016userStructUui" +
+      "d\030\006 \001(\t\022\023\n\013structFbLvl\030\007 \001(\005\022\024\n\014redeemed" +
+      "Time\030\010 \001(\003\"\250\001\n\tUserProto\022\020\n\010userUuid\030\001 \001",
+      "(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007isAdmin\030\003 \001(\010\022\r\n\005lev" +
+      "el\030\004 \001(\005\022\014\n\004gems\030\005 \001(\005\022\014\n\004cash\030\006 \001(\005\022\013\n\003" +
+      "oil\030\007 \001(\005\022\022\n\nexperience\030\010 \001(\005\022\036\n\004clan\030\t " +
+      "\001(\0132\020.proto.ClanProto\"I\n\023UserCredentialP" +
+      "roto\022\020\n\010userUuid\030\001 \001(\t\022\014\n\004udid\030\002 \001(\t\022\022\n\n" +
+      "facebookId\030\003 \001(\t\"\207\002\n\027UserDataRarelyUsedP" +
+      "roto\022\020\n\010userUuid\030\001 \001(\t\022\026\n\016udidForHistory" +
+      "\030\002 \001(\t\022\024\n\014gameCenterId\030\003 \001(\t\022\023\n\013deviceTo" +
+      "ken\030\004 \001(\t\022\033\n\023fbIdSetOnUserCreate\030\005 \001(\010\022\021" +
+      "\n\tlastLogin\030\006 \001(\003\022\022\n\nlastLogout\030\007 \001(\003\022\022\n",
+      "\ncreateTime\030\010 \001(\003\022\035\n\025lastObstacleSpawnTi" +
+      "me\030\t \001(\003\022 \n\030lastMiniJobGeneratedTime\030\n \001" +
+      "(\003\"\267\001\n\rFullUserProto\022\034\n\002up\030\001 \001(\0132\020.proto" +
+      ".UserProto\022\'\n\003ucp\030\002 \001(\0132\032.proto.UserCred" +
+      "entialProto\022-\n\005udrup\030\003 \001(\0132\036.proto.UserD" +
+      "ataRarelyUsedProto\0220\n\rpvpLeagueInfo\030\004 \001(" +
+      "\0132\031.proto.UserPvpLeagueProto\"E\n\030StaticUs" +
+      "erLevelInfoProto\022\r\n\005level\030\001 \001(\005\022\032\n\022requi" +
+      "redExperience\030\002 \001(\005\"\223\001\n\022UserPvpLeaguePro" +
+      "to\022\020\n\010userUuid\030\001 \001(\t\022\020\n\010leagueId\030\002 \001(\005\022\014",
+      "\n\004rank\030\003 \001(\005\022\013\n\003elo\030\004 \001(\005\022\022\n\nbattlesWon\030" +
+      "\005 \001(\005\022\023\n\013battlesLost\030\006 \001(\005\022\025\n\rshieldEndT" +
+      "ime\030\007 \001(\003B4\n\037com.lvl6.mobsters.noneventp" +
+      "rotoB\021NoneventUserProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -8102,7 +8160,7 @@ public final class NoneventUserProto {
           internal_static_proto_MinimumUserProto_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_proto_MinimumUserProto_descriptor,
-              new java.lang.String[] { "UserUuid", "Name", "Clan", "Level", },
+              new java.lang.String[] { "UserUuid", "Name", "Clan", "Level", "AvatarMonsterId", },
               com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.class,
               com.lvl6.mobsters.noneventproto.NoneventUserProto.MinimumUserProto.Builder.class);
           internal_static_proto_MinimumUserProtoWithFacebookId_descriptor =
