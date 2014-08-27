@@ -5,13 +5,13 @@
 // * which accompanies this distribution, and is available at
 // * http://www.eclipse.org/legal/epl-v10.html
 // *******************************************************************************/
-//package com.lvl6.mobsters.utility.xtend.lib
+package com.lvl6.mobsters.utility.xtend.lib
 //
 //import org.eclipse.xtend.core.compiler.batch.XtendCompilerTester
 //import org.junit.Test
 //import static org.junit.Assert.*
 //
-//class ExtractTest {
+class ExtractTest {
 //	extension XtendCompilerTester compilerTester = XtendCompilerTester.newXtendCompilerTester(Extract)
 //	
 //	@Test def void testExtractAnnotation() {
@@ -36,4 +36,4 @@
 //			]
 //		]
 //	}
-//}
+}
