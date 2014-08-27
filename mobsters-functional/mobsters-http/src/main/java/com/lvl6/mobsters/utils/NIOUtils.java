@@ -14,9 +14,9 @@ import com.lvl6.properties.Globals;
  * Misc utility functions to simplify dealing w/ NIO channels and buffers.
  */
 public class NIOUtils {
+	@SuppressWarnings("unused")
+	private static final Logger LOG = LoggerFactory.getLogger(NIOUtils.class);
 
-  
-	private static final Logger log = LoggerFactory.getLogger(NIOUtils.class);
 	/** 
 	 * first, writes the header, then the 
 	 * event into the given ByteBuffer

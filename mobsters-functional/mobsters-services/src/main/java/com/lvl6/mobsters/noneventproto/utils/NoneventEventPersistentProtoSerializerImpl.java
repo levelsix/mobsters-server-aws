@@ -17,7 +17,8 @@ public class NoneventEventPersistentProtoSerializerImpl implements NoneventEvent
 
 	@Override
 	public PersistentEventProto createPersistentEventProtoFromEvent(
-		EventPersistent event) {
+		EventPersistent event)
+	{
 		PersistentEventProto.Builder pepb = PersistentEventProto.newBuilder();
 
 		int eventId = event.getId();

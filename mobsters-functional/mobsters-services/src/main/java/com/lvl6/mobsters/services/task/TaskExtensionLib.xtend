@@ -7,11 +7,8 @@ import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.dynamo.TaskStageForUser
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.info.Task
-import com.lvl6.mobsters.info.repository.TaskRepository
-import com.lvl6.mobsters.utility.indexing.by_int.IntKeyIndex
 import java.util.ArrayList
 import java.util.List
-import javax.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -53,9 +50,6 @@ import static extension java.lang.String.format
  */
 @Component
 class TaskExtensionLib {
-	@Autowired
-	TaskRepository taskDefRepo;
-	
 	@Autowired
 	TaskStageForUserRepository taskForUserStageRepo;
 

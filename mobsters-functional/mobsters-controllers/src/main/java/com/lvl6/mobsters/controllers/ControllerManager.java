@@ -1,6 +1,5 @@
 package com.lvl6.mobsters.controllers;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +36,7 @@ public class ControllerManager {
 		ImmutableMap.<EventProtocolRequest,EventController>builder();
 
 	/**
-	 * Creates the map of evenType --> eventController, protected by the JVM Classloader's mutex.
+	 * Creates the map of eventType --> eventController, protected by the JVM Classloader's mutex.
 	 * 
 	 * Given:
 	 * 1)  This class is only loaded when first referenced

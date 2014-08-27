@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class MonsterServiceImpl implements MonsterService
 {
 
 	private static Logger LOG =
-	    LoggerFactory.getLogger(MonsterServiceImpl.class);
+		LoggerFactory.getLogger(MonsterServiceImpl.class);
 
 	
 	@Autowired
@@ -77,7 +75,7 @@ public class MonsterServiceImpl implements MonsterService
 	private UserRepository userRepository;
 
 	// Temporary workaround until this service is ported to XTend
-	@Inject
+	@Autowired
 	private ConfigExtensions configExtensions;
 	
 	// BEGIN READ ONLY LOGIC******************************************************************
@@ -131,14 +129,14 @@ public class MonsterServiceImpl implements MonsterService
 		List<MonsterForUser> userMonsters, int gemCost) {
 		if (null == u) {
 			LOG.error("user is null. no user exists with id="
-			    + userId
-			    + "");
+				+ userId
+				+ "");
 			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
 		}
 		
 		if (CollectionUtils.lacksSubstance(userMonsters)) {
 			LOG.error("no user monsters exist. userMonsters="
-			    + userMonsters);
+				+ userMonsters);
 			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_OTHER);
 		}
 		
@@ -147,12 +145,14 @@ public class MonsterServiceImpl implements MonsterService
 		
 		int userGems = u.getGems();
 		if (userGems < gemCost) {
-			LOG.error("user doesn't have enough gems to speed up combining. userGems=" +
-  				userGems + "\t gemCost=" + gemCost + "\t userMonster=" + userMonsters);
+			LOG.error(
+				String.format(
+					"user doesn't have enough gems to speed up combining. userGems=%s, gemCost=%s, userMonsters=%s",
+					userGems, gemCost, userMonsters));
 			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_INSUFFICIENT_GEMS);
 		}
 	}
-	
+
 	void filterOutCompletedNonWholeMonsters(List<MonsterForUser> mfuList) {
 		for (int index = mfuList.size() - 1; index < 0; index--) {
 			MonsterForUser mfu = mfuList.get(index);
@@ -162,21 +162,23 @@ public class MonsterServiceImpl implements MonsterService
 				mfuList.remove(index);
 				continue;
 			}
-			
+
 			Monster monzter = monsterRepository.findOne(mfu.getMonsterId());
 			int numPiecesToBeWhole = monzter.getNumPuzzlePieces();
-	  		int userMonsterPieces = mfu.getNumPieces();
-	  		if (userMonsterPieces > numPiecesToBeWhole) {
-	  			LOG.warn("userMonster has more than the max num pieces. userMonster=" +
-	  					mfu + "\t monster=" + monzter);
-	  		} else if (userMonsterPieces < numPiecesToBeWhole) {
-	  			LOG.warn("userMonster has less than the max num pieces. userMonster=" +
-  					mfu + "\t monster=" + monzter);
-	  			mfuList.remove(index);
-	  		}
+			int userMonsterPieces = mfu.getNumPieces();
+			if (userMonsterPieces > numPiecesToBeWhole) {
+				LOG.warn(
+					"userMonster has more than the max num pieces. userMonster=%s, monster=%s",
+					mfu, monzter);
+			} else if (userMonsterPieces < numPiecesToBeWhole) {
+				LOG.warn(
+					"userMonster has less than the max num pieces. userMonster=%s, monster=%s",
+					mfu, monzter);
+				mfuList.remove(index);
+			}
 		}
 	}
-	
+
 	@Override
 	public void addMonsterForUserToTeamSlot(
 		final String userId,
@@ -191,8 +193,8 @@ public class MonsterServiceImpl implements MonsterService
 			 *     bldr.monsterForUserUuid[isString(monsterForUserId)].teamSlotNum[is(teamSlotNum)];
 			 */
 			final List<MonsterForUser> monstersForUser =
-			    monsterForUserRepository.findByUserIdAndAny(
-			    	userId, new Director<MonsterForUserConditionBuilder>() {
+				monsterForUserRepository.findByUserIdAndAny(
+					userId, new Director<MonsterForUserConditionBuilder>() {
 						@Override
 						public void apply(MonsterForUserConditionBuilder builder) {
 							builder.monsterForUserUuid(new Director<IStringConditionBuilder>() {
@@ -206,17 +208,17 @@ public class MonsterServiceImpl implements MonsterService
 									builder.is(teamSlotNum);
 								}
 							});
-						}					
-			    	}
-			    );
+						}
+					}
+				);
 
-		for (final MonsterForUser mfu : monstersForUser) {
-			if (monsterForUserId == mfu.getMonsterForUserUuid()) {
-				mfu.setTeamSlotNum(teamSlotNum);
-			} else {
-				mfu.setTeamSlotNum(0);
+			for (final MonsterForUser mfu : monstersForUser) {
+				if (monsterForUserId == mfu.getMonsterForUserUuid()) {
+					mfu.setTeamSlotNum(teamSlotNum);
+				} else {
+					mfu.setTeamSlotNum(0);
+				}
 			}
-		}
 
 			monsterForUserRepository.saveEach(monstersForUser);
 			success = true;
@@ -232,7 +234,6 @@ public class MonsterServiceImpl implements MonsterService
 	@Override
 	public void clearMonstersForUserTeamSlot( String userId, Set<String> monsterForUserIds )
 	{
-
 		txManager.beginTransaction();
 		boolean success = false;
 		try {
@@ -308,7 +309,7 @@ public class MonsterServiceImpl implements MonsterService
 
 	static class ModifyMonstersSpecBuilderImpl implements ModifyMonstersSpecBuilder
 	{
-		Multimap<String, MonsterFunc> opMap;
+		private Multimap<String, MonsterFunc> opMap;
 
 		ModifyMonstersSpecBuilderImpl()
 		{
@@ -417,30 +418,29 @@ public class MonsterServiceImpl implements MonsterService
 		txManager.beginTransaction();
 		boolean success = false;
 		try {
-		List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
+			List<MonsterForUser> mfuList = new ArrayList<MonsterForUser>();
 			List<Monster> monzters = monsterRepository.findAll(monsterIds);
 			int teamSlotNum=1;
-		
+
 			for (final Monster monzter : monzters) {
-	  		
-		  		/* XTend: monzter.firstLevelInfo */
-		  		final IMonsterLevelInfo mli = configExtensions.getFirstLevelInfo(monzter);
-	  		
-	  		MonsterForUser mfu = new MonsterForUser();
-	  		mfu.setUserId(userId);
-	  		mfu.setMonsterId(monzter.getId());
-	  		mfu.setCurrentExp(0);
-	  		mfu.setCurrentLvl(mli.getLevel());
-	  		mfu.setCurrentHealth(mli.getHp());
-	  		mfu.setNumPieces(monzter.getNumPuzzlePieces());
-	  		mfu.setComplete(true);
-	  		mfu.setCombineStartTime(combineStartTime);
-	  		mfu.setTeamSlotNum(teamSlotNum++);
-	  	}
-		
+				/* XTend: monzter.firstLevelInfo */
+				final IMonsterLevelInfo mli = configExtensions.getFirstLevelInfo(monzter);
+
+				MonsterForUser mfu = new MonsterForUser();
+				mfu.setUserId(userId);
+				mfu.setMonsterId(monzter.getId());
+				mfu.setCurrentExp(0);
+				mfu.setCurrentLvl(mli.getLevel());
+				mfu.setCurrentHealth(mli.getHp());
+				mfu.setNumPieces(monzter.getNumPuzzlePieces());
+				mfu.setComplete(true);
+				mfu.setCombineStartTime(combineStartTime);
+				mfu.setTeamSlotNum(teamSlotNum++);
+			}
+
 			monsterForUserRepository.saveEach(mfuList);
-		// TODO: Record into monsterForUserHistory
-		//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
+			// TODO: Record into monsterForUserHistory
+			//String sourceOfPieces = ControllerConstants.MFUSOP__USER_CREATE;
 			success = true;
 		} finally {
 			if (success) {
@@ -448,9 +448,9 @@ public class MonsterServiceImpl implements MonsterService
 			} else {
 				txManager.rollback();
 			}
+		}
 	}
-	}
-	
+
 	/*
 	static class CreateMonstersSpecBuilderImpl implements CreateMonstersSpecBuilder
 	{

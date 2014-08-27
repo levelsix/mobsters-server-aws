@@ -34,7 +34,6 @@ import java.util.HashMap
 import java.util.List
 import java.util.Set
 import javax.validation.constraints.Min
-import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -249,7 +248,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		// @ScriptAssert(lang="javascript", script="var retVal = false; if (_this.isEvent) { retVal = _this.eventId > 0; } else { retVal = _this.gemsSpent == 0; }; return retVal; ", message="If this is an event, then eventId must be a positive value.")
 	// )
 	static class GenerateUserTaskActionImpl 
-		extends AbstractAction 
+		extends AbstractAction<TaskServiceImpl> 
 		implements ICallableAction<TaskService.GenerateUserTaskListener>
 	{
 		@DynamoID

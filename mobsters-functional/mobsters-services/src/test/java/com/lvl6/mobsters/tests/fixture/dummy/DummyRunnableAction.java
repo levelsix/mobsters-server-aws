@@ -9,11 +9,10 @@ import org.hibernate.validator.constraints.Length;
 
 import com.google.common.base.Preconditions;
 import com.lvl6.mobsters.common.utils.AbstractAction;
-import com.lvl6.mobsters.common.utils.AbstractService;
 import com.lvl6.mobsters.common.utils.IRunnableAction;
 
 public class DummyRunnableAction 
-	extends AbstractAction
+	extends AbstractAction<DummyServiceImpl>
 	implements IRunnableAction 
 {
 	@NotNull
@@ -29,7 +28,7 @@ public class DummyRunnableAction
 	@Pattern(regexp="[A-Za-z,;?.! ]*")
 	private String title;
 
-	public DummyRunnableAction( AbstractService parentService, String id, int size, String title ) 
+	public DummyRunnableAction( DummyServiceImpl parentService, String id, int size, String title ) 
 	{
 		super(parentService);
 		this.id = id;
