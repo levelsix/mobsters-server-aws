@@ -1,7 +1,6 @@
 package com.lvl6.mobsters.server;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.common.utils.AbstractAction;
 import com.lvl6.mobsters.common.utils.IAction;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.GameEvent;
@@ -102,12 +100,13 @@ public abstract class EventController{
 	 * @param svcAction
 	 */
 	protected void checkSyntaxValidity(final IAction svcAction) {
-		final Set<ConstraintViolation<AbstractAction>> syntaxErrors = svcAction.verifySyntax();
+		final Set<ConstraintViolation<IAction>> syntaxErrors =
+			svcAction.verifySyntax();
 		if ((syntaxErrors != null) && (! syntaxErrors.isEmpty())) {
 			final int errCnt = syntaxErrors.size();
 			if (errCnt > 1) {
 				final ArrayList<String> msgList = new ArrayList<String>(errCnt);
-				for (final ConstraintViolation<AbstractAction> violation : syntaxErrors) {
+				for (final ConstraintViolation<IAction> violation : syntaxErrors) {
 					msgList.add(
 						String.format(
 							"%s: %s", 
@@ -120,14 +119,16 @@ public abstract class EventController{
 				
 				throw new IllegalArgumentException(
 					String.format(
-						"Syntax check failed with a total of %d faults: %s", errCnt, msgList.toString()
+						"Syntax check failed with a total of %d faults: %s",
+						errCnt, msgList.toString()
 					)
 				);
 			} else {
-				final Iterator<ConstraintViolation<AbstractAction>> violationIter = syntaxErrors.iterator();
 				throw new IllegalArgumentException(
 					String.format(
-						"Syntax check failed with the following fault: %s", violationIter.next()
+						"Syntax check failed on a fault: %s", 
+						syntaxErrors.iterator()
+							.next()
 					)
 				);
 			}
