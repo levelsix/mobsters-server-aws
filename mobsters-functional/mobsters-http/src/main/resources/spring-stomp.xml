@@ -34,6 +34,20 @@
 			client-login="lvl6client" client-passcode="abc123" system-login="lvl6server" system-passcode="abc123"
 			heartbeat-receive-interval="45000" heartbeat-send-interval="45000"/>
 
+		<websocket:client-inbound-channel>
+			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+		</websocket:client-inbound-channel>
+
+		<websocket:client-outbound-channel>
+			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+		</websocket:client-outbound-channel>
+	   
+		<websocket:broker-channel>
+			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+		</websocket:broker-channel>
 	</websocket:message-broker>
 
 	
