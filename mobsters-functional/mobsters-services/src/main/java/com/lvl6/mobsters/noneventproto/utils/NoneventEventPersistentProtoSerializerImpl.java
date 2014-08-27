@@ -2,6 +2,7 @@ package com.lvl6.mobsters.noneventproto.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.info.EventPersistent;
 import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.DayOfWeek;
@@ -9,6 +10,7 @@ import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Element;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.PersistentEventProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.PersistentEventProto.EventType;
 
+@Component
 public class NoneventEventPersistentProtoSerializerImpl implements NoneventEventPersistentProtoSerializer 
 {
 

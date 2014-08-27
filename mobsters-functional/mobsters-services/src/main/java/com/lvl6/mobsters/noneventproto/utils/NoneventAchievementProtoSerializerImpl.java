@@ -2,6 +2,7 @@ package com.lvl6.mobsters.noneventproto.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.AchievementForUser;
 import com.lvl6.mobsters.info.Achievement;
@@ -12,6 +13,7 @@ import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto
 import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.AchievementProto.AchievementType;
 import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.UserAchievementProto;
 
+@Component
 public class NoneventAchievementProtoSerializerImpl implements NoneventAchievementProtoSerializer 
 {
 

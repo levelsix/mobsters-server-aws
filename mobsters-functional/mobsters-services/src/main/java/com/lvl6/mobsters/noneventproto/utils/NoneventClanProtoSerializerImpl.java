@@ -4,11 +4,13 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.ClanForUser;
 import com.lvl6.mobsters.noneventproto.NoneventClanProto.FullUserClanProto;
 import com.lvl6.mobsters.noneventproto.NoneventClanProto.UserClanStatus;
 
+@Component
 public class NoneventClanProtoSerializerImpl implements NoneventClanProtoSerializer
 {
 

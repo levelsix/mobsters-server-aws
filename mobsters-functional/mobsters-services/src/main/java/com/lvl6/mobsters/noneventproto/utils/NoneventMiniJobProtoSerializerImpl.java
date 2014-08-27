@@ -9,6 +9,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.MiniJobForUser;
 import com.lvl6.mobsters.info.MiniJob;
@@ -17,6 +18,7 @@ import com.lvl6.mobsters.noneventproto.ConfigNoneventSharedEnumProto.Quality;
 import com.lvl6.mobsters.noneventproto.NoneventMiniJobProto.MiniJobProto;
 import com.lvl6.mobsters.noneventproto.NoneventMiniJobProto.UserMiniJobProto;
 
+@Component
 public class NoneventMiniJobProtoSerializerImpl implements NoneventMiniJobProtoSerializer 
 {
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.info.BoosterPack;
 import com.lvl6.mobsters.info.IBoosterDisplayItem;
@@ -15,6 +16,7 @@ import com.lvl6.mobsters.noneventproto.NoneventBoosterPackProto.BoosterDisplayIt
 import com.lvl6.mobsters.noneventproto.NoneventBoosterPackProto.BoosterItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventBoosterPackProto.BoosterPackProto;
 
+@Component
 public class NoneventBoosterPackProtoSerializerImpl implements NoneventBoosterPackProtoSerializer 
 {
 

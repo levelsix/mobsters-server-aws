@@ -2,6 +2,7 @@ package com.lvl6.mobsters.noneventproto.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.info.IStructure;
 import com.lvl6.mobsters.info.Obstacle;
@@ -29,6 +30,7 @@ import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TownHallProto;
 import com.lvl6.mobsters.noneventproto.NoneventStructureProto.TutorialStructProto;
 import com.lvl6.mobsters.utility.values.CoordinatePair;
 
+@Component
 public class NoneventStructureProtoSerializerImpl implements NoneventStructureProtoSerializer 
 {
 

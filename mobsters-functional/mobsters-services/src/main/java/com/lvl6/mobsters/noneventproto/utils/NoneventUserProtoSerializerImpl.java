@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.Clan;
 import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
@@ -20,6 +21,7 @@ import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserCredentialProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserDataRarelyUsedProto;
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto;
 
+@Component
 public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSerializer {
 
 	private static Logger log = LoggerFactory.getLogger(new Object() {

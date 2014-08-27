@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.EventPersistentForUser;
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
@@ -27,6 +28,7 @@ import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageMonsterProto.M
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.TaskStageProto;
 import com.lvl6.mobsters.noneventproto.NoneventTaskProto.UserPersistentEventProto;
 
+@Component
 public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSerializer 
 {
 

@@ -2,10 +2,12 @@ package com.lvl6.mobsters.noneventproto.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.info.PvpLeague;
 import com.lvl6.mobsters.noneventproto.NoneventPvpProto.PvpLeagueProto;
 
+@Component
 public class NoneventPvpProtoSerializerImpl implements NoneventPvpProtoSerializer 
 {
 

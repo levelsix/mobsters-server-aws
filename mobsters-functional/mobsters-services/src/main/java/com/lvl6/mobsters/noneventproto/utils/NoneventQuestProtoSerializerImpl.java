@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
@@ -18,6 +19,7 @@ import com.lvl6.mobsters.noneventproto.NoneventQuestProto.FullUserQuestProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.ItemProto;
 import com.lvl6.mobsters.noneventproto.NoneventQuestProto.UserQuestJobProto;
 
+@Component
 public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSerializer 
 {
 

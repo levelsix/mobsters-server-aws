@@ -3,6 +3,7 @@ package com.lvl6.mobsters.eventproto.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.Clan;
 import com.lvl6.mobsters.dynamo.PvpLeagueForUser;
@@ -15,6 +16,7 @@ import com.lvl6.mobsters.noneventproto.NoneventUserProto.FullUserProto;
 import com.lvl6.mobsters.noneventproto.utils.NoneventUserProtoSerializer;
 import com.lvl6.mobsters.utility.common.TimeUtils;
 
+@Component
 public class CreateEventProtoUtilImpl implements CreateEventProtoUtil {
 
 	private static Logger LOG = LoggerFactory.getLogger(CreateEventProtoUtilImpl.class);
