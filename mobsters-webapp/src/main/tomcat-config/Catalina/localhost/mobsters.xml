@@ -1,0 +1,4 @@
+<properties>
+	<Property name="org.apache.tomcat.websocket.textBufferSize" value="1073741824"/>
+	<Property name="org.apache.tomcat.websocket.binaryBufferSize" value="1024"/>
+</properties>
