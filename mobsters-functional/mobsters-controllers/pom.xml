@@ -18,6 +18,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
+			<artifactId>mobsters-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-services</artifactId>
 		</dependency>
 		<dependency>
