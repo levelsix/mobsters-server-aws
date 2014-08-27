@@ -8,10 +8,8 @@
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		">
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+    default-lazy-init="false" default-autowire-candidates="*Controller">
 
 	<context:component-scan base-package="com.lvl6.mobsters.controllers"/>
-
-    <import resource="classpath:/spring-configuration.xml"/>
 </beans>

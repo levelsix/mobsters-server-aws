@@ -7,27 +7,27 @@
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/aop 
 		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-        http://www.springframework.org/schema/util 
-        http://www.springframework.org/schema/util/spring-util-4.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.0.xsd"
-        default-lazy-init="false" default-autowire-candidates="*RepositoryImpl,*TxManager">
-	<context:component-scan base-package="com.lvl6.mobsters.dynamo" />
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+		default-lazy-init="false" default-autowire-candidates="*Repository,*RepositoryImpl,*TxManager">
+	<context:component-scan base-package="com.lvl6.mobsters.dynamo"/>
 
 	<bean id="awsCredentials" class="com.amazonaws.auth.BasicAWSCredentials"
-	      scope="singleton" lazy-init="false">
-		<constructor-arg index="0" value="${aws.accessKey}" />
-		<constructor-arg index="1" value="${aws.secretKey}" />
+		  scope="singleton" lazy-init="false">
+		<constructor-arg index="0" value="${aws.accessKey}"/>
+		<constructor-arg index="1" value="${aws.secretKey}"/>
 	</bean>
 
 	<bean id="dynamoClient" class="com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient"
-	      scope="singleton" lazy-init="false" autowire-candidate="true">
-		<constructor-arg index="0" ref="awsCredentials" />
+		  scope="singleton" lazy-init="false" autowire-candidate="true">
+		<constructor-arg index="0" ref="awsCredentials"/>
 	</bean>
 
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
-	      lazy-init="false">
-		<property name="targetObject" ref="dynamoClient" />
+		  lazy-init="false">
+		<property name="targetObject" ref="dynamoClient"/>
 		<property name="targetMethod">
 			<value>setEndpoint</value>
 		</property>
@@ -44,41 +44,41 @@
 		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride"
 		factory-method="withTableNamePrefix" scope="singleton" lazy-init="false">
 		<constructor-arg index="0"
-			value="${aws.dynamo.table.name.prefix}" />
+			value="${aws.dynamo.table.name.prefix}"/>
 	</bean>
 
 	<bean id="dynamoMapperConfig"
 		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig"
 		scope="singleton" lazy-init="false" autowire-candidate="true">
-		<constructor-arg index="0" value="UPDATE" />
-		<constructor-arg index="1" value="CONSISTENT" />
-		<constructor-arg index="2"
-			ref="dynamoMapperConfigTableNamePrefix" />
-		<constructor-arg index="3" value="EAGER_LOADING" />
+		<constructor-arg index="0" value="UPDATE"/>
+		<constructor-arg index="1" value="CONSISTENT"/>
+		<constructor-arg index="2" ref="dynamoMapperConfigTableNamePrefix"/>
+		<constructor-arg index="3" value="EAGER_LOADING"/>
 	</bean>
 	
-	<bean id="dynamoProvisioning" class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning"
-	      scope="singleton" lazy-init="false" autowire-candidate="true">
-	      <property name="reads" value="1"/>
-	      <property name="writes" value="1"/>
+	<bean id="dynamoProvisioning" scope="singleton" lazy-init="false"
+		  class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning"
+		  autowire-candidate="true">
+		  <property name="reads" value="1"/>
+		  <property name="writes" value="1"/>
 	</bean>
 
-	<bean id="dynamoMapper"
+	<bean id="dynamoMapper" lazy-init="false" autowire-candidate="true" 
 		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper"
-		scope="singleton" lazy-init="false" autowire-candidate="true">
-		<constructor-arg index="0" ref="dynamoClient" />
-		<constructor-arg index="1" ref="dynamoMapperConfig" />
+		scope="singleton">
+		<constructor-arg index="0" ref="dynamoClient"/>
+		<constructor-arg index="1" ref="dynamoMapperConfig"/>
 	</bean>
 
 	<bean id="setupDynamoDB" class="com.lvl6.mobsters.dynamo.setup.SetupDynamoDB"
-	      scope="singleton" lazy-init="false" autowire-candidate="true">
-		<property name="checkTables" value="${aws.dynamo.checkTables}" />
-		<property name="dynamoClient" ref="dynamoClient" />
+		  scope="singleton" lazy-init="false" autowire-candidate="true">
+		<property name="checkTables" value="${aws.dynamo.checkTables}"/>
+		<property name="dynamoClient" ref="dynamoClient"/>
 	</bean>
 
 	<bean id="dynamoTxManager" class="com.lvl6.mobsters.dynamo.setup.Lvl6TxManager"
-	      scope="singleton" lazy-init="false" autowire-candidate="true">
-		<constructor-arg index="0" ref="dynamoClient" />
-		<constructor-arg index="1" ref="dynamoMapperConfig" />
+		  scope="singleton" lazy-init="false" autowire-candidate="true">
+		<constructor-arg index="0" ref="dynamoClient"/>
+		<constructor-arg index="1" ref="dynamoMapperConfig"/>
 	</bean>
 </beans>
