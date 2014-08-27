@@ -16,9 +16,8 @@ import com.lvl6.mobsters.noneventproto.NoneventAchievementProto.UserAchievementP
 @Component
 public class NoneventAchievementProtoSerializerImpl implements NoneventAchievementProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventAchievementProtoSerializerImpl.class);
 
 	@Override
 	public AchievementProto createAchievementProto( Achievement a )
@@ -45,8 +44,12 @@ public class NoneventAchievementProtoSerializerImpl implements NoneventAchieveme
 			try {
 				AchievementType at = AchievementType.valueOf(str);
 				ab.setAchievementType(at);
-			} catch(Exception e) {
-				log.error("invalid AchievementType. achievement=" + a);
+			} catch(Throwable e) {
+				LOG.error(
+					String.format(
+						"Could not lookup AchievementType enum value by name. achievementType=%s; achievement=%s",
+						str, a),
+					e);
 			}
 		}
 
@@ -55,8 +58,12 @@ public class NoneventAchievementProtoSerializerImpl implements NoneventAchieveme
 			try {
 				ResourceType rt = ResourceType.valueOf(str);
 				ab.setResourceType(rt);
-			} catch(Exception e) {
-				log.error("invalid ResourceType. achievement=" + a);
+			} catch(Throwable e) {
+				LOG.error(
+					String.format(
+						"Could not lookup ResourceType enum value by name. resourceType=%s; achievement=%s",
+						str, a),
+					e);
 			}
 		}
 
@@ -65,8 +72,12 @@ public class NoneventAchievementProtoSerializerImpl implements NoneventAchieveme
 			try {
 				Element me = Element.valueOf(str);
 				ab.setElement(me);
-			} catch(Exception e) {
-				log.error("invalid MonsterElement. achievement=" + a);
+			} catch(Throwable e) {
+				LOG.error(
+					String.format(
+						"Could not lookup Element enum value by name. element=%s; achievement=%s",
+						str, a),
+					e);
 			}
 		}
 
@@ -75,8 +86,12 @@ public class NoneventAchievementProtoSerializerImpl implements NoneventAchieveme
 			try {
 				Quality mq = Quality.valueOf(str);
 				ab.setQuality(mq);
-			} catch(Exception e) {
-				log.error("invalid MonsterQuality. achievement=" + a);
+			} catch(Throwable e) {
+				LOG.error(
+					String.format(
+						"Could not lookup Quality enum value by name. quality=%s; achievement=%s",
+						str, a),
+					e);
 			}
 		}
 
@@ -106,6 +121,4 @@ public class NoneventAchievementProtoSerializerImpl implements NoneventAchieveme
 
 		return uapb.build();
 	}
-	
-	
 }

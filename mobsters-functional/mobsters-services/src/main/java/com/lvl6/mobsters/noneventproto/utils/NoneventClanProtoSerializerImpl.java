@@ -13,9 +13,8 @@ import com.lvl6.mobsters.noneventproto.NoneventClanProto.UserClanStatus;
 @Component
 public class NoneventClanProtoSerializerImpl implements NoneventClanProtoSerializer
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventClanProtoSerializerImpl.class);
 
 	@Override
 	public FullUserClanProto createFullUserClanProtoFromUserClan( ClanForUser cfu )
@@ -28,9 +27,11 @@ public class NoneventClanProtoSerializerImpl implements NoneventClanProtoSeriali
 		try {
 			UserClanStatus ucs = UserClanStatus.valueOf(userClanStatus);
 			fucpb.setStatus(ucs);
-		} catch (Exception e) {
-			log.error("incorrect user clan status. userClan="
-				+ cfu);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format("incorrect user clan status. userClan=%s", cfu),
+				e
+			);
 		}
 
 		Date aTime = cfu.getRequestTime();
@@ -40,5 +41,4 @@ public class NoneventClanProtoSerializerImpl implements NoneventClanProtoSeriali
 
 		return fucpb.build();
 	}
-
 }

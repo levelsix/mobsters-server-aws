@@ -19,9 +19,8 @@ import com.lvl6.mobsters.noneventproto.NoneventBoosterPackProto.BoosterPackProto
 @Component
 public class NoneventBoosterPackProtoSerializerImpl implements NoneventBoosterPackProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static Logger LOG =
+		LoggerFactory.getLogger(NoneventBoosterPackProtoSerializerImpl.class);
 
 	@Override
 	public BoosterPackProto createBoosterPackProto( BoosterPack bp )
@@ -128,8 +127,11 @@ public class NoneventBoosterPackProtoSerializerImpl implements NoneventBoosterPa
 			try {
 				Quality mq = Quality.valueOf(monsterQuality);
 				b.setQuality(mq);
-			} catch (Exception e){
-				log.error("invalid monster quality. boosterDisplayItem=" + bdi, e);
+			} catch (Throwable e){
+				LOG.error(
+					String.format(
+						"invalid monster quality. boosterDisplayItem=%s", bdi),
+					e);
 			}
 		}
 

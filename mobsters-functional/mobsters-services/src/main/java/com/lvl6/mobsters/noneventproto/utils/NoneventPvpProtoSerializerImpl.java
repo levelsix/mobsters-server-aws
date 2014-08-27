@@ -11,8 +11,9 @@ import com.lvl6.mobsters.noneventproto.NoneventPvpProto.PvpLeagueProto;
 public class NoneventPvpProtoSerializerImpl implements NoneventPvpProtoSerializer 
 {
 
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	@SuppressWarnings("unused")
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventPvpProtoSerializerImpl.class);
 
 	@Override
 	public PvpLeagueProto createPvpLeagueProto( PvpLeague pl )

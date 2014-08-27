@@ -22,9 +22,8 @@ import com.lvl6.mobsters.noneventproto.NoneventQuestProto.UserQuestJobProto;
 @Component
 public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventQuestProtoSerializerImpl.class);
 
 	@Override
 	public List<FullUserQuestProto> createFullUserQuestDataLarges(
@@ -41,10 +40,10 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 			FullUserQuestProto.Builder builder = FullUserQuestProto.newBuilder();
 
 			if (null == quest) {
-				log.error("no quest with id "
-					+ userQuest.getQuestId()
-					+ ", userQuest="
-					+ userQuest);
+				LOG.error(
+					"no quest with id=%d, userQuest=%s",
+					userQuest.getQuestId(), userQuest
+				);
 			} else {
 				builder.setUserUuid(userQuest.getUserId());
 				builder.setQuestId(quest.getId());
@@ -72,11 +71,9 @@ public class NoneventQuestProtoSerializerImpl implements NoneventQuestProtoSeria
 
 		if (!questIdToUserQuestJobs.containsKey(questId)) {
 			// should never go in here!
-			log.error("user has quest but no quest_jobs for said quest."
-				+ " questId="
-				+ questId
-				+ "\t user's quest jobs are:"
-				+ questIdToUserQuestJobs);
+			LOG.error(
+				"user has quest but no quest_jobs for said quest; questId=%s, user's jobs=%s",
+				questId, questIdToUserQuestJobs);
 			return userQuestJobProtoList;
 		}
 

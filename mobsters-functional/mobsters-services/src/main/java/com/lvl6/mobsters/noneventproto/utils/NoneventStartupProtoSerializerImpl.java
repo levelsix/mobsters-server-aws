@@ -11,12 +11,12 @@ import com.lvl6.mobsters.utility.values.AnimatedSpriteOffset;
 @Component
 public class NoneventStartupProtoSerializerImpl implements NoneventStartupProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	@SuppressWarnings("unused")
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventStartupProtoSerializerImpl.class);
 	
 	@Autowired
-	NoneventStructureProtoSerializer noneventStructureProtoSerializer;
+	private NoneventStructureProtoSerializer noneventStructureProtoSerializer;
 
 	@Override
 	public AnimatedSpriteOffsetProto createAnimatedSpriteOffsetProtoFromAnimatedSpriteOffset(

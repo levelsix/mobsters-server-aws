@@ -33,9 +33,8 @@ import com.lvl6.mobsters.utility.values.CoordinatePair;
 @Component
 public class NoneventStructureProtoSerializerImpl implements NoneventStructureProtoSerializer 
 {
-
-	private static Logger LOG = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventStructureProtoSerializerImpl.class);
 
 	@Override
 	public StructureInfoProto createStructureInfoProtoFromStructure(IStructure s) {
@@ -52,16 +51,24 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 		try {
 			StructType st = StructType.valueOf(aStr);
 			builder.setStructType(st);
-		} catch (Exception e) {
-			LOG.error("can't create enum type. structType=" + aStr + ".\t structure=" + s);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Cannot retrieve StructType enum value by name. structType=%s; structure=%s",
+					aStr, s),
+				e);
 		}
 
 		aStr = s.getBuildResourceType();
 		try {
 			ResourceType rt = ResourceType.valueOf(aStr);
 			builder.setBuildResourceType(rt);
-		} catch (Exception e) {
-			LOG.error("can't create enum type. resourceType=" + aStr + ". structure=" + s);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Cannot retrieve ResourceType enum value by name. resourceType=%s; structure=%s",
+					aStr, s),
+				e);
 		}
 
 		builder.setBuildCost(s.getBuildCost());
@@ -121,9 +128,12 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 		try {
 			ResourceType rt = ResourceType.valueOf(aStr);
 			rgpb.setResourceType(rt);
-		} catch (Exception e) {
-			LOG.error("can't create enum type. resourceType=" + aStr +
-				". resourceGenerator=" + srg);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Cannot retrieve ResourceType enum value by name. resourceType=%s; resourceGenerator=%s",
+					aStr, srg),
+				e);
 		}
 
 		rgpb.setProductionRate(srg.getProductionRate());
@@ -144,9 +154,12 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 		try {
 			ResourceType rt = ResourceType.valueOf(aStr);
 			rspb.setResourceType(rt);
-		} catch (Exception e) {
-			LOG.error("can't create enum type. resourceType=" + aStr +
-				". resourceStorage=" + srs);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Cannot retrieve ResourceType enum value by name. resourceType=%s; resourceStorage=%s",
+					aStr, srs),
+				e);
 		}
 
 		rspb.setCapacity(srs.getCapacity());
@@ -253,8 +266,12 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 	  	try {
 	  		ResourceType rt = ResourceType.valueOf(aStr);
 	  		ob.setRemovalCostType(rt);
-	  	} catch (Exception e) {
-	  		LOG.info("incorrect resource type name in db. name=" + aStr, e);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Cannot retrieve ResourceType enum value by name. resourceType=%s; obcstable=%s",
+					aStr, o),
+				e);
 	  	}
 	  	
 	  	ob.setCost(o.getCost());
@@ -300,9 +317,12 @@ public class NoneventStructureProtoSerializerImpl implements NoneventStructurePr
 		try {
 			StructOrientation structOrientation = StructOrientation.valueOf(orientation);
 			mopb.setOrientation(structOrientation);
-		} catch (Exception e) {
-			LOG.info("incorrect struct orientation. obstacleId=" + obstacleId
-				+ ", posX=" + posX + ", posY=" + posY + ", orientation" + orientation);
+		} catch (Throwable e) {
+			LOG.info(
+				String.format(
+					"incorrect struct orientation. obstacleId=%d, posX=%d, posY=%d, orientation=%s",
+					obstacleId, posX, posY, orientation),
+				e);
 		}
 
 		return mopb.build();

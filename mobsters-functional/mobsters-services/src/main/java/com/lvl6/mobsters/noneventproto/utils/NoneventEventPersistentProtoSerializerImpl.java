@@ -13,9 +13,8 @@ import com.lvl6.mobsters.noneventproto.NoneventTaskProto.PersistentEventProto.Ev
 @Component
 public class NoneventEventPersistentProtoSerializerImpl implements NoneventEventPersistentProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventEventPersistentProtoSerializerImpl.class);
 
 	@Override
 	public PersistentEventProto createPersistentEventProtoFromEvent(
@@ -36,8 +35,12 @@ public class NoneventEventPersistentProtoSerializerImpl implements NoneventEvent
 		try {
 			DayOfWeek dayOfWeek = DayOfWeek.valueOf(dayOfWeekStr);
 			pepb.setDayOfWeek(dayOfWeek);
-		} catch (Exception e) {
-			log.error("can't create enum type. dayOfWeek=" + dayOfWeekStr + ".\t event=" + event);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Could not retrieve DayOfWeek enum value by name. dayOfWeek=%s; event=%s",
+					dayOfWeekStr, event),
+				e);
 		}
 
 		pepb.setStartHour(startHour);
@@ -46,20 +49,27 @@ public class NoneventEventPersistentProtoSerializerImpl implements NoneventEvent
 		pepb.setCooldownMinutes(cooldownMinutes);
 
 		try {
-			EventType typ = EventType.valueOf(eventTypeStr);
+			final EventType typ =
+				EventType.valueOf(eventTypeStr);
 			pepb.setType(typ);
-		} catch (Exception e) {
-			log.error("can't create enum type. eventType=" + eventTypeStr + ".\t event=" + event);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Could not retrieve EventType enum value by name.  eventType=%s; event=%s",
+					eventTypeStr, event),
+				e);
 		}
 		try {
 			Element elem = Element.valueOf(monsterElem);
 			pepb.setMonsterElement(elem);
-		} catch (Exception e) {
-			log.error("can't create enum type. monster elem=" + monsterElem + 
-				".\t event=" + event);
+		} catch (Throwable e) {
+			LOG.error(
+				String.format(
+					"Could not retrieve Element enum value by name.  monsterElem=%s; event=%s",
+					monsterElem, event),
+				e);
 		}
 
 		return pepb.build();
 	}
-
 }

@@ -22,43 +22,44 @@ import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserDataRarelyUsedProto
 import com.lvl6.mobsters.noneventproto.NoneventUserProto.UserProto;
 
 @Component
-public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSerializer {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {
-	}.getClass().getEnclosingClass());
+public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSerializer
+{
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventUserProtoSerializerImpl.class);
 
 	@Override
 	public ClanProto createClanProto(Clan clan) {
 		ClanProto.Builder cpb = ClanProto.newBuilder();
 		
-		cpb.setClanUuid(clan.getId());
+		String clanUuid = clan.getId();
+		cpb.setClanUuid(clanUuid);
 		
 		String str = clan.getName();
 		if (null != str) {
 			cpb.setName(str);
 		} else {
-			log.warn("clan name is null " + clan);
+			LOG.warn("clan name is null. clanUuid=%s", clanUuid);
 		}
 		
 		Date d = clan.getCreateTime();
 		if (null != d) {
 			cpb.setCreateTime(d.getTime());
 		} else {
-			log.warn("clan create time is null " + clan);
+			LOG.warn("clan create time is null. clanUuid=%s", clanUuid);
 		}
 		
 		str = clan.getDescription();
 		if (null != str) {
 			cpb.setDescription(str);
 		} else {
-			log.warn("clan description is null " + clan);
+			LOG.warn("clan description is null. clanUuid=%s", clanUuid);
 		}
 		
 		str = clan.getTag();
 		if (null != str) {
 			cpb.setTag(str);
 		} else {
-			log.warn("clan tag is null " + str);
+			LOG.warn("clan tag is null. clanUuid=%s", clanUuid);
 		}
 		
 		cpb.setRequestToJoinRequired(clan.isRequestToJoinRequired());
@@ -72,13 +73,14 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 			User user, Clan clan) {
 		MinimumUserProto.Builder mupb = MinimumUserProto.newBuilder();
 		
-		mupb.setUserUuid(user.getId());
+		final String userUuid = user.getId();
+		mupb.setUserUuid(userUuid);
 
 		String str = user.getName();
 		if (null != str) {
 			mupb.setName(str);
 		} else {
-			log.warn("user name is null " + str);
+			LOG.warn("user name is null. userUuid=%s", userUuid);
 		}
 		
 		if (null != clan) {
@@ -100,7 +102,7 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 		if (null != facebookId) {
 			mupwfib.setFacebookId(facebookId);
 		} else {
-			log.warn("user facebook id is null " + user);
+			LOG.warn("user facebook id is null: %s", user.getId());
 		}
 		
 		MinimumUserProto mup = createMinimumUserProto(user, clan);
@@ -120,7 +122,7 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 		if (null != str) {
 			upb.setName(str);
 		} else {
-			log.warn("user name is null " + str);
+			LOG.warn("user name is null");
 		}
 		
 		
@@ -144,20 +146,21 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 			UserCredential uc) {
 		UserCredentialProto.Builder ucpb = UserCredentialProto.newBuilder();
 		
-		ucpb.setUserUuid(uc.getUserId());
+		final String userUuid = uc.getUserId();
+		ucpb.setUserUuid(userUuid);
 		
 		String str = uc.getFacebookId();
 		if (null == str) {
 			ucpb.setFacebookId(str);
 		} else {
-			log.warn("UserCredential facebook id is null " + str);
+			LOG.warn("UserCredential facebook id is null. userUuid=%s", userUuid);
 		}
 		
 		str = uc.getUdid();
 		if (null == str) {
 			ucpb.setUdid(str);
 		} else {
-			log.warn("UserCredential udid is null " + str);
+			LOG.warn("UserCredential udid is null. userUuid=%s", userUuid);
 		}
 		
 		return ucpb.build();
@@ -169,14 +172,15 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 		UserDataRarelyUsedProto.Builder udrupb =
 				UserDataRarelyUsedProto.newBuilder();
 		
-		udrupb.setUserUuid(udra.getUserId());
+		final String userUuid = udra.getUserId();
+		udrupb.setUserUuid(userUuid);
 		
 		String str = udra.getUdidForHistory();
 		if (null != str) {
 			udrupb.setUdidForHistory(str);
 		} else {
-			log.warn("UserDataRarelyAccessed udidForHistory is null " +
-					udra);
+			LOG.warn(
+				"UserDataRarelyAccessed udidForHistory is null. userUuid=%s", userUuid);
 		}
 			
 		str = udra.getGameCenterId();
@@ -195,7 +199,7 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 		if (null != d) {
 			udrupb.setLastLogin(d.getTime());
 		} else {
-			log.warn("UserDataRarelyAccessed lastLogin is null " + d);
+			LOG.warn("UserDataRarelyAccessed lastLogin is null. userUuid=%s", userUuid);
 		}
 		
 		d = udra.getLastLogout();
@@ -207,23 +211,26 @@ public class NoneventUserProtoSerializerImpl implements NoneventUserProtoSeriali
 		if (null != d) {
 			udrupb.setCreateTime(d.getTime());
 		} else {
-			log.warn("UserDataRarelyAccessed createTime is null " + d);
+			LOG.warn(
+				"UserDataRarelyAccessed createTime is null. userUuid=%s", userUuid);
 		}
 		
 		d = udra.getLastObstacleSpawnTime();
 		if (null != d) {
 			udrupb.setLastObstacleSpawnTime(d.getTime());
 		} else {
-			log.warn("UserDataRarelyAccessed lastObstacleSpawnTime is null " +
-					udra);
+			LOG.warn(
+				"UserDataRarelyAccessed lastObstacleSpawnTime is null. userUuid=%s",
+				userUuid);
 		} 
 		
 		d = udra.getLastMiniJobGeneratedTime();
 		if (null != d) {
 			udrupb.setLastMiniJobGeneratedTime(d.getTime());
 		} else {
-			log.warn("UserDataRarelyAccessed lastMiniJobGeneratedTime is null " +
-					udra);
+			LOG.warn(
+				"UserDataRarelyAccessed lastMiniJobGeneratedTime is null. userUuid=%s",
+				userUuid);
 		}
 		
 		return udrupb.build();

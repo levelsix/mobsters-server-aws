@@ -21,9 +21,8 @@ import com.lvl6.mobsters.noneventproto.NoneventMiniJobProto.UserMiniJobProto;
 @Component
 public class NoneventMiniJobProtoSerializerImpl implements NoneventMiniJobProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventMiniJobProtoSerializerImpl.class);
 	
 	@Autowired
 	protected MiniJobRepository miniJobRepository;
@@ -50,8 +49,8 @@ public class NoneventMiniJobProtoSerializerImpl implements NoneventMiniJobProtoS
 			try {
 				Quality q = Quality.valueOf(str);
 				mjpb.setQuality(q);
-			} catch(Exception e) {
-				log.error("invalid quality. MiniJob=" + mj);
+			} catch(Throwable e) {
+				LOG.error(String.format("invalid quality. MiniJob=%s", mj), e);
 			}
 		}
 

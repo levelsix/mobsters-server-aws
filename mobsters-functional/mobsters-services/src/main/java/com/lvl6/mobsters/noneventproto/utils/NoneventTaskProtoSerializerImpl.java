@@ -31,9 +31,8 @@ import com.lvl6.mobsters.noneventproto.NoneventTaskProto.UserPersistentEventProt
 @Component
 public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSerializer 
 {
-
-	private static Logger log = LoggerFactory.getLogger(new Object() {}.getClass()
-		.getEnclosingClass());
+	private static final Logger LOG =
+		LoggerFactory.getLogger(NoneventTaskProtoSerializerImpl.class);
 
 	@Autowired
 	protected TaskStageRepository taskStageRepository;
@@ -132,8 +131,12 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		  try {
 			  MonsterType mt = MonsterType.valueOf(tsmMonsterType);
 			  bldr.setMonsterType(mt);
-		  } catch (Exception e) {
-			  log.error("monster type incorrect, tsm=" + tsm);
+		  } catch (Throwable e) {
+			  LOG.error(
+			      String.format(
+			    	  "Could not retrieve MonsterType enum value by name. monsterType=%s, tsfu=%s",
+			    	  tsmMonsterType, tsfu),
+			      e);
 		  }
 		  bldr.setCashReward(tsfu.getCashGained());
 		  bldr.setOilReward(tsfu.getOilGained());
@@ -187,8 +190,12 @@ public class NoneventTaskProtoSerializerImpl implements NoneventTaskProtoSeriali
 		  try {
 			  Element me = Element.valueOf(monsterElement);
 			  tmepb.setElement(me);
-		  } catch (Exception e){
-			  log.error("invalid element. task map element=" + tme);
+		  } catch (Throwable e) {
+			  LOG.error(
+			      String.format(
+			    	  "Could not retrieve Element enum value by name. element=%s, taskMapElement=%s",
+			    	  monsterElement, tme),
+			      e);
 		  }
 
 		  tmepb.setBoss(tme.isBoss());
