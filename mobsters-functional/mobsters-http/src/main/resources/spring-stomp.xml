@@ -84,6 +84,15 @@
 		  class="org.springframework.web.socket.messaging.StompSubProtocolHandler"/>
 	-->
 
+
+	<!--  Another built-in bean, this time for injecting logic within the session handshake
+		  We probably want to build something at this layer to bootstrap game state at this
+		  phase and/or interact with the ConnectedPlayer Jedis cache. -->
+	<bean name="mobstersHandshakeHandler" lazy-init="false"
+		autowire-candidate="true"
+		class="com.lvl6.mobsters.websockets.MobstersHandshakeHandler"
+		scope="singleton" abstract="false" />
+	<!-- 
 	<bean name="httpSessionHandshakeInterceptor" 
 		class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"
 		scope="singleton" abstract="false" />
