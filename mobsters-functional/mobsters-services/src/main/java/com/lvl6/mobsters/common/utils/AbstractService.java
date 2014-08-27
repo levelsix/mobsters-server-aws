@@ -8,16 +8,29 @@ import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class AbstractService {
+import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager;
+
+public abstract class AbstractService
+{
 	@Autowired
-    private ValidatorFactory validatorFactory;
+	protected DataServiceTxManager txManager;
     
-	<T extends AbstractAction> Set<ConstraintViolation<T>> verifySyntax(T action) {
+	@Autowired
+    protected ValidatorFactory validatorFactory;
+	
+	Set<ConstraintViolation<IAction>> verifySyntax(final IAction action)
+	{
 		final Validator validator = validatorFactory.getValidator();
 		return validator.validate(action);
 	}
 	
-    void setValidatorFactory( ValidatorFactory validatorFactory ) {
+    final void setDataServiceTxManager(final DataServiceTxManager txManager)
+    {
+    	this.txManager = txManager;
+    }
+	
+    final void setValidatorFactory(final ValidatorFactory validatorFactory)
+    {
     	this.validatorFactory = validatorFactory;
     }
 }

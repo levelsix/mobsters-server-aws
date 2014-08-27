@@ -5,5 +5,5 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 
 public interface IAction {
-    public Set<ConstraintViolation<AbstractAction>> verifySyntax();
+    public Set<ConstraintViolation<IAction>> verifySyntax();
 }
