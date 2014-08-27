@@ -63,15 +63,64 @@
 	</bean>
 
 
+	<!-- Explicit registration of two default built-in web-socket handler decorators for logging
+		 and close-on-Exception behavior 
+	<bean class="org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator"
+		  lazy-init="false" autowire-candidate="true"/>
+	<bean class="org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator"
+		  lazy-init="false" autowire-candidate="true"/>
 	-->
-	
-	
-	<bean id="subProtoWebSocketHandler" autowire-candidate="true" lazy-init="false"
-	      class="org.springframework.web.socket.messaging.SubProtocolWebSocketHandler"></bean>
-	<bean id "stompSubProtoHandler" autowire-candidate="true" lazy-init="false"
-	      class="org.springframework.web.socket.messaging.StompSubProtocolHandler"></bean>
 
+	
+	<!-- The "Subprotocol" aware WebSocketHandler for mapping to the request end-point for
+		 binding incoming connections that complete a WS handshake. -->
+	<!-- The subprotocol handler is a template/strategy consumer.  It needs a sub-protocol 
+		 plugin wired to it in order to operate as a complete and functional transport
+		 over a web socket protocol. -->
+	<!--
+	<bean id="subProtoWebSocketHandler" autowire-candidate="true" lazy-init="false"
+		  class="org.springframework.web.socket.messaging.SubProtocolWebSocketHandler" />
+	<bean id="stompSubProtoHandler" autowire-candidate="true" lazy-init="false"
+		  class="org.springframework.web.socket.messaging.StompSubProtocolHandler"/>
+	-->
+
+	<bean name="httpSessionHandshakeInterceptor" 
+		class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"
+		scope="singleton" abstract="false" />
+	-->
+
+	<!-- TBD.  Not sure if this is needed or what yet. -->
 	<!-- bean id="stompWebSocketSubProtoExtension" autowire-candidate="true" lazy-init="false"
 		  class="org.springframework.web.socket.messaging.StompWebSocketExtension"></bean-->
 
+<!--
+	<int:filter input-channel="serviceChannel"
+		 output-channel="idempotentServiceChannel"
+	 	 discard-channel="discardChannel"
+	 	 expression="@metadataStore.get(headers.businessKey) == null"/>
+	<int:publish-subscribe-channel id="idempotentServiceChannel" />
+	<int:outbound-channel-adapter channel="idempotentServiceChannel"
+		 expression="@metadataStore.put(headers.businessKey, '')" />
+	<int:service-activator input-channel="idempotentServiceChannel" ref="service" />
+-->
+
+	<!--
+	<int:annotation-config />
+	<int:channel id="channel1"></int:channel>
+	<int:claim-check-in input-channel="channel1" output-channel="channel2"></int:claim-check-in>
+	<int:resequencer input-channel="channel2" discard-channel="channel3" output-channel="channel3"></int:resequencer>
+	<int:channel id="channel2">
+		<int:interceptors>
+			<int:wire-tap channel="channel4" />
+		</int:interceptors>
+	</int:channel>
+
+	<int:header-value-router></int:header-value-router>
+	<int:chain>
+		<int:claim-check-in />
+		<int:resequencer></int:resequencer>
+	</int:chain>
+	<int:router></int:router>
+	<int:channel id="channel4"></int:channel>
+	-->
 </beans>
