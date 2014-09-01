@@ -1,123 +1,264 @@
 package com.lvl6.mobsters.websockets;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.security.Principal;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.support.ExecutorSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.socket.BinaryMessage;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.PongMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
+import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator;
 
-public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler {
-	private static final Logger LOG = LoggerFactory.getLogger(MobstersBinaryWebSocketHandler.class);
+public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler implements MessageHandler
+{
+	private static final Logger LOG =
+		LoggerFactory.getLogger(MobstersBinaryWebSocketHandler.class);
+	
+	private final MobstersCodec codec = new MobstersCodec();
+	
+	// Active sessions, keyed by User UUID.  A user may only be connected to one game session 
+	// through one web socket to one game server at any point in time.
+	private final ConcurrentHashMap<String,WebSocketSessionHolder> sessionRegistry = 
+	 	new ConcurrentHashMap<String,WebSocketSessionHolder>();
+	
+	private ExecutorSubscribableChannel wsClientRequests;
+	private ExecutorSubscribableChannel wsClientResponses;
+	
+	private int sendTimeLimit = 10 * 1000;
 
-	private static final int HEADER_SIZE = 12;
-	private static final int MAX_PAYLOAD_SIZE = 1024*1024;
-	private static final int MAX_MESSAGE_SIZE = HEADER_SIZE + MAX_PAYLOAD_SIZE;
+	private int sendBufferSizeLimit = 512 * 1024;
 
-	protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
-		final int availableBytes = message.getPayloadLength();
-		if (availableBytes >= MAX_MESSAGE_SIZE) {
-			throw new IOException(
-				String.format(
-					"Next event exceeds maximum supported message length. availableBytes=%d, maximumMessageSize=%d",
-					availableBytes, MAX_MESSAGE_SIZE));
-		} else if (availableBytes <= 12) {
-			// TODO: What we really need to do in case of this scenario is copy the bytes into an storage location of our own
-			//       and remember the next place where we need to write into that array when the remaining bytes arrive.
-			throw new IOException(
-				String.format(
-					"Next event cannot fit in the number of bytes available.  Header itself requires 12 bytes. availableBytes=%d",
-					availableBytes));
-		}
-		
-		ByteBuffer buf = message.getPayload();
-		buf.order(getByteOrder());
-		buf.getLong();
-		final int payloadSize = buf.getInt();
-		final int messageSize = payloadSize + 12;
+	private long latencyOnThread;
 
-		
-		if (messageSize < availableBytes) {
-			// TODO: What we really need to do in case of this scenario is copy the bytes into an storage location of our own
-			//       and remember the next place where we need to write into that array when the remaining bytes arrive.
-			LOG.warn(
-				String.format(
-					"There are bytes from the next message frame in this frame's buffer!  messageSize=%d, availableBytes=%d",
-					messageSize, availableBytes));
-		} else if (messageSize > availableBytes) {
-			if (payloadSize > MAX_PAYLOAD_SIZE) {
-				throw new IOException(
-					String.format(
-						"Next message's payload exceeds maximum allowed size!  messageSize=%d, availableBytes=%d, maximumMessageSize=%d",
-						messageSize, availableBytes, MAX_MESSAGE_SIZE));
-			} else {
-				// TODO: What we really need to do in case of this scenario is copy the bytes into an storage location of our own
-				//       and remember the next place where we need to write into that array when the remaining bytes arrive.
-				throw new IOException(
-					String.format(
-						"Insufficient bytes to account for next message available!  messageSize=%d, availableBytes=%d",
-						messageSize, availableBytes));
-			}
+	private long latencyOffThread;
+
+	private boolean dispatchOffThread;
+
+	protected void handleBinaryMessage(WebSocketSession session, BinaryMessage wsRequest) throws Exception
+	{
+		final Message<byte[]> msg =
+			codec.decode(wsRequest);
+			
+		if (dispatchOffThread) {
+			// TODO: There is a second indirection through Principal to take care of... 
+			//       Check out the StompSubProtoHandler for a pointer towards it.
+			final Principal user = session.getPrincipal();
+
+			final MobstersHeaderAccessor headers =
+				MobstersHeaderAccessor.wrap(msg);
+
+			// TODO: Check for an incorrectly set header or missing header before applying one.
+			headers.setUserUuid(
+				user.getName());
+
+			// To avoid writing a input-to-output transform, we're making an intentional error and
+			// publishing directly to the response channel.  Sufficient for this exercise, but technically
+			// very much incorrect.
+			wsClientResponses.send(
+				MessageBuilder.fromMessage(msg)
+				.setHeader(
+					MobstersHeaderAccessor.MOBSTERS_USER_UUID_HEADER,
+					user.getName())
+				.build());
 		} else {
-			LOG.debug(
-				String.format(
-					"Deserialized message payload of %d bytes from %d bytes available to read",
-					payloadSize, availableBytes));
+			if (latencyOnThread > 0) {
+				Thread.sleep(latencyOnThread);
+			}
+			
+			session.sendMessage(
+				codec.encode(msg));
+		}
+	}
+	
+
+	@Override
+	public void afterConnectionEstablished(
+		WebSocketSession session
+	) throws Exception
+	{
+		session =
+			new ConcurrentWebSocketSessionDecorator(
+				session, sendTimeLimit, sendBufferSizeLimit);
+
+		final String userUuid =
+			(String) session.getAttributes()
+			.get(MobstersHeaderAccessor.MOBSTERS_USER_UUID_HEADER);
+		
+		// TODO Verify userUuid syntax before using it.
+		final WebSocketSessionHolder putResult = this.sessionRegistry.put(
+			userUuid, new WebSocketSessionHolder(session)
+		);
+
+		if ((putResult != null) && (putResult.getSession() != session)) {
+			this.sessionRegistry.put(userUuid, putResult);
+			throw new IllegalStateException(
+				"Protocol error!  There is a login session already open for user " + userUuid
+				+".  Close all of this user's outstanding sessions before attempting a new one."
+			);
 		}
 		
-		// Hopefully routing messages through the session is the right way to get them to the outbound
-		// message channel.
-		//
-		// TODO: The handshake handler has the responsibility of packing attributes and whatknot on
-		//       the Session object and I suspect we're expected to use those Attributes here to
-		//       populate enough Headers on the message to enable the construction of downstream
-		//       Messages that we'll be able to deliver if and when they find themselved routed
-		//       back this way for delivery.
-		//
-		// NOTE: A Spring-provided facility for returning a message here is by delivering it to the
-		//       message broker via a MessagingTemplate injected dependency.  That facility depends
-		//       on a HandshakeHandler being used to populate the source message from which downstream
-		//       messages are derived with a USER_HEADER entry linked to a Principal from the
-		//       spring-security package.  If we can idenitify how we want to identify a user from the
-		//       HTTP request context, we've got what we need...!
-		byte[] messageBytes = new byte[payloadSize];
-		buf.get(messageBytes, 0, payloadSize);
-		session.sendMessage(
-			new BinaryMessage(messageBytes));
+		LOG.debug(
+			"Started WebSocket session=%s.  Session count is now %d",
+			userUuid, this.sessionRegistry.size()
+		);
 	}
 
-	protected static ByteOrder getByteOrder() {
-		return ByteOrder.BIG_ENDIAN;
+	private static class WebSocketSessionHolder
+	{
+
+		private final WebSocketSession session;
+
+		private final long createTime = System.currentTimeMillis();
+
+		private volatile boolean handledMessages;
+
+
+		private WebSocketSessionHolder(WebSocketSession session)
+		{
+			this.session = session;
+		}
+
+		public WebSocketSession getSession()
+		{
+			return this.session;
+		}
+
+		public long getCreateTime()
+		{
+			return this.createTime;
+		}
+
+		public void setHasHandledMessages()
+		{
+			this.handledMessages = true;
+		}
+
+		public boolean hasHandledMessages()
+		{
+			return this.handledMessages;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "WebSocketSessionHolder[=session=" + this.session + ", createTime=" +
+					this.createTime + ", hasHandledMessages=" + this.handledMessages + "]";
+		}
+	}
+	
+	
+	/**
+	 * This method is called through the "wsClientResponseChannel", which is provided for Messaging
+	 * applications that want to sent replies back to a websocket as responses to some previous request
+	 * message.
+	 * 
+	 * When a Session was first opened, this class wrapped it with a thread-safety decorator and put
+	 * it into a ConcurrentHashMap keyed by Player UUID.
+	 * 
+	 * When a request arrived for processing, this class sent it to the wsClientRequestChannel for
+	 * incoming requests.  That channel is privately consumed by two built-in MessageHandlers, one
+	 * that uses annotations to route messages to candidate MessageHandlers, and another that 
+	 * recognizes and re-writes to-user app-to-app messages for routing through RabbitMQ over the
+	 * STOMP protocol. (** This is not fully implemented here yet, but this is what is already 
+	 * fully implemented in the STOMP from Client Websocket implementation)
+	 * 
+	 * If the result of any downstream processing channel is a message that is a reply to 
+	 * a sender, an OutboundMessagingTemplate will have been used to place that message on the
+	 * wsClientResponseChannel, which will land it in this MessageHandler, which knows how to 
+	 * use a "user-uuid" (MOBSTERS_USER_UUID_HEADER) header as a key to retrieve the WebSocketSession
+	 * and call its send() method with a binary encoding of the message as an argument.
+	 * 
+	 * In order for all this to work, the consumer has a critical responsibility--to copy the 
+	 * MOBSTERS_USER_UUID_HEADER header value from the original incoming Message<GeneratedMessage>
+	 * to the outgoing Message<GeneratedMessage> whose payload is a response to the request.`
+	 * If this is forgotten, nothing will get sent back to the websocket client (we wouldn't know
+	 * who they were anymore), but an error will appear in the local log file.
+	 * 
+	 * @param outgoingMsg
+	 */
+	@SuppressWarnings("unchecked")
+	public void handleMessage(Message<?> outgoingMsg) throws MessagingException 
+	{
+		if (latencyOffThread > 0) {
+			try {
+				Thread.sleep(latencyOffThread);
+			} catch (InterruptedException e) {
+				LOG.error("Interrupted sleep", e);
+				return;
+			}
+		}
+	
+		final MobstersHeaderAccessor headers =
+			MobstersHeaderAccessor.wrap(outgoingMsg);
+		final String userUuid = headers.getUserUuid();
+		if ((! StringUtils.hasText(userUuid)) && (! "null".equals(userUuid)))
+		{
+			throw new IllegalArgumentException(
+				"Cannot route messages to websocket clients unless their "
+				+ "MOBSTERS_USER_UUID"
+				+ "session attribute and message headerer have both already been set.");
+		}
+
+		final WebSocketSessionHolder sessionHolder =
+		    sessionRegistry.get(userUuid);
+		if (sessionHolder == null) {
+			throw new IllegalArgumentException(
+				"User " + userUuid + " is not currently logged int...");
+		}
+
+		final WebSocketSession session =
+			sessionHolder.getSession();
+		try {
+			session.sendMessage(
+				codec.encode((Message<byte[]>) outgoingMsg));
+		} catch (IOException e) {
+			LOG.error("IOException while sending message", e);
+		}
 	}
 
-
-	protected void handlePongMessage(WebSocketSession session, PongMessage message) throws Exception {
+	public void setSendTimeLimit(int sendTimeLimit)
+	{
+		this.sendTimeLimit = sendTimeLimit;
 	}
 
-	@Override
-	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+	public void setSendBufferSizeLimit(int sendBufferSizeLimit)
+	{
+		this.sendBufferSizeLimit = sendBufferSizeLimit;
 	}
 
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+	public void setLatencyOnThread(long latencyOnThread)
+	{
+		this.latencyOnThread = latencyOnThread;
 	}
 
-	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	public void setLatencyOffThread(long latencyOffThread)
+	{
+		this.latencyOffThread = latencyOffThread;
 	}
 
-	@Override
-	public boolean supportsPartialMessages() {
-		return false;
+	public void setDispatchOffThread(boolean dispatchOffThread)
+	{
+		this.dispatchOffThread = dispatchOffThread;
 	}
 
+	public void setWsClientRequests(ExecutorSubscribableChannel wsClientRequests)
+	{
+		// TODO: None of the actual request dispatchers are wired yet.
+		this.wsClientRequests = wsClientRequests;
+	}
+
+	public void setWsClientResponses(ExecutorSubscribableChannel wsClientResponses)
+	{
+		this.wsClientResponses = wsClientResponses;
+		this.wsClientResponses.subscribe(this);
+	}
 }

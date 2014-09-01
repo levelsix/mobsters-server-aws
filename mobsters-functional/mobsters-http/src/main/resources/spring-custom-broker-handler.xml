@@ -1,0 +1,166 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
+
+	<websocket:handlers order="1">
+		<websocket:mapping path="/gameevents" handler="subProtoWebSocketHandler" />
+		<websocket:handshake-handler ref="mobstersHandshakeHandler" />
+		<websocket:handshake-interceptors>
+			<ref bean="httpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+
+	<!-- WebSocketContainer configuration factory and protocol resource properties -->
+	<bean
+		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"
+		name="wsServletContainerFactory" lazy-init="false" autowire-candidate="true"
+		scope="singleton" abstract="false">
+		<!-- For STOMP: 16K + 512 wiggle room -->
+		<property name="maxTextMessageBufferSize" value="16896" />
+		<!-- For MobstersBinary: (16 * 64 * 1024) + 12 for header -->
+		<property name="maxBinaryMessageBufferSize" value="1048588" />
+	</bean>
+
+	<bean name="mobstersSubProto" lazy-init="false" scope="singleton"
+		class="com.lvl6.mobsters.websockets.MobstersSubProtoHandler"
+		autowire-candidate="true" autowire="default" abstract="false" />
+
+	<bean name="binaryProtobufDecoder" lazy-init="false"
+		class="com.lvl6.mobsters.websockets.MobstersBinaryWebSocketHandler"
+		autowire-candidate="default" scope="singleton" abstract="false" />
+
+	<bean name="mobstersHandshakeHandler" lazy-init="false"
+		autowire-candidate="true"
+		class="com.lvl6.mobsters.websockets.MobstersHandshakeHandler" scope="singleton"
+		abstract="false" />
+
+	<int:annotation-config />
+
+	<!-- Explicit registration of two default built-in web-socket handler decorators 
+		for logging and close-on-Exception behavior -->
+	<bean
+		class="org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator"
+		lazy-init="false" autowire-candidate="true" />
+	<bean
+		class="org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator"
+		lazy-init="false" autowire-candidate="true" />
+
+
+	<!-- The "Subprotocol" aware WebSocketHandler for mapping to the request 
+		end-point for binding incoming connections that complete a WS handshake. -->
+	<!-- The subprotocol handler is a template/strategy consumer. It needs a 
+		sub-protocol plugin wired to it in order to provide broker relay services
+		over websocket -->
+
+	<bean name="brokerChannel"
+		class="org.springframework.messaging.support.ExecutorSubscribableChannel"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean name="brokerChannelExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean name="clientInboundChannel"
+		class="org.springframework.messaging.support.ExecutorSubscribableChannel"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean name="clientInboundChannelExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean name="clientOutboundChannel"
+		class="org.springframework.messaging.support.ExecutorSubscribableChannel"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean name="clientOutboundChannelExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<!-- The Broker relay that can interact with RabbitMQ via its STOMP plugin -->
+	<bean
+		id="org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler#0"
+		class="org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+    <!-- The modular WebSocket Handler for delegating routing resppnsibilities to
+         a broker relay (Simple or STOMP).  It has a protocol strategy injected
+         into it that manages encoding and decoding details for a client websocket
+         connection. -->
+	<bean name="subProtoWebSocketHandler" scope="singleton" lazy-init="false"
+		class="org.springframework.web.socket.messaging.SubProtocolWebSocketHandler"
+		abstract="false" autowire="default" autowire-candidate="true" primary="false">
+		<constructor-arg index="0" ref="clientInboundChannel" />
+		<constructor-arg index="1" ref="clientOutboundChannel" />
+		<property name="defaultProtocolHandler" ref="mobstersSubProto"></property>
+	</bean>
+
+	<!-- Another built-in bean, this time for making HTTP request state available during
+	     handshake initialization. -->
+	<bean id="httpSessionHandshakeInterceptor" scope="singleton"
+		lazy-init="false"
+		class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+
+    <!-- Gotta figure out how to make a construct a List for a constructor
+         argument to get past this.  I've seen it done before, so it is
+         possible... -->
+	<bean
+		id="org.springframework.messaging.converter.CompositeMessageConverter#0"
+		class="org.springframework.messaging.converter.CompositeMessageConverter"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean id="org.springframework.messaging.simp.SimpMessagingTemplate#0"
+		class="org.springframework.messaging.simp.SimpMessagingTemplate"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean
+		id="org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler#0"
+		class="org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean
+		id="org.springframework.messaging.simp.user.DefaultUserDestinationResolver#0"
+		class="org.springframework.messaging.simp.user.DefaultUserDestinationResolver"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+	<bean
+		id="org.springframework.messaging.simp.user.DefaultUserSessionRegistry#0"
+		class="org.springframework.messaging.simp.user.DefaultUserSessionRegistry"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false" />
+
+
+
+    <!-- Some WIP stuff about the post-Websocket/Broker pipeline -->
+
+	<!-- <int:filter input-channel="serviceChannel" output-channel="idempotentServiceChannel" 
+		discard-channel="discardChannel" expression="@metadataStore.get(headers.businessKey) 
+		== null"/> <int:publish-subscribe-channel id="idempotentServiceChannel" /> 
+		<int:outbound-channel-adapter channel="idempotentServiceChannel" expression="@metadataStore.put(headers.businessKey, 
+		'')" /> <int:service-activator input-channel="idempotentServiceChannel" ref="service" 
+		/> -->
+
+	<!-- <int:annotation-config /> <int:channel id="channel1"></int:channel> 
+		<int:claim-check-in input-channel="channel1" output-channel="channel2"></int:claim-check-in> 
+		<int:resequencer input-channel="channel2" discard-channel="channel3" output-channel="channel3"></int:resequencer> 
+		<int:channel id="channel2"> <int:interceptors> <int:wire-tap channel="channel4" 
+		/> </int:interceptors> </int:channel> <int:header-value-router></int:header-value-router> 
+		<int:chain> <int:claim-check-in /> <int:resequencer></int:resequencer> </int:chain> 
+		<int:router></int:router> <int:channel id="channel4"></int:channel> -->
+</beans>

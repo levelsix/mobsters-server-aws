@@ -1,0 +1,108 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-event="http://www.springframework.org/schema/integration/event"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/integration/event http://www.springframework.org/schema/integration/event/spring-integration-event-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.0.xsd">
+
+	<websocket:handlers order="1">
+		<websocket:mapping path="/gameevents" handler="mobstersBinaryWebSocket" />
+		<websocket:handshake-handler ref="mobstersHandshakeHandler" />
+		<websocket:handshake-interceptors>
+			<ref bean="httpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+	
+    <!-- Interface channel, meant for injection to  -->
+	<bean name="wsClientRequests"
+		class="org.springframework.messaging.support.ExecutorSubscribableChannel"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false">
+		<constructor-arg index="0" ref="fromClientExecutor"/>
+	</bean>
+
+	<bean name="fromClientExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false">
+		<property name="corePoolSize" value="${com.lvl6.latencyExperiment.threadPool.corePoolSize}"/>
+		<property name="maxPoolSize" value="${com.lvl6.latencyExperiment.threadPool.maxPoolSize}"/>
+		<property name="queueCapacity" value="${com.lvl6.latencyExperiment.threadPool.queueCapacity}"/>
+	</bean>
+	
+    <!-- Interface channel, meant for internal use to drive annotation and broker features  -->
+	<bean name="wsClientResponses"
+		class="org.springframework.messaging.support.ExecutorSubscribableChannel"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false">
+		<constructor-arg index="0" ref="toClientExecutor"/>
+	</bean>
+
+	<bean name="toClientExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+		scope="singleton" abstract="false" lazy-init="false" autowire="default"
+		autowire-candidate="true" primary="false">
+		<property name="corePoolSize" value="${com.lvl6.latencyExperiment.threadPool.corePoolSize}"/>
+		<property name="maxPoolSize" value="${com.lvl6.latencyExperiment.threadPool.maxPoolSize}"/>
+		<property name="queueCapacity" value="${com.lvl6.latencyExperiment.threadPool.queueCapacity}"/>
+	</bean>
+
+	<!-- The Websocket Handler -->
+	<bean name="mobstersBinaryWebSocket" lazy-init="false" scope="singleton"
+		class="com.lvl6.mobsters.websockets.MobstersBinaryWebSocketHandler"
+		p:wsClientRequests-ref="wsClientRequests"
+		p:wsClientResponses-ref="wsClientResponses">
+		<property name="latencyOnThread" value="${com.lvl6.latencyTest.onThreadPath}"/>
+	    <property name="latencyOffThread" value="${com.lvl6.latencyTest.offThreadPath}"/>
+	    <property name="dispatchOffThread" value="${com.lvl6.latencyTest.dispatchOffThread}"/>
+	</bean>
+	
+	<!-- Session handshake handler -->
+	<bean name="mobstersHandshakeHandler" lazy-init="false" autowire-candidate="true"
+		class="com.lvl6.mobsters.websockets.MobstersHandshakeHandler" scope="singleton"
+		abstract="false" />
+
+	<int:annotation-config />
+
+	<!-- WebSocketContainer configuration factory and protocol resource properties -->
+	<bean
+		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"
+		name="wsServletContainerFactory" lazy-init="false" autowire-candidate="true"
+		scope="singleton" abstract="false">
+		<!-- For STOMP: 16K + 512 wiggle room -->
+		<property name="maxTextMessageBufferSize" value="16896" />
+		<!-- For MobstersBinary: (16 * 64 * 1024) + 12 for header -->
+		<property name="maxBinaryMessageBufferSize" value="1048588" />
+	</bean>
+
+
+	<!-- Another built-in bean, this time for injecting logic within the session 
+		handshake We probably want to build something at this layer to bootstrap 
+		game state at this phase and/or interact with the ConnectedPlayer Jedis cache. -->
+	<bean id="httpSessionHandshakeInterceptor" scope="singleton"
+		lazy-init="false"
+		class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+
+
+
+    <!--  WIP for message processing through the mid-stream -->
+	<!-- <int:filter input-channel="serviceChannel" output-channel="idempotentServiceChannel" 
+		discard-channel="discardChannel" expression="@metadataStore.get(headers.businessKey) 
+		== null"/> <int:publish-subscribe-channel id="idempotentServiceChannel" /> 
+		<int:outbound-channel-adapter channel="idempotentServiceChannel" expression="@metadataStore.put(headers.businessKey, 
+		'')" /> <int:service-activator input-channel="idempotentServiceChannel" ref="service" 
+		/> -->
+
+	<!-- <int:annotation-config /> <int:channel id="channel1"></int:channel> 
+		<int:claim-check-in input-channel="channel1" output-channel="channel2"></int:claim-check-in> 
+		<int:resequencer input-channel="channel2" discard-channel="channel3" output-channel="channel3"></int:resequencer> 
+		<int:channel id="channel2"> <int:interceptors> <int:wire-tap channel="channel4" 
+		/> </int:interceptors> </int:channel> <int:header-value-router></int:header-value-router> 
+		<int:chain> <int:claim-check-in /> <int:resequencer></int:resequencer> </int:chain> 
+		<int:router></int:router> <int:channel id="channel4"></int:channel> -->
+	
+</beans>
