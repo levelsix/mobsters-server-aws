@@ -2,14 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.lvl6</groupId>
-		<artifactId>mobsters-server-aws</artifactId>
+		<groupId>com.lvl6.mobsters.server-aws</groupId>
+		<artifactId>assembly</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>mobsters-webapp</artifactId>
+	<groupId>com.lvl6.mobsters.server-aws.assembly</groupId>
+	<artifactId>game-webapp</artifactId>
 	<packaging>war</packaging>
 	<name>Mobsters Game Server Webapp</name>
-	<description>Module for combining Mobsters Game Server components to yield a deployable webapp</description>
+	<description>Module for combining Mobsters Game Server components to yield a deployable webapp that handles game requests from clients over WebSocket and send back both responses to those request messages and asynchornous server-initiated messages where appropriate.</description>
 
 	<dependencies>
 		<dependency>
