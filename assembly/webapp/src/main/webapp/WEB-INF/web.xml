@@ -1,98 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-        http://java.sun.com/xml/ns/javaee
-        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-    version="3.0">
-
-	<display-name>Lvl6 Mobsters</display-name>
-	<description>Lvl6 Mobsters Server</description>
-
-	<!-- TODO
-	<servlet>
-		<servlet-name>IddictionServlet</servlet-name>
-		<servlet-class>com.lvl6.tracking.AppODayUserTrackerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>IddictionServlet</servlet-name>
-		<url-pattern>/iddiction</url-pattern>
-	</servlet-mapping>
-	-->
-
-	<servlet>
-		<servlet-name>mobsters</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>mobsters</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-
-	<absolute-ordering>
-        <name>spring_web</name>
-    </absolute-ordering>
-    
-	<!-- Spring Security -->
-<!-- TODO
-     1)  First filter is admin console-specific security.  If we want to delegate authentication
-         for the websocket protocol to spring-security, we will need to use filters from
-         spring-security.  It looks like the following relies upon a default bean name,
-         springSecurityFilterChain, that was implicitly registered by the contents of 
-         spring-security.xml under previous server project code.  To have two different authentication
-         methods, something will have to become explicitly named for the sake of divergence.
-	<filter>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-    2)  Second filter is the admin console itself, implemented using Apache Wicket.
-	<filter>
-		<filter-name>Lvl6Admin</filter-name>
-		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
-		<init-param>
-			<param-name>applicationClassName</param-name>
-			<param-value>com.lvl6.ui.admin.Lvl6Admin</param-value>
-		</init-param>
-		<init-param>
-			<param-name>ignorePaths</param-name>
-			<param-value>/iddiction,/healthcheck</param-value>
-		</init-param>
-		<init-param>
-			<param-name>configuration</param-name>
-			<param-value>${wicket.mode}</param-value>
-		</init-param>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>Lvl6Admin</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
--->
-
-	<context-param>
-		<param-name>contextClass</param-name>
-		<param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext.xml</param-value>
-	</context-param>
-
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>testwebsocket.html</welcome-file>
-	</welcome-file-list>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name>Lvl6 Mobsters</display-name>
+  <description>Lvl6 Mobsters Server</description>
+  <servlet>
+    <servlet-name>mobsters</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mobsters</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <listener>
+    <listener-class>org.apache.tomcat.websocket.server.WsContextListener</listener-class>
+  </listener>
+  <absolute-ordering>
+    <name>spring_web</name>
+  </absolute-ordering>
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
+  </context-param>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/applicationContext.xml</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>testwebsocket.html</welcome-file>
+  </welcome-file-list>
 </web-app>
