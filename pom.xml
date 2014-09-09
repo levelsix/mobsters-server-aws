@@ -441,10 +441,10 @@
 				<version>${tomcat.version}</version>
 				<scope>provided</scope>
 			</dependency>
-			<!-- CDI 1.1 required to use annotation-based validation. May require configuration 
-			     and/or implementation selection to use in Tomcat 7.0.27 container. See 
-			     http://hibernate.org/validator/documentation/getting-started/ 
-			     and http://www.cnblogs.com/davidwang456/p/3765214.html for details. -->
+			<!-- CDI 1.1 required to use annotation-based validation. May require 
+				configuration and/or implementation selection to use in Tomcat 7.0.27 container. 
+				See http://hibernate.org/validator/documentation/getting-started/ and http://www.cnblogs.com/davidwang456/p/3765214.html 
+				for details. -->
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-integration-cdi</artifactId>
@@ -621,14 +621,10 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-validator.version}</version>
 			</dependency>
-			<!-- Next dependency may be unnecessary if Tomcat 7.0.27 provides a JSR-341 implementation -->
-			<!--
-			<dependency>
-				<groupId>org.glassfish.web</groupId>
-				<artifactId>javax.el</artifactId>
-				<version>${javax.el.version}</version>
-			</dependency>
-			-->
+			<!-- Next dependency may be unnecessary if Tomcat 7.0.27 provides a JSR-341 
+				implementation -->
+			<!-- <dependency> <groupId>org.glassfish.web</groupId> <artifactId>javax.el</artifactId> 
+				<version>${javax.el.version}</version> </dependency> -->
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
