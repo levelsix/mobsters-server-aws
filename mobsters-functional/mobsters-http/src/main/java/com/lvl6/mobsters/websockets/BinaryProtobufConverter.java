@@ -1,32 +1,29 @@
 package com.lvl6.mobsters.websockets;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeType;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.MutableClassToInstanceMap;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 
-public final class BinaryProtobufDecoder extends AbstractMessageConverter
+public final class BinaryProtobufConverter extends AbstractMessageConverter
 {
     private static final String MOBSTERS_MESSAGE_CLASS_HEADER_NAME = "X-Message-Class";
-    private static final String MOBSTERS_MESSAGE_INDEX_HEADER_NAME = "X-Message-Index";
+//    private static final String MOBSTERS_MESSAGE_INDEX_HEADER_NAME = "X-Message-Index";
+//
+//    private final ClassToInstanceMap<Message> protoTypeMap =
+//        MutableClassToInstanceMap.<Message>create(
+//            new HashMap<Class<? extends Message>, Message>());
 
-	private final Class<Message> protoRootClass = Message.class;
-	private final ClassToInstanceMap<Message> protoTypeMap =
-		MutableClassToInstanceMap.<Message>create(
-			new HashMap<Class<? extends Message>, Message>());
-
-    public BinaryProtobufDecoder()
+    public BinaryProtobufConverter()
     {
     	super(
     		new MimeType("application", "mobsters-protobuf"));
@@ -36,7 +33,7 @@ public final class BinaryProtobufDecoder extends AbstractMessageConverter
 	protected boolean supports(Class<?> clazz)
 	{
 		Preconditions.checkNotNull(clazz);
-		return clazz.isAssignableFrom(protoRootClass);
+		return Message.class.isAssignableFrom(clazz);
 	}
 
 	@Override
@@ -46,12 +43,19 @@ public final class BinaryProtobufDecoder extends AbstractMessageConverter
 		Preconditions.checkNotNull(message);
 		Preconditions.checkNotNull(
 			message.getPayload());
-		Preconditions.checkArgument(
-			this.supports(targetClass));
+		Lvl6MobstersConditions.lvl6Precondition(
+			message.getPayload() instanceof byte[],
+			Lvl6MobstersStatusCode.FAIL_EMPTY_MSG,
+			"Conversion to ProtoBuf Message type is only supported from byte arrays");
+		
+		Lvl6MobstersConditions.lvl6Precondition(
+			this.supports(targetClass),
+			Lvl6MobstersStatusCode.FAIL_EMPTY_MSG,
+			"Controller does not expect a protobuf payload type");
 		
 		Message retVal = decodeFromClass(message, targetClass);
 		if (retVal == null) {
-			retVal = decodeFromHeader(message);
+			retVal = decodeFromHeader(message, targetClass);
 		}
 
 		Lvl6MobstersConditions.lvl6Precondition(
@@ -69,27 +73,42 @@ public final class BinaryProtobufDecoder extends AbstractMessageConverter
 		Preconditions.checkNotNull(payload);
 		final Message payloadObject = (Message) payload;
 
-		// TODO: Need to get from payloadObject to its response type enum value
+		// TODO: Need to get from payloadObject to its response type enum value?
 		return
 			MessageBuilder.withPayload(
 				payloadObject.toByteArray()
 			).copyHeaders(header)
-			.setHeader(
-				MOBSTERS_MESSAGE_INDEX_HEADER_NAME, -1
-			).setHeader(
-				MOBSTERS_MESSAGE_CLASS_HEADER_NAME,
-				payloadObject.getClass()
-					.getName()
-			).build();
+//			.setHeader(
+//				MOBSTERS_MESSAGE_INDEX_HEADER_NAME, -1
+//			).setHeader(
+//				MOBSTERS_MESSAGE_CLASS_HEADER_NAME,
+//				payloadObject.getClass()
+//					.getName()
+			.build();
 	}
 
-	private Message decodeFromHeader(org.springframework.messaging.Message<?> message) {
-		@SuppressWarnings("unchecked")
-		Class<? extends Message> targetClass =
-			message.getHeaders()
-				.get(MOBSTERS_MESSAGE_CLASS_HEADER_NAME, Class.class);
+	private Message decodeFromHeader(
+		org.springframework.messaging.Message<?> message,
+		Class<?> targetClass) 
+	{
+		Message retVal;
+		try {
+			Class<?> statedClass = Class.forName(
+				StompHeaderAccessor.wrap(message)
+				.getFirstNativeHeader(MOBSTERS_MESSAGE_CLASS_HEADER_NAME)
+			);
+			Preconditions.checkArgument(
+				targetClass.isAssignableFrom(statedClass),
+				"Header-declared class (<%s>) is incompatible with controller method call signature (<%s>)",
+				statedClass, targetClass);
 
-		return decodeFromClass(message, targetClass);
+			retVal = decodeFromClass(message, statedClass);
+		} catch (ClassNotFoundException e) {
+			// TODO: Append message to debug log
+			retVal = null;
+		}
+
+		return retVal;
 	}
 
 	private Message decodeFromClass(
@@ -97,17 +116,18 @@ public final class BinaryProtobufDecoder extends AbstractMessageConverter
 	{
 		Message retVal = null;
 
-		Message template = protoTypeMap.get(targetClass);
+		// Message template = protoTypeMap.get(targetClass);
+		Message template = null;
 		if ((template == null)
-			&& (targetClass != protoRootClass)
+			&& (targetClass != Message.class)
 		) {
 			try {
 				template =
 					(Message) targetClass
 						.getMethod("getDefaultInstance")
 						.invoke(null);
-				protoTypeMap.put(
-					template.getClass(), template);
+				// protoTypeMap.put(
+				// 	template.getClass(), template);
 			} catch (IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException
 					| SecurityException e) {
