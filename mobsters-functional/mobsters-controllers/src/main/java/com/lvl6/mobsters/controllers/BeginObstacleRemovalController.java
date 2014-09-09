@@ -47,7 +47,7 @@ public class BeginObstacleRemovalController extends EventController {
 
     @Override
     public EventProtocolRequest getEventType() {
-        return EventProtocolRequest.C_ACHIEVEMENT_REDEEM_EVENT;
+        return EventProtocolRequest.C_BEGIN_OBSTACLE_REMOVAL_EVENT;
     }
 
     @Override
