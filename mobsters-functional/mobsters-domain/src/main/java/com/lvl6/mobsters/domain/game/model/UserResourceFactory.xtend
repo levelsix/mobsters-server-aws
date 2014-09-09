@@ -1,5 +1,6 @@
 package com.lvl6.mobsters.domain.game.model
 
+import com.lvl6.mobsters.domain.config.ConfigExtensions
 import com.lvl6.mobsters.domain.game.api.IUserResource
 import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository
@@ -19,7 +20,6 @@ import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
-import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.utility.indexing.by_object.ObjKeyIndex
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +35,7 @@ import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepositoryImpl
  *       a UserResource that can be opened/connected to gain access to the game state of a connected player</li>
  *   <li>It delegates interactions with observers and listeners to the EventBus components used to carve out
  *       a allow services to send structures responses back to the controller layer without either layer becoming
- *       dependent on or synchronous with the other./li>
+ *       dependent on or synchronous with the other.</li>
  *   <li>It acts as a registry for data layer artifacts that all semantic layer artifacts can access through a single
  *       stored reference, keeping data layer access from having excessive storage overhead.</li>
  * </ol>

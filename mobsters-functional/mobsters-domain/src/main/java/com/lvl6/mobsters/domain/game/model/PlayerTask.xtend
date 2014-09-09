@@ -1,12 +1,12 @@
 package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
+import com.lvl6.mobsters.domain.config.ConfigExtensions
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
-import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import java.util.List
 import java.util.Set
 

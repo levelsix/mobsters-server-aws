@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lvl6.mobsters.domain.config.ConfigExtensions;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;

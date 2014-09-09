@@ -1,9 +1,9 @@
 package com.lvl6.mobsters.services.quest
 
 import com.google.common.collect.HashMultimap
+import com.lvl6.mobsters.domain.config.ConfigExtensions
 import com.lvl6.mobsters.info.IQuest
 import com.lvl6.mobsters.info.Quest
-import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashSet

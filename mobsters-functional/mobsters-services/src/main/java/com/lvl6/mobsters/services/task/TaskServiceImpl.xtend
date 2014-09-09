@@ -3,6 +3,7 @@ package com.lvl6.mobsters.services.task
 import com.lvl6.mobsters.common.utils.AbstractAction
 import com.lvl6.mobsters.common.utils.AbstractService
 import com.lvl6.mobsters.common.utils.ICallableAction
+import com.lvl6.mobsters.domain.config.ConfigExtensions
 import com.lvl6.mobsters.domain.game.api.IPlayer
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.domain.game.api.IUserResource
@@ -20,7 +21,6 @@ import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
-import com.lvl6.mobsters.info.xtension.ConfigExtensions
 import com.lvl6.mobsters.services.user.UserExtensionLib
 import com.lvl6.mobsters.utility.lambda.Director
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib

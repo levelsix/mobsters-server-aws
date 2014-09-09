@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.info.xtension
+package com.lvl6.mobsters.domain.config
 
 import com.lvl6.mobsters.info.IMonster
 import com.lvl6.mobsters.info.IMonsterLevelInfo

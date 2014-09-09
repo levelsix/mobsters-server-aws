@@ -17,7 +17,7 @@ import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
-import com.lvl6.mobsters.info.xtension.ConfigExtensions;
+import com.lvl6.mobsters.domain.config.ConfigExtensions;
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib;
 
 interface IRepoRegistry {
