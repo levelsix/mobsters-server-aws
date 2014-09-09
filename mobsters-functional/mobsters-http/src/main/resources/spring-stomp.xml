@@ -9,13 +9,6 @@
 		http://www.springframework.org/schema/websocket
 		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
 
-	<!--websocket:handlers>
-		<websocket:mapping path="/gameevents" handler="subProtoWebSocketHandler"/>
-		<websocket:handshake-handler ref="mobstersHandshakeHandler"/>
-		<websocket:handshake-interceptors>
-			<ref bean="httpSessionHandshakeInterceptor"/>
-		</websocket:handshake-interceptors>
-	</websocket:handlers-->
 
 	<websocket:message-broker order="1" 
 		application-destination-prefix="/app/" user-destination-prefix="/user/">
@@ -75,28 +68,6 @@
 		<!-- For MobstersBinary: (16 * 64 * 1024) + 12 for header -->
 		<property name="maxBinaryMessageBufferSize" value="1048588"/>
 	</bean>
-
-
-	<!-- Explicit registration of two default built-in web-socket handler decorators for logging
-		 and close-on-Exception behavior 
-	<bean class="org.springframework.web.socket.handler.LoggingWebSocketHandlerDecorator"
-		  lazy-init="false" autowire-candidate="true"/>
-	<bean class="org.springframework.web.socket.handler.ExceptionWebSocketHandlerDecorator"
-		  lazy-init="false" autowire-candidate="true"/>
-	-->
-
-	
-	<!-- The "Subprotocol" aware WebSocketHandler for mapping to the request end-point for
-		 binding incoming connections that complete a WS handshake. -->
-	<!-- The subprotocol handler is a template/strategy consumer.  It needs a sub-protocol 
-		 plugin wired to it in order to operate as a complete and functional transport
-		 over a web socket protocol. -->
-	<!--
-	<bean id="subProtoWebSocketHandler" autowire-candidate="true" lazy-init="false"
-		  class="org.springframework.web.socket.messaging.SubProtocolWebSocketHandler" />
-	<bean id="stompSubProtoHandler" autowire-candidate="true" lazy-init="false"
-		  class="org.springframework.web.socket.messaging.StompSubProtocolHandler"/>
-	-->
 
 
 	<!-- Early customization of a default built-in bean at the point in session 
