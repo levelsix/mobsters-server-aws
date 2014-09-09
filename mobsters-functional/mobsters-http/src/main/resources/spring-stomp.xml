@@ -7,10 +7,10 @@
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd
 		http://www.springframework.org/schema/integration
 		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
-		http://www.springframework.org/schema/websocket
-		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
 
 	<context:annotation-config/>
 	<context:component-scan base-package="com.lvl6.eventhandlers"/>
@@ -52,34 +52,37 @@
 		</websocket:message-converters>
 
 		<websocket:client-inbound-channel>
-			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
-			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+			<!-- These are the automatic defaults for a 4-core machine, verbatim. 
+				Drop or replace with bind variables later. -->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" 
+				queue-capacity="2147483647" keep-alive-seconds="60"/>
 		</websocket:client-inbound-channel>
 
 		<websocket:client-outbound-channel>
-			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
-			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+			<!-- These are the automatic defaults for a 4-core machine, verbatim. 
+				Drop or replace with bind variables later. -->
+			<websocket:executor core-pool-size="8" max-pool-size="2147483647" 
+				queue-capacity="2147483647" keep-alive-seconds="60"/>
 		</websocket:client-outbound-channel>
 
 		<websocket:broker-channel>
 			<!-- These are the automatic defaults for a 4-core machine, verbatim. 
 				Drop or replace with bind variables later. -->
-			<websocket:executor core-pool-size="1"
-				max-pool-size="1" queue-capacity="2147483647" keep-alive-seconds="60"/>
+			<websocket:executor core-pool-size="1" max-pool-size="1" 
+				queue-capacity="2147483647" keep-alive-seconds="60"/>
 		</websocket:broker-channel>
 	</websocket:message-broker>
 
 
 	<!-- WebSocketContainer configuration factory and protocol resource properties -->
-	<bean
-		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"
-		name="wsServletContainerFactory" lazy-init="false" autowire-candidate="true"
-		scope="singleton" abstract="false">
+	<bean name="wsServletContainerFactory" scope="singleton" abstract="false"
+		autowire-candidate="true" lazy-init="false"
+		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
 		<!-- For STOMP: 16K + 512 wiggle room -->
-		<property name="maxTextMessageBufferSize" value="16896" />
+		<property name="maxTextMessageBufferSize" value="16896"/>
 
-		<property name="asyncSendTimeout" value="20000" />
-		<property name="maxSessionIdleTimeout" value="180000" />
+		<property name="asyncSendTimeout" value="20000"/>
+		<property name="maxSessionIdleTimeout" value="180000"/>
 	</bean>
 
 
@@ -125,26 +128,26 @@
 		 output-channel="idempotentServiceChannel"
 	 	 discard-channel="discardChannel"
 	 	 expression="@metadataStore.get(headers.businessKey) == null"/>
-	<int:publish-subscribe-channel id="idempotentServiceChannel" />
+	<int:publish-subscribe-channel id="idempotentServiceChannel"/>
 	<int:outbound-channel-adapter channel="idempotentServiceChannel"
-		 expression="@metadataStore.put(headers.businessKey, '')" />
-	<int:service-activator input-channel="idempotentServiceChannel" ref="service" />
+		 expression="@metadataStore.put(headers.businessKey, '')"/>
+	<int:service-activator input-channel="idempotentServiceChannel" ref="service"/>
 -->
 
 	<!--
-	<int:annotation-config />
+	<int:annotation-config/>
 	<int:channel id="channel1"></int:channel>
 	<int:claim-check-in input-channel="channel1" output-channel="channel2"></int:claim-check-in>
 	<int:resequencer input-channel="channel2" discard-channel="channel3" output-channel="channel3"></int:resequencer>
 	<int:channel id="channel2">
 		<int:interceptors>
-			<int:wire-tap channel="channel4" />
+			<int:wire-tap channel="channel4"/>
 		</int:interceptors>
 	</int:channel>
 
 	<int:header-value-router></int:header-value-router>
 	<int:chain>
-		<int:claim-check-in />
+		<int:claim-check-in/>
 		<int:resequencer></int:resequencer>
 	</int:chain>
 	<int:router></int:router>
