@@ -1,5 +1,7 @@
 package com.lvl6.mobsters.utility.probability;
 
+import java.util.Random;
+
 public interface IRandomHelper {
 	/**
      * Generates random bytes and places them into a user-supplied
