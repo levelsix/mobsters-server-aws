@@ -117,6 +117,7 @@
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool.version>1.5.3</commons-pool.version>
+		<cqengine.version>1.2.7</cqengine.version>
 
 		<disruptor-google.version>2.7.1</disruptor-google.version>
 		<disruptor-lmax.version>3.2.1</disruptor-lmax.version>
@@ -556,6 +557,11 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.googlecode.cqengine</groupId>
+				<artifactId>cqengine</artifactId>
+				<version>${cqengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.lmax</groupId>
