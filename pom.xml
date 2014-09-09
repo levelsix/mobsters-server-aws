@@ -158,6 +158,7 @@
 		<tycho.version>4.2.0</tycho.version>
 
 		<xbase.version>2.6.1</xbase.version>
+		<xtend.version>2.6.1</xtend.version>
 		<xtext.version>2.6.1</xtext.version>
 	</properties>
 
@@ -674,6 +675,13 @@
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>org.eclipse.xtend.lib</artifactId>
+				<version>${xtend.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase</artifactId>
 				<version>${xbase.version}</version>
