@@ -12,8 +12,8 @@
   <packaging>pom</packaging>
   <modules>
   	<module>broker-webapp</module>
-  	<module>gamestate-webapp</module>
-  	<module>cmd-tools</module>
+  	<!--module>gamestate-webapp</module-->
+  	<!--module>cmd-tools</module-->
   	<!--module>opsworks-chef</module-->
   </modules>
 
