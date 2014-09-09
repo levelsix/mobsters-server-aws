@@ -1,15 +1,14 @@
 package com.lvl6.mobsters.websockets;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.support.ExecutorSubscribableChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.StringUtils;
@@ -17,6 +16,8 @@ import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 import org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator;
+
+import com.lvl6.mobsters.utils.MobstersPlayerPrincipal;
 
 public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler implements MessageHandler
 {
@@ -51,23 +52,27 @@ public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler imple
 		if (dispatchOffThread) {
 			// TODO: There is a second indirection through Principal to take care of... 
 			//       Check out the StompSubProtoHandler for a pointer towards it.
-			final Principal user = session.getPrincipal();
+			final MobstersPlayerPrincipal user = (MobstersPlayerPrincipal) session.getPrincipal();
 
 			final MobstersHeaderAccessor headers =
 				MobstersHeaderAccessor.wrap(msg);
 
 			// TODO: Check for an incorrectly set header or missing header before applying one.
-			headers.setUserUuid(
-				user.getName());
+			// TODO: Observe that this assignment doesn't actually accomplish anything...
+			headers.setPlayer(user);
 
 			// To avoid writing a input-to-output transform, we're making an intentional error and
 			// publishing directly to the response channel.  Sufficient for this exercise, but technically
 			// very much incorrect.
 			wsClientResponses.send(
 				MessageBuilder.fromMessage(msg)
+				.setHeader(SimpMessageHeaderAccessor.USER_HEADER, user)
 				.setHeader(
-					MobstersHeaderAccessor.MOBSTERS_USER_UUID_HEADER,
+					MobstersHeaderAccessor.MOBSTERS_PLAYER_ID_HEADER, 
 					user.getName())
+				.setHeader(
+					MobstersHeaderAccessor.MOBSTERS_PLAYER_TYPE_HEADER,
+					user.getIdType())
 				.build());
 		} else {
 			if (latencyOnThread > 0) {
@@ -81,9 +86,8 @@ public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler imple
 	
 
 	@Override
-	public void afterConnectionEstablished(
-		WebSocketSession session
-	) throws Exception
+	public void afterConnectionEstablished( WebSocketSession session ) 
+		throws Exception
 	{
 		session =
 			new ConcurrentWebSocketSessionDecorator(
@@ -91,7 +95,7 @@ public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler imple
 
 		final String userUuid =
 			(String) session.getAttributes()
-			.get(MobstersHeaderAccessor.MOBSTERS_USER_UUID_HEADER);
+			.get(MobstersHeaderAccessor.MOBSTERS_PLAYER_ID_HEADER);
 		
 		// TODO Verify userUuid syntax before using it.
 		final WebSocketSessionHolder putResult = this.sessionRegistry.put(
@@ -199,13 +203,13 @@ public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler imple
 	
 		final MobstersHeaderAccessor headers =
 			MobstersHeaderAccessor.wrap(outgoingMsg);
-		final String userUuid = headers.getUserUuid();
+		final String userUuid = headers.getPlayer().getName();
 		if ((! StringUtils.hasText(userUuid)) && (! "null".equals(userUuid)))
 		{
 			throw new IllegalArgumentException(
 				"Cannot route messages to websocket clients unless their "
-				+ "MOBSTERS_USER_UUID"
-				+ "session attribute and message headerer have both already been set.");
+				+ "MOBSTERS_PLAYER_ID_HEADER"
+				+ "session attribute and message header have both already been set.");
 		}
 
 		final WebSocketSessionHolder sessionHolder =

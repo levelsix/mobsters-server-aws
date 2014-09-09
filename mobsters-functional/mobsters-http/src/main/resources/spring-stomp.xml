@@ -17,15 +17,22 @@
 		</websocket:handshake-interceptors>
 	</websocket:handlers-->
 
-	<websocket:message-broker application-destination-prefix="/app">
-		<websocket:transport message-size="1048588" send-buffer-size="1048588" send-timeout="15000"/>
-
+	<websocket:message-broker order="1" 
+		application-destination-prefix="/app/" user-destination-prefix="/user/">
+		
 		<websocket:stomp-endpoint path="/gameevents">
-			<!-- Use this to defer to authentication already done at the HTTP layer, and to INITIATE the process of
-				 ensuring player is not logged in anywhere else and that we have the latest for message sequencing
-				 and there are at least two nodes in the cache layer prepared to follow along the event sequence
-				 by loading consistent copies of the message sequence position, object graph, and next pseudo-random
-				 generator seed reflecting all changes up to the most recent commit log entry. -->
+			<!-- Consume authentication metadata from HTTPRequest here. Be sure to 
+				identify and extract a Principal object. When Spring's WebSocket client module 
+				receives a Message on the channel it uses for writing content back to its 
+				connected client end points, it first has to identify which Session to write. 
+				This is keyed off a standard STOMP header used to identify the Principal 
+				each session is associated it. Note, there is a special Principal class that 
+				distinguishes between actual username and an a mangled-extension-based variation 
+				on that name used for socket lookup in applications that support multiple 
+				concurrent logins by the same Principal, but we won't want to use that. This 
+				also seems like a good place to emit one or two application events to begin 
+				ensuring the user's state is loaded, up-to-date, and authority to edit is 
+				secured. -->
 			<websocket:handshake-handler ref="mobstersHandshakeHandler"/>
 		</websocket:stomp-endpoint>
 
@@ -92,18 +99,38 @@
 	-->
 
 
-	<!--  Another built-in bean, this time for injecting logic within the session handshake
-		  We probably want to build something at this layer to bootstrap game state at this
-		  phase and/or interact with the ConnectedPlayer Jedis cache. -->
-	<bean name="mobstersHandshakeHandler" lazy-init="false"
-		autowire-candidate="true"
+	<!-- Early customization of a default built-in bean at the point in session 
+		handshake where Spring and/or consumer logic is permitted to interpret and/or 
+		interact with the on-connect handshake that yields and locks in session attributes 
+		once over. Of particular importance here is to make sure a valid Principal 
+		object is provided with the associated user's UDID or UUID.  Routing messages back
+		to just that user relies on matching the Principal in the session by name with a
+		value in the message headers. -->
+	<bean name="mobstersHandshakeHandler" abstract="false"
 		class="com.lvl6.mobsters.websockets.MobstersHandshakeHandler"
-		scope="singleton" abstract="false" />
-	<!-- 
-	<bean name="httpSessionHandshakeInterceptor" 
-		class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"
-		scope="singleton" abstract="false" />
+		lazy-init="false" scope="singleton" autowire-candidate="false"/>
+	
+	<!-- The built-in UserDestinationResolver builds queue names based on the WebSocketSession.getId()
+	     return value.  In the case of Tomcat, this is the smallest unused integer greater than or
+	     equal to 0.  It's not unique if there are mulitple instances of the websocket application, and
+	     its not a match to what the legacy game client expects to bind.
+	     
+	     Although this interface is not in the officially overridable component set, the documentation
+	     indicates that would not be difficult to provide more sophisticated algorithms for creating 
+	     disambiguating and user-specific variants on /user/* destination names.  The undocumented trick
+	     is knowing how to name the replacement bean.
+		 
+		 This override is a minimal replacement, differing only in its choice to disambiguate the queue
+		 names with a username suffix rather than a session id.  Its likely Spring did not proceed this
+		 way initially because their demo applications show users having multiple concurrent logins,
+		 hence this class had to be able to map any given Principal to the set of all the login sessions
+		 it owned.
 	-->
+	<bean name="org.springframework.messaging.simp.user.DefaultUserDestinationResolver#0"
+		  class="com.lvl6.mobsters.websockets.MobstersUserDestinationResolver" 
+		  lazy-init="false" scope="singleton" autowire-candidate="false" abstract="false">
+		  <constructor-arg index="0" ref="org.springframework.messaging.simp.user.DefaultUserSessionRegistry#0"/>
+	</bean>
 
 	<!-- TBD.  Not sure if this is needed or what yet. -->
 	<!-- bean id="stompWebSocketSubProtoExtension" autowire-candidate="true" lazy-init="false"

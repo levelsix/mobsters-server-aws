@@ -2,31 +2,40 @@ package com.lvl6.mobsters.websockets;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.http.auth.BasicUserPrincipal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
+import com.google.common.base.Preconditions;
+import com.lvl6.mobsters.utils.MobstersPlayerPrincipal;
+import com.lvl6.mobsters.utils.MobstersPlayerPrincipal.UserIdentityType;
 import com.mysql.jdbc.StringUtils;
-
-import reactor.util.UUIDUtils;
 
 @Component
 public class MobstersHandshakeHandler extends DefaultHandshakeHandler {
+	private static final Logger LOG = 
+		LoggerFactory.getLogger(MobstersHandshakeHandler.class);
+	
 	// TODO for security purposes
 	public boolean isValidOrigin(ServerHttpRequest request) {
-		return true;
+		return super.isValidOrigin(request);
 	}
 
+	private static final Pattern PROTOCOL_PATTERN = 
+		Pattern.compile("^mobsters\\.(userid|udid)\\.(.*)$");
+	
 	/**
 	 * A method that can be used to associate a user with the WebSocket session
 	 * in the process of being established. The default implementation calls
 	 * {@link org.springframework.http.server.ServerHttpRequest#getPrincipal()}
-	 * <p>
+	 * <p>2
 	 * Sub-classes can provide custom logic for associating a user with a session,
 	 * for example for assigning a name to anonymous users (i.e. not fully
 	 * authenticated).
@@ -43,28 +52,41 @@ public class MobstersHandshakeHandler extends DefaultHandshakeHandler {
 		WebSocketHandler wsHandler,
 		Map<String, Object> attributes)
 	{
-		Principal principal = request.getPrincipal();
-		if ((principal == null) || (StringUtils.isEmptyOrWhitespaceOnly(principal.getName()))) {
-			// It should get attached to the message headers without our doing
-			// anything and so should be find just returned here.  The headers
-			// are supposedly immutable by this point.
-		    principal =
-		    	new BasicUserPrincipal(
-		    		// time-based: UUIDUtils.create()
-		    		UUIDUtils.random()
-		    			.toString());
+		String principalName = null;
+		UserIdentityType idType = null;
+		WebSocketHttpHeaders headers =
+			new WebSocketHttpHeaders(
+				request.getHeaders());
+		
+		for (final String nextProto : headers.getSecWebSocketProtocol()) {
+			Matcher m = PROTOCOL_PATTERN.matcher(nextProto);
+			if (m.matches()) {
+				final String idTypeStr = m.group(1);
+				principalName = m.group(2);
+				if (idTypeStr.equals("userid")) {
+					idType = UserIdentityType.USER_ID;
+				} else {
+					idType = UserIdentityType.DEVICE_UDID;
+				}
+				
+			    // setSupportedProtocols("v10.stomp", "v11.stomp", "v12.stomp");
+				break;
+			}
 		}
+
+		LOG.info(
+			String.format("WebSocketSession owner type: <%s>, and name: <%s>", idType, principalName));
+		
+		Preconditions.checkNotNull(idType);
+		Preconditions.checkNotNull(principalName);
+		Preconditions.checkArgument(
+			! StringUtils.isEmptyOrWhitespaceOnly(principalName));
 		
 		attributes.put(
-			MobstersHeaderAccessor.MOBSTERS_USER_UUID_HEADER,
-			principal.getName());
+				MobstersHeaderAccessor.MOBSTERS_PLAYER_TYPE_HEADER, idType);
+		attributes.put(
+				MobstersHeaderAccessor.MOBSTERS_PLAYER_ID_HEADER, principalName);
 		
-		return principal;
-	}
-	
-    @PostConstruct
-    void init() {
-    	setSupportedProtocols("lvl6-mobsters");;
-    }
-
+		return new MobstersPlayerPrincipal(principalName, idType);
+	}	
 }
