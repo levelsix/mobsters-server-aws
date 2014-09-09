@@ -47,8 +47,8 @@ public interface ITaskStageMonster extends IBaseIntPersistentObject
 
 	public void setChanceToAppear( float chanceToAppear );
 
-	public abstract void setDmgMultiplier( float dmgMultiplier );
+	public void setDmgMultiplier( float dmgMultiplier );
 
-	public abstract float getDmgMultiplier();
+	public float getDmgMultiplier();
 
 }
