@@ -119,6 +119,11 @@
 		  <constructor-arg index="0" ref="org.springframework.messaging.simp.user.DefaultUserSessionRegistry#0"/>
 	</bean>
 
+	<int:channel id="errorChannel"/>
+	<int:logging-channel-adapter
+		id="com.lvl6.integration.errorLogger" channel="errorChannel" auto-startup="true"
+		level="ERROR" expression="#root" logger-name="ErrorLogger"/>
+	
 	<!-- TBD.  Not sure if this is needed or what yet. -->
 	<!-- bean id="stompWebSocketSubProtoExtension" autowire-candidate="true" lazy-init="false"
 		  class="org.springframework.web.socket.messaging.StompWebSocketExtension"></bean-->
