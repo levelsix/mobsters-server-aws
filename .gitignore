@@ -5,6 +5,8 @@
 .classpath
 .settings/
 .metadata/
+.springBeans
+.tomcatplugin
 
 
 #generated files

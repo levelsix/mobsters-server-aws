@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/task 
+		http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		">
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"
+			value="#{contextParameters.APP_HOME}/conf/app.properties" />
+	</bean>
+
+	<context:annotation-config />
+	<context:component-scan
+		base-package="com.lvl6.mobsters.tests.local" />
+
+	<task:annotation-driven />
+
+	<task:executor id="eventControllerPool"
+		pool-size="${lvl6.controllerPool.poolSize}"
+		queue-capacity="${lvl6.controllerPool.queueCapacity}"
+		keep-alive="${lvl6.controllerPool.maxIdleSeconds}" />
+
+	<task:executor id="domainWorkerPool"
+		pool-size="${lvl6.controllerPool.poolSize}"
+		queue-capacity="${lvl6.controllerPool.queueCapacity}"
+		keep-alive="${lvl6.controllerPool.maxIdleSeconds}" />
+
+	<beans profile="!production,!build,!staging">
+		<bean id="propertyConfig"
+			class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>classpath:mobsters.properties</value>
+					<value>
+						classpath:development/defaults/mobsters.properties
+					</value>
+					<value>
+						classpath:development/${USER}/mobsters.properties
+					</value>
+					<value>
+						classpath:development/${USER}/${BUILDENV}/mobsters.properties
+					</value>
+				</list>
+			</property>
+			<property name="ignoreResourceNotFound" value="true" />
+			<property name="ignoreUnresolvablePlaceholders"
+				value="false" />
+		</bean>
+	</beans>
+
+	<beans profile="build">
+		<bean id="propertyConfig"
+			class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>classpath:mobsters.properties</value>
+					<value>
+						classpath:build/defaults/mobsters.properties
+					</value>
+					<value>
+						classpath:build/${BUILDENV}/mobsters.properties
+					</value>
+				</list>
+			</property>
+			<property name="ignoreResourceNotFound" value="false" />
+			<property name="ignoreUnresolvablePlaceholders"
+				value="false" />
+		</bean>
+	</beans>
+
+	<beans profile="staging,production,tomcat">
+		<bean id="propertyConfig"
+			class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>classpath:mobsters.properties</value>
+					<value>
+						file:#{contextParameters.APP_CONF:#{contextParameters.APP_HOME}/conf/app.properties}
+					</value>
+				</list>
+			</property>
+			<property name="ignoreResourceNotFound" value="false" />
+			<property name="ignoreUnresolvablePlaceholders"
+				value="false" />
+		</bean>
+	</beans>
+</beans>

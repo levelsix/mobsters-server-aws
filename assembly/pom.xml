@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.lvl6</groupId>
+    <artifactId>mobsters-server-aws</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.lvl6.mobsters</groupId>
+  <artifactId>assembly</artifactId>
+  <name>Mobsters Deployable Server-Side Assemblies</name>
+  <description>Modules that either yield deployment assemblies by packaging Mobsters component artifacts with reqired third party assemblies, and modules that produce artifacts used during the act of deploying software to a Mobsters cluster.</description>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>broker-webapp</module>
+  	<module>gamestate-webapp</module>
+  	<module>cmd-tools</module>
+  	<!--module>opsworks-chef</module-->
+  </modules>
+
+        <dependencies>
+                <dependency>
+                        <groupId>com.lvl6</groupId>
+                        <artifactId>mobsters-commons</artifactId>
+                </dependency>
+        </dependencies>
+
+        <build>
+                <resources>
+                        <resource>
+                                <directory>src/main/resources</directory>
+                                <filtering>false</filtering>
+                        </resource>
+                </resources>
+                <testResources>
+                        <testResource>
+                                <directory>src/test/resources</directory>
+                                <filtering>false</filtering>
+                        </testResource>
+                </testResources>
+        </build>
+</project>

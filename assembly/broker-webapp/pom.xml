@@ -2,15 +2,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.lvl6.mobsters.server-aws</groupId>
+		<groupId>com.lvl6.mobsters</groupId>
 		<artifactId>assembly</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.lvl6.mobsters.server-aws.assembly</groupId>
-	<artifactId>game-webapp</artifactId>
+	<groupId>com.lvl6.mobsters.assembly</groupId>
+	<artifactId>broker-webapp</artifactId>
 	<packaging>war</packaging>
 	<name>Mobsters Game Server Webapp</name>
-	<description>Module for combining Mobsters Game Server components to yield a deployable webapp that handles game requests from clients over WebSocket and send back both responses to those request messages and asynchornous server-initiated messages where appropriate.</description>
+	<description>Module for combining Mobsters Game Server components to yield a deployable webapp that receives incoming game requests from clients over WebSocket and sends replies back over the same channel.  Request processing does not occur within this server.  It acts as a relay station between the game client and the Rabbit cluster that transports messages to both the Legacy and Next Generation game state web applications.
+
+Routing logic to the request processing web applications will evolve as development on the new architecture moves forward, reflecting its progression to completion.</description>
 
 	<dependencies>
 		<dependency>
