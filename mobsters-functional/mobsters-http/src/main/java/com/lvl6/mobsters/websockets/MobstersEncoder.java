@@ -11,11 +11,10 @@ import org.springframework.messaging.simp.stomp.StompConversionException;
 import org.springframework.web.socket.BinaryMessage;
 
 /**
- * An encoder for STOMP frames.
+ * As websocket frame encoder for Mobsters Binary reply messages.
  *
- * @author Andy Wilkinson
- * @author Rossen Stoyanchev
- * @since 4.0
+ * @author John Heinnickel
+ * @since 0.0.1-SNAPSHOT
  */
 public final class MobstersEncoder 
 {

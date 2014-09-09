@@ -11,17 +11,15 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.socket.BinaryMessage;
 
 /**
- * Decodes one or more STOMP frames contained in a {@link ByteBuffer}.
+ * Decodes exactly one Mobsters Binary frame contained in a {@link ByteBuffer}.
  *
- * <p>An attempt is made to read all complete STOMP frames from the buffer, which
- * could be zero, one, or more. If there is any left-over content, i.e. an incomplete
- * STOMP frame, at the end the buffer is reset to point to the beginning of the
- * partial content. The caller is then responsible for dealing with that
- * incomplete content by buffering until there is more input available.
+ * <p>An attempt is made to detect complete request message frames from the buffer, 
+ * which could be zero, one, or more.  If there is any left-over content, i.e. an
+ * incomplete Mobsters Binary request frame, or more than one request event available,
+ * this decoder fails and closes the session.
  *
- * @author Andy Wilkinson
- * @author Rossen Stoyanchev
- * @since 4.0
+ * @author John Heinnickel
+ * @since 0.0.1-SNAPSHOT
  */
 public class MobstersDecoder {
 	private final static Logger LOG = LoggerFactory.getLogger(MobstersDecoder.class);
