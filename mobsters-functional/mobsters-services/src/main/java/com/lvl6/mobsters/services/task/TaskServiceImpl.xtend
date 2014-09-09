@@ -3,7 +3,7 @@ package com.lvl6.mobsters.services.task
 import com.lvl6.mobsters.common.utils.AbstractAction
 import com.lvl6.mobsters.common.utils.AbstractService
 import com.lvl6.mobsters.common.utils.ICallableAction
-import com.lvl6.mobsters.domain.config.ConfigExtensions
+import com.lvl6.mobsters.domain.config.IConfigurationRegistry
 import com.lvl6.mobsters.domain.game.api.IPlayer
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.domain.game.api.IUserResource
@@ -19,6 +19,7 @@ import com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepository
 import com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepository
 import com.lvl6.mobsters.dynamo.repository.UserRepository
 import com.lvl6.mobsters.dynamo.setup.DataServiceTxManager
+import com.lvl6.mobsters.info.IQuest
 import com.lvl6.mobsters.info.IQuestJob
 import com.lvl6.mobsters.info.ITask
 import com.lvl6.mobsters.services.user.UserExtensionLib
@@ -46,7 +47,9 @@ import static com.lvl6.mobsters.services.task.TaskServiceImpl.*
 import static extension java.lang.String.format
 
 @Component
-class TaskServiceImpl extends AbstractService implements TaskService
+class TaskServiceImpl 
+	extends AbstractService
+	implements TaskService
 {
 	private static val Logger LOG = LoggerFactory.getLogger(TaskServiceImpl)
 
@@ -84,7 +87,7 @@ class TaskServiceImpl extends AbstractService implements TaskService
 
 	@Property
 	@Autowired
-	private var extension ConfigExtensions configExtensionLib
+	private var extension IConfigurationRegistry configRegistry
 
 	@Property
 	@Autowired
@@ -354,12 +357,12 @@ class TaskServiceImpl extends AbstractService implements TaskService
 			aUser = userContainer.connect
 			checkNotNull(aUser)
 	
-			val extension ConfigExtensions configExtensions = parent.configExtensionLib
+			val extension IConfigurationRegistry configRegistry = parent.configRegistry
 			
 			taskMeta = taskId.taskMeta
 			checkNotNull(taskMeta)
 			
-			val questMeta = questIds.questMeta
+			val Iterable<IQuest> questMeta = questIds.questMeta
 			questJobsMeta = questMeta
 				.map[return it.questJobs]
 				.flatten
@@ -707,6 +710,11 @@ class TaskServiceImpl extends AbstractService implements TaskService
 		this.txManager = txManager
 	}	
 	
+	def void setConfigurationRegistry( IConfigurationRegistry configRegistry )
+	{
+		this.configRegistry = configRegistry
+	}	
+	
 	def void setUserExtensionLib( UserExtensionLib userExtensionLib )
 	{
 		this.userExtensionLib = userExtensionLib
@@ -715,11 +723,6 @@ class TaskServiceImpl extends AbstractService implements TaskService
 	def void setTaskExtensionLib( TaskExtensionLib taskExtensionLib )
 	{
 		this.taskExtensionLib = taskExtensionLib
-	}	
-	
-	def void setConfigExtensionLib( ConfigExtensions configExtensionLib )
-	{
-		this.configExtensionLib = configExtensionLib
 	}	
 	
 	def void setProbabilityExtensionLib( ProbabilityExtensionLib probabilityExtensionLib )

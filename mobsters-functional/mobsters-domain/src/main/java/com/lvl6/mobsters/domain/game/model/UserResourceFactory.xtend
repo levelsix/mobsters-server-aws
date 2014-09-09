@@ -1,6 +1,7 @@
 package com.lvl6.mobsters.domain.game.model
 
 import com.lvl6.mobsters.domain.config.ConfigExtensions
+import com.lvl6.mobsters.domain.config.IConfigurationRegistry
 import com.lvl6.mobsters.domain.game.api.IUserResource
 import com.lvl6.mobsters.domain.game.api.IUserResourceFactory
 import com.lvl6.mobsters.dynamo.repository.AchievementForUserRepository
@@ -42,7 +43,7 @@ import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepositoryImpl
  */
 @Component("userResourceFactory")
 class UserResourceFactory 
-implements IUserResourceFactory, IRepoRegistry
+	implements IUserResourceFactory, IRepoRegistry
 {
 	// TODO: Idle timeout purging and explicit close cleanup behaviors, some of which can already be
 	//        found in Kelly's contributions.
@@ -120,6 +121,10 @@ implements IUserResourceFactory, IRepoRegistry
 	@Autowired
 	@Property
 	AchievementForUserRepository achievementRepo
+	
+	@Autowired
+	@Property
+	var IConfigurationRegistry configurationRegistry
 	
 	@Autowired
 	@Property

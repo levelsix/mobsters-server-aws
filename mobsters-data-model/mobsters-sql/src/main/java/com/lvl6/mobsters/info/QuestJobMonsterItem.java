@@ -34,24 +34,24 @@ public class QuestJobMonsterItem
 		name = "quest_job_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private IQuestJob questJob;
+	IQuestJob questJob;
 	
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Monster.class)
 	@JoinColumn(
 		name = "monster_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private IMonster monster;
+	IMonster monster;
 	
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Item.class)
 	@JoinColumn(
 		name = "item_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private IItem item;
+	IItem item;
 	
 	@Column(name = "item_drop_rate")
-	private float itemDropRate;	
+	float itemDropRate;	
 	
 	public QuestJobMonsterItem()
 	{ }

@@ -1,9 +1,8 @@
 package com.lvl6.mobsters.services.quest
 
 import com.google.common.collect.HashMultimap
-import com.lvl6.mobsters.domain.config.ConfigExtensions
+import com.lvl6.mobsters.domain.config.IConfigurationRegistry
 import com.lvl6.mobsters.info.IQuest
-import com.lvl6.mobsters.info.Quest
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashSet
@@ -15,7 +14,7 @@ class QuestGraph {
 	val ArrayList<IQuest> freeQuests
 	val HashMultimap<IQuest, IQuest> prereqToQuests
 
-	new(List<Quest> quests) {
+	new(Set<? extends IQuest> quests) {
 		conditionalQuests = new ArrayList<IQuest>(quests.size())
 		freeQuests = new ArrayList<IQuest>(quests.size())
 		prereqToQuests = HashMultimap.create(quests.size(), 5);
@@ -34,7 +33,9 @@ class QuestGraph {
 	}
 
 	def List<Integer> getQuestsAvailable(
-		List<Integer> redeemed, List<Integer> inProgress, extension ConfigExtensions configExtensions
+		List<Integer> redeemed, 
+		List<Integer> inProgress, 
+		extension IConfigurationRegistry configurationRegistry
 	) {
 		// Identify all quests that are neither redeemed nor in progress.
 
@@ -43,17 +44,17 @@ class QuestGraph {
 			if (inProgress.nullOrEmpty) {
 				available = freeQuests
 			} else {
-				val Set<Quest> unavailable = inProgress.questMeta.toSet
+				val Set<IQuest> unavailable = inProgress.questMeta.toSet
 				available = 
 					freeQuests.filter[unavailable.contains(it) == false]
 			}
 		} else {
-			val Set<Quest> finished = redeemed.questMeta.toSet
-			val Set<Quest> unavailable =
+			val Set<IQuest> finished = redeemed.questMeta.toSet
+			val Set<IQuest> unavailable =
 				if (inProgress.nullOrEmpty) {
 					finished
 				} else {
-					new HashSet<Quest>(finished) => [
+					new HashSet<IQuest>(finished) => [
 						it.addAll(
 							inProgress.questMeta
 						)

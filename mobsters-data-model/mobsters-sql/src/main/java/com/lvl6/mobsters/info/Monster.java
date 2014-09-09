@@ -20,7 +20,7 @@ import org.hibernate.annotations.Proxy;
 
 @Entity(name="Monster")
 @Table(name="monster")
-@Cacheable(true)
+// @Cacheable(true)
 @Proxy(lazy=true, proxyClass=IMonster.class)
 public class Monster extends BaseIntPersistentObject implements IMonster
 {	

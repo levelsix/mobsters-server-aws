@@ -3,14 +3,10 @@ package com.lvl6.mobsters.info;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import com.lvl6.mobsters.utility.indexing.by_int.AbstractIntComparable;
-
 @MappedSuperclass
 public abstract class BaseIntPersistentObject
-	extends AbstractIntComparable
 	implements IBaseIntPersistentObject
 {
-    
 	private static final long serialVersionUID = 3540073633234904633L;
 
 	@Id 

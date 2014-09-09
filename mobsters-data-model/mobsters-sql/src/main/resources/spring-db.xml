@@ -24,7 +24,8 @@
     <context:annotation-config/>
 
     <!-- Configuration Extension class needs an open transaction to load configuration content -->
-	<tx:annotation-driven transaction-manager="lvl6Txm" mode="proxy" proxy-target-class="true"/>
+<!-- <tx:annotation-driven transaction-manager="lvl6Txm" mode="proxy" proxy-target-class="true"/>
+	-->
 
     <bean id="dataSource-proxy" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy"
         c:targetDataSource-ref="dataSource" p:defaultAutoCommit="false">
@@ -53,7 +54,8 @@
 	
 	<jpa:repositories base-package="com.lvl6.mobsters.info.repository" entity-manager-factory-ref="lvl6Emf"
 	   transaction-manager-ref="lvl6Txm"/>
-	<context:component-scan base-package="com.lvl6.mobsters.info.xtension"/>
+	<!-- Transactions are needed/used in consumer components, not this module. -->
+	<!--context:component-scan base-package="com.lvl6.mobsters.info.xtension"/-->
 	
 	<bean id="lvl6Emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
       <property name="dataSource" ref="dataSource" />

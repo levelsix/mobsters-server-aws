@@ -13,16 +13,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lvl6.mobsters.domain.config.ConfigExtensions;
+import com.lvl6.mobsters.domain.config.IConfigurationRegistry;
 import com.lvl6.mobsters.dynamo.QuestForUser;
 import com.lvl6.mobsters.dynamo.QuestJobForUser;
 import com.lvl6.mobsters.dynamo.repository.QuestForUserRepository;
 import com.lvl6.mobsters.dynamo.repository.QuestJobForUserRepository;
-import com.lvl6.mobsters.info.Quest;
-import com.lvl6.mobsters.info.QuestJob;
-import com.lvl6.mobsters.info.repository.QuestJobRepository;
-import com.lvl6.mobsters.info.repository.QuestRepository;
-import com.lvl6.mobsters.info.xtension.ConfigExtensions;
+import com.lvl6.mobsters.info.IQuest;
+import com.lvl6.mobsters.info.IQuestJob;
 import com.lvl6.mobsters.utility.common.CollectionUtils;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
@@ -43,13 +40,7 @@ public class QuestServiceImpl implements QuestService {
     private QuestJobForUserRepository questJobForUserRepository;
     
     @Autowired
-    private QuestRepository questRepository;
-    
-    @Autowired
-    private QuestJobRepository questJobRepository;
-    
-    @Autowired
-    private ConfigExtensions configExtensions;
+    private IConfigurationRegistry configurationRegistry;
 
     //NON CRUD LOGIC******************************************************************
     private List<Integer> getAvailableQuestIdsFromQuests(
@@ -63,7 +54,7 @@ public class QuestServiceImpl implements QuestService {
 			}
     		return new ArrayList<Integer>();
     	} else {
-    		return questGraph.getQuestsAvailable(redeemedQuestIds, inProgressQuestIds, configExtensions);
+    		return questGraph.getQuestsAvailable(redeemedQuestIds, inProgressQuestIds, configurationRegistry);
     	}
     }
     
@@ -83,7 +74,8 @@ public class QuestServiceImpl implements QuestService {
     	String userId,
     	Collection<Integer> questIds )
     {
-    	List<QuestJobForUser> qjfuList = questJobForUserRepository.findByUserIdAndQuestIdIn(userId, questIds);
+    	List<QuestJobForUser> qjfuList = 
+    		questJobForUserRepository.findByUserIdAndQuestIdIn(userId, questIds);
 		
     	Map<Integer, Collection<QuestJobForUser>> questIdToQjfuList =
 			new HashMap<Integer, Collection<QuestJobForUser>>();
@@ -110,8 +102,8 @@ public class QuestServiceImpl implements QuestService {
 	@Override
 	public void createQuestForUser( String userIdString, int questId )
 	{
-		Quest quest = questRepository.findOne( questId );
-		List<QuestJob> jobs = questJobRepository.findByQuestId(questId); 
+		IQuest quest = configurationRegistry.getQuestMeta(questId);
+		List<IQuestJob> jobs = quest.getQuestJobs(); 
 		if ( null == quest || CollectionUtils.lacksSubstance(jobs)) {
 			LOG.error("null quest or quest jobs. quest="
 				+ quest
@@ -129,9 +121,9 @@ public class QuestServiceImpl implements QuestService {
 		questForUserRepository.save(qfu);
 		
 		List<QuestJobForUser> qjfuList = new ArrayList<QuestJobForUser>();
-		for (QuestJob qj : jobs) {
-			QuestJobForUser qjfu = new QuestJobForUser(userIdString, questId,
-				qj.getId(), false, 0);
+		for (final IQuestJob qj : jobs) {
+			QuestJobForUser qjfu = 
+				new QuestJobForUser(userIdString, questId, qj.getId(), false, 0);
 			qjfuList.add(qjfu);
 		}
 		
@@ -139,10 +131,8 @@ public class QuestServiceImpl implements QuestService {
 	}
 
 	protected void checkIfUserCanAcceptQuest( String userIdString, int questId ) {
-
 		List<QuestForUser> inProgressAndRedeemedUserQuests =
 			questForUserRepository.findByUserId(userIdString);
-		
 		
 		if (CollectionUtils.lacksSubstance(inProgressAndRedeemedUserQuests)) {
 			return;
@@ -180,60 +170,26 @@ public class QuestServiceImpl implements QuestService {
 	
     @PostConstruct
     public void init() throws Exception {
-    	questGraph = new QuestGraph(questRepository.findAll());
+    	questGraph = new QuestGraph(configurationRegistry.getAllQuestMeta());
+    }
+    
+    public QuestGraph getQuestGraph()
+    {
+    	return questGraph;
     }
 	
-	public QuestForUserRepository getQuestForUserRepository()
-	{
-		return questForUserRepository;
-	}
-
 	public void setQuestForUserRepository( QuestForUserRepository questForUserRepository )
 	{
 		this.questForUserRepository = questForUserRepository;
 	}
-
-
-	public QuestJobForUserRepository getQuestJobForUserRepository()
-	{
-		return questJobForUserRepository;
-	}
-
 
 	public void setQuestJobForUserRepository( QuestJobForUserRepository questJobForUserRepository )
 	{
 		this.questJobForUserRepository = questJobForUserRepository;
 	}
 
-
-	public QuestRepository getQuestRepository()
+	public void setConfigurationRegistry( IConfigurationRegistry configurationRegistry )
 	{
-		return questRepository;
-	}
-
-
-	public void setQuestRepository( QuestRepository questRepository )
-	{
-		this.questRepository = questRepository;
-	}
-
-	public QuestGraph getQuestGraph()
-	{
-		return questGraph;
-	}
-
-	public QuestJobRepository getQuestJobRepository()
-	{
-		return questJobRepository;
-	}
-
-	public void setQuestJobRepository( QuestJobRepository questJobRepository )
-	{
-		this.questJobRepository = questJobRepository;
-	}
-
-	public void setConfigExtensions( ConfigExtensions configExtensions )
-	{
-		this.configExtensions = configExtensions;
+		this.configurationRegistry = configurationRegistry;
 	}
 }

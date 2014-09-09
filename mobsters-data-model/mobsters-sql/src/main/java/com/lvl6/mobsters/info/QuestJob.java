@@ -20,7 +20,7 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="QuestJob")
 @Table(name="quest_job")
 @Proxy(lazy=true, proxyClass=IQuestJob.class)
-@Cacheable(true)
+// @Cacheable(true)
 public class QuestJob extends BaseIntPersistentObject implements IQuestJob
 {
 	private static final long serialVersionUID = -7270821507727387958L;
@@ -30,28 +30,28 @@ public class QuestJob extends BaseIntPersistentObject implements IQuestJob
 		name = "quest_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private IQuest quest;
+	IQuest quest;
 	
 	@Column(name = "quest_job_type")
-	private String questJobType;
+	String questJobType;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "static_data_id")
 	private int staticDataId;
 	@Column(name = "quantity")
-	private int quantity;	
+	int quantity;	
 	
 	//how this quest job is ordered among other quest jobs
 	//with the same quest id
 	@Column(name = "priority")
-	private int priority;	
+	int priority;	
 
 	@OneToOne(fetch=FetchType.LAZY, targetEntity=Task.class, optional=false)
 	@JoinColumn(
 		name = "task_id",
 		nullable = false,
 		foreignKey=@ForeignKey(name="none", value=ConstraintMode.NO_CONSTRAINT))
-	private ITask task;
+	ITask task;
 	
 	public QuestJob(){}
 	public QuestJob(int id, IQuest quest, String questJobType,

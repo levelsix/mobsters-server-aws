@@ -18,10 +18,10 @@ import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.repository.UserDataRarelyAccessedRepository;
 import com.lvl6.mobsters.dynamo.repository.UserRepository;
 import com.lvl6.mobsters.domain.config.ConfigExtensions;
+import com.lvl6.mobsters.domain.config.IConfigurationRegistry;
 import com.lvl6.mobsters.utility.probability.ProbabilityExtensionLib;
 
 interface IRepoRegistry {
-
 	public UserRepository getUserRepo();
 
 	public UserCredentialRepository getUserCredRepo();
@@ -63,6 +63,8 @@ interface IRepoRegistry {
 	public void commitTransaction();
 	
 	public void rollbackTransaction();
+	
+	public IConfigurationRegistry getConfigurationRegistry();
 	
 	public ConfigExtensions getConfigExtensionLib();
 

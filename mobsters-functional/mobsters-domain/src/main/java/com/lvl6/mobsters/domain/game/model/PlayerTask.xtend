@@ -1,7 +1,7 @@
 package com.lvl6.mobsters.domain.game.model
 
 import com.google.common.base.Preconditions
-import com.lvl6.mobsters.domain.config.ConfigExtensions
+import com.lvl6.mobsters.domain.config.IConfigurationRegistry
 import com.lvl6.mobsters.domain.game.api.IPlayerTask
 import com.lvl6.mobsters.dynamo.TaskForUserCompleted
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing
@@ -36,7 +36,8 @@ class PlayerTask
 			"Tasks must be either ongoing or complete, not both"
 		)
 
-		val extension ConfigExtensions configExtensionLib = repoRegistry.configExtensionLib
+		val extension IConfigurationRegistry configRegistry = 
+			repoRegistry.configurationRegistry
 		
 		if (ongoingTask != null ) {
 			this.taskMeta = ongoingTask.taskId.taskMeta

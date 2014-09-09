@@ -17,7 +17,7 @@ import org.hibernate.annotations.Proxy;
 
 @Entity(name="MonsterLevelInfo")
 @Table(name="monster_level_info")
-@Cacheable(true)
+// @Cacheable(true)
 @Proxy(lazy=true, proxyClass=IMonsterLevelInfo.class)
 public class MonsterLevelInfo implements IMonsterLevelInfo{
 	/**

@@ -17,7 +17,7 @@ import org.hibernate.annotations.Proxy;
 @Entity(name="Quest")
 @Table(name="quest")
 @Proxy(lazy=true, proxyClass=IQuest.class)
-@Cacheable(true)
+// @Cacheable(true)
 public class Quest extends BaseIntPersistentObject implements IQuest {
 
 	

@@ -194,7 +194,7 @@ public class ConfigExtensions {
 	// idiom, volatile fields and double-checked locking, or synchronization.
 	@PostConstruct
 	package def void populateLookupMaps() {
-		com.lvl6.mobsters.info.xtension.ConfigExtensions.REPO_DEPS_FOR_LOOKUP_MAPS = this.repoDependencies
+		ConfigExtensions.REPO_DEPS_FOR_LOOKUP_MAPS = this.repoDependencies
 		
 		// Trigger classLoading of LookupMaps here, so it can populate its static final RepoDependencies
 		// reference while we're on a thread that has guaranteed visibility on the value just set above.
