@@ -6,6 +6,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
@@ -17,6 +18,7 @@ public class ExceptionHandlingController {
 		LoggerFactory.getLogger(ExceptionHandlingController.class);
 	
 	@MessageExceptionHandler
+	@SendToUser("/queue/errors")
 	void handleException(final Throwable e) {
 		LOG.error(
 			"Unexpected exception thrown while handling request: %s\n%s",
