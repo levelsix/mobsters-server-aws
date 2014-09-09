@@ -15,6 +15,9 @@
 	<websocket:message-broker order="1" 
 		application-destination-prefix="/app/" user-destination-prefix="/user/">
 		
+		<websocket:transport message-size="16896"
+			send-buffer-size="1048588" send-timeout="20000"/>
+		
 		<websocket:stomp-endpoint path="/gameevents">
 			<!-- Consume authentication metadata from HTTPRequest here. Be sure to 
 				identify and extract a Principal object. When Spring's WebSocket client module 
@@ -28,6 +31,7 @@
 				also seems like a good place to emit one or two application events to begin 
 				ensuring the user's state is loaded, up-to-date, and authority to edit is 
 				secured. -->
+
 			<websocket:handshake-handler ref="mobstersHandshakeHandler"/>
 		</websocket:stomp-endpoint>
 
@@ -66,9 +70,10 @@
 		name="wsServletContainerFactory" lazy-init="false" autowire-candidate="true"
 		scope="singleton" abstract="false">
 		<!-- For STOMP: 16K + 512 wiggle room -->
-		<property name="maxTextMessageBufferSize" value="16896"/>
-		<!-- For MobstersBinary: (16 * 64 * 1024) + 12 for header -->
-		<property name="maxBinaryMessageBufferSize" value="1048588"/>
+		<property name="maxTextMessageBufferSize" value="16896" />
+
+		<property name="asyncSendTimeout" value="20000" />
+		<property name="maxSessionIdleTimeout" value="180000" />
 	</bean>
 
 
