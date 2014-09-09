@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <script src="static/sockjs-0.3.4.js"></script>
+    <script src="static/stomp.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+        
+        function setConnected(connected) {
+            document.getElementById('connect').disabled = connected;
+            document.getElementById('disconnect').disabled = !connected;
+            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+            document.getElementById('response').innerHTML = '';
+        }
+        
+        function connect() {
+            // var socket = new WebSocket('ws://127.0.0.1:8888/hello/websocket');
+            // var socket = new SockJS('/hello');
+            var socket = 
+            	new WebSocket(
+            		'ws://127.0.0.1:8888/webapp/gameevents', [
+            			'mobsters.userid.854_1581786639', 
+            			'mobsters.udid.DC3C8915-4072-5FE6-8B6E-B0D1353DB53D_1506770902',
+            			'v11.stomp'
+            		]
+            	);
+            stompClient = Stomp.over(socket);            
+            stompClient.connect({}, function(frame) {
+            	var suffix = frame.headers['user-name'];
+                console.log("User-Suffix: " + suffix);
+
+                setConnected(true);
+                console.log('Connected: ' + frame);
+
+				// Broadcast topics from the tutorial...
+                // stompClient.subscribe('/topic/greetings', function(greeting){
+                //     showGreeting("Broadcast: " + JSON.parse(greeting.body).content);
+                // });
+                // stompClient.subscribe('/topic/numbers', function(greeting){
+                //     showNumbers(JSON.parse(greeting.body).content);
+                // });
+
+				// Adding user-private queues...
+                stompClient.subscribe('/user/queue/freetings', function(greeting) {
+                    showGreeting("/user Targetted: " + JSON.parse(greeting.body).content);
+                });
+                stompClient.subscribe('/user/exchange/gamemessages/freetings', function(greeting) {
+                    showGreeting("/exchange Targetted: " + JSON.parse(greeting.body).content);
+                });
+
+                stompClient.subscribe('/queue/greetings_' + suffix, function(greeting) {
+                    showGreeting("/exchange Targetted: " + JSON.parse(greeting.body).content);
+                });
+                stompClient.subscribe('/exchange/gamemessages/greetings_' + suffix, function(greeting) {
+                    showGreeting("/exchange Targetted: " + JSON.parse(greeting.body).content);
+                });
+            });
+        }
+        
+        function disconnect() {
+            stompClient.disconnect();
+            setConnected(false);
+            console.log("Disconnected");
+        }
+        
+        function sendName() {
+            var name = document.getElementById('name').value;
+            stompClient.send(
+            	"/app/hello", 
+            	{'reply-to':'/temp-queue/clientMessages'}, 
+            	JSON.stringify({ 'name': name })
+            );
+        }
+
+        function getSnoopyString() {
+            var left = document.getElementById('left').value;
+            var right = document.getElementById('right').value;
+            return left + ':' + right;
+	}
+
+        function sendNumbersSync() {
+            stompClient.send(
+                "/app/snoopy/sync", {'content-type':'application/snoopy' }, getSnoopyString());
+        }
+        
+        function sendNumbersAsync() {
+            stompClient.send(
+                "/app/snoopy/async", {'content-type':'application/snoopy' }, getSnoopyString());
+        }
+        
+        function showGreeting(message) {
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.appendChild(document.createTextNode(message));
+            response.appendChild(p);
+        }
+        
+        function showNumbers(message) {
+            var snoopyResponse = document.getElementById('snoopyResponse');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.appendChild(document.createTextNode(message));
+            snoopyResponse.appendChild(p);
+        }
+    </script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div>
+    <div>
+        <button id="connect" onclick="connect();">Connect</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+    </div>
+    <div id="conversationDiv">
+        <label>What is your name?</label><input type="text" id="name" />
+        <button id="sendName" onclick="sendName();">Send</button>
+        <p id="response"></p>
+    </div>
+    <div id="conversationDiv">
+        <label>What is your name?</label><input type="text" id="name" />
+        <button id="sendName" onclick="sendName();">Send</button>
+        <p id="response"></p>
+    </div>
+    <div id="snoopyDiv">
+        <label>What is your shoe size?</label><input type="number" id="left" />
+        <label>In what month were you born?</label><input type="number" id="right" />
+        <button id="syncPageSnoopy" onclick="sendNumbersSync();">Send Sync</button>
+        <button id="asyncPageSnoopy" onclick="sendNumbersAsync();">Send Async</button>
+        <p id="snoopyResponse"></p>
+    </div>
+</div>
+</body>
+</html>
