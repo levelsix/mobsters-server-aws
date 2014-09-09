@@ -2,7 +2,7 @@ package com.lvl6.mobsters.utility.exception;
 
 /**
  */
-public class Lvl6MobstersException extends RuntimeException
+public class Lvl6MobstersException extends Error
 {
 	/**
 	 */
