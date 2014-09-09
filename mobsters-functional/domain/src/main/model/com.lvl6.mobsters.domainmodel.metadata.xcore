@@ -1,0 +1,126 @@
+@GenModel(runtimeJar="true", modelName="mobstersMeta", prefix="MobstersMeta", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", modelPluginClass="", resource="XMI", codeFormatting="true", bundleManifest="false")
+package com.lvl6.mobsters.domainmodel.metadata
+
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+import com.lvl6.mobsters.domain.svcreg.StaticRegistry
+
+// Configuration Metadata objects 
+
+type IMonster wraps com.lvl6.mobsters.info.IMonster
+	create {
+		val Pattern p = 
+			Pattern.compile("^Monster\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getMonsterMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("Monster[%d]", it.id)
+	}
+
+type IItem wraps com.lvl6.mobsters.info.IItem
+	create {
+		val Pattern p = 
+			Pattern.compile("^Item\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getItemMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("Item[%d]", it.id)
+	}
+
+type ITask wraps com.lvl6.mobsters.info.ITask
+	create {
+		val Pattern p = 
+			Pattern.compile("^Task\\[(\\d+)\\]$")
+
+		val Matcher m = p.matcher(it)
+		if (! m.find()) {
+			return null
+		}
+		
+		return 
+			StaticRegistry::getConfigurationRegistry()
+			.getTaskMeta(
+			    Integer.parseInt(
+			    	m.group()
+			    )
+			)
+	}
+	convert {
+		return "Task[" + it.id + "]"
+	}
+
+type ITaskStage wraps com.lvl6.mobsters.info.ITaskStage 
+	create {
+		val Pattern p = 
+			Pattern.compile("^TaskStage\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getTaskStageMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("TaskStage[%d]", it.id)
+	}
+
+type ITaskStageMonster wraps com.lvl6.mobsters.info.ITaskStageMonster
+	create {
+		val Pattern p = 
+			Pattern.compile("^TaskStageMonster\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getTaskStageMonsterMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("TaskStageMonster[%d]", it.id)
+	}
+
+type QuestMeta wraps int
+type QuestJobMeta wraps int
+
