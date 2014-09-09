@@ -50,7 +50,7 @@ public final class ImmutableIntKey extends AbstractIntComparable {
      * @see AbstractObjComparable#compareTo(AbstractObjComparable)
      */
 	@Override
-	protected int getOrderingInt() {
+	public int getOrderingInt() {
 		return this.id;
 	}
 }

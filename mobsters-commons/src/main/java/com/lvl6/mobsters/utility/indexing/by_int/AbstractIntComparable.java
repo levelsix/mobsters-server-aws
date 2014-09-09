@@ -3,7 +3,7 @@ package com.lvl6.mobsters.utility.indexing.by_int;
 public abstract class AbstractIntComparable 
 	implements Comparable<AbstractIntComparable> 
 {
-	protected abstract int getOrderingInt();
+	public abstract int getOrderingInt();
 
 	@Override
 	public int hashCode() 
