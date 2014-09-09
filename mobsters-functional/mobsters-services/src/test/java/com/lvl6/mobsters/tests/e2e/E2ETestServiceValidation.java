@@ -27,7 +27,7 @@ import com.lvl6.mobsters.tests.fixture.dummy.IDummyService;
 	"classpath:spring-services.xml", "classpath:spring-local-test-fixtures.xml" })
 @TransactionConfiguration(transactionManager="lvl6Txm", defaultRollback=true)
 public class E2ETestServiceValidation { 
-	// Subject under test -- Includes the base object of this field's class and the AbstractAction base class of its children.
+	// Subject under test -- Includes the base object of this field's class and the IAction base class of its children.
     @Autowired
     IDummyService userService;
 	
@@ -45,9 +45,10 @@ public class E2ETestServiceValidation {
     private final static String BAD_BOTH_TITLE = "#";
     
     @Test
-	public void testValidationPasses() {
+	public void testValidationPasse
+		() {
 		IAction goodAction = userService.doSomethingForCaller(GOOD_ID, GOOD_SIZE, GOOD_TITLE);
-		Set<ConstraintViolation<AbstractAction>> retVal = goodAction.verifySyntax();
+		Set<ConstraintViolation<IAction>> retVal = goodAction.verifySyntax();
 		
 		Assert.assertNotNull("Return result must be empty, not null", retVal);
 		Assert.assertEquals("Return result must be empty", Collections.emptySet(), retVal);
@@ -71,7 +72,7 @@ public class E2ETestServiceValidation {
     public void testOneFailureTriggers()
     {
     	IAction oneFlawAction = userService.doSomethingForCaller(GOOD_ID, BAD_SIZE, GOOD_TITLE);
-    	Set<ConstraintViolation<AbstractAction>> retVal = oneFlawAction.verifySyntax();
+    	Set<ConstraintViolation<IAction>> retVal = oneFlawAction.verifySyntax();
     		
     	Assert.assertNotNull("Return result be non-null", retVal);
     		
@@ -83,7 +84,7 @@ public class E2ETestServiceValidation {
     public void testTwoFailedPropertiesTriggers()
     {
     	IAction twoByOneFlawsAction = userService.doSomethingForCaller(GOOD_ID, BAD_SIZE, BAD_CHARS_TITLE);
-    	Set<ConstraintViolation<AbstractAction>> retVal = twoByOneFlawsAction.verifySyntax();
+    	Set<ConstraintViolation<IAction>> retVal = twoByOneFlawsAction.verifySyntax();
     		
     	Assert.assertNotNull("Return result be non-null", retVal);
     		
@@ -95,7 +96,7 @@ public class E2ETestServiceValidation {
     public void testTwoFailuresOnePropertyTriggers()
     {
     	IAction oneByTwoFlawsAction = userService.doSomethingForCaller(GOOD_ID, GOOD_SIZE, BAD_BOTH_TITLE);
-    	Set<ConstraintViolation<AbstractAction>> retVal = oneByTwoFlawsAction.verifySyntax();
+    	Set<ConstraintViolation<IAction>> retVal = oneByTwoFlawsAction.verifySyntax();
     		
     	Assert.assertNotNull("Return result be non-null", retVal);
     		
@@ -107,7 +108,7 @@ public class E2ETestServiceValidation {
     public void testMaxFailuresTriggers()
     {
     	IAction manyFlawsAction = userService.doSomethingForCaller(BAD_ID, BAD_SIZE, BAD_BOTH_TITLE);
-    	Set<ConstraintViolation<AbstractAction>> retVal = manyFlawsAction.verifySyntax();
+    	Set<ConstraintViolation<IAction>> retVal = manyFlawsAction.verifySyntax();
     		
     	Assert.assertNotNull("Return result be non-null", retVal);
     		
