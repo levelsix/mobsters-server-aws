@@ -57,14 +57,16 @@
 			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
 			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
 		</websocket:client-outbound-channel>
-	   
+
 		<websocket:broker-channel>
-			<!-- These are the automatic defaults for a 4-core machine, verbatim.  Drop or replace with bind variables later. -->
-			<websocket:executor core-pool-size="8" max-pool-size="2147483647" queue-capacity="2147483647" keep-alive-seconds="60"/>
+			<!-- These are the automatic defaults for a 4-core machine, verbatim. 
+				Drop or replace with bind variables later. -->
+			<websocket:executor core-pool-size="1"
+				max-pool-size="1" queue-capacity="2147483647" keep-alive-seconds="60"/>
 		</websocket:broker-channel>
 	</websocket:message-broker>
 
-	
+
 	<!-- WebSocketContainer configuration factory and protocol resource properties -->
 	<bean
 		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"
