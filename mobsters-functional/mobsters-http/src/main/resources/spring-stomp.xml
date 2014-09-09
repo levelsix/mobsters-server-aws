@@ -44,9 +44,8 @@
 
 		<websocket:message-converters register-defaults="true">
 			<bean name="binaryProtobufDecoder" lazy-init="false"
-				class="com.lvl6.mobsters.websockets.BinaryProtobufDecoder"
-				autowire-candidate="default" scope="singleton"
-				abstract="false" />
+				class="com.lvl6.mobsters.websockets.BinaryProtobufConverter"
+				autowire-candidate="false" scope="singleton" abstract="false"/>
 		</websocket:message-converters>
 
 		<websocket:client-inbound-channel>
