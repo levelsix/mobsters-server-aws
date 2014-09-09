@@ -56,17 +56,15 @@ public class ControllerManager {
 			mapBuilder.build();
 	}
 	
-	public void setEventControllerList(List<EventController> eventControllerList) {
-		this.eventControllerList = eventControllerList;
-		
-		// This could equivalently occur in setup(), but doing it here concedes to paranoia
-		// over whether Spring uses the same thread to inject as it does to @PostConstruct.
-		for( final EventController ec : eventControllerList ) {
-			mapBuilder.put(ec.getEventType(), ec);
-		}
-	}
+//	
 
-	/**
+	/**public void setEventControllerList(List<EventController> eventControllerList) 
+//	{
+//		this.eventControllerList = eventControllerList;
+//		log.info(
+//			"Scheduled {} event controllers for insertion to eventRequestType-->eventController map", 
+//			eventControllerList.size());
+//	}
 	 * The event controllers map contents are permanently set in stone during spring initialization.
 	 * 
 	 * Spring cannot guarantee that this happens before any threads that will use the hash get spawned,
@@ -77,7 +75,17 @@ public class ControllerManager {
 	 * not the reference to it.  The inner class, however, is able to close that gap.
 	 */
 	@PostConstruct
-	public void setup() {
+	public void setup() 
+	{
+		// This could equivalently occur in setup(), but doing it here concedes to paranoia
+		// over whether Spring uses the same thread to inject as it does to @PostConstruct.
+		log.info(
+			"Triggered insertion of {} event controllers into eventRequestType-->eventController map", 
+			eventControllerList.size());
+		for( final EventController ec : eventControllerList ) {
+			mapBuilder.put(ec.getEventType(), ec);
+		}
+		
 		log.info(
 			"Populated {} event controllers into eventRequestType-->eventController map", 
 			MapContainer.eventControllers.size());

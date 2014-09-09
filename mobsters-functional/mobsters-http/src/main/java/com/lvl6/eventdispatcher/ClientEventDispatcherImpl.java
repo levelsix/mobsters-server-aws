@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
@@ -17,10 +18,12 @@ import com.lvl6.mobsters.websockets.SessionMap;
 
 
 @Component
-public class ClientEventDispatcherImpl implements ClientEventDispatcher {
-
-	
-	private static final Logger log = LoggerFactory.getLogger(ClientEventDispatcherImpl.class);
+@Qualifier("Root")
+public class ClientEventDispatcherImpl 
+	implements ClientEventDispatcher 
+{
+	@SuppressWarnings("unused")
+	private static final Logger LOG = LoggerFactory.getLogger(ClientEventDispatcherImpl.class);
 	
 	@Autowired
 	protected PlayerMapsCacheManager playerMaps;
@@ -30,13 +33,12 @@ public class ClientEventDispatcherImpl implements ClientEventDispatcher {
 	
 	
 	@Autowired
-	protected AmqpEventDispatcher amqpEventDispatcher;
+	@Qualifier("AMQP")
+	protected ClientEventDispatcher amqpEventDispatcher;
 	
 	@Autowired
-	protected WebSocketEventDispatcher webSocketEventDispatcher;
-	
-	
-	
+	@Qualifier("WebSocket")
+	protected ClientEventDispatcher webSocketEventDispatcher;
 	
 	
 	@Override
@@ -124,19 +126,19 @@ public class ClientEventDispatcherImpl implements ClientEventDispatcher {
 		this.sessionMap = sessionMap;
 	}
 
-	public AmqpEventDispatcher getAmqpEventDispatcher() {
+	public ClientEventDispatcher getAmqpEventDispatcher() {
 		return amqpEventDispatcher;
 	}
 
-	public void setAmqpEventDispatcher(AmqpEventDispatcher amqpEventDispatcher) {
+	public void setAmqpEventDispatcher(ClientEventDispatcher amqpEventDispatcher) {
 		this.amqpEventDispatcher = amqpEventDispatcher;
 	}
 
-	public WebSocketEventDispatcher getWebSocketEventDispatcher() {
+	public ClientEventDispatcher getWebSocketEventDispatcher() {
 		return webSocketEventDispatcher;
 	}
 
-	public void setWebSocketEventDispatcher(WebSocketEventDispatcher webSocketEventDispatcher) {
+	public void setWebSocketEventDispatcher(ClientEventDispatcher webSocketEventDispatcher) {
 		this.webSocketEventDispatcher = webSocketEventDispatcher;
 	}
 
