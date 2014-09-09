@@ -127,6 +127,7 @@
 		<hibernate-validator.version>5.1.1.Final</hibernate-validator.version>
 		<httpclient.version>4.2.1</httpclient.version>
 
+		<jackson.version>2.1.1</jackson.version>
 		<javax.el.version>2.2.4</javax.el.version>
 		<javax.mail.version>1.4.5</javax.mail.version>
 		<javax.servlet.version>3.0.1</javax.servlet.version>
@@ -647,6 +648,26 @@
 				<version>${chill-java.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase</artifactId>
 				<version>${xbase.version}</version>
