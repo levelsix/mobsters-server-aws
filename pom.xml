@@ -30,7 +30,7 @@
 		<module>mobsters-data-model</module>
 		<module>mobsters-functional</module>
 		<!-- module>mobsters-modeling</module -->
-		<module>mobsters-webapp</module>
+		<module>assembly</module>
 	</modules>
 
 	<organization>
