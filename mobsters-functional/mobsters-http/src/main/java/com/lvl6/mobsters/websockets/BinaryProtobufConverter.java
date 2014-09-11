@@ -67,7 +67,7 @@ public final class BinaryProtobufConverter extends AbstractMessageConverter
 	}
 
 	@Override
-	public org.springframework.messaging.Message<?> convertToInternal(
+	public org.springframework.messaging.Message<byte[]> convertToInternal(
 		Object payload, MessageHeaders header)
 	{
 		Preconditions.checkNotNull(payload);

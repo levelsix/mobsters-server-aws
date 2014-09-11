@@ -1,22 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:int="http://www.springframework.org/schema/integration"
-	xmlns:amqp="http://www.springframework.org/schema/integration/amqp"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/rabbit
-		http://www.springframework.org/schema/rabbit/spring-rabbit-1.3.xsd
-		http://www.springframework.org/schema/websocket
-		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd
-		http://www.springframework.org/schema/integration
-		http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
-		http://www.springframework.org/schema/integration/amqp 
-		http://www.springframework.org/schema/integration/amqp/spring-integration-amqp-4.0.xsd">
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 	<int:annotation-config/>
 	<context:annotation-config/>
@@ -54,9 +51,8 @@
 			auto-startup="true" prefix="/queue/, /topic/, /exchange/, /amq/queue/"/>
 
 		<websocket:message-converters register-defaults="true">
-			<bean name="binaryProtobufDecoder" lazy-init="false"
-				class="com.lvl6.mobsters.websockets.BinaryProtobufConverter"
-				autowire-candidate="false" scope="singleton" abstract="false"/>
+			<bean name="binaryProtobufDecoder" scope="singleton" 
+				class="com.lvl6.mobsters.websockets.BinaryProtobufConverter"/>
 		</websocket:message-converters>
 
 		<websocket:client-inbound-channel>
@@ -64,6 +60,15 @@
 				Drop or replace with bind variables later. -->
 			<websocket:executor core-pool-size="8" max-pool-size="2147483647" 
 				queue-capacity="2147483647" keep-alive-seconds="60"/>
+		
+			<!-- Route a copy of each each mssage coming in from a websocket client to the 
+			     legacy game server.  Allow the original message to proceed on its path. -->
+			<websocket:interceptors>
+				<bean name="legacyWireTap" autowire-candidate="false" scope="singleton"
+				      class="org.springframework.integration.channel.interceptor.WireTap">
+				 	<constructor-arg index="0" value="channelToLegacyGameSrvr"/>
+				 </bean>
+			</websocket:interceptors>
 		</websocket:client-inbound-channel>
 
 		<websocket:client-outbound-channel>
@@ -93,7 +98,6 @@
 		<property name="maxSessionIdleTimeout" value="180000"/>
 	</bean>
 
-
 	<!-- Early customization of a default built-in bean at the point in session 
 		handshake where Spring and/or consumer logic is permitted to interpret and/or 
 		interact with the on-connect handshake that yields and locks in session attributes 
@@ -104,7 +108,7 @@
 	<bean name="mobstersHandshakeHandler" abstract="false"
 		class="com.lvl6.mobsters.websockets.MobstersHandshakeHandler"
 		lazy-init="false" scope="singleton" autowire-candidate="false"/>
-	
+
 	<!-- The built-in UserDestinationResolver builds queue names based on the WebSocketSession.getId()
 	     return value.  In the case of Tomcat, this is the smallest unused integer greater than or
 	     equal to 0.  It's not unique if there are mulitple instances of the websocket application, and
@@ -127,16 +131,26 @@
 		  <constructor-arg index="0" ref="org.springframework.messaging.simp.user.DefaultUserSessionRegistry#0"/>
 	</bean>
 
+	<task:executor id="legacyDispatchPool" keep-alive="12" pool-size="4-12" 
+		queue-capacity="32" rejection-policy="CALLER_RUNS" />
+	<int:channel id="channelToLegacyGameSrvr">
+		<int:dispatcher task-executor="legacyDispatchPool"/>
+	</int:channel>
+
+	<int:outbound-channel-adapter id="legacyGameSrvrAdapter" auto-startup="true"
+		channel="channelToLegacyGameSrvr" ref="legacyGameSrvrClient" method="sendRequest"/>		
+	<bean id="legacyGameSrvrClient" scope="singleton" lazy-init="false"
+		class="com.lvl6.mobsters.websocket.adapters.LegacyGameSrvrClient"
+		c:brokerMessageTemplate="brokerMessagingTemplate"/>
+		
 	<int:channel id="errorChannel"/>
-	<int:logging-channel-adapter
-		id="com.lvl6.integration.errorLogger" channel="errorChannel" auto-startup="true"
+	<int:logging-channel-adapter auto-startup="true"
+		id="com.lvl6.integration.errorLogger" channel="errorChannel"
 		level="ERROR" expression="#root" logger-name="ErrorLogger"/>
 	
-	<!-- TBD.  Not sure if this is needed or what yet. -->
-	<!-- bean id="stompWebSocketSubProtoExtension" autowire-candidate="true" lazy-init="false"
-		  class="org.springframework.web.socket.messaging.StompWebSocketExtension"></bean-->
-
-<!--
+	<!-- Consider setting dataType= Message (PRotoBuf) and a message-converter
+	     that includes it, rather than using a global registration. -->
+	<!--
 	<int:filter input-channel="serviceChannel"
 		 output-channel="idempotentServiceChannel"
 	 	 discard-channel="discardChannel"
@@ -145,7 +159,7 @@
 	<int:outbound-channel-adapter channel="idempotentServiceChannel"
 		 expression="@metadataStore.put(headers.businessKey, '')"/>
 	<int:service-activator input-channel="idempotentServiceChannel" ref="service"/>
--->
+	-->
 
 	<!--
 	<int:annotation-config/>
