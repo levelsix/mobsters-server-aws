@@ -14,6 +14,9 @@
   <listener>
     <listener-class>org.apache.tomcat.websocket.server.WsContextListener</listener-class>
   </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
   <absolute-ordering>
     <name>spring_web</name>
   </absolute-ordering>
@@ -25,9 +28,6 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/applicationContext.xml</param-value>
   </context-param>
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>testwebsocket.html</welcome-file>

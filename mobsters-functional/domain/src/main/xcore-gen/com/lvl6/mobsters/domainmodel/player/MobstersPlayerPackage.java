@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EReference;
  * <!-- end-user-doc -->
  * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerFactory
  * @model kind="package"
- *        annotation="http://www.eclipse.org/emf/2002/GenModel modelName='player' prefix='MobstersPlayer' featureDelegation='Reflective' generateSchema='true' loadInitialization='true' modelPluginClass='' resource='XMI' codeFormatting='true' bundleManifest='false' basePackage='com.lvl6.mobsters.domainmodel'"
+ *        annotation="http://www.eclipse.org/emf/2002/GenModel modelName='player' prefix='MobstersPlayer' featureDelegation='Reflective' generateSchema='true' loadInitialization='true' resource='XMI' codeFormatting='true' bundleManifest='false' publicationLocation='/domain/src/main/model' basePackage='com.lvl6.mobsters.domainmodel'"
  * @generated
  */
 public interface MobstersPlayerPackage extends EPackage {

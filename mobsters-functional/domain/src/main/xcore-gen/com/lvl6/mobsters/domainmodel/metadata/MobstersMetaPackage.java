@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
  * <!-- end-user-doc -->
  * @see com.lvl6.mobsters.domainmodel.metadata.MobstersMetaFactory
  * @model kind="package"
- *        annotation="http://www.eclipse.org/emf/2002/GenModel modelName='metadata' prefix='MobstersMeta' featureDelegation='Reflective' generateSchema='true' loadInitialization='true' modelPluginClass='' resource='XMI' codeFormatting='true' bundleManifest='false' basePackage='com.lvl6.mobsters.domainmodel'"
+ *        annotation="http://www.eclipse.org/emf/2002/GenModel modelName='metadata' prefix='MobstersMeta' featureDelegation='Reflective' generateSchema='true' loadInitialization='true' modelPluginClass='' resource='XMI' codeFormatting='true' bundleManifest='false' nsURI='http://com.lvl6.mobsters/domainmodel/metadata' publicationLocation='/domain/src/main/model' basePackage='com.lvl6.mobsters.domainmodel'"
  * @generated
  */
 public interface MobstersMetaPackage extends EPackage {

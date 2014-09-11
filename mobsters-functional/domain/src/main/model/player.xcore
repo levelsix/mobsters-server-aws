@@ -1,4 +1,4 @@
-@GenModel(modelName="player", prefix="MobstersPlayer", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", modelPluginClass="", resource="XMI", codeFormatting="true", bundleManifest="false")
+@GenModel(modelName="player", prefix="MobstersPlayer", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", resource="XMI", codeFormatting="true", bundleManifest="false", publicationLocation="/domain/src/main/model")
 package com.lvl6.mobsters.domainmodel.player
 
 import com.lvl6.mobsters.domainmodel.metadata.IItem

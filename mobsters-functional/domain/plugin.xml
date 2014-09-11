@@ -4,40 +4,52 @@
 <!--
 -->
 
-<plugin>
+<plugin
+      name="%pluginName"
+      id="duh"
+      version="1.0.0"
+      provider-name="%providerName">
 
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore" export="true"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" export="true"/>
+      <import plugin="org.eclipse.emf.ecore.xcore.lib" export="true"/>
+      <import plugin="org.eclipse.emf.ecore.xmi" export="true"/>
+   </requires>
 
-
-
-
-
+   <runtime>
+      <library name=".">
+         <export name="*"/>
+      </library>
+   </runtime>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated com.lvl6.mobsters.domainmodel.player -->
-      <package
-            uri="com.lvl6.mobsters.domainmodel.player"
-            class="com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage"
-            genModel="src/main/model/com.lvl6.mobsters.domainmodel.player.xcore"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.extension_parser">
-      <!-- @generated com.lvl6.mobsters.domainmodel.player -->
-      <parser
-            type="mobstersplayer"
-            class="com.lvl6.mobsters.domainmodel.player.util.MobstersPlayerResourceFactoryImpl"/>
-   </extension>
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated com.lvl6.mobsters.domainmodel.metadata -->
+      <!-- @generated metadata -->
       <package
             uri="com.lvl6.mobsters.domainmodel.metadata"
             class="com.lvl6.mobsters.domainmodel.metadata.MobstersMetaPackage"
-            genModel="src/main/model/com.lvl6.mobsters.domainmodel.metadata.xcore"/>
+            genModel="src/main/model/metadata.xcore"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">
-      <!-- @generated com.lvl6.mobsters.domainmodel.metadata -->
+      <!-- @generated metadata -->
       <parser
             type="mobstersmeta"
             class="com.lvl6.mobsters.domainmodel.metadata.util.MobstersMetaResourceFactoryImpl"/>
+   </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated player -->
+      <package
+            uri="com.lvl6.mobsters.domainmodel.player"
+            class="com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage"
+            genModel="src/main/model/player.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated player -->
+      <parser
+            type="mobstersplayer"
+            class="com.lvl6.mobsters.domainmodel.player.util.MobstersPlayerResourceFactoryImpl"/>
    </extension>
 </plugin>

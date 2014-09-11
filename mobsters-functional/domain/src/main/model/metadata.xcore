@@ -1,4 +1,4 @@
-@GenModel(modelName="metadata", prefix="MobstersMeta", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", modelPluginClass="", resource="XMI", codeFormatting="true", bundleManifest="false")
+@GenModel(modelName="metadata", prefix="MobstersMeta", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", modelPluginClass="", resource="XMI", codeFormatting="true", bundleManifest="false", nsURI="http://com.lvl6.mobsters/domainmodel/metadata", publicationLocation="/domain/src/main/model")
 package com.lvl6.mobsters.domainmodel.metadata
 
 import java.util.regex.Pattern
