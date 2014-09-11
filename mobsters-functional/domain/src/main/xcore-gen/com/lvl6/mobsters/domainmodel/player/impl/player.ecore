@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="player" nsURI="com.lvl6.mobsters.domainmodel.player" nsPrefix="player">
+  <eClassifiers xsi:type="ecore:EDataType" name="Date" instanceClassName="java.util.Date"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="UUID" instanceClassName="java.util.UUID"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="CompletedTaskIndex" instanceTypeName="com.googlecode.cqengine.IndexedCollection&lt;com.lvl6.mobsters.domainmodel.player.CompletedTask>"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Director" instanceClassName="com.lvl6.mobsters.utility.lambda.Director"
+      abstract="true" interface="true">
+    <eTypeParameters name="T"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="MonsterType">
+    <eLiterals name="REGULAR"/>
+    <eLiterals name="MINI_BOSS"/>
+    <eLiterals name="BOSS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ElementType">
+    <eLiterals name="NO_ELEMENT"/>
+    <eLiterals name="FIRE"/>
+    <eLiterals name="EARTH"/>
+    <eLiterals name="WATER"/>
+    <eLiterals name="ROCK"/>
+    <eLiterals name="LIGHT"/>
+    <eLiterals name="DARK"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Player" abstract="true" interface="true">
+    <eOperations name="beginTask" unique="false">
+      <eParameters name="taskMeta" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+      <eParameters name="director" unique="false">
+        <eGenericType eClassifier="ecore:EClass com.lvl6.mobsters.domainmodel.player#//Director">
+          <eTypeArguments eClassifier="ecore:EClass com.lvl6.mobsters.domainmodel.player#//BeginTaskStagesBuilder"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="getCompletedTaskFor" unique="false" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//CompletedTask">
+      <eParameters name="taskMeta" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlayerInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//Player">
+    <eOperations name="beginTask" unique="false">
+      <eParameters name="taskMeta" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+      <eParameters name="director" unique="false">
+        <eGenericType eClassifier="ecore:EClass com.lvl6.mobsters.domainmodel.player#//Director">
+          <eTypeArguments eClassifier="ecore:EClass com.lvl6.mobsters.domainmodel.player#//BeginTaskStagesBuilder"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="checkForIndices" unique="false"/>
+    <eOperations name="getCompletedTaskFor" unique="false" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//CompletedTask">
+      <eParameters name="taskMeta" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="userUuid" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gems" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cash" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oil" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="experience" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="userData" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//UserDataInternal"
+        containment="true" resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//UserDataInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ongoingTask" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//OngoingTaskInternal"
+        containment="true" resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//OngoingTaskInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="completedTasks" upperBound="-1"
+        eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//CompletedTaskInternal"
+        containment="true" resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//CompletedTaskInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
+        eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//ItemInternal" containment="true"
+        resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//ItemInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monsters" upperBound="-1"
+        eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//MonsterInternal"
+        containment="true" resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//MonsterInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="teamSlots" upperBound="3"
+        eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//MonsterInternal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pendingOperations" upperBound="-1"
+        eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PendingOperationInternal"
+        containment="true" resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//PendingOperationInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="indexed" unique="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        changeable="false" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="completedTaskIndex" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//CompletedTaskIndex"
+        transient="true" unsettable="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UserData" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UserDataInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//UserData">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//PlayerInternal/userData"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="udidForHistory" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deviceToken" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fbIdSetOnUserCreate" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gameCenterId" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="avatarMonsterMeta" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//IMonster"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastLogin" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastLogout" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="createTime" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastObstacleSpawnTime"
+        unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastMiniJobGeneratedTime"
+        unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//Date"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OngoingTask" abstract="true" interface="true">
+    <eOperations name="completeTask" unique="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OngoingTaskInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//OngoingTask">
+    <eOperations name="completeTask" unique="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskUuid" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//PlayerInternal/ongoingTask"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskMeta" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stages" upperBound="-1"
+        eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//TaskStageInternal"
+        containment="true" resolveProxies="false" eOpposite="com.lvl6.mobsters.domainmodel.player#//TaskStageInternal/task"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskStage" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskStageInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//TaskStage">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskStageUuid" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="task" lowerBound="1" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//OngoingTaskInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//OngoingTaskInternal/stages"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskStage" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITaskStage"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stageNum" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskStageMonster" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITaskStageMonster"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dmgMultiplier" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterType" unique="false"
+        eType="ecore:EEnum com.lvl6.mobsters.domainmodel.player#//MonsterType" changeable="false"
+        volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterPieceDropped" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="itemDropped" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//IItem"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expGained" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cashGained" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oilGained" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BeginTaskStagesBuilder" abstract="true"
+      interface="true">
+    <eOperations name="addStage" unique="false" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//BeginTaskStagesBuilder">
+      <eParameters name="stageNum" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="stageMeta" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITaskStage"/>
+      <eParameters name="stageMonster" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITaskStageMonster"/>
+      <eParameters name="cashReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="oilReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="expReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="rewardsMonsterPiece" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eParameters name="droppedItem" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//IItem"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BeginTaskStagesBuilderInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//BeginTaskStagesBuilder">
+    <eOperations name="init" unique="false">
+      <eParameters name="taskMeta" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+      <eParameters name="player" unique="false" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//Player"/>
+    </eOperations>
+    <eOperations name="addStage" unique="false" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//BeginTaskStagesBuilder">
+      <eParameters name="stageNum" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="taskStage" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITaskStage"/>
+      <eParameters name="taskStageMonster" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITaskStageMonster"/>
+      <eParameters name="cashReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="oilReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="expReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="itemDropped" unique="false" eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//IItem"/>
+      <eParameters name="monsterPieceDropped" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="build" unique="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newArtifact" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//OngoingTaskInternal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompletedTask" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CompletedTaskInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//CompletedTask">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//PlayerInternal/completedTasks"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskMeta" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//ITask"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeOfEntry" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Monster" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MonsterInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//Monster">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterUuid" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//PlayerInternal/monsters"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterMeta" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//IMonster"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentExp" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentLvl" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentHealth" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numPieces" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isComplete" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="combineStartTime" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamSlotNum" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="restricted" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Item" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ItemInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//Item">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="itemUuid" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.player#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//PlayerInternal/items"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="itemMeta" unique="false"
+        eType="ecore:EDataType com.lvl6.mobsters.domainmodel.metadata#//IItem"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PendingOperation" abstract="true" interface="true">
+    <eOperations name="checkTimer" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PendingOperationInternal" abstract="true"
+      eSuperTypes="com.lvl6.mobsters.domainmodel.player#//PendingOperation">
+    <eOperations name="happen" unique="false"/>
+    <eOperations name="checkTimer" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//PlayerInternal"
+        eOpposite="com.lvl6.mobsters.domainmodel.player#//PlayerInternal/pendingOperations"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opStartTimer" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opEndTimer" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CombineMonsterPiecesInternal" eSuperTypes="com.lvl6.mobsters.domainmodel.player#//PendingOperationInternal">
+    <eOperations name="happen" unique="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newMonster" eType="ecore:EClass com.lvl6.mobsters.domainmodel.player#//MonsterInternal"/>
+  </eClassifiers>
+</ecore:EPackage>
