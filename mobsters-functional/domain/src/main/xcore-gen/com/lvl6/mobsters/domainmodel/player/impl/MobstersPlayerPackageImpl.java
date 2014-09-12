@@ -269,8 +269,8 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		isInited = true;
 
 		// Initialize simple dependencies
-		EcorePackage.eINSTANCE.eClass();
 		MobstersMetaPackage.eINSTANCE.eClass();
+		EcorePackage.eINSTANCE.eClass();
 
 		// Load packages
 		theMobstersPlayerPackage.loadPackage();

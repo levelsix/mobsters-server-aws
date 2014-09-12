@@ -15,19 +15,21 @@ import sun.security.jca.Providers;
 @Component("cryptoRandomHelper")
 @Qualifier("crypto")
 @SuppressWarnings("restriction")
-public class CryptoRandomHelper implements IRandomHelper {
-	private static final Logger LOG = 
-		LoggerFactory.getLogger(CryptoRandomHelper.class);
+public class CryptoRandomHelper implements IRandomHelper
+{
+	private static final Logger LOG = LoggerFactory.getLogger(CryptoRandomHelper.class);
 	
     // private final Random stdRandomSrc;
     private final SecureRandom cryptoRandomSrc;
 
-    public CryptoRandomHelper() {
+    public CryptoRandomHelper( ) 
+    {
     	cryptoRandomSrc = getCryptoPRNG();
     }
 
 	@Override
-	public void nextBytes(byte[] bytes) {
+	public void nextBytes(byte[] bytes) 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -36,7 +38,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public boolean nextBoolean() {
+	public boolean nextBoolean() 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -45,7 +48,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public int nextInt() {
+	public int nextInt() 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -54,7 +58,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public int nextInt(int n) {
+	public int nextInt(int n) 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -63,7 +68,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public long nextLong() {
+	public long nextLong() 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -72,7 +78,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public float nextFloat() {
+	public float nextFloat() 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -81,7 +88,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public double nextDouble() {
+	public double nextDouble() 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -90,7 +98,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 	}
 
 	@Override
-	public double nextGaussian() {
+	public double nextGaussian() 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -98,7 +107,8 @@ public class CryptoRandomHelper implements IRandomHelper {
 		return cryptoRandomSrc.nextGaussian();
 	}
 
-	public byte[] generateSeed(int numBytes) {
+	public byte[] generateSeed(int numBytes) 
+	{
 		if (this.cryptoRandomSrc == null) {
 			throw new UnsupportedOperationException("No suitable cryptographic strength PRNG found at bootstrap.");
 		}
@@ -112,7 +122,8 @@ public class CryptoRandomHelper implements IRandomHelper {
      * has registered a SecureRandom implementation, or null if none of the
      * registered providers supplies a SecureRandom implementation.
      */
-    private static String getPrngAlgorithm() {
+    private static String getPrngAlgorithm() 
+    {
         for (Provider p : Providers.getProviderList().providers()) {
             for (Service s : p.getServices()) {
                 if (s.getType().equals("SecureRandom")) {
@@ -123,7 +134,8 @@ public class CryptoRandomHelper implements IRandomHelper {
         return null;
     }
     
-    static SecureRandom getCryptoPRNG() {
+    static SecureRandom getCryptoPRNG() 
+    {
         SecureRandom retVal = null;
         
         String prng = getPrngAlgorithm();
