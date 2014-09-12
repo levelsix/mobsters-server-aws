@@ -104,10 +104,10 @@ package class IndexLoader
 				new IndexLoader.ConfigClassDef<Monster>(
 					"SELECT m FROM Monster AS m", CQAttrs.MONSTER_ID, cqMonsters
 				)[
-					it?.battleDialogue.forEach[mbd|mbd.dialogue]
-					it?.evolutionCatalystMonster.imagePrefix
-					it?.evolutionMonster.imagePrefix
-					it?.lvlInfo.forEach[mli|mli.curLvlRequiredExp]
+					it.battleDialogue?.forEach[mbd|mbd.dialogue]
+					it.evolutionCatalystMonster?.imagePrefix
+					it.evolutionMonster?.imagePrefix
+					it.lvlInfo?.forEach[mli|mli.curLvlRequiredExp]
 				]
 			)
 
@@ -115,8 +115,8 @@ package class IndexLoader
 				new IndexLoader.ConfigClassDef<Quest>(
 					"SELECT q FROM Quest AS q", CQAttrs.QUEST_ID, cqQuests
 				)[
-					it?.questJobs.forEach[qj|qj.priority]
-					it?.questsRequiredForThis.forEach[qj|qj.cashReward]
+					it.questJobs?.forEach[qj|qj.priority]
+					it.questsRequiredForThis?.forEach[qj|qj.cashReward]
 				]
 			)
 			
@@ -155,11 +155,7 @@ package class IndexLoader
 		}
 	}
 		
-	@Transactional(
-		propagation=Propagation.REQUIRED, 
-		isolation=Isolation::READ_COMMITTED, 
-		readOnly=true
-	)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	def void buildConfig() {
 		for (IndexLoader.ConfigClassDef<?> nextConfigType : bootstrapData) {
 			nextConfigType.initialize(_entityManager)
@@ -175,9 +171,9 @@ package class IndexLoader
 			_entityManager.createQuery("SELECT qjmi FROM QuestJobMonsterItem AS qjmi")
 			.resultList
 		for (QuestJobMonsterItem nextQjmi : cfgObjList) {
-			nextQjmi.questJob.description
-			nextQjmi.monster.imagePrefix
-			nextQjmi.item.name
+			nextQjmi.questJob?.description
+			nextQjmi.monster?.imagePrefix
+			nextQjmi.item?.name
 		}
 		
 		cqQuestJobMonsterItems.addIndex(

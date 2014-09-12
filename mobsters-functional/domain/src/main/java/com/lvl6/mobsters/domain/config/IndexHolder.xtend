@@ -13,7 +13,7 @@ package class IndexHolder
 {
 	static val IndexLoader indexLoader =
 		ConfigurationRegistry.CONTENT_FOR_HOLDER_TO_INITIALIZE => [
-			indexLoader.buildConfig()
+			it.buildConfig()
 		]
 	
 	static val IndexedCollection<Item> cqItems = indexLoader.cqItems

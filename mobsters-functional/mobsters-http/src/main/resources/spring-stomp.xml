@@ -14,7 +14,6 @@
 		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-
 	<int:annotation-config/>
 	<context:annotation-config/>
 	<context:component-scan base-package="com.lvl6.mobsters.websockets.xtra"/>
@@ -66,7 +65,7 @@
 			<websocket:interceptors>
 				<bean name="legacyWireTap" autowire-candidate="false" scope="singleton"
 				      class="org.springframework.integration.channel.interceptor.WireTap">
-				 	<constructor-arg index="0" value="channelToLegacyGameSrvr"/>
+				 	<constructor-arg index="0" ref="channelToLegacyGameSrvr"/>
 				 </bean>
 			</websocket:interceptors>
 		</websocket:client-inbound-channel>
@@ -95,7 +94,7 @@
 		<property name="maxTextMessageBufferSize" value="16896"/>
 
 		<property name="asyncSendTimeout" value="20000"/>
-		<property name="maxSessionIdleTimeout" value="180000"/>
+		<property name="maxSessionIdleTimeout" value="150000"/>
 	</bean>
 
 	<!-- Early customization of a default built-in bean at the point in session 
@@ -140,9 +139,10 @@
 	<int:outbound-channel-adapter id="legacyGameSrvrAdapter" auto-startup="true"
 		channel="channelToLegacyGameSrvr" ref="legacyGameSrvrClient" method="sendRequest"/>		
 	<bean id="legacyGameSrvrClient" scope="singleton" lazy-init="false"
-		class="com.lvl6.mobsters.websocket.adapters.LegacyGameSrvrClient"
-		c:brokerMessageTemplate="brokerMessagingTemplate"/>
-		
+		class="com.lvl6.mobsters.websocket.adapters.LegacyGameSrvrClient">
+		<constructor-arg index="0" ref="org.springframework.messaging.simp.SimpMessagingTemplate#0"/>
+	</bean>
+
 	<int:channel id="errorChannel"/>
 	<int:logging-channel-adapter auto-startup="true"
 		id="com.lvl6.integration.errorLogger" channel="errorChannel"
