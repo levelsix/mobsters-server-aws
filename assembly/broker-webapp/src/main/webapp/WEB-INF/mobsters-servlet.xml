@@ -11,7 +11,9 @@
     	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 	<import resource="classpath:spring-configuration.xml"/>
 	<import resource="classpath:spring-controllers.xml"/>
-	<!--import resource="classpath:spring-amqp.xml"/-->
 	<import resource="classpath:spring-stomp.xml"/>
+	
+	<mvc:resources mapping="/stomp.js" location="/static/stomp.js" cache-period="31556926"/>
+	<mvc:resources mapping="/sockjs-0.3.4.js" location="/static/sockjs-0.3.4.js" cache-period="31556926"/>
 	<mvc:resources mapping="/index.html" location="/static/index.html" cache-period="31556926"/>
 </beans>

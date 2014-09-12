@@ -2,8 +2,8 @@
 <html>
 <head>
     <title>Hello WebSocket</title>
-    <script src="static/sockjs-0.3.4.js"></script>
-    <script src="static/stomp.js"></script>
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
         
@@ -19,7 +19,7 @@
             // var socket = new SockJS('/hello');
             var socket = 
             	new WebSocket(
-            		'ws://127.0.0.1:8888/webapp/gameevents', [
+            		'ws://127.0.0.1:8888/broker-webapp/gameevents', [
             			'mobsters.userid.854_1581786639', 
             			'mobsters.udid.DC3C8915-4072-5FE6-8B6E-B0D1353DB53D_1506770902',
             			'v11.stomp'
