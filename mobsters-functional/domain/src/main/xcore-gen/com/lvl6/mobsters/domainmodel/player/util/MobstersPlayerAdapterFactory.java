@@ -84,16 +84,6 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseUserData(UserData object) {
-			return createUserDataAdapter();
-		}
-
-		@Override
-		public Adapter caseUserDataInternal(UserDataInternal object) {
-			return createUserDataInternalAdapter();
-		}
-
-		@Override
 		public Adapter caseOngoingTask(OngoingTask object) {
 			return createOngoingTaskAdapter();
 		}
@@ -229,34 +219,6 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPlayerInternalAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.UserData <em>User Data</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserData
-	 * @generated
-	 */
-	public Adapter createUserDataAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal <em>User Data Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal
-	 * @generated
-	 */
-	public Adapter createUserDataInternalAdapter() {
 		return null;
 	}
 

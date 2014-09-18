@@ -191,22 +191,13 @@ public interface MobstersPlayerPackage extends EPackage {
 	int PLAYER_INTERNAL__EXPERIENCE = PLAYER_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>User Data</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PLAYER_INTERNAL__USER_DATA = PLAYER_FEATURE_COUNT + 5;
-
-	/**
 	 * The feature id for the '<em><b>Ongoing Task</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__ONGOING_TASK = PLAYER_FEATURE_COUNT + 6;
+	int PLAYER_INTERNAL__ONGOING_TASK = PLAYER_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Completed Tasks</b></em>' containment reference list.
@@ -215,7 +206,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__COMPLETED_TASKS = PLAYER_FEATURE_COUNT + 7;
+	int PLAYER_INTERNAL__COMPLETED_TASKS = PLAYER_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Items</b></em>' containment reference list.
@@ -224,7 +215,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__ITEMS = PLAYER_FEATURE_COUNT + 8;
+	int PLAYER_INTERNAL__ITEMS = PLAYER_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Monsters</b></em>' containment reference list.
@@ -233,7 +224,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__MONSTERS = PLAYER_FEATURE_COUNT + 9;
+	int PLAYER_INTERNAL__MONSTERS = PLAYER_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Team Slots</b></em>' reference list.
@@ -242,7 +233,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__TEAM_SLOTS = PLAYER_FEATURE_COUNT + 10;
+	int PLAYER_INTERNAL__TEAM_SLOTS = PLAYER_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Pending Operations</b></em>' containment reference list.
@@ -251,7 +242,97 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__PENDING_OPERATIONS = PLAYER_FEATURE_COUNT + 11;
+	int PLAYER_INTERNAL__PENDING_OPERATIONS = PLAYER_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Udid For History</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__UDID_FOR_HISTORY = PLAYER_FEATURE_COUNT + 11;
+
+	/**
+	 * The feature id for the '<em><b>Device Token</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__DEVICE_TOKEN = PLAYER_FEATURE_COUNT + 12;
+
+	/**
+	 * The feature id for the '<em><b>Fb Id Set On User Create</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__FB_ID_SET_ON_USER_CREATE = PLAYER_FEATURE_COUNT + 13;
+
+	/**
+	 * The feature id for the '<em><b>Game Center Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__GAME_CENTER_ID = PLAYER_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Avatar Monster Meta</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__AVATAR_MONSTER_META = PLAYER_FEATURE_COUNT + 15;
+
+	/**
+	 * The feature id for the '<em><b>Last Login</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__LAST_LOGIN = PLAYER_FEATURE_COUNT + 16;
+
+	/**
+	 * The feature id for the '<em><b>Last Logout</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__LAST_LOGOUT = PLAYER_FEATURE_COUNT + 17;
+
+	/**
+	 * The feature id for the '<em><b>Create Time</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__CREATE_TIME = PLAYER_FEATURE_COUNT + 18;
+
+	/**
+	 * The feature id for the '<em><b>Last Obstacle Spawn Time</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__LAST_OBSTACLE_SPAWN_TIME = PLAYER_FEATURE_COUNT + 19;
+
+	/**
+	 * The feature id for the '<em><b>Last Mini Job Generated Time</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PLAYER_INTERNAL__LAST_MINI_JOB_GENERATED_TIME = PLAYER_FEATURE_COUNT + 20;
 
 	/**
 	 * The feature id for the '<em><b>Indexed</b></em>' attribute.
@@ -260,7 +341,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__INDEXED = PLAYER_FEATURE_COUNT + 12;
+	int PLAYER_INTERNAL__INDEXED = PLAYER_FEATURE_COUNT + 21;
 
 	/**
 	 * The feature id for the '<em><b>Completed Task Index</b></em>' attribute.
@@ -269,7 +350,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL__COMPLETED_TASK_INDEX = PLAYER_FEATURE_COUNT + 13;
+	int PLAYER_INTERNAL__COMPLETED_TASK_INDEX = PLAYER_FEATURE_COUNT + 22;
 
 	/**
 	 * The number of structural features of the '<em>Player Internal</em>' class.
@@ -278,7 +359,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PLAYER_INTERNAL_FEATURE_COUNT = PLAYER_FEATURE_COUNT + 14;
+	int PLAYER_INTERNAL_FEATURE_COUNT = PLAYER_FEATURE_COUNT + 23;
 
 	/**
 	 * The operation id for the '<em>Begin Task</em>' operation.
@@ -317,161 +398,6 @@ public interface MobstersPlayerPackage extends EPackage {
 	int PLAYER_INTERNAL_OPERATION_COUNT = PLAYER_OPERATION_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link com.lvl6.mobsters.domainmodel.player.UserData <em>User Data</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see com.lvl6.mobsters.domainmodel.player.UserData
-	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getUserData()
-	 * @generated
-	 */
-	int USER_DATA = 3;
-
-	/**
-	 * The number of structural features of the '<em>User Data</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>User Data</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link com.lvl6.mobsters.domainmodel.player.impl.UserDataInternalImpl <em>User Data Internal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see com.lvl6.mobsters.domainmodel.player.impl.UserDataInternalImpl
-	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getUserDataInternal()
-	 * @generated
-	 */
-	int USER_DATA_INTERNAL = 4;
-
-	/**
-	 * The feature id for the '<em><b>Player</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__PLAYER = USER_DATA_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Udid For History</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__UDID_FOR_HISTORY = USER_DATA_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Device Token</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__DEVICE_TOKEN = USER_DATA_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Fb Id Set On User Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__FB_ID_SET_ON_USER_CREATE = USER_DATA_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>Game Center Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__GAME_CENTER_ID = USER_DATA_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Avatar Monster Meta</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__AVATAR_MONSTER_META = USER_DATA_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Last Login</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__LAST_LOGIN = USER_DATA_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Last Logout</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__LAST_LOGOUT = USER_DATA_FEATURE_COUNT + 7;
-
-	/**
-	 * The feature id for the '<em><b>Create Time</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__CREATE_TIME = USER_DATA_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Last Obstacle Spawn Time</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__LAST_OBSTACLE_SPAWN_TIME = USER_DATA_FEATURE_COUNT + 9;
-
-	/**
-	 * The feature id for the '<em><b>Last Mini Job Generated Time</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL__LAST_MINI_JOB_GENERATED_TIME = USER_DATA_FEATURE_COUNT + 10;
-
-	/**
-	 * The number of structural features of the '<em>User Data Internal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL_FEATURE_COUNT = USER_DATA_FEATURE_COUNT + 11;
-
-	/**
-	 * The number of operations of the '<em>User Data Internal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int USER_DATA_INTERNAL_OPERATION_COUNT = USER_DATA_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link com.lvl6.mobsters.domainmodel.player.OngoingTask <em>Ongoing Task</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -479,7 +405,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getOngoingTask()
 	 * @generated
 	 */
-	int ONGOING_TASK = 5;
+	int ONGOING_TASK = 3;
 
 	/**
 	 * The number of structural features of the '<em>Ongoing Task</em>' class.
@@ -516,7 +442,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getOngoingTaskInternal()
 	 * @generated
 	 */
-	int ONGOING_TASK_INTERNAL = 6;
+	int ONGOING_TASK_INTERNAL = 4;
 
 	/**
 	 * The feature id for the '<em><b>Task Uuid</b></em>' attribute.
@@ -589,7 +515,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getTaskStage()
 	 * @generated
 	 */
-	int TASK_STAGE = 7;
+	int TASK_STAGE = 5;
 
 	/**
 	 * The number of structural features of the '<em>Task Stage</em>' class.
@@ -617,7 +543,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getTaskStageInternal()
 	 * @generated
 	 */
-	int TASK_STAGE_INTERNAL = 8;
+	int TASK_STAGE_INTERNAL = 6;
 
 	/**
 	 * The feature id for the '<em><b>Task Stage Uuid</b></em>' attribute.
@@ -753,7 +679,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getBeginTaskStagesBuilder()
 	 * @generated
 	 */
-	int BEGIN_TASK_STAGES_BUILDER = 9;
+	int BEGIN_TASK_STAGES_BUILDER = 7;
 
 	/**
 	 * The number of structural features of the '<em>Begin Task Stages Builder</em>' class.
@@ -790,7 +716,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getBeginTaskStagesBuilderInternal()
 	 * @generated
 	 */
-	int BEGIN_TASK_STAGES_BUILDER_INTERNAL = 10;
+	int BEGIN_TASK_STAGES_BUILDER_INTERNAL = 8;
 
 	/**
 	 * The feature id for the '<em><b>New Artifact</b></em>' reference.
@@ -872,7 +798,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getCompletedTask()
 	 * @generated
 	 */
-	int COMPLETED_TASK = 11;
+	int COMPLETED_TASK = 9;
 
 	/**
 	 * The number of structural features of the '<em>Completed Task</em>' class.
@@ -900,7 +826,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getCompletedTaskInternal()
 	 * @generated
 	 */
-	int COMPLETED_TASK_INTERNAL = 12;
+	int COMPLETED_TASK_INTERNAL = 10;
 
 	/**
 	 * The feature id for the '<em><b>Player</b></em>' container reference.
@@ -955,7 +881,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getMonster()
 	 * @generated
 	 */
-	int MONSTER = 13;
+	int MONSTER = 11;
 
 	/**
 	 * The number of structural features of the '<em>Monster</em>' class.
@@ -983,7 +909,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getMonsterInternal()
 	 * @generated
 	 */
-	int MONSTER_INTERNAL = 14;
+	int MONSTER_INTERNAL = 12;
 
 	/**
 	 * The feature id for the '<em><b>Monster Uuid</b></em>' attribute.
@@ -1110,7 +1036,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getItem()
 	 * @generated
 	 */
-	int ITEM = 15;
+	int ITEM = 13;
 
 	/**
 	 * The number of structural features of the '<em>Item</em>' class.
@@ -1138,7 +1064,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getItemInternal()
 	 * @generated
 	 */
-	int ITEM_INTERNAL = 16;
+	int ITEM_INTERNAL = 14;
 
 	/**
 	 * The feature id for the '<em><b>Item Uuid</b></em>' attribute.
@@ -1193,7 +1119,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getPendingOperation()
 	 * @generated
 	 */
-	int PENDING_OPERATION = 17;
+	int PENDING_OPERATION = 15;
 
 	/**
 	 * The number of structural features of the '<em>Pending Operation</em>' class.
@@ -1230,7 +1156,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getPendingOperationInternal()
 	 * @generated
 	 */
-	int PENDING_OPERATION_INTERNAL = 18;
+	int PENDING_OPERATION_INTERNAL = 16;
 
 	/**
 	 * The feature id for the '<em><b>Player</b></em>' container reference.
@@ -1303,7 +1229,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getCombineMonsterPiecesInternal()
 	 * @generated
 	 */
-	int COMBINE_MONSTER_PIECES_INTERNAL = 19;
+	int COMBINE_MONSTER_PIECES_INTERNAL = 17;
 
 	/**
 	 * The feature id for the '<em><b>Player</b></em>' container reference.
@@ -1385,7 +1311,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getMonsterType()
 	 * @generated
 	 */
-	int MONSTER_TYPE = 20;
+	int MONSTER_TYPE = 18;
 
 	/**
 	 * The meta object id for the '{@link com.lvl6.mobsters.domainmodel.player.ElementType <em>Element Type</em>}' enum.
@@ -1395,7 +1321,87 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getElementType()
 	 * @generated
 	 */
-	int ELEMENT_TYPE = 21;
+	int ELEMENT_TYPE = 19;
+
+	/**
+	 * The meta object id for the '<em>IMonster</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.IMonster
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIMonster()
+	 * @generated
+	 */
+	int IMONSTER = 20;
+
+	/**
+	 * The meta object id for the '<em>IItem</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.IItem
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIItem()
+	 * @generated
+	 */
+	int IITEM = 21;
+
+	/**
+	 * The meta object id for the '<em>ITask</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.ITask
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getITask()
+	 * @generated
+	 */
+	int ITASK = 22;
+
+	/**
+	 * The meta object id for the '<em>ITask Stage</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.ITaskStage
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getITaskStage()
+	 * @generated
+	 */
+	int ITASK_STAGE = 23;
+
+	/**
+	 * The meta object id for the '<em>ITask Stage Monster</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.ITaskStageMonster
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getITaskStageMonster()
+	 * @generated
+	 */
+	int ITASK_STAGE_MONSTER = 24;
+
+	/**
+	 * The meta object id for the '<em>IQuest</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.IQuest
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIQuest()
+	 * @generated
+	 */
+	int IQUEST = 25;
+
+	/**
+	 * The meta object id for the '<em>IQuest Job</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.IQuestJob
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIQuestJob()
+	 * @generated
+	 */
+	int IQUEST_JOB = 26;
+
+	/**
+	 * The meta object id for the '<em>IQuest Job Monster Item</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem
+	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIQuestJobMonsterItem()
+	 * @generated
+	 */
+	int IQUEST_JOB_MONSTER_ITEM = 27;
 
 	/**
 	 * The meta object id for the '<em>Date</em>' data type.
@@ -1405,7 +1411,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getDate()
 	 * @generated
 	 */
-	int DATE = 22;
+	int DATE = 28;
 
 	/**
 	 * The meta object id for the '<em>UUID</em>' data type.
@@ -1415,7 +1421,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getUUID()
 	 * @generated
 	 */
-	int UUID = 23;
+	int UUID = 29;
 
 	/**
 	 * The meta object id for the '<em>Completed Task Index</em>' data type.
@@ -1425,7 +1431,7 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getCompletedTaskIndex()
 	 * @generated
 	 */
-	int COMPLETED_TASK_INDEX = 24;
+	int COMPLETED_TASK_INDEX = 30;
 
 	/**
 	 * Returns the meta object for class '{@link com.lvl6.mobsters.utility.lambda.Director <em>Director</em>}'.
@@ -1534,17 +1540,6 @@ public interface MobstersPlayerPackage extends EPackage {
 	EAttribute getPlayerInternal_Experience();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUserData <em>User Data</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>User Data</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUserData()
-	 * @see #getPlayerInternal()
-	 * @generated
-	 */
-	EReference getPlayerInternal_UserData();
-
-	/**
 	 * Returns the meta object for the containment reference '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getOngoingTask <em>Ongoing Task</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1611,6 +1606,116 @@ public interface MobstersPlayerPackage extends EPackage {
 	EReference getPlayerInternal_PendingOperations();
 
 	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUdidForHistory <em>Udid For History</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Udid For History</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUdidForHistory()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_UdidForHistory();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getDeviceToken <em>Device Token</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Device Token</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getDeviceToken()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_DeviceToken();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#isFbIdSetOnUserCreate <em>Fb Id Set On User Create</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Fb Id Set On User Create</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#isFbIdSetOnUserCreate()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_FbIdSetOnUserCreate();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getGameCenterId <em>Game Center Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Game Center Id</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getGameCenterId()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_GameCenterId();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getAvatarMonsterMeta <em>Avatar Monster Meta</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Avatar Monster Meta</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getAvatarMonsterMeta()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_AvatarMonsterMeta();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogin <em>Last Login</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Login</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogin()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_LastLogin();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogout <em>Last Logout</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Logout</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogout()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_LastLogout();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCreateTime <em>Create Time</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Create Time</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCreateTime()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_CreateTime();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastObstacleSpawnTime <em>Last Obstacle Spawn Time</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Obstacle Spawn Time</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastObstacleSpawnTime()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_LastObstacleSpawnTime();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastMiniJobGeneratedTime <em>Last Mini Job Generated Time</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Mini Job Generated Time</em>'.
+	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastMiniJobGeneratedTime()
+	 * @see #getPlayerInternal()
+	 * @generated
+	 */
+	EAttribute getPlayerInternal_LastMiniJobGeneratedTime();
+
+	/**
 	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#isIndexed <em>Indexed</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1661,147 +1766,6 @@ public interface MobstersPlayerPackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getPlayerInternal__GetCompletedTaskFor__ITask();
-
-	/**
-	 * Returns the meta object for class '{@link com.lvl6.mobsters.domainmodel.player.UserData <em>User Data</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>User Data</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserData
-	 * @generated
-	 */
-	EClass getUserData();
-
-	/**
-	 * Returns the meta object for class '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal <em>User Data Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>User Data Internal</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal
-	 * @generated
-	 */
-	EClass getUserDataInternal();
-
-	/**
-	 * Returns the meta object for the container reference '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getPlayer <em>Player</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Player</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getPlayer()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EReference getUserDataInternal_Player();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getUdidForHistory <em>Udid For History</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Udid For History</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getUdidForHistory()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_UdidForHistory();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getDeviceToken <em>Device Token</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Device Token</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getDeviceToken()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_DeviceToken();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#isFbIdSetOnUserCreate <em>Fb Id Set On User Create</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Fb Id Set On User Create</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#isFbIdSetOnUserCreate()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_FbIdSetOnUserCreate();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getGameCenterId <em>Game Center Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Game Center Id</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getGameCenterId()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_GameCenterId();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getAvatarMonsterMeta <em>Avatar Monster Meta</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Avatar Monster Meta</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getAvatarMonsterMeta()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_AvatarMonsterMeta();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastLogin <em>Last Login</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Last Login</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastLogin()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_LastLogin();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastLogout <em>Last Logout</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Last Logout</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastLogout()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_LastLogout();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getCreateTime <em>Create Time</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Create Time</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getCreateTime()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_CreateTime();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastObstacleSpawnTime <em>Last Obstacle Spawn Time</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Last Obstacle Spawn Time</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastObstacleSpawnTime()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_LastObstacleSpawnTime();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastMiniJobGeneratedTime <em>Last Mini Job Generated Time</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Last Mini Job Generated Time</em>'.
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getLastMiniJobGeneratedTime()
-	 * @see #getUserDataInternal()
-	 * @generated
-	 */
-	EAttribute getUserDataInternal_LastMiniJobGeneratedTime();
 
 	/**
 	 * Returns the meta object for class '{@link com.lvl6.mobsters.domainmodel.player.OngoingTask <em>Ongoing Task</em>}'.
@@ -2503,6 +2467,99 @@ public interface MobstersPlayerPackage extends EPackage {
 	EEnum getElementType();
 
 	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.IMonster <em>IMonster</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>IMonster</em>'.
+	 * @see com.lvl6.mobsters.info.IMonster
+	 * @model instanceClass="com.lvl6.mobsters.info.IMonster"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel create='final <%java.util.regex.Pattern%> p = <%java.util.regex.Pattern%>.compile(\"^Monster\\\\[(\\\\d+)\\\\]$\");\nfinal <%java.util.regex.Matcher%> m = p.matcher(it);\nboolean _find = m.find();\nboolean _not = (!_find);\nif (_not)\n{\n\treturn null;\n}\n<%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = <%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();\n<%java.lang.String%> _group = m.group();\nint _parseInt = <%java.lang.Integer%>.parseInt(_group);\nreturn _configurationRegistry.getMonsterMeta(_parseInt);' convert='int _id = it.getId();\nreturn <%java.lang.String%>.format(\"Monster[%d]\", <%java.lang.Integer%>.valueOf(_id));'"
+	 * @generated
+	 */
+	EDataType getIMonster();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.IItem <em>IItem</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>IItem</em>'.
+	 * @see com.lvl6.mobsters.info.IItem
+	 * @model instanceClass="com.lvl6.mobsters.info.IItem"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel create='final <%java.util.regex.Pattern%> p = <%java.util.regex.Pattern%>.compile(\"^Item\\\\[(\\\\d+)\\\\]$\");\nfinal <%java.util.regex.Matcher%> m = p.matcher(it);\nboolean _find = m.find();\nboolean _not = (!_find);\nif (_not)\n{\n\treturn null;\n}\n<%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = <%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();\n<%java.lang.String%> _group = m.group();\nint _parseInt = <%java.lang.Integer%>.parseInt(_group);\nreturn _configurationRegistry.getItemMeta(_parseInt);' convert='int _id = it.getId();\nreturn <%java.lang.String%>.format(\"Item[%d]\", <%java.lang.Integer%>.valueOf(_id));'"
+	 * @generated
+	 */
+	EDataType getIItem();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.ITask <em>ITask</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>ITask</em>'.
+	 * @see com.lvl6.mobsters.info.ITask
+	 * @model instanceClass="com.lvl6.mobsters.info.ITask"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel create='final <%java.util.regex.Pattern%> p = <%java.util.regex.Pattern%>.compile(\"^Task\\\\[(\\\\d+)\\\\]$\");\nfinal <%java.util.regex.Matcher%> m = p.matcher(it);\nboolean _find = m.find();\nboolean _not = (!_find);\nif (_not)\n{\n\treturn null;\n}\n<%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = <%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();\n<%java.lang.String%> _group = m.group();\nint _parseInt = <%java.lang.Integer%>.parseInt(_group);\nreturn _configurationRegistry.getTaskMeta(_parseInt);' convert='int _id = it.getId();\n<%java.lang.String%> _plus = (\"Task[\" + <%java.lang.Integer%>.valueOf(_id));\nreturn (_plus + \"]\");'"
+	 * @generated
+	 */
+	EDataType getITask();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.ITaskStage <em>ITask Stage</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>ITask Stage</em>'.
+	 * @see com.lvl6.mobsters.info.ITaskStage
+	 * @model instanceClass="com.lvl6.mobsters.info.ITaskStage"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel create='final <%java.util.regex.Pattern%> p = <%java.util.regex.Pattern%>.compile(\"^TaskStage\\\\[(\\\\d+)\\\\]$\");\nfinal <%java.util.regex.Matcher%> m = p.matcher(it);\nboolean _find = m.find();\nboolean _not = (!_find);\nif (_not)\n{\n\treturn null;\n}\n<%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = <%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();\n<%java.lang.String%> _group = m.group();\nint _parseInt = <%java.lang.Integer%>.parseInt(_group);\nreturn _configurationRegistry.getTaskStageMeta(_parseInt);' convert='int _id = it.getId();\nreturn <%java.lang.String%>.format(\"TaskStage[%d]\", <%java.lang.Integer%>.valueOf(_id));'"
+	 * @generated
+	 */
+	EDataType getITaskStage();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.ITaskStageMonster <em>ITask Stage Monster</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>ITask Stage Monster</em>'.
+	 * @see com.lvl6.mobsters.info.ITaskStageMonster
+	 * @model instanceClass="com.lvl6.mobsters.info.ITaskStageMonster"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel create='final <%java.util.regex.Pattern%> p = <%java.util.regex.Pattern%>.compile(\"^TaskStageMonster\\\\[(\\\\d+)\\\\]$\");\nfinal <%java.util.regex.Matcher%> m = p.matcher(it);\nboolean _find = m.find();\nboolean _not = (!_find);\nif (_not)\n{\n\treturn null;\n}\n<%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = <%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();\n<%java.lang.String%> _group = m.group();\nint _parseInt = <%java.lang.Integer%>.parseInt(_group);\nreturn _configurationRegistry.getTaskStageMonsterMeta(_parseInt);' convert='int _id = it.getId();\nreturn <%java.lang.String%>.format(\"TaskStageMonster[%d]\", <%java.lang.Integer%>.valueOf(_id));'"
+	 * @generated
+	 */
+	EDataType getITaskStageMonster();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.IQuest <em>IQuest</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>IQuest</em>'.
+	 * @see com.lvl6.mobsters.info.IQuest
+	 * @model instanceClass="com.lvl6.mobsters.info.IQuest"
+	 * @generated
+	 */
+	EDataType getIQuest();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.IQuestJob <em>IQuest Job</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>IQuest Job</em>'.
+	 * @see com.lvl6.mobsters.info.IQuestJob
+	 * @model instanceClass="com.lvl6.mobsters.info.IQuestJob"
+	 * @generated
+	 */
+	EDataType getIQuestJob();
+
+	/**
+	 * Returns the meta object for data type '{@link com.lvl6.mobsters.info.IQuestJobMonsterItem <em>IQuest Job Monster Item</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>IQuest Job Monster Item</em>'.
+	 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem
+	 * @model instanceClass="com.lvl6.mobsters.info.IQuestJobMonsterItem"
+	 * @generated
+	 */
+	EDataType getIQuestJobMonsterItem();
+
+	/**
 	 * Returns the meta object for data type '{@link java.util.Date <em>Date</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2650,15 +2707,6 @@ public interface MobstersPlayerPackage extends EPackage {
 				.getPlayerInternal_Experience();
 
 		/**
-		 * The meta object literal for the '<em><b>User Data</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PLAYER_INTERNAL__USER_DATA = eINSTANCE
-				.getPlayerInternal_UserData();
-
-		/**
 		 * The meta object literal for the '<em><b>Ongoing Task</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2712,6 +2760,96 @@ public interface MobstersPlayerPackage extends EPackage {
 				.getPlayerInternal_PendingOperations();
 
 		/**
+		 * The meta object literal for the '<em><b>Udid For History</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__UDID_FOR_HISTORY = eINSTANCE
+				.getPlayerInternal_UdidForHistory();
+
+		/**
+		 * The meta object literal for the '<em><b>Device Token</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__DEVICE_TOKEN = eINSTANCE
+				.getPlayerInternal_DeviceToken();
+
+		/**
+		 * The meta object literal for the '<em><b>Fb Id Set On User Create</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__FB_ID_SET_ON_USER_CREATE = eINSTANCE
+				.getPlayerInternal_FbIdSetOnUserCreate();
+
+		/**
+		 * The meta object literal for the '<em><b>Game Center Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__GAME_CENTER_ID = eINSTANCE
+				.getPlayerInternal_GameCenterId();
+
+		/**
+		 * The meta object literal for the '<em><b>Avatar Monster Meta</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__AVATAR_MONSTER_META = eINSTANCE
+				.getPlayerInternal_AvatarMonsterMeta();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Login</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__LAST_LOGIN = eINSTANCE
+				.getPlayerInternal_LastLogin();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Logout</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__LAST_LOGOUT = eINSTANCE
+				.getPlayerInternal_LastLogout();
+
+		/**
+		 * The meta object literal for the '<em><b>Create Time</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__CREATE_TIME = eINSTANCE
+				.getPlayerInternal_CreateTime();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Obstacle Spawn Time</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__LAST_OBSTACLE_SPAWN_TIME = eINSTANCE
+				.getPlayerInternal_LastObstacleSpawnTime();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Mini Job Generated Time</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PLAYER_INTERNAL__LAST_MINI_JOB_GENERATED_TIME = eINSTANCE
+				.getPlayerInternal_LastMiniJobGeneratedTime();
+
+		/**
 		 * The meta object literal for the '<em><b>Indexed</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2755,125 +2893,6 @@ public interface MobstersPlayerPackage extends EPackage {
 		 */
 		EOperation PLAYER_INTERNAL___GET_COMPLETED_TASK_FOR__ITASK = eINSTANCE
 				.getPlayerInternal__GetCompletedTaskFor__ITask();
-
-		/**
-		 * The meta object literal for the '{@link com.lvl6.mobsters.domainmodel.player.UserData <em>User Data</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see com.lvl6.mobsters.domainmodel.player.UserData
-		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getUserData()
-		 * @generated
-		 */
-		EClass USER_DATA = eINSTANCE.getUserData();
-
-		/**
-		 * The meta object literal for the '{@link com.lvl6.mobsters.domainmodel.player.impl.UserDataInternalImpl <em>User Data Internal</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see com.lvl6.mobsters.domainmodel.player.impl.UserDataInternalImpl
-		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getUserDataInternal()
-		 * @generated
-		 */
-		EClass USER_DATA_INTERNAL = eINSTANCE.getUserDataInternal();
-
-		/**
-		 * The meta object literal for the '<em><b>Player</b></em>' container reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference USER_DATA_INTERNAL__PLAYER = eINSTANCE
-				.getUserDataInternal_Player();
-
-		/**
-		 * The meta object literal for the '<em><b>Udid For History</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__UDID_FOR_HISTORY = eINSTANCE
-				.getUserDataInternal_UdidForHistory();
-
-		/**
-		 * The meta object literal for the '<em><b>Device Token</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__DEVICE_TOKEN = eINSTANCE
-				.getUserDataInternal_DeviceToken();
-
-		/**
-		 * The meta object literal for the '<em><b>Fb Id Set On User Create</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__FB_ID_SET_ON_USER_CREATE = eINSTANCE
-				.getUserDataInternal_FbIdSetOnUserCreate();
-
-		/**
-		 * The meta object literal for the '<em><b>Game Center Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__GAME_CENTER_ID = eINSTANCE
-				.getUserDataInternal_GameCenterId();
-
-		/**
-		 * The meta object literal for the '<em><b>Avatar Monster Meta</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__AVATAR_MONSTER_META = eINSTANCE
-				.getUserDataInternal_AvatarMonsterMeta();
-
-		/**
-		 * The meta object literal for the '<em><b>Last Login</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__LAST_LOGIN = eINSTANCE
-				.getUserDataInternal_LastLogin();
-
-		/**
-		 * The meta object literal for the '<em><b>Last Logout</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__LAST_LOGOUT = eINSTANCE
-				.getUserDataInternal_LastLogout();
-
-		/**
-		 * The meta object literal for the '<em><b>Create Time</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__CREATE_TIME = eINSTANCE
-				.getUserDataInternal_CreateTime();
-
-		/**
-		 * The meta object literal for the '<em><b>Last Obstacle Spawn Time</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__LAST_OBSTACLE_SPAWN_TIME = eINSTANCE
-				.getUserDataInternal_LastObstacleSpawnTime();
-
-		/**
-		 * The meta object literal for the '<em><b>Last Mini Job Generated Time</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute USER_DATA_INTERNAL__LAST_MINI_JOB_GENERATED_TIME = eINSTANCE
-				.getUserDataInternal_LastMiniJobGeneratedTime();
 
 		/**
 		 * The meta object literal for the '{@link com.lvl6.mobsters.domainmodel.player.OngoingTask <em>Ongoing Task</em>}' class.
@@ -3488,6 +3507,86 @@ public interface MobstersPlayerPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum ELEMENT_TYPE = eINSTANCE.getElementType();
+
+		/**
+		 * The meta object literal for the '<em>IMonster</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.IMonster
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIMonster()
+		 * @generated
+		 */
+		EDataType IMONSTER = eINSTANCE.getIMonster();
+
+		/**
+		 * The meta object literal for the '<em>IItem</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.IItem
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIItem()
+		 * @generated
+		 */
+		EDataType IITEM = eINSTANCE.getIItem();
+
+		/**
+		 * The meta object literal for the '<em>ITask</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.ITask
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getITask()
+		 * @generated
+		 */
+		EDataType ITASK = eINSTANCE.getITask();
+
+		/**
+		 * The meta object literal for the '<em>ITask Stage</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.ITaskStage
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getITaskStage()
+		 * @generated
+		 */
+		EDataType ITASK_STAGE = eINSTANCE.getITaskStage();
+
+		/**
+		 * The meta object literal for the '<em>ITask Stage Monster</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.ITaskStageMonster
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getITaskStageMonster()
+		 * @generated
+		 */
+		EDataType ITASK_STAGE_MONSTER = eINSTANCE.getITaskStageMonster();
+
+		/**
+		 * The meta object literal for the '<em>IQuest</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.IQuest
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIQuest()
+		 * @generated
+		 */
+		EDataType IQUEST = eINSTANCE.getIQuest();
+
+		/**
+		 * The meta object literal for the '<em>IQuest Job</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.IQuestJob
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIQuestJob()
+		 * @generated
+		 */
+		EDataType IQUEST_JOB = eINSTANCE.getIQuestJob();
+
+		/**
+		 * The meta object literal for the '<em>IQuest Job Monster Item</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.lvl6.mobsters.info.IQuestJobMonsterItem
+		 * @see com.lvl6.mobsters.domainmodel.player.impl.MobstersPlayerPackageImpl#getIQuestJobMonsterItem()
+		 * @generated
+		 */
+		EDataType IQUEST_JOB_MONSTER_ITEM = eINSTANCE.getIQuestJobMonsterItem();
 
 		/**
 		 * The meta object literal for the '<em>Date</em>' data type.

@@ -2,8 +2,6 @@
  */
 package com.lvl6.mobsters.domainmodel.player.impl;
 
-import com.lvl6.mobsters.domainmodel.metadata.MobstersMetaPackage;
-
 import com.lvl6.mobsters.domainmodel.player.MobstersPlayerFactory;
 import com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage;
 
@@ -65,20 +63,6 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * @generated
 	 */
 	private EClass playerInternalEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass userDataEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass userDataInternalEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -204,6 +188,62 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EDataType iMonsterEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iItemEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iTaskEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iTaskStageEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iTaskStageMonsterEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iQuestEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iQuestJobEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType iQuestJobMonsterItemEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType dateEDataType = null;
 
 	/**
@@ -269,7 +309,6 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		isInited = true;
 
 		// Initialize simple dependencies
-		MobstersMetaPackage.eINSTANCE.eClass();
 		EcorePackage.eINSTANCE.eClass();
 
 		// Load packages
@@ -296,7 +335,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (directorEClass == null) {
 			directorEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(3);
+					.getEClassifiers().get(11);
 		}
 		return directorEClass;
 	}
@@ -310,7 +349,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (playerEClass == null) {
 			playerEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(6);
+					.getEClassifiers().get(14);
 		}
 		return playerEClass;
 	}
@@ -342,7 +381,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (playerInternalEClass == null) {
 			playerInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(7);
+					.getEClassifiers().get(15);
 		}
 		return playerInternalEClass;
 	}
@@ -397,7 +436,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPlayerInternal_UserData() {
+	public EReference getPlayerInternal_OngoingTask() {
 		return (EReference) getPlayerInternal().getEStructuralFeatures().get(5);
 	}
 
@@ -406,7 +445,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPlayerInternal_OngoingTask() {
+	public EReference getPlayerInternal_CompletedTasks() {
 		return (EReference) getPlayerInternal().getEStructuralFeatures().get(6);
 	}
 
@@ -415,7 +454,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPlayerInternal_CompletedTasks() {
+	public EReference getPlayerInternal_Items() {
 		return (EReference) getPlayerInternal().getEStructuralFeatures().get(7);
 	}
 
@@ -424,7 +463,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPlayerInternal_Items() {
+	public EReference getPlayerInternal_Monsters() {
 		return (EReference) getPlayerInternal().getEStructuralFeatures().get(8);
 	}
 
@@ -433,18 +472,8 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getPlayerInternal_Monsters() {
-		return (EReference) getPlayerInternal().getEStructuralFeatures().get(9);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getPlayerInternal_TeamSlots() {
-		return (EReference) getPlayerInternal().getEStructuralFeatures()
-				.get(10);
+		return (EReference) getPlayerInternal().getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -454,6 +483,16 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 */
 	public EReference getPlayerInternal_PendingOperations() {
 		return (EReference) getPlayerInternal().getEStructuralFeatures()
+				.get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_UdidForHistory() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
 				.get(11);
 	}
 
@@ -462,7 +501,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPlayerInternal_Indexed() {
+	public EAttribute getPlayerInternal_DeviceToken() {
 		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
 				.get(12);
 	}
@@ -472,9 +511,99 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPlayerInternal_CompletedTaskIndex() {
+	public EAttribute getPlayerInternal_FbIdSetOnUserCreate() {
 		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
 				.get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_GameCenterId() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_AvatarMonsterMeta() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(15);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_LastLogin() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(16);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_LastLogout() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(17);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_CreateTime() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(18);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_LastObstacleSpawnTime() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(19);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_LastMiniJobGeneratedTime() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(20);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_Indexed() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(21);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPlayerInternal_CompletedTaskIndex() {
+		return (EAttribute) getPlayerInternal().getEStructuralFeatures()
+				.get(22);
 	}
 
 	/**
@@ -509,149 +638,11 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getUserData() {
-		if (userDataEClass == null) {
-			userDataEClass = (EClass) EPackage.Registry.INSTANCE
-					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(8);
-		}
-		return userDataEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getUserDataInternal() {
-		if (userDataInternalEClass == null) {
-			userDataInternalEClass = (EClass) EPackage.Registry.INSTANCE
-					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(9);
-		}
-		return userDataInternalEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getUserDataInternal_Player() {
-		return (EReference) getUserDataInternal().getEStructuralFeatures().get(
-				0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_UdidForHistory() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_DeviceToken() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_FbIdSetOnUserCreate() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_GameCenterId() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_AvatarMonsterMeta() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				5);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_LastLogin() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				6);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_LastLogout() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				7);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_CreateTime() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_LastObstacleSpawnTime() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				9);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getUserDataInternal_LastMiniJobGeneratedTime() {
-		return (EAttribute) getUserDataInternal().getEStructuralFeatures().get(
-				10);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getOngoingTask() {
 		if (ongoingTaskEClass == null) {
 			ongoingTaskEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(10);
+					.getEClassifiers().get(16);
 		}
 		return ongoingTaskEClass;
 	}
@@ -674,7 +665,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (ongoingTaskInternalEClass == null) {
 			ongoingTaskInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(11);
+					.getEClassifiers().get(17);
 		}
 		return ongoingTaskInternalEClass;
 	}
@@ -737,7 +728,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (taskStageEClass == null) {
 			taskStageEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(12);
+					.getEClassifiers().get(18);
 		}
 		return taskStageEClass;
 	}
@@ -751,7 +742,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (taskStageInternalEClass == null) {
 			taskStageInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(13);
+					.getEClassifiers().get(19);
 		}
 		return taskStageInternalEClass;
 	}
@@ -885,7 +876,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (beginTaskStagesBuilderEClass == null) {
 			beginTaskStagesBuilderEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(14);
+					.getEClassifiers().get(20);
 		}
 		return beginTaskStagesBuilderEClass;
 	}
@@ -908,7 +899,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (beginTaskStagesBuilderInternalEClass == null) {
 			beginTaskStagesBuilderInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(15);
+					.getEClassifiers().get(21);
 		}
 		return beginTaskStagesBuilderInternalEClass;
 	}
@@ -969,7 +960,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (completedTaskEClass == null) {
 			completedTaskEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(16);
+					.getEClassifiers().get(22);
 		}
 		return completedTaskEClass;
 	}
@@ -983,7 +974,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (completedTaskInternalEClass == null) {
 			completedTaskInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(17);
+					.getEClassifiers().get(23);
 		}
 		return completedTaskInternalEClass;
 	}
@@ -1027,7 +1018,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (monsterEClass == null) {
 			monsterEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(18);
+					.getEClassifiers().get(24);
 		}
 		return monsterEClass;
 	}
@@ -1041,7 +1032,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (monsterInternalEClass == null) {
 			monsterInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(19);
+					.getEClassifiers().get(25);
 		}
 		return monsterInternalEClass;
 	}
@@ -1165,7 +1156,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (itemEClass == null) {
 			itemEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(20);
+					.getEClassifiers().get(26);
 		}
 		return itemEClass;
 	}
@@ -1179,7 +1170,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (itemInternalEClass == null) {
 			itemInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(21);
+					.getEClassifiers().get(27);
 		}
 		return itemInternalEClass;
 	}
@@ -1220,7 +1211,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (pendingOperationEClass == null) {
 			pendingOperationEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(22);
+					.getEClassifiers().get(28);
 		}
 		return pendingOperationEClass;
 	}
@@ -1243,7 +1234,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (pendingOperationInternalEClass == null) {
 			pendingOperationInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(23);
+					.getEClassifiers().get(29);
 		}
 		return pendingOperationInternalEClass;
 	}
@@ -1305,7 +1296,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (combineMonsterPiecesInternalEClass == null) {
 			combineMonsterPiecesInternalEClass = (EClass) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(24);
+					.getEClassifiers().get(30);
 		}
 		return combineMonsterPiecesInternalEClass;
 	}
@@ -1338,7 +1329,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (monsterTypeEEnum == null) {
 			monsterTypeEEnum = (EEnum) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(4);
+					.getEClassifiers().get(12);
 		}
 		return monsterTypeEEnum;
 	}
@@ -1352,9 +1343,121 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (elementTypeEEnum == null) {
 			elementTypeEEnum = (EEnum) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(5);
+					.getEClassifiers().get(13);
 		}
 		return elementTypeEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getIMonster() {
+		if (iMonsterEDataType == null) {
+			iMonsterEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(0);
+		}
+		return iMonsterEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getIItem() {
+		if (iItemEDataType == null) {
+			iItemEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(1);
+		}
+		return iItemEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getITask() {
+		if (iTaskEDataType == null) {
+			iTaskEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(2);
+		}
+		return iTaskEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getITaskStage() {
+		if (iTaskStageEDataType == null) {
+			iTaskStageEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(3);
+		}
+		return iTaskStageEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getITaskStageMonster() {
+		if (iTaskStageMonsterEDataType == null) {
+			iTaskStageMonsterEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(4);
+		}
+		return iTaskStageMonsterEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getIQuest() {
+		if (iQuestEDataType == null) {
+			iQuestEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(5);
+		}
+		return iQuestEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getIQuestJob() {
+		if (iQuestJobEDataType == null) {
+			iQuestJobEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(6);
+		}
+		return iQuestJobEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getIQuestJobMonsterItem() {
+		if (iQuestJobMonsterItemEDataType == null) {
+			iQuestJobMonsterItemEDataType = (EDataType) EPackage.Registry.INSTANCE
+					.getEPackage(MobstersPlayerPackage.eNS_URI)
+					.getEClassifiers().get(7);
+		}
+		return iQuestJobMonsterItemEDataType;
 	}
 
 	/**
@@ -1366,7 +1469,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (dateEDataType == null) {
 			dateEDataType = (EDataType) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(0);
+					.getEClassifiers().get(8);
 		}
 		return dateEDataType;
 	}
@@ -1380,7 +1483,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (uuidEDataType == null) {
 			uuidEDataType = (EDataType) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(1);
+					.getEClassifiers().get(9);
 		}
 		return uuidEDataType;
 	}
@@ -1394,7 +1497,7 @@ public class MobstersPlayerPackageImpl extends EPackageImpl implements
 		if (completedTaskIndexEDataType == null) {
 			completedTaskIndexEDataType = (EDataType) EPackage.Registry.INSTANCE
 					.getEPackage(MobstersPlayerPackage.eNS_URI)
-					.getEClassifiers().get(2);
+					.getEClassifiers().get(10);
 		}
 		return completedTaskIndexEDataType;
 	}

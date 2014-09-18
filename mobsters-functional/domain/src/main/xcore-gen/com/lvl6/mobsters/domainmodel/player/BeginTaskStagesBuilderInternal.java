@@ -80,7 +80,7 @@ public interface BeginTaskStagesBuilderInternal extends BeginTaskStagesBuilder {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model taskMetaDataType="com.lvl6.mobsters.domainmodel.metadata.ITask" taskMetaUnique="false" playerUnique="false"
+	 * @model taskMetaDataType="com.lvl6.mobsters.domainmodel.player.ITask" taskMetaUnique="false" playerUnique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _createOngoingTaskInternal = <%com.lvl6.mobsters.domainmodel.player.MobstersPlayerFactory%>.eINSTANCE.createOngoingTaskInternal();\nthis.setNewArtifact(_createOngoingTaskInternal);\n<%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _newArtifact = this.getNewArtifact();\n_newArtifact.setTaskMeta(taskMeta);'"
 	 * @generated
 	 */
@@ -89,7 +89,7 @@ public interface BeginTaskStagesBuilderInternal extends BeginTaskStagesBuilder {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" stageNumUnique="false" taskStageDataType="com.lvl6.mobsters.domainmodel.metadata.ITaskStage" taskStageUnique="false" taskStageMonsterDataType="com.lvl6.mobsters.domainmodel.metadata.ITaskStageMonster" taskStageMonsterUnique="false" cashRewardUnique="false" oilRewardUnique="false" expRewardUnique="false" itemDroppedDataType="com.lvl6.mobsters.domainmodel.metadata.IItem" itemDroppedUnique="false" monsterPieceDroppedUnique="false"
+	 * @model unique="false" stageNumUnique="false" taskStageDataType="com.lvl6.mobsters.domainmodel.player.ITaskStage" taskStageUnique="false" taskStageMonsterDataType="com.lvl6.mobsters.domainmodel.player.ITaskStageMonster" taskStageMonsterUnique="false" cashRewardUnique="false" oilRewardUnique="false" expRewardUnique="false" itemDroppedDataType="com.lvl6.mobsters.domainmodel.player.IItem" itemDroppedUnique="false" monsterPieceDroppedUnique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='<%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _newArtifact = this.getNewArtifact();\n<%org.eclipse.emf.common.util.EList%><<%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>> _stages = _newArtifact.getStages();\n<%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%> _createTaskStageInternal = <%com.lvl6.mobsters.domainmodel.player.MobstersPlayerFactory%>.eINSTANCE.createTaskStageInternal();\nfinal <%org.eclipse.xtext.xbase.lib.Procedures.Procedure1%><<%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>> _function = new <%org.eclipse.xtext.xbase.lib.Procedures.Procedure1%><<%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>>()\n{\n\tpublic void apply(final <%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%> it)\n\t{\n\t\t<%java.util.UUID%> _randomUUID = <%java.util.UUID%>.randomUUID();\n\t\tit.setTaskStageUuid(_randomUUID);\n\t\tit.setStageNum(stageNum);\n\t\tit.setTaskStage(taskStage);\n\t\tit.setTaskStageMonster(taskStageMonster);\n\t\tit.setCashGained(cashReward);\n\t\tit.setOilGained(oilReward);\n\t\tit.setExpGained(expReward);\n\t\tit.setMonsterPieceDropped(monsterPieceDropped);\n\t\tit.setItemDropped(itemDropped);\n\t}\n};\n<%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%> _doubleArrow = <%org.eclipse.xtext.xbase.lib.ObjectExtensions%>.<<%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>>operator_doubleArrow(_createTaskStageInternal, _function);\n_stages.add(_doubleArrow);\nreturn this;'"
 	 * @generated
 	 */

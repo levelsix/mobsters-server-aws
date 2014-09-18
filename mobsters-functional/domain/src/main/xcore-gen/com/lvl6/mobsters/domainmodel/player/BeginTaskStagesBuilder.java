@@ -22,7 +22,7 @@ public interface BeginTaskStagesBuilder extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" stageNumUnique="false" stageMetaDataType="com.lvl6.mobsters.domainmodel.metadata.ITaskStage" stageMetaUnique="false" stageMonsterDataType="com.lvl6.mobsters.domainmodel.metadata.ITaskStageMonster" stageMonsterUnique="false" cashRewardUnique="false" oilRewardUnique="false" expRewardUnique="false" rewardsMonsterPieceUnique="false" droppedItemDataType="com.lvl6.mobsters.domainmodel.metadata.IItem" droppedItemUnique="false"
+	 * @model unique="false" stageNumUnique="false" stageMetaDataType="com.lvl6.mobsters.domainmodel.player.ITaskStage" stageMetaUnique="false" stageMonsterDataType="com.lvl6.mobsters.domainmodel.player.ITaskStageMonster" stageMonsterUnique="false" cashRewardUnique="false" oilRewardUnique="false" expRewardUnique="false" rewardsMonsterPieceUnique="false" droppedItemDataType="com.lvl6.mobsters.domainmodel.player.IItem" droppedItemUnique="false"
 	 * @generated
 	 */
 	BeginTaskStagesBuilder addStage(int stageNum, ITaskStage stageMeta,

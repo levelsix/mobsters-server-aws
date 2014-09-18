@@ -93,7 +93,7 @@ public interface OngoingTaskInternal extends OngoingTask {
 	 * @return the value of the '<em>Task Meta</em>' attribute.
 	 * @see #setTaskMeta(ITask)
 	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getOngoingTaskInternal_TaskMeta()
-	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.metadata.ITask"
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.ITask"
 	 * @generated
 	 */
 	ITask getTaskMeta();

@@ -90,7 +90,7 @@ public interface ItemInternal extends Item {
 	 * @return the value of the '<em>Item Meta</em>' attribute.
 	 * @see #setItemMeta(IItem)
 	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getItemInternal_ItemMeta()
-	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.metadata.IItem"
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.IItem"
 	 * @generated
 	 */
 	IItem getItemMeta();

@@ -91,22 +91,6 @@ public class MobstersPlayerSwitch<T1> extends Switch<T1> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case MobstersPlayerPackage.USER_DATA: {
-			UserData userData = (UserData) theEObject;
-			T1 result = caseUserData(userData);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case MobstersPlayerPackage.USER_DATA_INTERNAL: {
-			UserDataInternal userDataInternal = (UserDataInternal) theEObject;
-			T1 result = caseUserDataInternal(userDataInternal);
-			if (result == null)
-				result = caseUserData(userDataInternal);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
 		case MobstersPlayerPackage.ONGOING_TASK: {
 			OngoingTask ongoingTask = (OngoingTask) theEObject;
 			T1 result = caseOngoingTask(ongoingTask);
@@ -277,36 +261,6 @@ public class MobstersPlayerSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 casePlayerInternal(PlayerInternal object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>User Data</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>User Data</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseUserData(UserData object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>User Data Internal</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>User Data Internal</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseUserDataInternal(UserDataInternal object) {
 		return null;
 	}
 

@@ -99,7 +99,7 @@ public interface MonsterInternal extends Monster {
 	 * @return the value of the '<em>Monster Meta</em>' attribute.
 	 * @see #setMonsterMeta(IMonster)
 	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getMonsterInternal_MonsterMeta()
-	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.metadata.IMonster"
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.IMonster"
 	 * @generated
 	 */
 	IMonster getMonsterMeta();

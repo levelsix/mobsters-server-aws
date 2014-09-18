@@ -25,20 +25,6 @@
    </runtime>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated metadata -->
-      <package
-            uri="com.lvl6.mobsters.domainmodel.metadata"
-            class="com.lvl6.mobsters.domainmodel.metadata.MobstersMetaPackage"
-            genModel="src/main/model/metadata.xcore"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.extension_parser">
-      <!-- @generated metadata -->
-      <parser
-            type="mobstersmeta"
-            class="com.lvl6.mobsters.domainmodel.metadata.util.MobstersMetaResourceFactoryImpl"/>
-   </extension>
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated player -->
       <package
             uri="com.lvl6.mobsters.domainmodel.player"
@@ -51,5 +37,19 @@
       <parser
             type="mobstersplayer"
             class="com.lvl6.mobsters.domainmodel.player.util.MobstersPlayerResourceFactoryImpl"/>
+   </extension>
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated metadata -->
+      <package
+            uri="com.lvl6.mobsters.domainmodel.metadata"
+            class="com.lvl6.mobsters.domainmodel.metadata.MobstersMetaPackage"
+            genModel="src/main/model/metadata.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated metadata -->
+      <parser
+            type="mobstersmeta"
+            class="com.lvl6.mobsters.domainmodel.metadata.util.MobstersMetaResourceFactoryImpl"/>
    </extension>
 </plugin>

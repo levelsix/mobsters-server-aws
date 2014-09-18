@@ -101,7 +101,7 @@ public interface TaskStageInternal extends TaskStage {
 	 * @return the value of the '<em>Task Stage</em>' attribute.
 	 * @see #setTaskStage(ITaskStage)
 	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getTaskStageInternal_TaskStage()
-	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.metadata.ITaskStage"
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.ITaskStage"
 	 * @generated
 	 */
 	ITaskStage getTaskStage();
@@ -153,7 +153,7 @@ public interface TaskStageInternal extends TaskStage {
 	 * @return the value of the '<em>Task Stage Monster</em>' attribute.
 	 * @see #setTaskStageMonster(ITaskStageMonster)
 	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getTaskStageInternal_TaskStageMonster()
-	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.metadata.ITaskStageMonster"
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.ITaskStageMonster"
 	 * @generated
 	 */
 	ITaskStageMonster getTaskStageMonster();
@@ -239,7 +239,7 @@ public interface TaskStageInternal extends TaskStage {
 	 * @return the value of the '<em>Item Dropped</em>' attribute.
 	 * @see #setItemDropped(IItem)
 	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getTaskStageInternal_ItemDropped()
-	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.metadata.IItem"
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.IItem"
 	 * @generated
 	 */
 	IItem getItemDropped();

@@ -13,14 +13,15 @@ import com.lvl6.mobsters.domainmodel.player.MonsterInternal;
 import com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal;
 import com.lvl6.mobsters.domainmodel.player.PendingOperationInternal;
 import com.lvl6.mobsters.domainmodel.player.PlayerInternal;
-import com.lvl6.mobsters.domainmodel.player.UserDataInternal;
 
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.ITask;
 
 import com.lvl6.mobsters.utility.lambda.Director;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.EList;
@@ -41,13 +42,22 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCash <em>Cash</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getOil <em>Oil</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getExperience <em>Experience</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getUserData <em>User Data</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getOngoingTask <em>Ongoing Task</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCompletedTasks <em>Completed Tasks</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getItems <em>Items</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getMonsters <em>Monsters</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getTeamSlots <em>Team Slots</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getPendingOperations <em>Pending Operations</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getUdidForHistory <em>Udid For History</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getDeviceToken <em>Device Token</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#isFbIdSetOnUserCreate <em>Fb Id Set On User Create</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getGameCenterId <em>Game Center Id</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getAvatarMonsterMeta <em>Avatar Monster Meta</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastLogin <em>Last Login</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastLogout <em>Last Logout</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCreateTime <em>Create Time</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastObstacleSpawnTime <em>Last Obstacle Spawn Time</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastMiniJobGeneratedTime <em>Last Mini Job Generated Time</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#isIndexed <em>Indexed</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCompletedTaskIndex <em>Completed Task Index</em>}</li>
  * </ul>
@@ -189,26 +199,6 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public UserDataInternal getUserData() {
-		return (UserDataInternal) eGet(
-				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__USER_DATA, true);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setUserData(UserDataInternal newUserData) {
-		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__USER_DATA,
-				newUserData);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public OngoingTaskInternal getOngoingTask() {
 		return (OngoingTaskInternal) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__ONGOING_TASK,
@@ -281,6 +271,216 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 		return (EList<PendingOperationInternal>) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__PENDING_OPERATIONS,
 				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getUdidForHistory() {
+		return (String) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__UDID_FOR_HISTORY,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setUdidForHistory(String newUdidForHistory) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__UDID_FOR_HISTORY,
+				newUdidForHistory);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getDeviceToken() {
+		return (String) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__DEVICE_TOKEN,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDeviceToken(String newDeviceToken) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__DEVICE_TOKEN,
+				newDeviceToken);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isFbIdSetOnUserCreate() {
+		return (Boolean) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__FB_ID_SET_ON_USER_CREATE,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFbIdSetOnUserCreate(boolean newFbIdSetOnUserCreate) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__FB_ID_SET_ON_USER_CREATE,
+				newFbIdSetOnUserCreate);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getGameCenterId() {
+		return (String) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__GAME_CENTER_ID,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setGameCenterId(String newGameCenterId) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__GAME_CENTER_ID,
+				newGameCenterId);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IMonster getAvatarMonsterMeta() {
+		return (IMonster) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__AVATAR_MONSTER_META,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAvatarMonsterMeta(IMonster newAvatarMonsterMeta) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__AVATAR_MONSTER_META,
+				newAvatarMonsterMeta);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Date getLastLogin() {
+		return (Date) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGIN,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastLogin(Date newLastLogin) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGIN,
+				newLastLogin);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Date getLastLogout() {
+		return (Date) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGOUT,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastLogout(Date newLastLogout) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGOUT,
+				newLastLogout);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Date getCreateTime() {
+		return (Date) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__CREATE_TIME,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setCreateTime(Date newCreateTime) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__CREATE_TIME,
+				newCreateTime);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Date getLastObstacleSpawnTime() {
+		return (Date) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_OBSTACLE_SPAWN_TIME,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastObstacleSpawnTime(Date newLastObstacleSpawnTime) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_OBSTACLE_SPAWN_TIME,
+				newLastObstacleSpawnTime);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Date getLastMiniJobGeneratedTime() {
+		return (Date) eGet(
+				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_MINI_JOB_GENERATED_TIME,
+				true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastMiniJobGeneratedTime(Date newLastMiniJobGeneratedTime) {
+		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_MINI_JOB_GENERATED_TIME,
+				newLastMiniJobGeneratedTime);
 	}
 
 	/**

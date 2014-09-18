@@ -1,0 +1,590 @@
+@GenModel(modelName="player", prefix="MobstersPlayer", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", resource="XMI", codeFormatting="true", bundleManifest="false", publicationLocation="/domain/src/main/model")
+package com.lvl6.mobsters.domainmodel.player
+
+import com.lvl6.mobsters.info.IMonster
+import com.lvl6.mobsters.info.IItem
+import com.lvl6.mobsters.info.IQuest
+import com.lvl6.mobsters.info.IQuestJob
+import com.lvl6.mobsters.info.IQuestJobMonsterItem
+import com.lvl6.mobsters.info.ITask
+import com.lvl6.mobsters.info.ITaskStage
+import com.lvl6.mobsters.info.ITaskStageMonster
+
+import java.util.Date
+import java.util.UUID
+import org.eclipse.emf.ecore.EDate
+
+import com.lvl6.mobsters.utility.lambda.Director
+import com.googlecode.cqengine.IndexedCollection
+
+// type Time wraps long
+// type DateTime wraps org.eclipse.emf.EDate
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+import com.lvl6.mobsters.domain.svcreg.StaticRegistry
+
+// Configuration Metadata objects 
+
+type IMonster wraps IMonster
+	create {
+		val Pattern p = 
+			Pattern.compile("^Monster\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getMonsterMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("Monster[%d]", it.id)
+	}
+
+type IItem wraps IItem
+	create {
+		val Pattern p = 
+			Pattern.compile("^Item\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getItemMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("Item[%d]", it.id)
+	}
+
+type ITask wraps ITask
+	create {
+		val Pattern p = 
+			Pattern.compile("^Task\\[(\\d+)\\]$")
+
+		val Matcher m = p.matcher(it)
+		if (! m.find()) {
+			return null
+		}
+		
+		return 
+			StaticRegistry::getConfigurationRegistry()
+			.getTaskMeta(
+			    Integer.parseInt(
+			    	m.group()
+			    )
+			)
+	}
+	convert {
+		return "Task[" + it.id + "]"
+	}
+
+type ITaskStage wraps ITaskStage 
+	create {
+		val Pattern p = 
+			Pattern.compile("^TaskStage\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getTaskStageMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("TaskStage[%d]", it.id)
+	}
+
+type ITaskStageMonster wraps ITaskStageMonster
+	create {
+		val Pattern p = 
+			Pattern.compile("^TaskStageMonster\\[(\\d+)\\]$")
+			
+		val Matcher m = p.matcher(it);
+		if (! m.find()) {
+			return null
+		}
+		
+		// First token gets the root task
+        return
+			StaticRegistry.getConfigurationRegistry()
+			.getTaskStageMonsterMeta(
+				Integer.parseInt(
+					m.group()
+				)
+			)
+	}
+	convert {
+		return String.format("TaskStageMonster[%d]", it.id)
+	}
+
+type IQuest wraps IQuest
+type IQuestJob wraps IQuestJob
+type IQuestJobMonsterItem wraps IQuestJobMonsterItem
+
+//
+// Java Value Types
+//
+
+type Date wraps java.util.Date
+
+type UUID wraps UUID
+	create {
+		return UUID::fromString(it)
+	}
+	convert {
+		it.toString()
+	}
+
+//
+// Indexed Model Collections
+//
+
+type CompletedTaskIndex wraps IndexedCollection<CompletedTask>
+
+// 
+// Implemented Interfaces
+//
+
+interface Director<T> wraps com.lvl6.mobsters.utility.lambda.Director
+{}
+
+//
+// Enumerated Types
+//
+
+enum MonsterType {
+	REGULAR
+	MINI_BOSS
+	BOSS
+}
+
+enum ElementType {
+	NO_ELEMENT
+	FIRE
+	EARTH
+	WATER
+	ROCK
+	LIGHT
+	DARK
+}
+
+
+// 
+// Root of Document Model: Player
+//
+
+interface Player {
+	// Commands
+	op void beginTask( ITask taskMeta, Director<BeginTaskStagesBuilder> director )
+	
+	
+	// Queries
+	op CompletedTask getCompletedTaskFor(ITask taskMeta)
+}
+
+class PlayerInternal extends Player {
+	id UUID userUuid
+	int gems
+	int cash
+	int oil
+	int experience
+	contains OngoingTaskInternal ongoingTask opposite player
+	contains CompletedTaskInternal[] completedTasks opposite player
+	contains ItemInternal[] items opposite player
+	contains MonsterInternal[] monsters opposite player
+	refers MonsterInternal[0..3] teamSlots
+	contains PendingOperationInternal[] pendingOperations opposite player
+
+	// There is little value in isolating these when using a document model representation.
+	String udidForHistory
+    String deviceToken
+    boolean fbIdSetOnUserCreate
+    String gameCenterId
+    IMonster avatarMonsterMeta //hash/primary key in monster table
+    Date lastLogin
+    Date lastLogout
+    Date createTime
+    Date lastObstacleSpawnTime    // TODO: consider moving to User
+    Date lastMiniJobGeneratedTime // TODO: consider moving to User
+	
+	op void beginTask( ITask taskMeta, Director<BeginTaskStagesBuilder> director ) {
+		// val InternalBeginTaskStagesBuilder bldr = mobplayerFactory.eINSTANCE.createInternalBeginTaskStagesBuilder()				
+		
+		// director.apply(bldr);
+		// bldr.build(this, taskMeta);
+	}
+
+	// Queries	
+	//
+	transient readonly boolean[1] indexed
+	transient unsettable CompletedTaskIndex completedTaskIndex
+	
+    op void checkForIndices() {
+    	if (indexed == false) {
+    		// TODO: Populated IndexedCollections, like CompletedTaskIndex
+    	}
+    }
+    
+    op CompletedTask getCompletedTaskFor(ITask taskMeta) {
+    	
+    }
+}
+
+
+//
+// Game State Subunit Models: Task
+//
+
+interface OngoingTask {
+	op void completeTask()
+}
+
+class OngoingTaskInternal extends OngoingTask {
+	id UUID taskUuid
+	container PlayerInternal player opposite ongoingTask
+	ITask taskMeta
+    contains TaskStageInternal[] stages opposite task
+    
+    op void completeTask() 
+    {
+    	if (player.getCompletedTaskFor(taskMeta) == null) {
+    		
+    	}
+    }
+}
+
+interface TaskStage {
+}
+
+class TaskStageInternal extends TaskStage {
+	id UUID taskStageUuid
+	container OngoingTaskInternal[1] task opposite stages
+	ITaskStage taskStage
+	int stageNum
+	ITaskStageMonster taskStageMonster
+	derived float dmgMultiplier 
+		get {
+			return taskStageMonster.getDmgMultiplier()
+		}
+	derived MonsterType monsterType
+		get {
+			return MonsterType::valueOf(
+				MonsterType, taskStageMonster.getMonsterType()
+			)
+		}
+	boolean monsterPieceDropped
+	IItem itemDropped
+	int expGained
+	int cashGained
+	int oilGained
+	
+	// TODO: Don't we need to track transitions from 'ongoing' to 'completed' on a 
+	//       stage-by-stage basis to know when the overall task is eligible for
+	//       replacement with a CompletedTask?
+	// boolean stageCompleted = "false"
+}
+
+//
+// Domain Behavioral Action Model: BeginTask
+//
+
+interface BeginTaskStagesBuilder {
+	op BeginTaskStagesBuilder addStage( 
+		int stageNum, ITaskStage stageMeta, ITaskStageMonster stageMonster, 
+		int cashReward, int oilReward, int expReward, 
+		boolean rewardsMonsterPiece, IItem droppedItem)
+}
+
+class BeginTaskStagesBuilderInternal extends BeginTaskStagesBuilder
+{
+	refers OngoingTaskInternal newArtifact
+	refers PlayerInternal player
+	
+	op void init(ITask taskMeta, Player player)
+	{
+		this.newArtifact = 
+			MobstersPlayerFactory.eINSTANCE.createOngoingTaskInternal()
+		this.newArtifact.taskMeta = taskMeta
+	}
+	
+	op BeginTaskStagesBuilder addStage( 
+		int stageNum, ITaskStage taskStage, ITaskStageMonster taskStageMonster,
+		int cashReward, int oilReward, int expReward, 
+		IItem itemDropped, boolean monsterPieceDropped )
+	{
+		this.newArtifact.stages.add( 
+			MobstersPlayerFactory.eINSTANCE.createTaskStageInternal => [
+				it.taskStageUuid = UUID::randomUUID()
+				it.stageNum = stageNum
+				it.taskStage = taskStage
+				it.taskStageMonster = taskStageMonster
+				it.cashGained = cashReward
+				it.oilGained = oilReward
+				it.expGained = expReward
+				it.monsterPieceDropped = monsterPieceDropped
+				it.itemDropped = itemDropped
+			]
+		)
+		
+		return this	
+	}
+	
+	op void build()
+	{
+		this.newArtifact.taskUuid = UUID::randomUUID()
+		this.player.ongoingTask = newArtifact
+	}
+}
+
+// NOTE: If not for the timestamp. we could get away with out a model class here.
+interface CompletedTask
+{
+	
+}
+
+class CompletedTaskInternal extends CompletedTask
+{
+	container PlayerInternal player opposite completedTasks
+	ITask taskMeta
+	EDate timeOfEntry
+}
+
+
+//
+// Game State Subunit Models: Task Stage History ??
+//
+// class TaskStageHistory
+
+
+//
+// Game State Subunit Models: Monster
+//
+
+interface Monster {
+	
+}
+
+class MonsterInternal extends Monster {
+	id UUID monsterUuid
+	container PlayerInternal player opposite monsters
+	IMonster monsterMeta
+    int currentExp
+    int currentLvl
+    int currentHealth
+    int numPieces
+    boolean isComplete
+    EDate combineStartTime
+    int teamSlotNum
+    boolean restricted
+}
+
+
+//
+// Game State Subunit Models: Item
+//
+
+interface Item {
+	
+}
+
+class ItemInternal extends Item {
+	id UUID itemUuid
+	container PlayerInternal player opposite items
+	IItem itemMeta
+}
+
+
+//
+// Game State Subunit Models: Quest
+//
+
+/*
+class Quest{
+	
+}
+
+class QuestJob {
+	IQuestJob questJobMeta;
+
+	private boolean isComplete;
+	private int progress;	
+		
+}
+
+//
+// Game State Subunit Models: Booster ?
+//
+class BoosterPackHistory
+
+class BoosterPackItemHistory
+
+
+//
+// Game State Subunit Models: ???
+//
+
+class EventPersistentForUser
+
+
+//
+// Game State Subunit Models: In App Purchase
+//
+class IapHistory // A Transaction
+
+class IapItem // A line item.  Related to Item?
+
+
+//
+// Game State Subunit Models: MiniJob
+//
+class MiniJob
+
+class MiniJobOngoing
+
+class MiniJobCompleted
+
+
+//
+// Game State Subunit Models: Monster <Activity> ???
+//
+class MonsterHealingHistory
+
+
+//
+// Game State Subunit Models: Obstacle
+//
+class Obstacle
+
+ 
+//
+// Game State Subunit Models: Structure
+//
+class Structure
+
+class Hospital
+
+class Laboratory
+
+class Residence
+
+class ResourceGenrator
+
+class ResourceStoreage
+
+class TeamCenter
+
+class TownHall
+
+//
+// New abstractions
+//
+
+/**
+ * A Pending Operation is a record of a game event that was scheduled as a result of a game-play
+ * action (e.g. buying a structure, healing a monster, or committing to complete a MiniJob)
+ * and then generates an effect some fixed amount of time later.
+ * 
+ * The purpose of this class is storage for time stamps that are both:
+ * 1)  Necessary while creation, modification, or removal of some user artifact is scheduled 
+ *     but unresolved.
+ * 2)  Serve no functional role after the scheduled creation, modification, or removal is resolved.
+ * 
+ * NOTE: Copying the state to historical auditing tables goes not constitute a functional role
+ *       from the perspective (and, hence, domain model) for user state.
+ * NOTE: The above also alleviates PendingOperations from needing to model state that would be
+ *       useful in a historical record, but is unnecessary when processing.  For example:
+ *       1) If resources spent are deducted in the same request handler that creates and attaches
+ *          a PendingOperation, not the one that resolves it, then neither cashCost, oilCost,
+ *          or gemCost is needed in that PendingOperation's model.
+ *       2) Decisions that affected the price paid and, more importantly, the outcome on
+ *          resolution, are what PendingOperations are meant to capture.  If our example were a
+ *          "Buy Structure" or "Heal Monster" request, we would see "structure id" or "monster id"
+ *          storage for information about what is being created.
+ *       3) If the game were later changed to add a "Cancel" button that could be used to prevent
+ *          the new structure creation or monster piece combination result from happening, 
+ *          and refunded the initial resource costs, this would be good reason to change the
+ *          original design to include attributes for costs paid.
+ */
+interface PendingOperation {
+	op boolean checkTimer()
+}
+
+abstract class PendingOperationInternal extends PendingOperation
+{
+	container PlayerInternal player opposite pendingOperations
+	java.util.Date opStartTimer
+	java.util.Date opEndTimer
+
+	op void happen()
+	op boolean checkTimer()
+	{
+		var now = com.lvl6.mobsters.utility.common.TimeUtils.createNow()
+		var retVal = false
+		
+		if (this.opEndTimer < now) {
+			// TODO: Consider error cases when calling happen()
+			// TODO: Add Player.checkAllTimers() convenience method/filter at Player 
+			// TODO: Split to a parent/child pair for long term maintainability:
+			//       -- Parent is concrete.  Child is the abstract and state-less root of an
+			//          open extension hierarchy.
+			//       -- Parent state drives operation-agnostic scheduling semantics.
+			// 		 -- Child subclass state drives operation-specific resolution and/or
+			//          cancellation behavior.
+			//		 -- Child would implement handle() with visibility of its own state only,
+			//          possibly also a reference to parent through handle call signature.
+			//		 -- Parent would call handle at appropriate time.
+			//       -- Parent, AbstractChild, and ConcreteChild are in separate packages
+			//          -- Benefit: Maintainability.  It is now possible to evolve the 
+			//             extension contract without having to update all implementors in
+			//             a lockstep fashion.
+			//          -- Benefit: happen() can be evaluated in the context of a stateful
+			//             internal class without exposing implementation details of its
+			//             timer.
+			happen()
+			retVal = true
+		}
+		
+		// TODO: How to prevent redundant execution?  Third time-stamp or boolean guard 
+		//       attribute, or self-removal from parent?
+		return retVal
+	}
+}
+
+// Hard to identify any reason for handling this through an API.
+// interface CombineMonsterPieces extends PendingOperation {	
+// }
+
+class CombineMonsterPiecesInternal extends PendingOperationInternal /*, CombineMonsterPieces*/ {	
+	refers MonsterInternal newMonster
+	
+	op void happen() 
+	{
+		this.player.getMonsters().add(
+			this.newMonster
+		)
+
+		return
+	}
+}

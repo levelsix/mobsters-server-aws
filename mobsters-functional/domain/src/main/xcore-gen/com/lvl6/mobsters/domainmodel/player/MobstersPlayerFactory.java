@@ -32,15 +32,6 @@ public interface MobstersPlayerFactory extends EFactory {
 	PlayerInternal createPlayerInternal();
 
 	/**
-	 * Returns a new object of class '<em>User Data Internal</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>User Data Internal</em>'.
-	 * @generated
-	 */
-	UserDataInternal createUserDataInternal();
-
-	/**
 	 * Returns a new object of class '<em>Ongoing Task Internal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

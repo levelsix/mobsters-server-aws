@@ -4,10 +4,12 @@ package com.lvl6.mobsters.domainmodel.player;
 
 import com.googlecode.cqengine.IndexedCollection;
 
+import com.lvl6.mobsters.info.IMonster;
 import com.lvl6.mobsters.info.ITask;
 
 import com.lvl6.mobsters.utility.lambda.Director;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.EList;
@@ -25,13 +27,22 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCash <em>Cash</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getOil <em>Oil</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getExperience <em>Experience</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUserData <em>User Data</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getOngoingTask <em>Ongoing Task</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCompletedTasks <em>Completed Tasks</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getItems <em>Items</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getMonsters <em>Monsters</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getTeamSlots <em>Team Slots</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getPendingOperations <em>Pending Operations</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUdidForHistory <em>Udid For History</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getDeviceToken <em>Device Token</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#isFbIdSetOnUserCreate <em>Fb Id Set On User Create</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getGameCenterId <em>Game Center Id</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getAvatarMonsterMeta <em>Avatar Monster Meta</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogin <em>Last Login</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogout <em>Last Logout</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCreateTime <em>Create Time</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastObstacleSpawnTime <em>Last Obstacle Spawn Time</em>}</li>
+ *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastMiniJobGeneratedTime <em>Last Mini Job Generated Time</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#isIndexed <em>Indexed</em>}</li>
  *   <li>{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCompletedTaskIndex <em>Completed Task Index</em>}</li>
  * </ul>
@@ -173,34 +184,6 @@ public interface PlayerInternal extends Player {
 	void setExperience(int value);
 
 	/**
-	 * Returns the value of the '<em><b>User Data</b></em>' containment reference.
-	 * It is bidirectional and its opposite is '{@link com.lvl6.mobsters.domainmodel.player.UserDataInternal#getPlayer <em>Player</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>User Data</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>User Data</em>' containment reference.
-	 * @see #setUserData(UserDataInternal)
-	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_UserData()
-	 * @see com.lvl6.mobsters.domainmodel.player.UserDataInternal#getPlayer
-	 * @model opposite="player" containment="true"
-	 * @generated
-	 */
-	UserDataInternal getUserData();
-
-	/**
-	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUserData <em>User Data</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>User Data</em>' containment reference.
-	 * @see #getUserData()
-	 * @generated
-	 */
-	void setUserData(UserDataInternal value);
-
-	/**
 	 * Returns the value of the '<em><b>Ongoing Task</b></em>' containment reference.
 	 * It is bidirectional and its opposite is '{@link com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal#getPlayer <em>Player</em>}'.
 	 * <!-- begin-user-doc -->
@@ -317,6 +300,266 @@ public interface PlayerInternal extends Player {
 	EList<PendingOperationInternal> getPendingOperations();
 
 	/**
+	 * Returns the value of the '<em><b>Udid For History</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Udid For History</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Udid For History</em>' attribute.
+	 * @see #setUdidForHistory(String)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_UdidForHistory()
+	 * @model unique="false"
+	 * @generated
+	 */
+	String getUdidForHistory();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getUdidForHistory <em>Udid For History</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Udid For History</em>' attribute.
+	 * @see #getUdidForHistory()
+	 * @generated
+	 */
+	void setUdidForHistory(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Device Token</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Device Token</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Device Token</em>' attribute.
+	 * @see #setDeviceToken(String)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_DeviceToken()
+	 * @model unique="false"
+	 * @generated
+	 */
+	String getDeviceToken();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getDeviceToken <em>Device Token</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Device Token</em>' attribute.
+	 * @see #getDeviceToken()
+	 * @generated
+	 */
+	void setDeviceToken(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Fb Id Set On User Create</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Fb Id Set On User Create</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Fb Id Set On User Create</em>' attribute.
+	 * @see #setFbIdSetOnUserCreate(boolean)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_FbIdSetOnUserCreate()
+	 * @model unique="false"
+	 * @generated
+	 */
+	boolean isFbIdSetOnUserCreate();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#isFbIdSetOnUserCreate <em>Fb Id Set On User Create</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Fb Id Set On User Create</em>' attribute.
+	 * @see #isFbIdSetOnUserCreate()
+	 * @generated
+	 */
+	void setFbIdSetOnUserCreate(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Game Center Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Game Center Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Game Center Id</em>' attribute.
+	 * @see #setGameCenterId(String)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_GameCenterId()
+	 * @model unique="false"
+	 * @generated
+	 */
+	String getGameCenterId();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getGameCenterId <em>Game Center Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Game Center Id</em>' attribute.
+	 * @see #getGameCenterId()
+	 * @generated
+	 */
+	void setGameCenterId(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Avatar Monster Meta</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Avatar Monster Meta</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Avatar Monster Meta</em>' attribute.
+	 * @see #setAvatarMonsterMeta(IMonster)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_AvatarMonsterMeta()
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.IMonster"
+	 * @generated
+	 */
+	IMonster getAvatarMonsterMeta();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getAvatarMonsterMeta <em>Avatar Monster Meta</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Avatar Monster Meta</em>' attribute.
+	 * @see #getAvatarMonsterMeta()
+	 * @generated
+	 */
+	void setAvatarMonsterMeta(IMonster value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Login</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Login</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Login</em>' attribute.
+	 * @see #setLastLogin(Date)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_LastLogin()
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.Date"
+	 * @generated
+	 */
+	Date getLastLogin();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogin <em>Last Login</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Login</em>' attribute.
+	 * @see #getLastLogin()
+	 * @generated
+	 */
+	void setLastLogin(Date value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Logout</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Logout</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Logout</em>' attribute.
+	 * @see #setLastLogout(Date)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_LastLogout()
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.Date"
+	 * @generated
+	 */
+	Date getLastLogout();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastLogout <em>Last Logout</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Logout</em>' attribute.
+	 * @see #getLastLogout()
+	 * @generated
+	 */
+	void setLastLogout(Date value);
+
+	/**
+	 * Returns the value of the '<em><b>Create Time</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Create Time</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Create Time</em>' attribute.
+	 * @see #setCreateTime(Date)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_CreateTime()
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.Date"
+	 * @generated
+	 */
+	Date getCreateTime();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getCreateTime <em>Create Time</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Create Time</em>' attribute.
+	 * @see #getCreateTime()
+	 * @generated
+	 */
+	void setCreateTime(Date value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Obstacle Spawn Time</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Obstacle Spawn Time</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Obstacle Spawn Time</em>' attribute.
+	 * @see #setLastObstacleSpawnTime(Date)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_LastObstacleSpawnTime()
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.Date"
+	 * @generated
+	 */
+	Date getLastObstacleSpawnTime();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastObstacleSpawnTime <em>Last Obstacle Spawn Time</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Obstacle Spawn Time</em>' attribute.
+	 * @see #getLastObstacleSpawnTime()
+	 * @generated
+	 */
+	void setLastObstacleSpawnTime(Date value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Mini Job Generated Time</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Mini Job Generated Time</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Mini Job Generated Time</em>' attribute.
+	 * @see #setLastMiniJobGeneratedTime(Date)
+	 * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getPlayerInternal_LastMiniJobGeneratedTime()
+	 * @model unique="false" dataType="com.lvl6.mobsters.domainmodel.player.Date"
+	 * @generated
+	 */
+	Date getLastMiniJobGeneratedTime();
+
+	/**
+	 * Sets the value of the '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal#getLastMiniJobGeneratedTime <em>Last Mini Job Generated Time</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Mini Job Generated Time</em>' attribute.
+	 * @see #getLastMiniJobGeneratedTime()
+	 * @generated
+	 */
+	void setLastMiniJobGeneratedTime(Date value);
+
+	/**
 	 * Returns the value of the '<em><b>Indexed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -387,7 +630,7 @@ public interface PlayerInternal extends Player {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model taskMetaDataType="com.lvl6.mobsters.domainmodel.metadata.ITask" taskMetaUnique="false" directorType="com.lvl6.mobsters.domainmodel.player.Director<com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilder>" directorUnique="false"
+	 * @model taskMetaDataType="com.lvl6.mobsters.domainmodel.player.ITask" taskMetaUnique="false" directorType="com.lvl6.mobsters.domainmodel.player.Director<com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilder>" directorUnique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body=''"
 	 * @generated
 	 */
@@ -404,7 +647,7 @@ public interface PlayerInternal extends Player {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model unique="false" taskMetaDataType="com.lvl6.mobsters.domainmodel.metadata.ITask" taskMetaUnique="false"
+	 * @model unique="false" taskMetaDataType="com.lvl6.mobsters.domainmodel.player.ITask" taskMetaUnique="false"
 	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return null;'"
 	 * @generated
 	 */
