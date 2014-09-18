@@ -105,5 +105,35 @@
 				<filtering>false</filtering>
 			</testResource>
 		</testResources>
+
+		<plugins>
+<!-- This did not work.  The spring artifacts do not merge into one very well due to recurring 
+     file names under their META-INF paths where each distinct file with a shared filename is
+     needed at runtime by code from its originating jar file.
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.lvl6.mobsters.application.MobRunTest002</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+-->
+		</plugins>
 	</build>
 </project>
