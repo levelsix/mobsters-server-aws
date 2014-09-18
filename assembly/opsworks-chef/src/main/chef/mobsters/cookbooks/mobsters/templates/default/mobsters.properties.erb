@@ -1,0 +1,37 @@
+amqp.host=<%= node[:layers][:rabbitmq][:instances][0][:private_id]%>
+amqp.user=<%= node[:layers][:rabbitmq][:enabled_users][0][:username]%>
+amqp.pass=<%= node[:layers][:rabbitmq][:enabled_users][0][:password]%>
+amqp.vhost=<%= node[:layers][:rabbitmq][:virtualhosts][0]%>
+amqp.exchange=gameMessages
+
+## <!-- AWS -->
+aws.accessKey=dummyKey
+aws.secretKey=dummySecretKey
+
+## <!-- DynamoDB -->
+aws.dynamo.checkTables=false
+aws.dynamo.endpoint=http://localhost:8000
+aws.dynamo.regionId=local
+
+## <!-- MySQL -->
+jdbc.url=jdbc:mysql://<%= node[:deploy][:mobsters][:database][:host] %>:<%= node[:deploy][:mobsters][:database][:port] %>/<%= node[:deploy][:mobsters][:database][:database] %>?useLegacyDatetimeCode=false
+jdbc.username=<%= node[:deploy][:mobsters][:database][:username] %>
+jdbc.password=<%= node[:deploy][:mobsters][:database][:password] %>
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.idleConnectionTestPeriodInMinutes=1
+jdbc.idleMaxAgeInMinutes=5
+jdbc.maxConnectionsPerPartition=30
+jdbc.minConnectionsPerPartition=2
+jdbc.partitionCount=3
+jdbc.acquireIncrement=2
+jdbc.statementsCacheSize=500
+jdbc.releaseHelperThreads=3
+
+## <!-- Hibernate -->
+hibernate.cache.use_second_level_cache=false
+hibernate.cache.use_query_cache=true
+
+## <!-- Redis/Elasticache -->
+lvl6.jedis.host=<%=node[:layers][:elasticache][:host]%>
+lvl6.jedis.auth=<%=node[:layers][:elasticache][:auth]%>
+lvl6.jedis.database=1

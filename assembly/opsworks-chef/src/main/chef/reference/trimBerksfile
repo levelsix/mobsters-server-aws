@@ -1,0 +1,8 @@
+source 'http://api.berkshelf.com'
+
+cookbook 'apt', '~> 2.4.0'
+cookbook 'ubuntu', '~> 1.1.6'
+cookbook 'rabbitmq', '~> 3.2.2'
+cookbook 'syslogger', '~> 0.1.0'
+cookbook 'newrelic_plugins', '~> 1.0.0'
+cookbook 'aws-sdk', '~> 1.42.0'

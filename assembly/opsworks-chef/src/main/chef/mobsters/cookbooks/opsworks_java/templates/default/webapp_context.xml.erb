@@ -1,0 +1,18 @@
+<Context>
+  <% if @environment %>
+    <% @environment.each do |key, value| %>
+  <Environment name="<%= key %>" value="<%= value %>" type="java.lang.String" />
+    <% end %>
+  <% end %>
+  <% if @resource_name %>
+  <Resource name="<%= @resource_name %>" auth="Container" type="javax.sql.DataSource"
+            maxActive="20" maxIdle="5" maxWait="10000"
+            username="<%= node[:deploy][@application][:database][:username] %>" password="<%= node[:deploy][@application][:database][:password] %>"
+            driverClassName="<%= @driver_class %>"
+            url="jdbc:<%= node[:deploy][@application][:database][:type] %>://<%= node[:deploy][@application][:database][:host] %>:<%= node[:deploy][@application][:database][:port] %>/<%= node[:deploy][@application][:database][:database] %>"
+            factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
+  <% end %>
+  <!-- TODO: Take the 'APP_HOME' directory path from a either a node-given path or the tomcat_base_dir -->
+  <Parameter name="APP_CONF" value="<%= File.join(node[:opsworks_java][node[:opsworks_java][:java_app_server]][:context_dir], "#{@application}.properties") %>"/>
+  <Parameter name="APP_CONF_ALT" value="<%= File.join(node[:deploy][@application][:deploy_to], "#{@application}.properties") %>"/>
+</Context>

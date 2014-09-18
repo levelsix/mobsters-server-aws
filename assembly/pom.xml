@@ -14,7 +14,7 @@
   	<module>broker-webapp</module>
   	<!--module>gamestate-webapp</module-->
   	<!--module>cmd-tools</module-->
-  	<!--module>opsworks-chef</module-->
+  	<module>opsworks-chef</module>
   </modules>
 
         <dependencies>

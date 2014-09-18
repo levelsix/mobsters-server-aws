@@ -1,0 +1,5 @@
+source 'http://api.berkshelf.com'
+
+cookbook 'apt', '~> 2.4.0'
+cookbook 'rabbitmq', '~> 3.2.2'
+cookbook 'newrelic_plugins', '~> 1.0.0'
