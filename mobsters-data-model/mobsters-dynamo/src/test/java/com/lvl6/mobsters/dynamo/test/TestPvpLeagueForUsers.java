@@ -27,7 +27,7 @@ import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-dynamo.xml")
+@ContextConfiguration({"classpath:spring-configuration.xml", "classpath:spring-dynamo.xml"})
 public class TestPvpLeagueForUsers {
 	private static final Logger log = LoggerFactory.getLogger(TestPvpLeagueForUsers.class);
 	
