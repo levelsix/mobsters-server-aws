@@ -4,9 +4,11 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.TaskForUserOngoing;
-@Component public class TaskForUserOngoingRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<TaskForUserOngoing, String>
-	implements
-		TaskForUserOngoingRepository{
+
+public class TaskForUserOngoingRepositoryImpl 
+	extends BaseDynamoCollectionRepositoryImpl<TaskForUserOngoing, String>
+	implements TaskForUserOngoingRepository
+{
 	public TaskForUserOngoingRepositoryImpl(){
 		super(TaskForUserOngoing.class, "taskForUserId", String.class);
 	}

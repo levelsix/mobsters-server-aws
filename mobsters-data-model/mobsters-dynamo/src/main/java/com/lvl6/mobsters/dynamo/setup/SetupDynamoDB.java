@@ -49,14 +49,14 @@ public class SetupDynamoDB {
 		SetupDynamoDB.LOG.info("Verifying or creating table "
 				+ Lvl6TxManager.TX_TABLE_NAME);
 		TransactionManager.verifyOrCreateTransactionTable(dynamoClient,
-				Lvl6TxManager.TX_TABLE_NAME, 1, 1, null);
+				Lvl6TxManager.TX_TABLE_NAME, 150, 220, null);
 
 		// 2. Verify that the transaction item images table exists, or create it
 		// otherwise
 		SetupDynamoDB.LOG.info("Verifying or creating table "
 				+ Lvl6TxManager.TX_IMAGES_TABLE_NAME);
 		TransactionManager.verifyOrCreateTransactionImagesTable(dynamoClient,
-				Lvl6TxManager.TX_IMAGES_TABLE_NAME, 1, 1, null);
+				Lvl6TxManager.TX_IMAGES_TABLE_NAME, 30, 60, null);
 
 		// 3. Wait for tables to be created
 		final TableHelper tableHelper = new TableHelper(dynamoClient);

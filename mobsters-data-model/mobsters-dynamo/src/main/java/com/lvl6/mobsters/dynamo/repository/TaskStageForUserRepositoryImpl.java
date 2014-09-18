@@ -3,13 +3,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.lvl6.mobsters.dynamo.TaskStageForUser;
-@Component 
-public class TaskStageForUserRepositoryImpl extends BaseDynamoCollectionRepositoryImpl<TaskStageForUser, Integer>
-	implements
-		TaskStageForUserRepository
+
+public class TaskStageForUserRepositoryImpl 
+	extends BaseDynamoCollectionRepositoryImpl<TaskStageForUser, Integer>
+	implements TaskStageForUserRepository
 {
 	@SuppressWarnings("unused")
 	private static final Logger LOG =
