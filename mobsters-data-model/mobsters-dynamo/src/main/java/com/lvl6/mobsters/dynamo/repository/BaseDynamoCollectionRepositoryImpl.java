@@ -3,7 +3,6 @@ package com.lvl6.mobsters.dynamo.repository;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -28,7 +27,9 @@ import com.lvl6.mobsters.dynamo.setup.DataRepositoryTxManager;
  * @author John
  */
 @Component
-public abstract class BaseDynamoCollectionRepositoryImpl<T,R> extends BaseDynamoRepositoryImpl<T> implements BaseDynamoCollectionRepository<T,R>
+public abstract class BaseDynamoCollectionRepositoryImpl<T,R> 
+	extends BaseDynamoRepositoryImpl<T> 
+	implements BaseDynamoCollectionRepository<T,R>
 {
 		private static Logger LOG = LoggerFactory.getLogger(BaseDynamoCollectionRepositoryImpl.class);
 
@@ -125,15 +126,9 @@ public abstract class BaseDynamoCollectionRepositoryImpl<T,R> extends BaseDynamo
 			    	.withHashKeyValues(hashKeyObj)
 			        .withConsistentRead(true);
 			// LOG.info("Query: {}", query.toString());
-			// final PaginatedQueryList<T> retVal = query(query);
-			// retVal.loadAllResults();
-			// return retVal;
 			final PaginatedQueryList<T> retSrc = query(query);
 			retSrc.loadAllResults();
-
-			final ArrayList<T> retVal = new ArrayList<T>(retSrc.size());
-			Collections.copy(retVal, retSrc);
-			return retVal;
+			return new ArrayList<T>(retSrc);
 		}
 
 		/**
@@ -214,10 +209,7 @@ public abstract class BaseDynamoCollectionRepositoryImpl<T,R> extends BaseDynamo
 			LOG.info("Query: {}", query);
 			final PaginatedQueryList<T> retSrc = query(query);
 			retSrc.loadAllResults();
-
-			final ArrayList<T> retVal = new ArrayList<T>(retSrc.size());
-			Collections.copy(retVal, retSrc);
-			return retVal;
+			return new ArrayList<T>(retSrc);
 		}
 //		private static Function<T, String> CHILD_TO_ID_FUNCTION =
 //		    new Function<T, String>() {
