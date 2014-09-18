@@ -99,9 +99,7 @@ public class Lvl6TxManager extends TransactionManager
     @Override
     public <T> T load( final T item, final IsolationLevel isolationLevel )
     {
-        return this.load(
-            item,
-            isolationLevel);
+        return this.load(item, isolationLevel);
     }
 
     /**
