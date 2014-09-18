@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service("mobstersDomainModelRegistry")
 public class ServiceRegistry 
-implements IServiceRegistry {
+implements IServiceRegistry 
+{
 	@Property
 	@Autowired
 	var ConfigExtensions configExtensions
