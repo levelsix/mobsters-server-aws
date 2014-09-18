@@ -31,6 +31,7 @@ public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler imple
 	private final ConcurrentHashMap<String,WebSocketSessionHolder> sessionRegistry = 
 	 	new ConcurrentHashMap<String,WebSocketSessionHolder>();
 	
+	@SuppressWarnings("unused")
 	private ExecutorSubscribableChannel wsClientRequests;
 	private ExecutorSubscribableChannel wsClientResponses;
 	
@@ -116,7 +117,7 @@ public class MobstersBinaryWebSocketHandler extends BinaryWebSocketHandler imple
 		);
 	}
 
-	private static class WebSocketSessionHolder
+	static class WebSocketSessionHolder
 	{
 
 		private final WebSocketSession session;

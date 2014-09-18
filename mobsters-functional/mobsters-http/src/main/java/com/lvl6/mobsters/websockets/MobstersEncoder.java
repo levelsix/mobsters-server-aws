@@ -18,6 +18,7 @@ import org.springframework.web.socket.BinaryMessage;
  */
 public final class MobstersEncoder 
 {
+	@SuppressWarnings("unused")
 	private static final Logger LOG =
 		LoggerFactory.getLogger(MobstersEncoder.class);
 

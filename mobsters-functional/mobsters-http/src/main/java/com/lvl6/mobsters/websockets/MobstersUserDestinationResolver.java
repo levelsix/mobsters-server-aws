@@ -1,22 +1,16 @@
 package com.lvl6.mobsters.websockets;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.user.DefaultUserDestinationResolver;
-import org.springframework.messaging.simp.user.UserDestinationResolver;
-import org.springframework.messaging.simp.user.UserDestinationResult;
 import org.springframework.messaging.simp.user.UserSessionRegistry;
 
 // import com.google.common.base.Preconditions;
 
 public class MobstersUserDestinationResolver 
 	extends DefaultUserDestinationResolver 
-	// implements UserDestinationResolver
 {
 	public MobstersUserDestinationResolver(UserSessionRegistry userSessionRegistry) 
 	{
 		super(userSessionRegistry);
-		// super(userSessionRegistry);
 	}
 
 	/**

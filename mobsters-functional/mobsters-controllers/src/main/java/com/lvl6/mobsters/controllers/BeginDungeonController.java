@@ -64,7 +64,6 @@ public class BeginDungeonController extends EventController
 	    //get values sent from the client (the request proto)
 		MinimumUserProto senderProto = reqProto.getSender();
 		String userId = senderProto.getUserUuid();
-		Date curTime = new Date(reqProto.getClientTime());
 		int taskId = reqProto.getTaskId();
 
 		//if is event, start the cool down timer in event_persistent_for_user

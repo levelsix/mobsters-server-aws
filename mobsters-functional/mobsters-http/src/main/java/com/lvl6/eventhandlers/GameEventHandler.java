@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.lvl6.eventdispatcher.ClientEventDispatcher;
-import com.lvl6.eventdispatcher.ClientEventDispatcherImpl;
 import com.lvl6.mobsters.cache.PlayerMapsCacheManager;
 import com.lvl6.mobsters.events.EventsToDispatch;
 import com.lvl6.mobsters.events.PreDatabaseRequestEvent;
