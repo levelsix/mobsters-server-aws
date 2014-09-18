@@ -20,7 +20,7 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 @RunWith(SpringJUnit4ClassRunner)
-@ContextConfiguration("classpath:spring-configuration.xml", "classpath:spring-dynamo.xml")
+@ContextConfiguration("classpath:spring-dynamo.xml")
 public class E2ETestQuestForUserRepositoryQueryFilter
 {
 	private static val Logger LOG = LoggerFactory.getLogger(E2ETestClanForUserRepository);

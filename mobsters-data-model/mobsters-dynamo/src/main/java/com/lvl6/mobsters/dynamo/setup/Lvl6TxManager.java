@@ -99,7 +99,9 @@ public class Lvl6TxManager extends TransactionManager
     @Override
     public <T> T load( final T item, final IsolationLevel isolationLevel )
     {
-        return this.load(item, isolationLevel);
+        return this.load(
+            item,
+            isolationLevel);
     }
 
     /**
@@ -182,13 +184,11 @@ public class Lvl6TxManager extends TransactionManager
     @Override
     public Lvl6Transaction newTransaction()
     {
-        final Lvl6Transaction transaction = 
-        	new Lvl6Transaction(
-	            UUID.randomUUID()
-	            .toString(),
-	            this,
-	            true);
-        
+        final Lvl6Transaction transaction = new Lvl6Transaction(
+            UUID.randomUUID()
+            .toString(),
+            this,
+            true);
         Lvl6TxManager.LOG.info("Started transaction " + transaction.getId());
         return transaction;
     }
@@ -224,8 +224,11 @@ public class Lvl6TxManager extends TransactionManager
         try {
             newTx = newTransaction();
         } catch (final Throwable t) {
-            Lvl6TxManager.LOG.error("Failed to create new transaction!", t);
-            throw new TransactionFailureException(t);
+            Lvl6TxManager.LOG.error(
+                "Failed to create new transaction!",
+                t);
+            throw new TransactionFailureException(
+                t);
         }
 
         try {
@@ -257,6 +260,17 @@ public class Lvl6TxManager extends TransactionManager
         final Transaction activeTx = threadActiveTx.get();
         if (activeTx == null) { throw new IllegalStateException(); }
 
+        try {
+            activeTx.commit();
+        } catch (final Throwable t) {
+            try {
+                activeTx.rollback();
+            } catch (final Throwable t2) {
+                //
+            }
+            throw new TransactionFailureException(
+                t);
+        }
         try {
             activeTx.commit();
         } catch (final Throwable t) {

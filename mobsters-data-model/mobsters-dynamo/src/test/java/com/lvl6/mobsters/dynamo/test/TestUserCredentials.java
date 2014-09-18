@@ -23,7 +23,7 @@ import com.lvl6.mobsters.dynamo.repository.UserCredentialRepository;
 import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring-configuration.xml", "classpath:spring-dynamo.xml"})
+@ContextConfiguration("classpath:spring-dynamo.xml")
 public class TestUserCredentials
 {
 

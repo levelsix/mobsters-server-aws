@@ -31,7 +31,7 @@ import com.lvl6.mobsters.dynamo.setup.SetupDynamoDB;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring-configuration.xml", "classpath:spring-dynamo.xml"})
+@ContextConfiguration("classpath:spring-dynamo.xml")
 public class TestQuestForUsers {
 
 	
@@ -110,8 +110,7 @@ public class TestQuestForUsers {
 	
 	@Test
 	public void testLoadLoop() {
-		ArrayList<QuestForUser> quests = 
-			new ArrayList<QuestForUser>(questIds.size());
+		ArrayList<QuestForUser> quests = new ArrayList(questIds.size());
 		for(Integer quest : questIds) {
 			QuestForUser qul = qfuRepo.load(userId, quest);
 			quests.add(qul);
