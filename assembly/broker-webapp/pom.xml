@@ -25,6 +25,10 @@ Routing logic to the request processing web applications will evolve as developm
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
+			<artifactId>domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-domain</artifactId>
 		</dependency>
 		<dependency>
@@ -64,6 +68,15 @@ Routing logic to the request processing web applications will evolve as developm
 		<dependency>
 			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6.mobsters.assembly</groupId>
+			<artifactId>cmd-tools</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
