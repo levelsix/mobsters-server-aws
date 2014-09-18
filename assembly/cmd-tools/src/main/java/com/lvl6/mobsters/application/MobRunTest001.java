@@ -16,10 +16,11 @@ public class MobRunTest001 {
     public static void main(String[] args) {
         logger.info("Initializing Spring context.");
         
-        ApplicationContext applicationContext = 
+        @SuppressWarnings("resource")
+		final ApplicationContext applicationContext = 
         	new ClassPathXmlApplicationContext(
-        		"spring-commons.xml", "spring-db.xml", "spring-redis.xml", "spring-dynamo.xml", 
-        		"spring-dynamo.xml", "spring-services.xml");
+        		"spring-configuration.xml", "spring-commons.xml", "spring-db.xml", "spring-domain-two.xml",
+        		"spring-redis.xml", "spring-dynamo.xml", "spring-services.xml");
         
         logger.info("Spring context initialized.");
 

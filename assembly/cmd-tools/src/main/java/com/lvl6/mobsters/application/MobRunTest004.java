@@ -8,23 +8,26 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.lvl6.mobsters.domain.game.api.IUserResourceFactory;
 
 public class MobRunTest004 {
-    final static Logger logger = LoggerFactory.getLogger(MobRunTest004.class);
+    final static Logger LOG = LoggerFactory.getLogger(MobRunTest004.class);
     
     /**
      * Main method.
      */
     public static void main(String[] args) {
-        logger.info("Initializing Spring context.");
+        LOG.info("Initializing Spring context.");
         
         ApplicationContext applicationContext = 
         	new ClassPathXmlApplicationContext(
-        		"spring-commons.xml", "spring-db.xml", "spring-redis.xml", "spring-dynamo.xml", 
-        		"spring-dynamo.xml", "spring-services.xml");
+        		"spring-configuration.xml", "spring-commons.xml", "spring-redis.xml", 
+        		"spring-dynamo.xml", "spring-db.xml", "spring-domain-two.xml",  
+        		"spring-domain.xml", "spring-services.xml");
         
-        logger.info("Spring context initialized.");
+        LOG.info("Spring context initialized.");
 
-        IUserResourceFactory gameSrvr = (IUserResourceFactory) applicationContext.getBean(IUserResourceFactory.class);
+        IUserResourceFactory gameSrvr = 
+        	(IUserResourceFactory) applicationContext.getBean(
+        		IUserResourceFactory.class);
 
-        logger.debug("game server component=%s", gameSrvr);
+        LOG.warn("game server component={}", gameSrvr);
     }
 }
