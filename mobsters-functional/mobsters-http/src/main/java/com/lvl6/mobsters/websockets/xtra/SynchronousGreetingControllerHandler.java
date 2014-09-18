@@ -89,9 +89,8 @@ public class SynchronousGreetingControllerHandler
     			"Headers from request: %s", stompHeadersIn.toMap()));
     	LOG.info(
     		String.format(
-    			"Headers from request alternatives:\nNative: %s\nStomp: %s",
-    			stompHeadersIn.toNativeHeaderMap(),
-    			stompHeadersIn.toStompHeaderMap()));
+    			"Headers from request alternatives:\nNative: %s",
+    			stompHeadersIn.toNativeHeaderMap()));
     	
     	StompHeaderAccessor stompHeadersOut =
     		StompHeaderAccessor.create(StompCommand.SEND);
@@ -110,9 +109,8 @@ public class SynchronousGreetingControllerHandler
     		String.format("Headers for reply: %s", headersOut));
     	LOG.info(
     		String.format(
-    			"Header alternatives:\nNative: %s\nStomp: %s",
-    			stompHeadersOut.toNativeHeaderMap(),
-    			stompHeadersOut.toStompHeaderMap()));
+    			"Header alternatives:\nNative: %s\n0",
+    			stompHeadersOut.toNativeHeaderMap()));
     	
     	messageTemplate.convertAndSend(
         	"/queue/greetings_" + playerPrincipal.getName(), payloadOut, headersOut);
