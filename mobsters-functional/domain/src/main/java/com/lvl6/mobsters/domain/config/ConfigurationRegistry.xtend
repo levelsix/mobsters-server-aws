@@ -10,7 +10,6 @@ import com.lvl6.mobsters.info.ITaskStage
 import com.lvl6.mobsters.info.TaskStageMonster
 import java.util.List
 import java.util.Set
-import javax.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -21,13 +20,14 @@ package class ConfigurationRegistry
 	implements IConfigurationRegistry 
 {
 	@Property
-	@Autowired
 	var IndexLoader uninitializedIndexLoader
 	
-	static package var IndexLoader CONTENT_FOR_HOLDER_TO_INITIALIZE
+	package static var IndexLoader CONTENT_FOR_HOLDER_TO_INITIALIZE
 	
-	@PostConstruct
-	def void bootstrapForHolder() {
+	@Autowired
+	package new( IndexLoader uninitializedIndexLoader )
+	{
+		_uninitializedIndexLoader = uninitializedIndexLoader
 		CONTENT_FOR_HOLDER_TO_INITIALIZE = _uninitializedIndexLoader
 	}
 	
@@ -35,7 +35,7 @@ package class ConfigurationRegistry
 	// IMonster
 	//
 	
-	public override IMonster getMonsterMeta(int monsterId)
+	public override IMonster getMonsterMeta( int monsterId )
 	{
 		return 
 			IndexHolder.cqMonsters
@@ -44,17 +44,17 @@ package class ConfigurationRegistry
 			).findFirst[true]
 	}
 
-	public def IMonster getMonsterMeta(Integer monsterId)
+	public def IMonster getMonsterMeta( Integer monsterId )
 	{
 		return monsterId.intValue.getMonsterMeta
 	}
 
-	public def Iterable<IMonster> getMonsterMeta(int[] monsterIds)
+	public def Iterable<IMonster> getMonsterMeta( int[] monsterIds )
 	{
 		return monsterIds.map[it.getMonsterMeta]
 	}
 
-	public def Iterable<IMonster> getMonsterMeta(List<Integer> monsterIds)
+	public def Iterable<IMonster> getMonsterMeta( List<Integer> monsterIds )
 	{
 		return monsterIds.map[it.intValue.getMonsterMeta]
 	}
@@ -67,8 +67,7 @@ package class ConfigurationRegistry
 	// IItem		
 	//
 	
-	public def override IItem getItemMeta(
-		int itemId )
+	public def override IItem getItemMeta( int itemId )
 	{
 		return 
 			IndexHolder.cqItems.retrieve(

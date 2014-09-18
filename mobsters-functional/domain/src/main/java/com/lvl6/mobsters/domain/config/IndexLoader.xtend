@@ -16,9 +16,9 @@ import com.lvl6.mobsters.info.TaskStageMonster
 import java.util.ArrayList
 import java.util.List
 import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
@@ -39,9 +39,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 package class IndexLoader
 {
-	@Property
-	@Autowired
-	var EntityManager entityManager
+	val EntityManager entityManager
 	
 	@Property
 	val IndexedCollection<Monster> cqMonsters = 
@@ -154,11 +152,17 @@ package class IndexLoader
 			this.indexedCollection.addAll(configObjects);
 		}
 	}
+	
+	@Autowired
+	new( EntityManagerFactory emFactory ) 
+	{
+		this.entityManager = emFactory.createEntityManager();
+	}
 		
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	def void buildConfig() {
 		for (IndexLoader.ConfigClassDef<?> nextConfigType : bootstrapData) {
-			nextConfigType.initialize(_entityManager)
+			nextConfigType.initialize(entityManager)
 		}
 		
 		// Special Case: QuestJobMonsterItem -- it's a relationship table
@@ -168,7 +172,7 @@ package class IndexLoader
 	private def buildSpecialCaseIndices()
 	{
 		val List<QuestJobMonsterItem> cfgObjList =
-			_entityManager.createQuery("SELECT qjmi FROM QuestJobMonsterItem AS qjmi")
+			this.entityManager.createQuery("SELECT qjmi FROM QuestJobMonsterItem AS qjmi")
 			.resultList
 		for (QuestJobMonsterItem nextQjmi : cfgObjList) {
 			nextQjmi.questJob?.description
