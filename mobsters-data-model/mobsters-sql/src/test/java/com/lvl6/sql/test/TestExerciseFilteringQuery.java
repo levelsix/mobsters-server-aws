@@ -10,7 +10,8 @@ import com.lvl6.mobsters.info.repository.MonsterLevelInfoRepository;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring-commons.xml", "classpath:spring-db.xml"})
+@ContextConfiguration({
+	"classpath:spring-configuration.xml", "classpath:spring-commons.xml", "classpath:spring-db.xml"})
 public class TestExerciseFilteringQuery {
 	@Autowired
 	protected MonsterLevelInfoRepository mliRepo;

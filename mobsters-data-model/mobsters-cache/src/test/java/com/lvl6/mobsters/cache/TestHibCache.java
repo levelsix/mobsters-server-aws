@@ -19,8 +19,10 @@ import com.lvl6.mobsters.info.Achievement;
 import com.lvl6.mobsters.info.repository.AchievementRepository;
 
 
- @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring-commons.xml", "classpath:spring-db.xml", "classpath:spring-redis.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({
+	"classpath:spring-configuration.xml", "classpath:spring-commons.xml",
+	"classpath:spring-db.xml", "classpath:spring-redis.xml"})
 public class TestHibCache {
 
 	@Before

@@ -14,14 +14,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.lvl6.mobsters.common.utils.AbstractAction;
 import com.lvl6.mobsters.common.utils.IAction;
 import com.lvl6.mobsters.common.utils.IRunnableAction;
 import com.lvl6.mobsters.tests.fixture.dummy.IDummyService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:spring-commons.xml",
+@ContextConfiguration({
+	"classpath:spring-configuration.xml", "classpath:spring-commons.xml",
 	"classpath:spring-db.xml", "classpath:spring-redis.xml",
 	"classpath:spring-dynamo.xml", "classpath:spring-domain.xml",
 	"classpath:spring-services.xml", "classpath:spring-local-test-fixtures.xml" })
