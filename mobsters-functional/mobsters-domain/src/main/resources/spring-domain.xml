@@ -5,23 +5,26 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 		http://www.springframework.org/schema/aop 
-		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
         http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task-4.0.xsd
+        http://www.springframework.org/schema/task/spring-task-4.1.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd"
         default-lazy-init="false" default-autowire-candidates="*Pool,*Resource*,*Event*">
 
-    <context:annotation-config/>
-	<context:component-scan base-package="com.lvl6.mobsters.domain.game"/>
+	<context:component-scan annotation-config="true" 
+	 	base-package="com.lvl6.mobsters.domain.game"/>
 	
+	<!-- Rely on this being activated previously by springs-domain-two.xml.
+	     It gets imported into the same application context a little bit
+	     earlier and it will eventually subsume and replace this module
+	     as well.  It's therefore not all that bad of a hack/assumption.
 	<task:annotation-driven executor="domainWorkerPool" mode="aspectj" />
-
-	<task:executor id="domainWorkerPool" 
-	 keep-alive="10" pool-size="2-7" queue-capacity="256"
-	 rejection-policy="CALLER_RUNS"/>
+	
+	<task:executor id="domainWorkerPool" rejection-policy="CALLER_RUNS"
+	 keep-alive="10" pool-size="2-7" queue-capacity="256"/-->
 	 
 	<!-- Don't hold on to this.  Instead, mandate that all event handlers
 	     implement all their handler methods as @Async and wired to an
@@ -31,7 +34,7 @@
 	     
 	     Alternately, emphasize the importance that the consumer configure
 	     this thread pool for their own needs since its given defaults
-	     represent an uneducated best guess. -->
+	     represent an un-educated best guess.-->
 	<task:executor id="asyncEventPool" rejection-policy="CALLER_RUNS"
-	 keep-alive="10" pool-size="1-3" queue-capacity="128"/>
+	               keep-alive="10" pool-size="1-3" queue-capacity="128"/>
 </beans>

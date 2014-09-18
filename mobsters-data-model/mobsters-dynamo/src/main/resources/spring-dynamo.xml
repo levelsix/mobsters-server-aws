@@ -4,13 +4,13 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 		http://www.springframework.org/schema/aop 
-		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
 		http://www.springframework.org/schema/util 
-		http://www.springframework.org/schema/util/spring-util-4.0.xsd
+		http://www.springframework.org/schema/util/spring-util-4.1.xsd
 		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+		http://www.springframework.org/schema/context/spring-context-4.1.xsd"
 		default-lazy-init="false" default-autowire-candidates="*Repository,*RepositoryImpl,*TxManager">
 	<context:component-scan base-package="com.lvl6.mobsters.dynamo"/>
 
@@ -42,7 +42,7 @@
 
 	<bean id="dynamoMapperConfigTableNamePrefix"
 		class="com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride"
-		factory-method="withTableNamePrefix" scope="singleton" lazy-init="false">
+		factory-method="withTableNamePrefix" scope="singleton" lazy-init="false" autowire-candidate="true">
 		<constructor-arg index="0"
 			value="${aws.dynamo.table.name.prefix}"/>
 	</bean>
@@ -54,13 +54,6 @@
 		<constructor-arg index="1" value="CONSISTENT"/>
 		<constructor-arg index="2" ref="dynamoMapperConfigTableNamePrefix"/>
 		<constructor-arg index="3" value="EAGER_LOADING"/>
-	</bean>
-	
-	<bean id="dynamoProvisioning" scope="singleton" lazy-init="false"
-		  class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning"
-		  autowire-candidate="true">
-		  <property name="reads" value="1"/>
-		  <property name="writes" value="1"/>
 	</bean>
 
 	<bean id="dynamoMapper" lazy-init="false" autowire-candidate="true" 
@@ -80,5 +73,51 @@
 		  scope="singleton" lazy-init="false" autowire-candidate="true">
 		<constructor-arg index="0" ref="dynamoClient"/>
 		<constructor-arg index="1" ref="dynamoMapperConfig"/>
+	</bean>
+
+	
+	<bean id="defaultDynamoProvisioning" scope="singleton" lazy-init="false"
+		  class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning"
+		  autowire-candidate="true">
+		  <property name="reads" value="${aws.dynamo.tableReadUnits}"/>
+		  <property name="writes" value="${aws.dynamo.tableWriteUnits}"/>
+	</bean>
+
+	<bean id="obstacleForUserRepository" scope="singleton" autowire-candidate="true"
+	      class="com.lvl6.mobsters.dynamo.repository.ObstacleForUserRepositoryImpl"/>
+	
+	<!-- TODO: Need to have a strategy for binding a suitable number of
+	           properties to read/write unit pairs AND devise a strategy
+	           for updating them dynamically as load changes...  What
+	           is implemented here is a manual band-aid to enable some
+	           testing work to proceed, NOT a real solution!!! -->
+	<bean id="tfuDynamoProvisioning" scope="singleton" autowire-candidate="false"
+		  class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning">
+		  <property name="reads" value="50"/>
+		  <property name="writes" value="70"/>
+	</bean>
+	<bean id="taskForUserOngoingRepository" scope="singleton" autowire-candidate="true"
+	      class="com.lvl6.mobsters.dynamo.repository.TaskForUserOngoingRepositoryImpl">
+	      <property name="provisioning" ref="tfuDynamoProvisioning"/>
+	</bean>
+	
+	<bean id="tsfuDynamoProvisioning" scope="singleton" autowire-candidate="false"
+		  class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning">
+		  <property name="reads" value="100"/>
+		  <property name="writes" value="160"/>
+	</bean>
+	<bean id="taskStageForUserRepository" scope="singleton" autowire-candidate="true"
+	      class="com.lvl6.mobsters.dynamo.repository.TaskStageForUserRepositoryImpl">
+	      <property name="provisioning" ref="tsfuDynamoProvisioning"/>
+	</bean>
+
+	<bean id="userDynamoProvisioning" scope="singleton" autowire-candidate="false"
+		  class="com.lvl6.mobsters.dynamo.repository.DynamoProvisioning">
+		  <property name="reads" value="50"/>
+		  <property name="writes" value="10"/>
+	</bean>
+	<bean id="userRepository" scope="singleton" autowire-candidate="true"
+	      class="com.lvl6.mobsters.dynamo.repository.UserRepositoryImpl">
+	      <property name="provisioning" ref="userDynamoProvisioning"/>
 	</bean>
 </beans>

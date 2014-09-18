@@ -2,32 +2,40 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>Lvl6 Mobsters</display-name>
   <description>Lvl6 Mobsters Server</description>
+
   <servlet>
     <servlet-name>mobsters</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
+	<async-supported>true</async-supported>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>mobsters</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  
   <listener>
     <listener-class>org.apache.tomcat.websocket.server.WsContextListener</listener-class>
   </listener>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  
   <absolute-ordering>
     <name>spring_web</name>
   </absolute-ordering>
+  
   <context-param>
     <param-name>contextClass</param-name>
     <param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
   </context-param>
+  
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/applicationContext.xml</param-value>
   </context-param>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>testwebsocket.html</welcome-file>
