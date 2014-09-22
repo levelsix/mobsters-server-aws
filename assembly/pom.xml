@@ -18,7 +18,8 @@
   	<!--module>gamestate-webapp</module-->
   	<module>cmd-tools</module>
   	<module>opsworks-chef</module>
-  </modules>
+		<module>mock-legacy-webapp</module>
+	</modules>
 
         <dependencies>
                 <dependency>
