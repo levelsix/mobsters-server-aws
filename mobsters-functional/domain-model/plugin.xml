@@ -10,7 +10,7 @@
       <package
             uri="com.lvl6.mobsters.domainmodel.player"
             class="com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage"
-            genModel="src/main/model/com.lvl6.mobsters.domainmodel.player.xcore"/>
+            genModel="src/main/model/player.xcore"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">

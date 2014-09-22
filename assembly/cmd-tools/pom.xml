@@ -19,8 +19,8 @@
 			<artifactId>mobsters-services</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>domain</artifactId>
+			<groupId>com.lvl6.mobsters.functional</groupId>
+			<artifactId>domain-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>

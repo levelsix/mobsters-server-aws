@@ -6,47 +6,34 @@
 		<artifactId>mobsters-functional</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>mobsters-domain</artifactId>
-	<name>Mobsters Domain</name>
-	<description>Module for Mobsters Domain Layer, an Object Oriented Encapsulation of game logic.
-	Immediate consumer of Data Layer below.  Immediate provider to Service Layer above.</description>
-
-
-	<packaging>jar</packaging>
-
+	<groupId>com.lvl6.mobsters.functional</groupId>
+	<artifactId>domain-support</artifactId>
+	<name>Mobsters Domain Model Support</name>
+	<description>Supports controller that consume the XCore domain model implementation (domain-xcore) by providing the Configuration object Cache, a Lvl6 Service Registry (for extensions primarily), and EMF Model Registration.</description>
 	<dependencies>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-commons</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-api-events</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-dynamo</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-sql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-cache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lvl6.mobsters.functional</groupId>
-			<artifactId>domain-model</artifactId>
+			<artifactId>mobsters-commons</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
-			<artifactId>mobsters-test-data</artifactId>
-			<scope>test</scope>
+			<artifactId>mobsters-dynamo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.cqengine</groupId>
+			<artifactId>cqengine</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xtext</artifactId>
 		</dependency>
 	</dependencies>
 

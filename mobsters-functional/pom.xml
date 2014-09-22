@@ -11,7 +11,8 @@
   <name>Mobsters Functional</name>
   <description>Module for Functionality Layers</description>
   <modules>
-  	<module>domain</module>
+  	<module>domain-support</module>
+  	<module>domain-model</module>
   	<module>mobsters-domain</module>
   	<module>mobsters-services</module>
   	<module>mobsters-controllers</module>

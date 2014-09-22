@@ -10,8 +10,6 @@
 	<artifactId>mobsters-services</artifactId>
 	<name>Mobsters Services</name>
 	<description>Module for Services Layer</description>
-
-
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -26,6 +24,10 @@
 		<dependency>
 			<groupId>com.lvl6</groupId>
 			<artifactId>mobsters-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.lvl6.mobsters.functional</groupId>
+			<artifactId>domain-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
