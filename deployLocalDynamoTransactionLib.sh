@@ -28,7 +28,7 @@ fi
 
 if test -e dynamodb-transactions
 then
-	echo "Git will expect to create a directory named dynamodb-transcations" to clone the library's patched source into, but a conflicting filesystem object already exits.  Please rename or delete it and then try running this script again."  
+	echo "Git will expect to create a directory named 'dynamodb-transcations' to clone the library's patched source into, but a conflicting filesystem object already exits.  Please rename or delete it and then try running this script again."  
 	exit -5
 fi
 
