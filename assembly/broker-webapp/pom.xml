@@ -12,7 +12,6 @@
 	<packaging>war</packaging>
 	<name>Mobsters Game Server Webapp</name>
 	<description>Module for combining Mobsters Game Server components to yield a deployable webapp that receives incoming game requests from clients over WebSocket and sends replies back over the same channel.  Request processing does not occur within this server.  It acts as a relay station between the game client and the Rabbit cluster that transports messages to both the Legacy and Next Generation game state web applications.
-
 Routing logic to the request processing web applications will evolve as development on the new architecture moves forward, reflecting its progression to completion.</description>
 
 	<dependencies>
@@ -25,8 +24,8 @@ Routing logic to the request processing web applications will evolve as developm
 			<artifactId>mobsters-services</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.lvl6</groupId>
-			<artifactId>domain</artifactId>
+			<groupId>com.lvl6.mobsters.functional</groupId>
+			<artifactId>domain-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>
