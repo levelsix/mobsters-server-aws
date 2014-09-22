@@ -18,7 +18,7 @@
   	<module>mobsters-controllers</module>
   	<module>mobsters-api-events</module>
   	<module>mobsters-http</module>
-  	<module>mobsters-amqp</module>
+  	<!-- module>mobsters-amqp</module-->
   </modules>
   
 	<build>
