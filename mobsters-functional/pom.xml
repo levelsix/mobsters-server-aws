@@ -6,6 +6,7 @@
     <artifactId>mobsters-server-aws</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <groupId>com.lvl</groupId>
   <artifactId>mobsters-functional</artifactId>
   <packaging>pom</packaging>
   <name>Mobsters Functional</name>
