@@ -8,7 +8,7 @@ import com.lvl6.mobsters.event.AbstractEventMediator;
 
 @Component("gameEventMediator")
 class GameEventMediator
-	extends AbstractEventMediator<IGameEventListener, IGameEvent>
+	extends AbstractEventMediator<IGameEvent, IGameEventListener>
 	implements IGameEventMediator
 {
 }

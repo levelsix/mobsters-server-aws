@@ -7,7 +7,7 @@ import javax.annotation.Resource
 import org.springframework.core.task.AsyncListenableTaskExecutor
 
 // @EventFactory
-public abstract class AbstractEventMediator<L extends IEventListener<E>, E extends IEvent> implements IEventMediator<L, E> {
+public abstract class AbstractEventMediator<E extends IEvent, L extends IEventListener<E>> implements IEventMediator<L, E> {
 	private val EventBus syncEventBus = new EventBus()
 
 	@Resource(name="asyncEventPool")

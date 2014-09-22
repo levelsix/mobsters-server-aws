@@ -89,8 +89,8 @@ class EventFactoryProcessor extends AbstractClassProcessor
 			
 			m.visibility = Visibility.PUBLIC				
 			m.body = '''
-				Â«eventInterfaceNameÂ» newEvent = new Â«eventClassNameÂ»(
-					Â«m.parameters.map[it.simpleName].join(', ')Â»
+				«eventInterfaceName» newEvent = new «eventClassName»(
+					«m.parameters.map[it.simpleName].join(', ')»
 				);
 				
 				this.doPublish(newEvent);
@@ -146,9 +146,9 @@ class EventFactoryProcessor extends AbstractClassProcessor
 			}
 			visibility = Visibility.DEFAULT
 			body = '''
-				Â«FOR param : annotatedMethod.parametersÂ»
-				this.Â«param.simpleNameÂ» = Â«param.simpleNameÂ»;
-				Â«ENDFORÂ»
+				«FOR param : annotatedMethod.parameters»
+				this.«param.simpleName» = «param.simpleName»;
+				«ENDFOR»
 				
 			'''
 		]
@@ -160,7 +160,7 @@ class EventFactoryProcessor extends AbstractClassProcessor
 				visibility = Visibility.PUBLIC
 				returnType = param.type
 				body = '''
-					return this.Â«param.simpleNameÂ»;
+					return this.«param.simpleName»;
 				'''
 			]
 		}
