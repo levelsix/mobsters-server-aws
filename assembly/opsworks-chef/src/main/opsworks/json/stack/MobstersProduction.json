@@ -1,0 +1,211 @@
+{
+    "rabbitmq" : {
+        "cluster" : true,
+        "cluster_disk_nodes" : [ "portia" ],
+        "max_file_descriptors" : 4096,
+        "web_console_ssl" : true,
+        "web_console_ssl_port" : 8642,
+        "enabled_plugins" : [ "rabbitmq_web_stomp" ],
+        "disabled_plugins" : [],
+        "policies" : {
+            "ha-all" : {
+                "pattern" : "^(?!amq\\.).*",
+                "params" : {
+                    "ha-mode" : "all"
+                },
+                "priority" : 0,
+                "vhost" : "prodmobsters"
+            }
+        },
+        "disabled_policies" : [],
+        "virtualhosts" : [ "prodmobsters" ],
+        "disabled_virtualhosts" : [],
+        "enabled_users" : [
+            { 
+                "name" : "lvl6admin",
+                "password" : "BuR4C0JQ21Va5gIRblTg",
+                "rights" : [
+                    {
+                        "vhost" : "/",
+                        "conf" : ".*",
+                        "read" : ".*",
+                        "write" : ".*"
+                    },
+                    {
+                        "vhost" : "prodmobsters",
+                        "conf" : ".*",
+                        "read" : ".*",
+                        "write" : ".*"
+                    }
+                ]
+            },
+            { 
+                "name" : "lvl6server",
+                "password" : "tkb4iFCDtFW3roR6Fq8n",
+                "rights" : [
+                    {
+                        "vhost" : "prodmobsters",
+                        "conf" : ".*",
+                        "read" : ".*",
+                        "write" : ".*"
+                    }
+                ]
+            },
+            {
+                "name" : "lvl6client",
+                "password" : "PMcGQFfQuy9gbX84e2UH",
+                "rights" : [
+                    {
+                        "vhost" : "prodmobsters",
+                        "conf" : ".*",
+                        "read" : ".*",
+                        "write" : ".*"
+                    }
+                ]
+            }
+        ],
+        "disabled_users" : []
+    },
+    "cassandra" : {
+        "user" : "cassandra",
+        "jvm" : {
+            "xms" : 256,
+            "xmx" : 1536
+        },
+        "home_dir" : "/usr/local/share/cassandra",
+        "data_root_dir" : "/mnt/cassandra/data",
+        "log_dir" : "/var/log/cassandra",
+        "rpc_address" : "0.0.0.0",
+        "rpc_port" : 9160
+    },        
+    "first_cassandra" : {
+        "home_dir" : "/usr/local/share/cassandra",
+        "conf_dir" : "/etc/cassandra",
+        "cluster_name" : "mobsters",
+        "commitlog_dir" : "/mnt/cassandra/commitlog",
+        "data_dirs" : [ "/mnt/cassandra/data" ],
+        "saved_caches_dir" : "/mnt/cassandra/saved_caches",
+        "listen_addr" : "0.0.0.0",
+        "seeds" : [],
+        "rpc_addr" : "0.0.0.0",
+        "rpc_port" : "9160",
+        "storage_port" : "7000",
+        "git_repo" :  "git://git.apache.org/cassandra.git",
+        "git_revision" : "cdd239dcf82ab52cb840e070fc01135efb512799",
+        "auto_bootstrap": "false",
+        "keyspaces" : "unknown",
+        "authenticator" : "org.apache.cassandra.auth.AllowAllAuthenticator",
+        "partitioner" : "org.apache.cassandra.dht.RandomPartitioner",
+        "initial_token" : "unknown",
+        "commitlog_rotation_threshold" : "128",
+        "thrift_framed_transport" : "15",
+        "disk_access_mode" : "auto",
+        "sliced_buffer_size" : "64",
+        "column_index_size" : "64",
+        "memtable_throughput" : "64",
+        "memtable_ops" : "0.3",
+        "memtable_flush_after" : "60",
+        "concurrent_reads" : "8",
+        "concurrent_writes" : "32",
+        "commitlog_sync" : "periodic",
+        "commitlog_sync_period" : "10000",
+        "authority" : "org.apache.cassandra.auth.AllowAllAuthority",
+        "hinted_handoff_enabled" : "true",
+        "max_hint_window_in_ms" : "3600000",
+        "hinted_handoff_delay_ms" : "50",
+        "endpoint_snitch" : "org.apache.cassandra.locator.SimpleSnitch",
+        "dynamic_snitch" : "true",
+        "java_heap_size_min" : "128M",
+        "java_heap_size_max" : "1650M",
+        "java_heap_size_eden" : "1500M",
+        "memtable_flush_writers" : "1",
+        "thrift_max_message_length" : "16",
+        "incremental_backups" : "true",
+        "snapshot_before_compaction" : "true",
+        "in_memory_compaction_limit" : "64",
+        "compaction_preheat_key_cache" : "true",
+        "flush_largest_memtables_at" : "0.75",
+        "reduce_cache_sizes_at" : "0.85",
+        "reduce_cache_capacity_to" : "0.6",
+        "rpc_timeout_in_ms" : "10000",
+        "rpc_keepalive" : "false",
+        "phi_convict_threshold" : "8",
+        "request_scheduler" : "org.apache.cassandra.scheduler.NoScheduler",
+        "throttle_limit" : "80",
+        "request_scheduler_id" : "keyspace",
+        "log_dir" : "/var/log/cassandra",
+        "lib_dir" : "/var/lib/cassandra",
+        "pid_dir" : "/var/run/cassandra",
+        "group" : "cassandra",
+        "version" : "1.1.12"
+    },
+    "users" : {
+        "cassandra" : {
+            "uid" : 310,
+            "gid" : 310
+        }
+    },
+    "opsworks_java": {
+        "jvm" : "openjdk",
+        "jvm_version" : "7",
+        "jvm_options" : "-server -d64 -Djava.awt.headless=true -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode",
+        "java_app_server": "tomcat",
+        "java_app_server_version" : "7.0",
+        "tomcat" : {
+            "java_opts" : "-server -d64 -Dspring.profiles.default=staging -Djava.awt.headless=true -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -Xms768m -Xmx1536m",
+            "threadpool_max_threads" : 420,
+            "threadpool_min_spare_threads" : 8,
+            "use_threadpool" : true
+        }
+    },
+    "opsworks" : {
+        "data_bags" : {
+            "cassandra" : {
+                "clusters" : {
+                    "mobsters" : {
+                        "keys_cached" : 200000,
+                        "rows_cached" : 0,
+                        "comment" : "Mobsters cluster config",
+                        "read_repair_chance" : 1.0,
+                        "preload_row_cache" : false,
+                        "gc_cache_seconds" : 864000
+                    }
+                }
+            }
+        }
+    },
+    "tuning" : {
+        "ulimit" : {
+            "cassandra" : 2048
+        }
+    },
+    "amqp" : {
+        "host" : "amqp.mobsters.lvl6.com"
+    },
+    "elasticSearch" : {
+        "hosts" : [
+            "elastic-search.mobsters.lvl6.com"
+        ]
+    },
+    "mysql" : {
+        "jdbcUrl" : "jdbc:mysql://toonsquad.cirdfrlgyccg.us-west-2.rds.amazonaws.com/mobsters?useLegacyDateTimeCode=false" 
+    },
+    "jedis" : {
+        "host" : "10.0.2.2",
+        "auth" : "L3nDkiwnpS8m1pLmd9sQt2bu5almsW2"
+    },
+    "hazelcast" : {
+        "host" : "10.0.2.2"
+    },
+    "cassandra" : {
+        "hosts" : [
+            "10.0.2.2"
+        ]
+    },
+    "global" : {
+        "releaseName" : "ToonSquad",
+        "appleBundle" : "com.lvl6.toonsquad",
+        "dnsDomainRoot" : "mobsters.lvl6.com",
+        "reviewPageUrl" : "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=548520325&pageNumber=0&sortOrdering=1&type=Purple+Software"
+    }
+}
