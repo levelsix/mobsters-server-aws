@@ -137,10 +137,20 @@ public class MobstersHeaderAccessor
 			Integer.toString(sequenceTag));
 	}
 	
+	public String getReplyTo() {
+		return this.headerAccessor.getFirstNativeHeader(MOBSTERS_REPLY_TO_HEADER);
+	}
+	
+	public void setReplyTo( String replyTo )
+	{
+		headerAccessor.setNativeHeader(MOBSTERS_REPLY_TO_HEADER, replyTo);
+	}
+	
 	public MobstersPlayerPrincipal getPlayer()
 	{
 		// TODO: Must check output validity as well since Spring allows mutable access to the
-		//       headers hash directly without requiring a code path through semantics-aware code.	
+		//       headers hash directly without requiring a code path through semantics-aware 
+		//       code.	
 		Principal user = headerAccessor.getUser();
 		Preconditions.checkState(
 			user instanceof MobstersPlayerPrincipal, 
@@ -174,15 +184,6 @@ public class MobstersHeaderAccessor
 			MOBSTERS_PLAYER_ID_HEADER, 
 			player.getName()
 		);
-	}
-	
-	public String getReplyTo() {
-		return this.headerAccessor.getFirstNativeHeader(MOBSTERS_REPLY_TO_HEADER);
-	}
-	
-	public void setReplyTo( String replyTo )
-	{
-		headerAccessor.setNativeHeader(MOBSTERS_REPLY_TO_HEADER, replyTo);
 	}
 
 //	public void applyReplyToHeader()

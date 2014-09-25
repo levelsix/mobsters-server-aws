@@ -40,7 +40,7 @@ public final class MobstersEncoder
 			final DataOutputStream output =
 				new DataOutputStream(baos);
 
-			output.write(headers.getSequenceTag());
+			output.write(headers.getRequestType());
 			output.write(headers.getSequenceTag());
 			output.write(headers.getContentLength());
 			output.write(message.getPayload());
