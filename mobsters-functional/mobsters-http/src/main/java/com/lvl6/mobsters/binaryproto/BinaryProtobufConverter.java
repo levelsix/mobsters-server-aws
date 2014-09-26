@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.websockets;
+package com.lvl6.mobsters.binaryproto;
 
 import java.lang.reflect.InvocationTargetException;
 

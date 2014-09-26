@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.websockets;
+package com.lvl6.mobsters.binaryproto;
 
 import java.io.IOException;
 import java.nio.ByteOrder;

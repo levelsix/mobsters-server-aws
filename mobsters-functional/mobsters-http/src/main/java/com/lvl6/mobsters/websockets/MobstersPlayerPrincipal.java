@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.utils;
+package com.lvl6.mobsters.websockets;
 
 import java.io.Serializable;
 import java.security.Principal;

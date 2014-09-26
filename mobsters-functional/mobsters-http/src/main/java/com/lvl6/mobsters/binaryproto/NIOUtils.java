@@ -1,6 +1,7 @@
-package com.lvl6.mobsters.utils;
+package com.lvl6.mobsters.binaryproto;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class NIOUtils {
 		//log.info("Setting placeHolder for size in writeBuffer at "+sizePos);
 		writeBuffer.putInt(0); // placeholder for payload size
 		int size = event.write(writeBuffer);
-		//log.info("Prepped buffer size: "+(size+12));
+		//log.info("Prepared buffer size: "+(size+12));
 		// insert the payload size in the placeholder spot
 		writeBuffer.put(sizePos, (byte) (size & 0xFF));
 		writeBuffer.put(sizePos+1, (byte) ((size & 0xFF00) >> 8));
@@ -55,6 +56,39 @@ public class NIOUtils {
 		writeBuffer.flip();
 	}
 
+	public static void altPrepBuffer(ResponseEvent event, ByteBuffer writeBuffer) {
+		// Empty buffer and initially write in header's BIG_ENDIAN byte order.
+		writeBuffer.clear();
+		ByteOrder initialOrder = writeBuffer.order();
+		writeBuffer.order(MobstersCodec.HEADER_BYTE_ORDER);
+
+		// Write header with placeholder for as-yet unmeasured 
+		// TODO: There's no reason we can't query how big the payload is before
+		//       writing it to the buffer.  The placeholder gymnastics are not
+		//       necessary.
+		writeBuffer.putInt(
+			event.getEventType()
+				.getNumber()
+		);
+		writeBuffer.putInt(
+			event.getTag()
+		);
+		writeBuffer.putInt(0); // placeholder for payload size
+
+		// Return to the original byte ordering to write the payload content.
+		writeBuffer.order(initialOrder);
+		int size = event.write(writeBuffer);
+
+		// Switch back to header byte order one last time to fill in the size
+		// field.
+		writeBuffer.order(MobstersCodec.HEADER_BYTE_ORDER);
+		writeBuffer.putInt(8, size);
+
+		// prepare for a channel.write by returning to the original byte ordering
+		// and flipping limit to position and position to 0.
+		writeBuffer.order(initialOrder);
+		writeBuffer.flip();
+	}
 
 	public static byte[] getByteArray(ResponseEvent event) {
 		ByteBuffer writeBuffer = ByteBuffer.allocateDirect(Globals.MAX_EVENT_SIZE);

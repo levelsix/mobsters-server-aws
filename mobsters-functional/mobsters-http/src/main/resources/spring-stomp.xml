@@ -25,7 +25,7 @@
 		<websocket:transport message-size="16896"
 			send-buffer-size="1048588" send-timeout="20000"/>
 		
-		<websocket:stomp-endpoint path="/gameevents">
+		<websocket:stomp-endpoint path="/server">
 			<!-- Consume authentication metadata from HTTPRequest here. Be sure to 
 				identify and extract a Principal object. When Spring's WebSocket client module 
 				receives a Message on the channel it uses for writing content back to its 
@@ -46,12 +46,12 @@
 			virtual-host="devmobsters" relay-host="localhost" relay-port="61613"
 			client-login="lvl6server" client-passcode="abc123" 
 			system-login="lvl6server" system-passcode="abc123"
-			heartbeat-receive-interval="45000" heartbeat-send-interval="45000" 
+			heartbeat-receive-interval="5050" heartbeat-send-interval="11010" 
 			auto-startup="true" prefix="/queue/, /topic/, /exchange/, /amq/queue/"/>
 
 		<websocket:message-converters register-defaults="true">
 			<bean name="binaryProtobufDecoder" scope="singleton" 
-				class="com.lvl6.mobsters.websockets.BinaryProtobufConverter"/>
+				class="com.lvl6.mobsters.binaryproto.BinaryProtobufConverter"/>
 		</websocket:message-converters>
 
 		<websocket:client-inbound-channel>
@@ -130,16 +130,17 @@
 		  <constructor-arg index="0" ref="org.springframework.messaging.simp.user.DefaultUserSessionRegistry#0"/>
 	</bean>
 
+	<!-- Channel, Adaptor, and Executor that use 4 to 12 threads to relay incoming messages on to the legacy
+	     game server's inbound message queue,  -->
 	<task:executor id="legacyDispatchPool" keep-alive="12" pool-size="4-12" 
 		queue-capacity="32" rejection-policy="CALLER_RUNS" />
 	<int:channel id="channelToLegacyGameSrvr">
 		<int:dispatcher task-executor="legacyDispatchPool"/>
 	</int:channel>
-
 	<int:outbound-channel-adapter id="legacyGameSrvrAdapter" auto-startup="true"
 		channel="channelToLegacyGameSrvr" ref="legacyGameSrvrClient" method="sendRequest"/>		
 	<bean id="legacyGameSrvrClient" scope="singleton" lazy-init="false"
-		class="com.lvl6.mobsters.websocket.adapters.LegacyGameSrvrClient">
+		class="com.lvl6.mobsters.binaryproto.LegacyGameSrvrGateway">
 		<constructor-arg index="0" ref="org.springframework.messaging.simp.SimpMessagingTemplate#0"/>
 	</bean>
 

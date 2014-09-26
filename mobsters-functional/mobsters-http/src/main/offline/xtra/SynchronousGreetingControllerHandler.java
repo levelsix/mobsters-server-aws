@@ -13,8 +13,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
-import com.lvl6.mobsters.utils.MobstersPlayerPrincipal;
 import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
+import com.lvl6.mobsters.websockets.MobstersPlayerPrincipal;
 
 @Controller
 public class SynchronousGreetingControllerHandler

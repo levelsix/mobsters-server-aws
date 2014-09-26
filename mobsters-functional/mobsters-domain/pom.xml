@@ -38,6 +38,7 @@
 		<dependency>
 			<groupId>com.lvl6.mobsters.functional</groupId>
 			<artifactId>domain-model</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.lvl6</groupId>

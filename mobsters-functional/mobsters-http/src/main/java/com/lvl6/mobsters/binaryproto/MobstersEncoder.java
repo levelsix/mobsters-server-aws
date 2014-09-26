@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.websockets;
+package com.lvl6.mobsters.binaryproto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompConversionException;
 import org.springframework.web.socket.BinaryMessage;
+
+import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
 
 /**
  * As websocket frame encoder for Mobsters Binary reply messages.

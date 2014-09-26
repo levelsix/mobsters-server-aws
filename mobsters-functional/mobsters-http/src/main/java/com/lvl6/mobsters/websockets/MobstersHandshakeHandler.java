@@ -14,8 +14,7 @@ import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import com.google.common.base.Preconditions;
-import com.lvl6.mobsters.utils.MobstersPlayerPrincipal;
-import com.lvl6.mobsters.utils.MobstersPlayerPrincipal.UserIdentityType;
+import com.lvl6.mobsters.websockets.MobstersPlayerPrincipal.UserIdentityType;
 import com.mysql.jdbc.StringUtils;
 
 @Component

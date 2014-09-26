@@ -10,8 +10,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.util.StringUtils;
 
 import com.google.common.base.Preconditions;
-import com.lvl6.mobsters.utils.MobstersPlayerPrincipal;
-import com.lvl6.mobsters.utils.MobstersPlayerPrincipal.UserIdentityType;
+import com.lvl6.mobsters.websockets.MobstersPlayerPrincipal.UserIdentityType;
 
 /**
  * Header accessor class for Mobsters protocol.

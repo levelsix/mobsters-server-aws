@@ -1,4 +1,4 @@
-package com.lvl6.mobsters.websockets;
+package com.lvl6.mobsters.binaryproto;
 
 import static com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest.C_ACCEPT_AND_REJECT_FB_INVITE_FOR_SLOTS_EVENT_VALUE;
 import static com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest.C_ACHIEVEMENT_PROGRESS_EVENT_VALUE;
@@ -145,7 +145,7 @@ import com.lvl6.mobsters.eventproto.EventUserProto.UpdateUserCurrencyRequestProt
 import com.lvl6.mobsters.eventproto.EventUserProto.UserCreateRequestProto;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
-import com.lvl6.mobsters.utils.ParsedProtoRequest;
+import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
 
 public class ProtoBufConverter extends AbstractMessageConverter {
 	
@@ -307,18 +307,19 @@ public class ProtoBufConverter extends AbstractMessageConverter {
 		final StompHeaderAccessor headerAccessor = 
 			StompHeaderAccessor.wrap(message);
 		final int eventTypeInt = 
-			((Integer) headerAccessor.getHeader(
-				MobstersHeaderAccessor.MOBSTERS_REQUEST_TYPE_INDEX_HEADER
-			)).intValue();
+			Integer.parseInt(
+				headerAccessor.getFirstNativeHeader(
+					MobstersHeaderAccessor.MOBSTERS_REQUEST_TYPE_INDEX_HEADER));
 		try {
 			final byte [] binarySource = 
 				(byte []) message.getPayload();
 			
 			return 
 				new ParsedProtoRequest<Message>(
-					mobstersEventType[eventTypeInt].clone()
-					.mergeFrom(binarySource)
-					.build(),
+					mobstersEventType[eventTypeInt]
+						.clone()
+						.mergeFrom(binarySource)
+						.build(),
 					binarySource,
 					eventTypeInt
 				);

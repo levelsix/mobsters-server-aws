@@ -24,7 +24,7 @@
 
 
 	<bean id="serverInstance" class="com.lvl6.mobsters.server.ServerInstance" />
-	<bean id="eventsFromOtherServersDispatcher" class="com.lvl6.eventdispatcher.EventsFromOtherServersDispatcher" />
+	<!-- bean id="eventsFromOtherServersDispatcher" class="com.lvl6.eventdispatcher.EventsFromOtherServersDispatcher" /-->
 
 	<bean id="rabbitConnectionFactory" class="com.rabbitmq.client.ConnectionFactory">
 		<property name="host" value="${amqp.host}" />

@@ -1,17 +1,24 @@
-package com.lvl6.mobsters.websockets;
+package com.lvl6.mobsters.binaryproto;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.socket.BinaryMessage;
 
+import com.google.common.base.Preconditions;
+import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
 
 /**
@@ -50,11 +57,12 @@ public class MobstersDecoder {
 		buf.order(MobstersCodec.HEADER_BYTE_ORDER);
 		final int reqTypeIdx  = buf.getInt();
 		final int sequenceTag = buf.getInt();
-		final int payloadSize = buf.getInt();
+		final int decodedPayloadSize = buf.getInt();
 		buf.order(originalByteOrder);
 		
 		return
-			encapsulateAsMessage(buf, payloadSize, reqTypeIdx, sequenceTag);
+			encapsulateAsMessage(
+				buf, decodedPayloadSize + MobstersCodec.HEADER_SIZE, decodedPayloadSize, reqTypeIdx, sequenceTag);
 	}
 	
 	/**
@@ -77,73 +85,103 @@ public class MobstersDecoder {
 		
 		// TODO: Temporary--remove these after observing log output (I hope)
 		final int altSequenceTag = buf.getInt();
-		final int altPayloadSize = buf.getInt();
+		final int decodedPayloadSize = buf.getInt();
 		
 		buf.position(MobstersCodec.HEADER_SIZE);
 		buf.order(originalByteOrder);
 
-		final long sequenceTag = delivery.getEnvelope().getDeliveryTag();
-		final long payloadSize = delivery.getProperties().getBodySize();
+		// NOTE: Intentional truncation--we do not expect to receive values that overflow an int!
+		final int sequenceTag = 
+			(int) delivery.getEnvelope().getDeliveryTag();
+		final int encodedPayloadSize = 
+			(int) delivery.getProperties().getBodySize();
 		
+		LOG.info(
+			"decode(Delivery) found request type as {} from envelope", reqTypeIdx);
 		LOG.info(
 			"decode(Delivery) found sequence tag as {} from envelope and {} from binary header",
 			sequenceTag, altSequenceTag);
 		LOG.info(
 			"decode(Delivery) found payload size as {} from envelope and {} from binary header",
-			payloadSize, altPayloadSize);
+			encodedPayloadSize - 12, decodedPayloadSize);
 			
 		return
-			encapsulateAsMessage(buf, reqTypeIdx, payloadSize, sequenceTag);
+			encapsulateAsMessage(
+				buf, encodedPayloadSize, encodedPayloadSize - MobstersCodec.HEADER_SIZE, reqTypeIdx, sequenceTag);
 	}
 
 	private Message<byte[]> encapsulateAsMessage(
 		final ByteBuffer buf, 
-		final int decodedPayloadSize, 
-		final long reqTypeIdx, 
-		final long sequenceTag
+		final int encodedPayloadSize,
+		final int decodedMessageSize,
+		final int reqTypeIdx, 
+		final int sequenceTag
 	) throws IOException {
-		final int availableBytes = buf.remaining();
-		final int messageSize    = 
-			decodedPayloadSize + MobstersCodec.HEADER_SIZE;
+		Preconditions.checkArgument((encodedPayloadSize - decodedMessageSize) == 12);
 		
-		if (messageSize < availableBytes) {
+		final int availableBytes = buf.remaining();
+		if (encodedPayloadSize < availableBytes) {
 			// TODO: To support a server NIO buffer smaller than largest message size Mobsters supports, we could instantiate this 
 			//       class once per WebSocketSession and use it to hold onto a copy of the bytes from each call to this method 
 			//       until it has enough content for a complete message payload.
 			LOG.warn(
-				String.format(
-					"There are bytes from the next message frame in this frame's buffer!  messageSize={}, availableBytes={}",
-					messageSize, availableBytes));
-		} else if (messageSize > availableBytes) {
-			if (decodedPayloadSize > MobstersCodec.MAX_PAYLOAD_SIZE) {
+				"There aren't enough bytes for the next complete payload in current frame's buffer!  encodedPayloadSize={}, availableBytes={}",
+				encodedPayloadSize, availableBytes);
+		} else if (decodedMessageSize > availableBytes) {
+			if (decodedMessageSize > MobstersCodec.MAX_PAYLOAD_SIZE) {
 				throw new IOException(
 					String.format(
-						"Next message's payload exceeds maximum allowed size!  messageSize={}, availableBytes={}, maximumMessageSize={}",
-						messageSize, availableBytes, MobstersCodec.MAX_MESSAGE_SIZE));
+						"Next message's encoded payload exceeds maximum allowed size!  encodedPayloadSize=%d, availableBytes=%d, maxEncodedPayloadSize=%d",
+						encodedPayloadSize, availableBytes, MobstersCodec.MAX_MESSAGE_SIZE));
 			} else {
 				// TODO: What we really need to do in case of this scenario is copy the bytes into an storage location of our own
 				//       and remember the next place where we need to write into that array when the remaining bytes arrive.
 				throw new IOException(
 					String.format(
-						"Insufficient bytes to account for next message available!  messageSize={}, availableBytes={}",
-						messageSize, availableBytes));
+						"There are bytes from the next message frame in this frame's buffer!  encodedPayloadSize=%d, availableBytes=%d",
+						encodedPayloadSize, availableBytes));
 			}
 		} else {
 			LOG.debug(
-				String.format(
-					"Decoding a message payload of {} bytes from the {} bytes that were available for reading.",
-					decodedPayloadSize, availableBytes));
+				"Decoding a message payload of {} bytes left after removing 12 header bytes from the {} bytes recently read.",
+				decodedMessageSize, encodedPayloadSize);
 		}
 		
-		final byte[] payload = new byte[decodedPayloadSize];
-		buf.get(payload, 0, decodedPayloadSize);
+		final byte[] payload = new byte[decodedMessageSize];
+		buf.get(payload, 0, decodedMessageSize);
+		
+		final HashMap<String,List<String>> headersMap = 
+			new HashMap<String,List<String>>(8);
+		headersMap.put(
+			MobstersHeaderAccessor.MOBSTERS_CONTENT_LENGTH_HEADER,
+			Collections.singletonList(
+				Integer.toString(decodedMessageSize)));
+		headersMap.put(
+			MobstersHeaderAccessor.MOBSTERS_REQUEST_TYPE_INDEX_HEADER,
+			Collections.singletonList(
+				Integer.toString(reqTypeIdx)));
+		headersMap.put(
+			MobstersHeaderAccessor.MOBSTERS_TAG_HEADER,
+			Collections.singletonList(
+				Integer.toString(sequenceTag)));
+		headersMap.put(
+			StompHeaderAccessor.STOMP_CONTENT_LENGTH_HEADER,
+			Collections.singletonList(
+				Integer.toString(decodedMessageSize)));
+		headersMap.put(
+			StompHeaderAccessor.STOMP_CONTENT_TYPE_HEADER,
+			Collections.singletonList(
+				ProtoBufConverter.PROTO_BUF_MIME_TYPE.toString()));
 
-		return MessageBuilder.<byte[]>withPayload(payload)
-		.setHeader(MobstersHeaderAccessor.MOBSTERS_REQUEST_TYPE_INDEX_HEADER, reqTypeIdx)
-		.setHeader(MobstersHeaderAccessor.MOBSTERS_TAG_HEADER, sequenceTag)
-		.setHeader("Content-Type", ProtoBufConverter.PROTO_BUF_MIME_TYPE)
-		.setHeader("Content-Length", decodedPayloadSize)
-		.build();
+		final MobstersHeaderAccessor mobstHeaders = 
+			MobstersHeaderAccessor.wrap(
+				StompHeaderAccessor.create(StompCommand.SEND, headersMap));
+		
+		return
+			MessageBuilder.<byte[]>withPayload(payload)
+				.setHeaders(
+					mobstHeaders.accessStompHeaders()
+				).build();
 	}
 	
 	/*
