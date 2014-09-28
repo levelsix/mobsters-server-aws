@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeType;
 
 import com.google.common.base.Preconditions;
@@ -13,10 +12,30 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersConditions;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
+import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
 
-public final class BinaryProtobufConverter extends AbstractMessageConverter
+/**
+ * This alternative protobuf converter does not require an array mapping from request index to builder type,
+ * which makes it easier to maintain as new protobufs types emerge--no changes are required.  However, it 
+ * only works if the @MessageMapping annotated methods it supports have the specific protobuf type in their
+ * signature, which can only happen if each request/reply type pair has a unique message destination string.
+ * 
+ * For example, START_GAME might get SENT to /clientRequests/1, whereas HEAL_MONSTER_EVENT goes to a path
+ * of /clientRequests/48.  In a sense, there is still maintenance work for each new protobuf type, but since
+ * the @MessageMapping annotated handler would be needed anyhow, it is at least in a more logical place.
+ *
+ * TODO: This class was only written with Request conversion in mind.  For replies, it may be necessary to find
+ * out whether a given message arrived from the WebSocket client or from the Rabbit Broker so the request
+ * type index value can be used to lookup either a Request protobuf (from WebSocket) or a Reply protobuf
+ * (from Broker).  What is currently a single protoTypeToMap HashMap may have to become two such collections
+ * or a single collection with a compound key.  I think all will be fine, but just be aware of the possibility
+ * that something unanticipated is still to be handled.
+ *  
+ * @author John Heinnickel
+ */
+public final class BinaryProtobufConverter 
+extends AbstractMessageConverter
 {
-    private static final String MOBSTERS_MESSAGE_CLASS_HEADER_NAME = "X-Message-Class";
 //    private static final String MOBSTERS_MESSAGE_INDEX_HEADER_NAME = "X-Message-Index";
 //
 //    private final ClassToInstanceMap<Message> protoTypeMap =
@@ -67,6 +86,15 @@ public final class BinaryProtobufConverter extends AbstractMessageConverter
 	}
 
 	@Override
+	public byte[] convertToInternal(
+		Object payload, MessageHeaders header)
+	{
+		Preconditions.checkNotNull(payload);
+		return ((Message) payload).toByteArray();
+	}
+
+	/*
+	@Override
 	public org.springframework.messaging.Message<byte[]> convertToInternal(
 		Object payload, MessageHeaders header)
 	{
@@ -81,11 +109,12 @@ public final class BinaryProtobufConverter extends AbstractMessageConverter
 //			.setHeader(
 //				MOBSTERS_MESSAGE_INDEX_HEADER_NAME, -1
 //			).setHeader(
-//				MOBSTERS_MESSAGE_CLASS_HEADER_NAME,
+//				MobstersHeaderAccessor.MOBSTERS_MESSAGE_CLASS_HEADER_NAME,
 //				payloadObject.getClass()
 //					.getName()
 			.build();
 	}
+	*/
 
 	private Message decodeFromHeader(
 		org.springframework.messaging.Message<?> message,
@@ -95,7 +124,7 @@ public final class BinaryProtobufConverter extends AbstractMessageConverter
 		try {
 			Class<?> statedClass = Class.forName(
 				StompHeaderAccessor.wrap(message)
-				.getFirstNativeHeader(MOBSTERS_MESSAGE_CLASS_HEADER_NAME)
+				.getFirstNativeHeader(MobstersHeaderAccessor.MOBSTERS_MESSAGE_CLASS_HEADER_NAME)
 			);
 			Preconditions.checkArgument(
 				targetClass.isAssignableFrom(statedClass),

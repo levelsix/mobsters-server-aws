@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.util.StringUtils;
 
 import com.google.common.base.Preconditions;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.websockets.MobstersPlayerPrincipal.UserIdentityType;
 
 /**
@@ -30,6 +31,9 @@ public class MobstersHeaderAccessor
 	public static final String MOBSTERS_REPLY_TO_HEADER = "reply-to";
 
 	// public static final String MOBSTERS_REQUEST_TYPE_INDEX = "X-Mobsters-Request-Type";
+	
+	// Not currently in use--see BinaryProtobufConverter's root comment about Destination paths for more.
+    public static final String MOBSTERS_MESSAGE_CLASS_HEADER_NAME = "X-Message-Class";
 
 	private final StompHeaderAccessor headerAccessor;
 	
@@ -97,19 +101,24 @@ public class MobstersHeaderAccessor
 	}
 	
 	// TODO: Use the Protobuf message type enum as the return type instead
-	public int getRequestType()
+	public EventProtocolRequest getRequestType()
 	{
 		final String requestType = 
 			headerAccessor.getFirstNativeHeader(MOBSTERS_REQUEST_TYPE_INDEX_HEADER);
-		return StringUtils.hasText(requestType) ? Integer.parseInt(requestType) : -1;
+		return 
+			StringUtils.hasText(requestType) 
+				? EventProtocolRequest.valueOf(
+					Integer.parseInt(requestType))
+				: null;
 	}
 
 	// TODO: Use the Protobuf message type enum as the argument type instead
-	public void setRequestType(int requestType)
+	public void setRequestType(EventProtocolRequest requestType)
 	{
 		headerAccessor.setNativeHeader(
 			MOBSTERS_REQUEST_TYPE_INDEX_HEADER,
-			Integer.toString(requestType));
+			Integer.toString(
+				requestType.getNumber()));
 	}
 	
 	public Integer getContentLength()

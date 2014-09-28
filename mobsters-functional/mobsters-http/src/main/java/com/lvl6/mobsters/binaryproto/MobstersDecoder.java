@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
@@ -32,7 +31,7 @@ import com.rabbitmq.client.QueueingConsumer.Delivery;
  * @author John Heinnickel
  * @since 0.0.1-SNAPSHOT
  */
-public class MobstersDecoder {
+public abstract class MobstersDecoder {
 	private static final Logger LOG = 
 		LoggerFactory.getLogger(MobstersDecoder.class);
 
@@ -50,15 +49,17 @@ public class MobstersDecoder {
 	public Message<byte[]> decode( final BinaryMessage msg ) throws IOException 
 	{
 		final ByteBuffer buf = msg.getPayload();
-		final ByteOrder originalByteOrder = buf.order();
+		// final ByteOrder originalByteOrder = buf.order();
 		
 		// Existing code base is only applying an explicitly set byte order to what it reads from the header.  Original byte
 		// order is therefore read before the following overrides it so it can be restored before next message bytes are read.
-		buf.order(MobstersCodec.HEADER_BYTE_ORDER);
+		buf.order(
+			getHeaderByteOrder()
+		);
 		final int reqTypeIdx  = buf.getInt();
 		final int sequenceTag = buf.getInt();
 		final int decodedPayloadSize = buf.getInt();
-		buf.order(originalByteOrder);
+		buf.order(MobstersCodec.PAYLOAD_BYTE_ORDER);
 		
 		return
 			encapsulateAsMessage(
@@ -80,22 +81,26 @@ public class MobstersDecoder {
 		final byte[] binaryBody = delivery.getBody();
 		final ByteBuffer buf = ByteBuffer.wrap(binaryBody);
 
-		final ByteOrder originalByteOrder = buf.order();
+		// final ByteOrder originalByteOrder = buf.order();
+		buf.order(
+			getHeaderByteOrder()
+		);
 		final int reqTypeIdx  = buf.getInt();
 		
 		// TODO: Temporary--remove these after observing log output (I hope)
 		final int altSequenceTag = buf.getInt();
-		final int decodedPayloadSize = buf.getInt();
+		// final int decodedPayloadSize = buf.getInt();
 		
 		buf.position(MobstersCodec.HEADER_SIZE);
-		buf.order(originalByteOrder);
+		buf.order(MobstersCodec.PAYLOAD_BYTE_ORDER);
 
 		// NOTE: Intentional truncation--we do not expect to receive values that overflow an int!
-		final int sequenceTag = 
-			(int) delivery.getEnvelope().getDeliveryTag();
+		// final int sequenceTag = 
+		// 	(int) delivery.getEnvelope().getDeliveryTag();
 		final int encodedPayloadSize = 
 			(int) delivery.getProperties().getBodySize();
 		
+		/*
 		LOG.info(
 			"decode(Delivery) found request type as {} from envelope", reqTypeIdx);
 		LOG.info(
@@ -104,10 +109,11 @@ public class MobstersDecoder {
 		LOG.info(
 			"decode(Delivery) found payload size as {} from envelope and {} from binary header",
 			encodedPayloadSize - 12, decodedPayloadSize);
-			
+		*/
+		
 		return
 			encapsulateAsMessage(
-				buf, encodedPayloadSize, encodedPayloadSize - MobstersCodec.HEADER_SIZE, reqTypeIdx, sequenceTag);
+				buf, encodedPayloadSize, encodedPayloadSize - MobstersCodec.HEADER_SIZE, reqTypeIdx, altSequenceTag);
 	}
 
 	private Message<byte[]> encapsulateAsMessage(
@@ -171,18 +177,18 @@ public class MobstersDecoder {
 		headersMap.put(
 			StompHeaderAccessor.STOMP_CONTENT_TYPE_HEADER,
 			Collections.singletonList(
-				ProtoBufConverter.PROTO_BUF_MIME_TYPE.toString()));
+				RequestProtobufConverter.PROTO_BUF_MIME_TYPE.toString()));
 
-		final MobstersHeaderAccessor mobstHeaders = 
-			MobstersHeaderAccessor.wrap(
-				StompHeaderAccessor.create(StompCommand.SEND, headersMap));
+		final StompHeaderAccessor mobstHeaders = 
+			StompHeaderAccessor.create(StompCommand.SEND, headersMap);
 		
 		return
 			MessageBuilder.<byte[]>withPayload(payload)
-				.setHeaders(
-					mobstHeaders.accessStompHeaders()
-				).build();
+				.setHeaders(mobstHeaders)
+				.build();
 	}
+	
+	protected abstract ByteOrder getHeaderByteOrder();
 	
 	/*
 	 * TODO: After switching off legacy game server, it may be possible to include the 
@@ -200,5 +206,22 @@ public class MobstersDecoder {
 				DESTINATION_PATTERN.matcher(
 					headers.getDestination()
 				).group(2));
+	}
+	
+	public static class MobstersRequestDecoder extends MobstersDecoder {
+
+		@Override
+		protected ByteOrder getHeaderByteOrder() {
+			return MobstersCodec.REQUEST_HEADER_BYTE_ORDER;
+		}
+		
+	}
+	
+	public static class MobstersResponseDecoder extends MobstersDecoder {
+
+		@Override
+		protected ByteOrder getHeaderByteOrder() {
+			return MobstersCodec.RESPONSE_HEADER_BYTE_ORDER;
+		}		
 	}
 }

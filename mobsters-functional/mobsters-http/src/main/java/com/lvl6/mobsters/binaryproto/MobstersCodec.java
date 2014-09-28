@@ -6,6 +6,11 @@ import java.nio.ByteOrder;
 import org.springframework.messaging.Message;
 import org.springframework.web.socket.BinaryMessage;
 
+import com.lvl6.mobsters.binaryproto.MobstersDecoder.MobstersRequestDecoder;
+import com.lvl6.mobsters.binaryproto.MobstersDecoder.MobstersResponseDecoder;
+import com.lvl6.mobsters.binaryproto.MobstersEncoder.MobstersRequestEncoder;
+import com.lvl6.mobsters.binaryproto.MobstersEncoder.MobstersResponseEncoder;
+
 /**
  * A paired combination of one decoder and one encoder.
  *
@@ -18,21 +23,36 @@ class MobstersCodec {
 	static final int HEADER_SIZE = 12;
 	static final int MAX_PAYLOAD_SIZE = 1024*1024;
 	static final int MAX_MESSAGE_SIZE = HEADER_SIZE + MAX_PAYLOAD_SIZE;
-	static final ByteOrder HEADER_BYTE_ORDER = ByteOrder.BIG_ENDIAN;
 
-    private final MobstersDecoder decoder = new MobstersDecoder();
-    private final MobstersEncoder encoder = new MobstersEncoder();
+	static final ByteOrder REQUEST_HEADER_BYTE_ORDER = ByteOrder.BIG_ENDIAN;
+	static final ByteOrder RESPONSE_HEADER_BYTE_ORDER = ByteOrder.LITTLE_ENDIAN;
+    static final ByteOrder PAYLOAD_BYTE_ORDER = ByteOrder.BIG_ENDIAN;
+    
+    private final MobstersRequestDecoder requestDecoder = new MobstersRequestDecoder();
+    private final MobstersResponseDecoder responseDecoder = new MobstersResponseDecoder();
+    private final MobstersRequestEncoder requestEncoder = new MobstersRequestEncoder();
+    private final MobstersResponseEncoder responseEncoder = new MobstersResponseEncoder();
 
     MobstersCodec()
     { }
     
-    Message<byte[]> decode(BinaryMessage buf) throws IOException
+    Message<byte[]> decodeRequest(BinaryMessage buf) throws IOException
     {
-    	return decoder.decode(buf);
+    	return requestDecoder.decode(buf);
     }
     
-    BinaryMessage encode(Message<byte[]> msg) throws IOException
+    BinaryMessage encodeRequest(Message<byte[]> msg) throws IOException
     {
-    	return encoder.encode(msg);
+    	return requestEncoder.encode(msg);
+    }
+    
+    Message<byte[]> decodeResponse(BinaryMessage buf) throws IOException
+    {
+    	return responseDecoder.decode(buf);
+    }
+    
+    BinaryMessage encodeResponse(Message<byte[]> msg) throws IOException
+    {
+    	return responseEncoder.encode(msg);
     }
 }

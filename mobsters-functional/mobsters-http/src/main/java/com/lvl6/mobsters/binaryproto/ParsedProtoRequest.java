@@ -9,11 +9,11 @@ public class ParsedProtoRequest<M extends Message> {
     private final EventProtocolRequest requestType;
     
     public ParsedProtoRequest(
-    	M wrappedMessage, byte[] binarySource, int requestType )
+    	M wrappedMessage, byte[] binarySource, EventProtocolRequest requestType )
     {
     	this.wrappedMessage = wrappedMessage;
     	this.binarySource = binarySource;
-    	this.requestType = EventProtocolRequest.valueOf(requestType);
+    	this.requestType = requestType;
     }
 
 	public M getWrappedMessage() {

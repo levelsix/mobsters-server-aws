@@ -3,6 +3,8 @@ package com.lvl6.mobsters.binaryproto;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import com.lvl6.mobsters.binaryproto.MobstersEncoder.MobstersRequestEncoder;
+
 /**
  * Messaging client interface that uses the MessagingTemplate encapsulating the
  * to-Broker channel of a Spring STOMP relay over WebSocket component.
@@ -20,7 +22,7 @@ public class LegacyGameSrvrGateway {
 
 	LegacyGameSrvrGateway(SimpMessagingTemplate brokerMessageTemplate) {
 		this.brokerMessageTemplate = brokerMessageTemplate;
-		this.encoder = new MobstersEncoder();
+		this.encoder = new MobstersRequestEncoder();
 	}
 
 	/**

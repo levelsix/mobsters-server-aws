@@ -60,7 +60,7 @@ public class NIOUtils {
 		// Empty buffer and initially write in header's BIG_ENDIAN byte order.
 		writeBuffer.clear();
 		ByteOrder initialOrder = writeBuffer.order();
-		writeBuffer.order(MobstersCodec.HEADER_BYTE_ORDER);
+		writeBuffer.order(MobstersCodec.REQUEST_HEADER_BYTE_ORDER);
 
 		// Write header with placeholder for as-yet unmeasured 
 		// TODO: There's no reason we can't query how big the payload is before
@@ -81,7 +81,7 @@ public class NIOUtils {
 
 		// Switch back to header byte order one last time to fill in the size
 		// field.
-		writeBuffer.order(MobstersCodec.HEADER_BYTE_ORDER);
+		writeBuffer.order(MobstersCodec.REQUEST_HEADER_BYTE_ORDER);
 		writeBuffer.putInt(8, size);
 
 		// prepare for a channel.write by returning to the original byte ordering

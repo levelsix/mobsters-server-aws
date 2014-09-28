@@ -19,6 +19,10 @@
 	<context:component-scan base-package="com.lvl6.mobsters.websockets.xtra"/>
 	<context:component-scan base-package="com.lvl6.eventhandlers"/>
 
+	<!-- Bean that gives each running server (whether game state or websocket) a unique locator string, based on PID + hostname,
+	     or UUID if neither of those is available. -->
+    <bean id="serverInstance" class="com.lvl6.mobsters.server.ServerInstance" />
+	
 	<websocket:message-broker order="1" 
 		application-destination-prefix="/app/" user-destination-prefix="/user/">
 		
@@ -50,8 +54,10 @@
 			auto-startup="true" prefix="/queue/, /topic/, /exchange/, /amq/queue/"/>
 
 		<websocket:message-converters register-defaults="true">
-			<bean name="binaryProtobufDecoder" scope="singleton" 
-				class="com.lvl6.mobsters.binaryproto.BinaryProtobufConverter"/>
+			<!-- bean name="binaryProtobufDecoder" scope="singleton" 
+				class="com.lvl6.mobsters.binaryproto.BinaryProtobufConverter"/-->
+			<bean name="requestProtobufDecoder" scope="singleton" 
+				class="com.lvl6.mobsters.binaryproto.RequestProtobufConverter"/>
 		</websocket:message-converters>
 
 		<websocket:client-inbound-channel>

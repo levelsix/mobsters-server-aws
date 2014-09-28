@@ -69,8 +69,6 @@ import static com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProt
 
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeType;
 
 import com.google.common.base.Preconditions;
@@ -143,17 +141,30 @@ import com.lvl6.mobsters.eventproto.EventUserProto.SetFacebookIdRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.SetGameCenterIdRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.UpdateUserCurrencyRequestProto;
 import com.lvl6.mobsters.eventproto.EventUserProto.UserCreateRequestProto;
+import com.lvl6.mobsters.noneventproto.ConfigEventProtocolProto.EventProtocolRequest;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersException;
 import com.lvl6.mobsters.utility.exception.Lvl6MobstersStatusCode;
 import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
 
-public class ProtoBufConverter extends AbstractMessageConverter {
+/**
+ * This class has two conversion responsibilities
+ * 
+ * 1)  Given a Spring Message encapsulation with payload and a Spring-standardized header interface, convert the
+ *     Payload to a Java Object that conforms to a given Class.  (In our case, the Class will always be GeneratedMessage,
+ *     the abstract root of all Protobuf representations).  (Inbound use case)
+ * 2)  Given a Java Object and a copy of the Spring Headers, return a byte array that Spring will later combine with 
+ *     the Headers it shared to create a Message object.  (Outbound use case)
+ * 
+ * @author John
+ *
+ */
+public class RequestProtobufConverter extends AbstractMessageConverter {
 	
 	static final MimeType PROTO_BUF_MIME_TYPE = new MimeType( "application", "protobuf" );
 
 	private final GeneratedMessage.Builder<?>[] mobstersEventType;
 
-	public ProtoBufConverter() {
+	public RequestProtobufConverter() {
 		super(PROTO_BUF_MIME_TYPE);
 
 		mobstersEventType = new GeneratedMessage.Builder<?>[102];
@@ -304,27 +315,28 @@ public class ProtoBufConverter extends AbstractMessageConverter {
 		org.springframework.messaging.Message<?> message, 
 		Class<?> outputClass ) 
 	{
-		final StompHeaderAccessor headerAccessor = 
-			StompHeaderAccessor.wrap(message);
-		final int eventTypeInt = 
-			Integer.parseInt(
-				headerAccessor.getFirstNativeHeader(
-					MobstersHeaderAccessor.MOBSTERS_REQUEST_TYPE_INDEX_HEADER));
+		// NOTE: Use of an Accessor class couples this to a particular protocol.  It yields more concise code, but
+		//       it bypasses Spring's effort to generalize header access in a cross-protocol fashion.
+		final EventProtocolRequest eventType = 
+			MobstersHeaderAccessor.wrap(message)
+				.getRequestType();
+		final byte [] binarySource = 
+			(byte []) message.getPayload();
+		
 		try {
-			final byte [] binarySource = 
-				(byte []) message.getPayload();
-			
 			return 
 				new ParsedProtoRequest<Message>(
-					mobstersEventType[eventTypeInt]
+					mobstersEventType[eventType.getNumber()]
 						.clone()
 						.mergeFrom(binarySource)
 						.build(),
 					binarySource,
-					eventTypeInt
+					eventType
 				);
-		} catch (InvalidProtocolBufferException e) {
-			throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_EMPTY_MSG, e);
+		} catch (InvalidProtocolBufferException | NullPointerException e) {
+			return
+				new ParsedProtoRequest<Message>(null, binarySource, eventType);
+			// throw new Lvl6MobstersException(Lvl6MobstersStatusCode.FAIL_EMPTY_MSG, e);
 		}
 	}
 

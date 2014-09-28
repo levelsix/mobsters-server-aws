@@ -1,13 +1,11 @@
 package com.lvl6.mobsters.binaryproto;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.simp.stomp.StompConversionException;
 import org.springframework.web.socket.BinaryMessage;
 
 import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
@@ -18,7 +16,7 @@ import com.lvl6.mobsters.websockets.MobstersHeaderAccessor;
  * @author John Heinnickel
  * @since 0.0.1-SNAPSHOT
  */
-public final class MobstersEncoder 
+public abstract class MobstersEncoder 
 {
 	@SuppressWarnings("unused")
 	private static final Logger LOG =
@@ -30,28 +28,42 @@ public final class MobstersEncoder
 	 * @return the encoded message
 	 */
 	public BinaryMessage encode(Message<byte[]> message) {
-		// LOG.error("No error, all is well!\n");
+		final MobstersHeaderAccessor headers =
+			MobstersHeaderAccessor.wrap(message);
+		final ByteBuffer buf = 
+			ByteBuffer.allocateDirect(
+				MobstersCodec.HEADER_SIZE
+				+ message.getPayload().length);
 		
-		try {
-			final MobstersHeaderAccessor headers =
-				MobstersHeaderAccessor.wrap(message);
-			final ByteArrayOutputStream baos =
-				new ByteArrayOutputStream(
-					MobstersCodec.HEADER_SIZE
-					+ message.getPayload().length);
-			final DataOutputStream output =
-				new DataOutputStream(baos);
+		buf.order(
+			getHeaderByteOrder()
+		);
+		buf.putInt(headers.getRequestType().getNumber());
+		buf.putInt(headers.getSequenceTag());
+		buf.putInt(headers.getContentLength());
+		
+		buf.order(MobstersCodec.PAYLOAD_BYTE_ORDER);
+		buf.put(message.getPayload());
 
-			output.write(headers.getRequestType());
-			output.write(headers.getSequenceTag());
-			output.write(headers.getContentLength());
-			output.write(message.getPayload());
-
-			return new BinaryMessage(
-				baos.toByteArray());
+		return new BinaryMessage(
+			buf.array());
+	}
+	
+	protected abstract ByteOrder getHeaderByteOrder();
+	
+	public static class MobstersRequestEncoder 
+		extends MobstersEncoder
+	{
+		protected ByteOrder getHeaderByteOrder() {
+			return MobstersCodec.REQUEST_HEADER_BYTE_ORDER;
 		}
-		catch (IOException e) {
-			throw new StompConversionException("Failed to encode STOMP frame",  e);
+	}
+	
+	public static class MobstersResponseEncoder 
+	extends MobstersEncoder
+	{
+		protected ByteOrder getHeaderByteOrder() {
+			return MobstersCodec.RESPONSE_HEADER_BYTE_ORDER;
 		}
 	}
 }
