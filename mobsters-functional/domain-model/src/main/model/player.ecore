@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="player" nsURI="http://com/lvl6/mobsters/domainmodel/player"
+    nsPrefix="mobplayer">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="modelName" value="player"/>
+    <details key="prefix" value="MobstersPlayer"/>
+    <details key="featureDelegation" value="Reflective"/>
+    <details key="generateSchema" value="true"/>
+    <details key="loadInitialization" value="true"/>
+    <details key="resource" value="XMI"/>
+    <details key="codeFormatting" value="true"/>
+    <details key="bundleManifest" value="false"/>
+    <details key="publicationLocation" value="/domain-model/src/main/model/player.ecore"/>
+    <details key="dataTypeConverters" value="true"/>
+    <details key="contentTypeIdentifier" value="application/mobsters"/>
+    <details key="modelPluginClass" value=""/>
+    <details key="interfaceNamePattern" value=""/>
+    <details key="cleanup" value="true"/>
+    <details key="commentFormatting" value="true"/>
+    <details key="pluginKey" value="mobplayer"/>
+    <details key="testsDirectory" value="/domain-model/src/test/java"/>
+    <details key="childCreationExtenders" value="true"/>
+    <details key="language" value=""/>
+    <details key="fileExtensions" value="usermob"/>
+    <details key="generateExampleClass" value="false"/>
+    <details key="templateDirectory" value=""/>
+    <details key="basePackage" value="com.lvl6.mobsters.domainmodel"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="IMonster" instanceClassName="com.lvl6.mobsters.info.IMonster">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="final &lt;%java.util.regex.Pattern%> p = &lt;%java.util.regex.Pattern%>.compile(&quot;^Monster\\[(\\d+)\\]$&quot;);&#xA;final &lt;%java.util.regex.Matcher%> m = p.matcher(it);&#xA;boolean _find = m.find();&#xA;boolean _not = (!_find);&#xA;if (_not)&#xA;{&#xA;&#x9;return null;&#xA;}&#xA;&lt;%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = &lt;%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();&#xA;&lt;%java.lang.String%> _group = m.group();&#xA;int _parseInt = &lt;%java.lang.Integer%>.parseInt(_group);&#xA;return _configurationRegistry.getMonsterMeta(_parseInt);"/>
+      <details key="convert" value="int _id = it.getId();&#xA;return &lt;%java.lang.String%>.format(&quot;Monster[%d]&quot;, &lt;%java.lang.Integer%>.valueOf(_id));"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IItem" instanceClassName="com.lvl6.mobsters.info.IItem">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="final &lt;%java.util.regex.Pattern%> p = &lt;%java.util.regex.Pattern%>.compile(&quot;^Item\\[(\\d+)\\]$&quot;);&#xA;final &lt;%java.util.regex.Matcher%> m = p.matcher(it);&#xA;boolean _find = m.find();&#xA;boolean _not = (!_find);&#xA;if (_not)&#xA;{&#xA;&#x9;return null;&#xA;}&#xA;&lt;%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = &lt;%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();&#xA;&lt;%java.lang.String%> _group = m.group();&#xA;int _parseInt = &lt;%java.lang.Integer%>.parseInt(_group);&#xA;return _configurationRegistry.getItemMeta(_parseInt);"/>
+      <details key="convert" value="int _id = it.getId();&#xA;return &lt;%java.lang.String%>.format(&quot;Item[%d]&quot;, &lt;%java.lang.Integer%>.valueOf(_id));"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ITask" instanceClassName="com.lvl6.mobsters.info.ITask">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="final &lt;%java.util.regex.Pattern%> p = &lt;%java.util.regex.Pattern%>.compile(&quot;^Task\\[(\\d+)\\]$&quot;);&#xA;final &lt;%java.util.regex.Matcher%> m = p.matcher(it);&#xA;boolean _find = m.find();&#xA;boolean _not = (!_find);&#xA;if (_not)&#xA;{&#xA;&#x9;return null;&#xA;}&#xA;&lt;%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = &lt;%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();&#xA;&lt;%java.lang.String%> _group = m.group();&#xA;int _parseInt = &lt;%java.lang.Integer%>.parseInt(_group);&#xA;return _configurationRegistry.getTaskMeta(_parseInt);"/>
+      <details key="convert" value="int _id = it.getId();&#xA;&lt;%java.lang.String%> _plus = (&quot;Task[&quot; + &lt;%java.lang.Integer%>.valueOf(_id));&#xA;return (_plus + &quot;]&quot;);"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ITaskStage" instanceClassName="com.lvl6.mobsters.info.ITaskStage">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="final &lt;%java.util.regex.Pattern%> p = &lt;%java.util.regex.Pattern%>.compile(&quot;^TaskStage\\[(\\d+)\\]$&quot;);&#xA;final &lt;%java.util.regex.Matcher%> m = p.matcher(it);&#xA;boolean _find = m.find();&#xA;boolean _not = (!_find);&#xA;if (_not)&#xA;{&#xA;&#x9;return null;&#xA;}&#xA;&lt;%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = &lt;%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();&#xA;&lt;%java.lang.String%> _group = m.group();&#xA;int _parseInt = &lt;%java.lang.Integer%>.parseInt(_group);&#xA;return _configurationRegistry.getTaskStageMeta(_parseInt);"/>
+      <details key="convert" value="int _id = it.getId();&#xA;return &lt;%java.lang.String%>.format(&quot;TaskStage[%d]&quot;, &lt;%java.lang.Integer%>.valueOf(_id));"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ITaskStageMonster" instanceClassName="com.lvl6.mobsters.info.ITaskStageMonster">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="final &lt;%java.util.regex.Pattern%> p = &lt;%java.util.regex.Pattern%>.compile(&quot;^TaskStageMonster\\[(\\d+)\\]$&quot;);&#xA;final &lt;%java.util.regex.Matcher%> m = p.matcher(it);&#xA;boolean _find = m.find();&#xA;boolean _not = (!_find);&#xA;if (_not)&#xA;{&#xA;&#x9;return null;&#xA;}&#xA;&lt;%com.lvl6.mobsters.domain.config.IConfigurationRegistry%> _configurationRegistry = &lt;%com.lvl6.mobsters.domain.svcreg.StaticRegistry%>.getConfigurationRegistry();&#xA;&lt;%java.lang.String%> _group = m.group();&#xA;int _parseInt = &lt;%java.lang.Integer%>.parseInt(_group);&#xA;return _configurationRegistry.getTaskStageMonsterMeta(_parseInt);"/>
+      <details key="convert" value="int _id = it.getId();&#xA;return &lt;%java.lang.String%>.format(&quot;TaskStageMonster[%d]&quot;, &lt;%java.lang.Integer%>.valueOf(_id));"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IQuest" instanceClassName="com.lvl6.mobsters.info.IQuest"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="IQuestJob" instanceClassName="com.lvl6.mobsters.info.IQuestJob"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="IQuestJobMonsterItem" instanceClassName="com.lvl6.mobsters.info.IQuestJobMonsterItem"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Date" instanceClassName="java.util.Date"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="UUID" instanceClassName="java.util.UUID">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="create" value="return &lt;%java.util.UUID%>.fromString(it);"/>
+      <details key="convert" value="return it.toString();"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="CompletedTaskIndex" instanceTypeName="com.googlecode.cqengine.IndexedCollection&lt;com.lvl6.mobsters.domainmodel.player.CompletedTask>"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Director" instanceClassName="com.lvl6.mobsters.utility.lambda.Director"
+      abstract="true" interface="true">
+    <eTypeParameters name="T"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="MonsterType">
+    <eLiterals name="REGULAR"/>
+    <eLiterals name="MINI_BOSS"/>
+    <eLiterals name="BOSS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ElementType">
+    <eLiterals name="NO_ELEMENT"/>
+    <eLiterals name="FIRE"/>
+    <eLiterals name="EARTH"/>
+    <eLiterals name="WATER"/>
+    <eLiterals name="ROCK"/>
+    <eLiterals name="LIGHT"/>
+    <eLiterals name="DARK"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Player" abstract="true" interface="true">
+    <eOperations name="beginTask" unique="false">
+      <eParameters name="taskMeta" unique="false" eType="#//ITask"/>
+      <eParameters name="director" unique="false">
+        <eGenericType eClassifier="#//Director">
+          <eTypeArguments eClassifier="#//BeginTaskStagesBuilder"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="getCompletedTaskFor" unique="false" eType="#//CompletedTask">
+      <eParameters name="taskMeta" unique="false" eType="#//ITask"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PlayerInternal" eSuperTypes="#//Player">
+    <eOperations name="beginTask" unique="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value=""/>
+      </eAnnotations>
+      <eParameters name="taskMeta" unique="false" eType="#//ITask"/>
+      <eParameters name="director" unique="false">
+        <eGenericType eClassifier="#//Director">
+          <eTypeArguments eClassifier="#//BeginTaskStagesBuilder"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="checkForIndices" unique="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="boolean _isIndexed = this.isIndexed();&#xA;boolean _equals = (_isIndexed == false);&#xA;if (_equals)&#xA;{&#xA;}"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getCompletedTaskFor" unique="false" eType="#//CompletedTask">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="return null;"/>
+      </eAnnotations>
+      <eParameters name="taskMeta" unique="false" eType="#//ITask"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="userUuid" unique="false"
+        eType="#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gems" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cash" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oil" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="experience" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ongoingTask" eType="#//OngoingTaskInternal"
+        containment="true" resolveProxies="false" eOpposite="#//OngoingTaskInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="completedTasks" upperBound="-1"
+        eType="#//CompletedTaskInternal" containment="true" resolveProxies="false"
+        eOpposite="#//CompletedTaskInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="items" upperBound="-1"
+        eType="#//ItemInternal" containment="true" resolveProxies="false" eOpposite="#//ItemInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monsters" upperBound="-1"
+        eType="#//MonsterInternal" containment="true" resolveProxies="false" eOpposite="#//MonsterInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="teamSlots" upperBound="3"
+        eType="#//MonsterInternal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pendingOperations" upperBound="-1"
+        eType="#//PendingOperationInternal" containment="true" resolveProxies="false"
+        eOpposite="#//PendingOperationInternal/player"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="udidForHistory" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deviceToken" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fbIdSetOnUserCreate" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gameCenterId" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="avatarMonsterMeta" unique="false"
+        eType="#//IMonster"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastLogin" unique="false"
+        eType="#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastLogout" unique="false"
+        eType="#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="createTime" unique="false"
+        eType="#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastObstacleSpawnTime"
+        unique="false" eType="#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastMiniJobGeneratedTime"
+        unique="false" eType="#//Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="indexed" unique="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        changeable="false" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="completedTaskIndex" unique="false"
+        eType="#//CompletedTaskIndex" transient="true" unsettable="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OngoingTask" abstract="true" interface="true">
+    <eOperations name="completeTask" unique="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OngoingTaskInternal" eSuperTypes="#//OngoingTask">
+    <eOperations name="completeTask" unique="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%com.lvl6.mobsters.domainmodel.player.PlayerInternal%> _player = this.getPlayer();&#xA;&lt;%com.lvl6.mobsters.info.ITask%> _taskMeta = this.getTaskMeta();&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.CompletedTask%> _completedTaskFor = _player.getCompletedTaskFor(_taskMeta);&#xA;boolean _equals = &lt;%com.google.common.base.Objects%>.equal(_completedTaskFor, null);&#xA;if (_equals)&#xA;{&#xA;}"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskUuid" unique="false"
+        eType="#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="#//PlayerInternal"
+        eOpposite="#//PlayerInternal/ongoingTask"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskMeta" unique="false"
+        eType="#//ITask"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stages" upperBound="-1"
+        eType="#//TaskStageInternal" containment="true" resolveProxies="false" eOpposite="#//TaskStageInternal/task"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskStage" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskStageInternal" eSuperTypes="#//TaskStage">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskStageUuid" unique="false"
+        eType="#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="task" lowerBound="1" eType="#//OngoingTaskInternal"
+        eOpposite="#//OngoingTaskInternal/stages"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskStage" unique="false"
+        eType="#//ITaskStage"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stageNum" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskStageMonster" unique="false"
+        eType="#//ITaskStageMonster"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dmgMultiplier" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat" changeable="false"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="get" value="&lt;%com.lvl6.mobsters.info.ITaskStageMonster%> _taskStageMonster = this.getTaskStageMonster();&#xA;return _taskStageMonster.getDmgMultiplier();"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterType" unique="false"
+        eType="#//MonsterType" changeable="false" volatile="true" transient="true"
+        derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="get" value="&lt;%com.lvl6.mobsters.info.ITaskStageMonster%> _taskStageMonster = this.getTaskStageMonster();&#xA;&lt;%java.lang.String%> _monsterType = _taskStageMonster.getMonsterType();&#xA;return &lt;%com.lvl6.mobsters.domainmodel.player.MonsterType%>.&lt;&lt;%com.lvl6.mobsters.domainmodel.player.MonsterType%>>valueOf(&#xA;&#x9;&lt;%com.lvl6.mobsters.domainmodel.player.MonsterType%>.class, _monsterType);"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterPieceDropped" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="itemDropped" unique="false"
+        eType="#//IItem"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expGained" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cashGained" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oilGained" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BeginTaskStagesBuilder" abstract="true"
+      interface="true">
+    <eOperations name="addStage" unique="false" eType="#//BeginTaskStagesBuilder">
+      <eParameters name="stageNum" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="stageMeta" unique="false" eType="#//ITaskStage"/>
+      <eParameters name="stageMonster" unique="false" eType="#//ITaskStageMonster"/>
+      <eParameters name="cashReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="oilReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="expReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="rewardsMonsterPiece" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eParameters name="droppedItem" unique="false" eType="#//IItem"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BeginTaskStagesBuilderInternal" eSuperTypes="#//BeginTaskStagesBuilder">
+    <eOperations name="init" unique="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _createOngoingTaskInternal = &lt;%com.lvl6.mobsters.domainmodel.player.MobstersPlayerFactory%>.eINSTANCE.createOngoingTaskInternal();&#xA;this.setNewArtifact(_createOngoingTaskInternal);&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _newArtifact = this.getNewArtifact();&#xA;_newArtifact.setTaskMeta(taskMeta);"/>
+      </eAnnotations>
+      <eParameters name="taskMeta" unique="false" eType="#//ITask"/>
+      <eParameters name="player" unique="false" eType="#//Player"/>
+    </eOperations>
+    <eOperations name="addStage" unique="false" eType="#//BeginTaskStagesBuilder">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _newArtifact = this.getNewArtifact();&#xA;&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>> _stages = _newArtifact.getStages();&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%> _createTaskStageInternal = &lt;%com.lvl6.mobsters.domainmodel.player.MobstersPlayerFactory%>.eINSTANCE.createTaskStageInternal();&#xA;final &lt;%org.eclipse.xtext.xbase.lib.Procedures.Procedure1%>&lt;&lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>> _function = new &lt;%org.eclipse.xtext.xbase.lib.Procedures.Procedure1%>&lt;&lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>>()&#xA;{&#xA;&#x9;public void apply(final &lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%> it)&#xA;&#x9;{&#xA;&#x9;&#x9;&lt;%java.util.UUID%> _randomUUID = &lt;%java.util.UUID%>.randomUUID();&#xA;&#x9;&#x9;it.setTaskStageUuid(_randomUUID);&#xA;&#x9;&#x9;it.setStageNum(stageNum);&#xA;&#x9;&#x9;it.setTaskStage(taskStage);&#xA;&#x9;&#x9;it.setTaskStageMonster(taskStageMonster);&#xA;&#x9;&#x9;it.setCashGained(cashReward);&#xA;&#x9;&#x9;it.setOilGained(oilReward);&#xA;&#x9;&#x9;it.setExpGained(expReward);&#xA;&#x9;&#x9;it.setMonsterPieceDropped(monsterPieceDropped);&#xA;&#x9;&#x9;it.setItemDropped(itemDropped);&#xA;&#x9;}&#xA;};&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%> _doubleArrow = &lt;%org.eclipse.xtext.xbase.lib.ObjectExtensions%>.&lt;&lt;%com.lvl6.mobsters.domainmodel.player.TaskStageInternal%>>operator_doubleArrow(_createTaskStageInternal, _function);&#xA;_stages.add(_doubleArrow);&#xA;return this;"/>
+      </eAnnotations>
+      <eParameters name="stageNum" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="taskStage" unique="false" eType="#//ITaskStage"/>
+      <eParameters name="taskStageMonster" unique="false" eType="#//ITaskStageMonster"/>
+      <eParameters name="cashReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="oilReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="expReward" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="itemDropped" unique="false" eType="#//IItem"/>
+      <eParameters name="monsterPieceDropped" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="build" unique="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _newArtifact = this.getNewArtifact();&#xA;&lt;%java.util.UUID%> _randomUUID = &lt;%java.util.UUID%>.randomUUID();&#xA;_newArtifact.setTaskUuid(_randomUUID);&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.PlayerInternal%> _player = this.getPlayer();&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal%> _newArtifact_1 = this.getNewArtifact();&#xA;_player.setOngoingTask(_newArtifact_1);"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newArtifact" eType="#//OngoingTaskInternal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="#//PlayerInternal"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompletedTask" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CompletedTaskInternal" eSuperTypes="#//CompletedTask">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="#//PlayerInternal"
+        eOpposite="#//PlayerInternal/completedTasks"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskMeta" unique="false"
+        eType="#//ITask"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeOfEntry" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Monster" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MonsterInternal" eSuperTypes="#//Monster">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterUuid" unique="false"
+        eType="#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="#//PlayerInternal"
+        eOpposite="#//PlayerInternal/monsters"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="monsterMeta" unique="false"
+        eType="#//IMonster"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentExp" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentLvl" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentHealth" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numPieces" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isComplete" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="combineStartTime" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="teamSlotNum" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="restricted" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Item" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ItemInternal" eSuperTypes="#//Item">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="itemUuid" unique="false"
+        eType="#//UUID" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="#//PlayerInternal"
+        eOpposite="#//PlayerInternal/items"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="itemMeta" unique="false"
+        eType="#//IItem"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PendingOperation" abstract="true" interface="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="class Quest{&#xA;&#xA;}&#xA;&#xA;class QuestJob {&#xA;&#x9;IQuestJob questJobMeta;&#xA;&#xA;&#x9;private boolean isComplete;&#xA;&#x9;private int progress;&#xA;&#xA;}&#xA;&#xA;//&#xA;// Game State Subunit Models: Booster ?&#xA;//&#xA;class BoosterPackHistory&#xA;&#xA;class BoosterPackItemHistory&#xA;&#xA;&#xA;//&#xA;// Game State Subunit Models: ???&#xA;//&#xA;&#xA;class EventPersistentForUser&#xA;&#xA;&#xA;//&#xA;// Game State Subunit Models: In App Purchase&#xA;//&#xA;class IapHistory // A Transaction&#xA;&#xA;class IapItem // A line item.  Related to Item?&#xA;&#xA;&#xA;//&#xA;// Game State Subunit Models: MiniJob&#xA;//&#xA;class MiniJob&#xA;&#xA;class MiniJobOngoing&#xA;&#xA;class MiniJobCompleted&#xA;&#xA;&#xA;//&#xA;// Game State Subunit Models: Monster &lt;Activity> ???&#xA;//&#xA;class MonsterHealingHistory&#xA;&#xA;&#xA;//&#xA;// Game State Subunit Models: Obstacle&#xA;//&#xA;class Obstacle&#xA;&#xA;&#xA;//&#xA;// Game State Subunit Models: Structure&#xA;//&#xA;class Structure&#xA;&#xA;class Hospital&#xA;&#xA;class Laboratory&#xA;&#xA;class Residence&#xA;&#xA;class ResourceGenrator&#xA;&#xA;class ResourceStoreage&#xA;&#xA;class TeamCenter&#xA;&#xA;class TownHall&#xA;&#xA;//&#xA;// New abstractions&#xA;//&#xA;&#xA;/**&#xA;A Pending Operation is a record of a game event that was scheduled as a result of a game-play&#xA;action (e.g. buying a structure, healing a monster, or committing to complete a MiniJob)&#xA;and then generates an effect some fixed amount of time later.&#xA;&#xA;The purpose of this class is storage for time stamps that are both:&#xA;1)  Necessary while creation, modification, or removal of some user artifact is scheduled&#xA;    but unresolved.&#xA;2)  Serve no functional role after the scheduled creation, modification, or removal is resolved.&#xA;&#xA;NOTE: Copying the state to historical auditing tables goes not constitute a functional role&#xA;      from the perspective (and, hence, domain model) for user state.&#xA;NOTE: The above also alleviates PendingOperations from needing to model state that would be&#xA;      useful in a historical record, but is unnecessary when processing.  For example:&#xA;      1) If resources spent are deducted in the same request handler that creates and attaches&#xA;         a PendingOperation, not the one that resolves it, then neither cashCost, oilCost,&#xA;         or gemCost is needed in that PendingOperation's model.&#xA;      2) Decisions that affected the price paid and, more importantly, the outcome on&#xA;         resolution, are what PendingOperations are meant to capture.  If our example were a&#xA;         &quot;Buy Structure&quot; or &quot;Heal Monster&quot; request, we would see &quot;structure id&quot; or &quot;monster id&quot;&#xA;         storage for information about what is being created.&#xA;      3) If the game were later changed to add a &quot;Cancel&quot; button that could be used to prevent&#xA;         the new structure creation or monster piece combination result from happening,&#xA;         and refunded the initial resource costs, this would be good reason to change the&#xA;         original design to include attributes for costs paid."/>
+    </eAnnotations>
+    <eOperations name="checkTimer" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PendingOperationInternal" abstract="true"
+      eSuperTypes="#//PendingOperation">
+    <eOperations name="happen" unique="false"/>
+    <eOperations name="checkTimer" unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%java.util.Date%> now = &lt;%com.lvl6.mobsters.utility.common.TimeUtils%>.createNow();&#xA;boolean retVal = false;&#xA;&lt;%java.util.Date%> _opEndTimer = this.getOpEndTimer();&#xA;boolean _lessThan = (_opEndTimer.compareTo(now) &lt; 0);&#xA;if (_lessThan)&#xA;{&#xA;&#x9;this.happen();&#xA;&#x9;retVal = true;&#xA;}&#xA;return retVal;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="player" eType="#//PlayerInternal"
+        eOpposite="#//PlayerInternal/pendingOperations"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opStartTimer" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opEndTimer" unique="false"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CombineMonsterPiecesInternal" eSuperTypes="#//PendingOperationInternal">
+    <eOperations name="happen" unique="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="&lt;%com.lvl6.mobsters.domainmodel.player.PlayerInternal%> _player = this.getPlayer();&#xA;&lt;%org.eclipse.emf.common.util.EList%>&lt;&lt;%com.lvl6.mobsters.domainmodel.player.MonsterInternal%>> _monsters = _player.getMonsters();&#xA;&lt;%com.lvl6.mobsters.domainmodel.player.MonsterInternal%> _newMonster = this.getNewMonster();&#xA;_monsters.add(_newMonster);&#xA;return;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newMonster" eType="#//MonsterInternal"/>
+  </eClassifiers>
+</ecore:EPackage>

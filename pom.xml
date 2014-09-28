@@ -97,6 +97,12 @@
 		<lvl6.jedis.auth>L3v3lS!x_K!ngd0m$</lvl6.jedis.auth>
 		<lvl6.jedis.database>1</lvl6.jedis.database>
 
+		<!-- S3 Maven Deploy Bucket -->
+		<s3-deploy-bucket>mobsters-maven</s3-deploy-bucket>
+
+
+		<!-- Maven Wagon Versions -->
+		<aws-maven.extension-version>5.0.0.RELEASE</aws-maven.extension-version>
 
 		<!-- Maven Plugin Versions -->
 		<maven-compiler.plugin-version>3.1</maven-compiler.plugin-version>
@@ -279,6 +285,14 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
+		<extensions>
+			<extension>
+				<groupId>org.springframework.build</groupId>
+				<artifactId>aws-maven</artifactId>
+				<version>${aws-maven.extension-version}</version>
+			</extension>
+		</extensions>
 	</build>
 
 	<dependencyManagement>
@@ -789,4 +803,67 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<repositories>	
+		<repository>	
+			<id>aws-release-repo</id>	
+			<name>S3 Release Repository</name>	
+			<url>s3://${s3-deploy-bucket}/release</url>	
+			<releases>	
+				<enabled>true</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>false</enabled>	
+			</snapshots>	
+		</repository>	
+		<repository>	
+			<id>aws-snapshot-repo</id>	
+			<name>S3 Snapshot Repository</name>	
+			<url>s3://${s3-deploy-bucket}/snapshot</url>	
+			<releases>	
+				<enabled>false</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>true</enabled>	
+			</snapshots>	
+		</repository>	
+	</repositories>	
+
+	<pluginRepositories>	
+		<pluginRepository>	
+			<id>aws-release-repo</id>	
+			<name>S3 Release Repository</name>	
+			<url>s3://${s3-deploy-bucket}/release</url>	
+			<releases>	
+				<enabled>true</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>false</enabled>	
+			</snapshots>	
+		</pluginRepository>	
+		<pluginRepository>	
+			<id>aws-snapshot-repo</id>	
+			<name>S3 Snapshot Repository</name>	
+			<url>s3://${s3-deploy-bucket}/snapshot</url>	
+			<releases>	
+				<enabled>false</enabled>	
+			</releases>	
+			<snapshots>	
+				<enabled>true</enabled>	
+			</snapshots>	
+		</pluginRepository>	
+	</pluginRepositories>	
+
+	<distributionManagement>	
+		<repository>	
+			<id>aws-release-repo</id>	
+			<name>S3 Release Repository</name>	
+			<url>s3://${s3-deploy-bucket}/release</url>	
+		</repository>	
+		<snapshotRepository>	
+			<id>aws-snapshot-repo</id>	
+			<name>S3 Snapshot Repository</name>	
+			<url>s3://${s3-deploy-bucket}/snapshot</url>
+		</snapshotRepository>	
+	</distributionManagement> 
 </project>

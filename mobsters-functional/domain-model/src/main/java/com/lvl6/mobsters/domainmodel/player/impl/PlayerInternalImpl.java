@@ -31,35 +31,80 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Player Internal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Player Internal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getUserUuid <em>User Uuid</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getGems <em>Gems</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCash <em>Cash</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getOil <em>Oil</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getExperience <em>Experience</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getOngoingTask <em>Ongoing Task</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCompletedTasks <em>Completed Tasks</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getItems <em>Items</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getMonsters <em>Monsters</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getTeamSlots <em>Team Slots</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getPendingOperations <em>Pending Operations</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getUdidForHistory <em>Udid For History</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getDeviceToken <em>Device Token</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#isFbIdSetOnUserCreate <em>Fb Id Set On User Create</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getGameCenterId <em>Game Center Id</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getAvatarMonsterMeta <em>Avatar Monster Meta</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastLogin <em>Last Login</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastLogout <em>Last Logout</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCreateTime <em>Create Time</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastObstacleSpawnTime <em>Last Obstacle Spawn Time</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastMiniJobGeneratedTime <em>Last Mini Job Generated Time</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#isIndexed <em>Indexed</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCompletedTaskIndex <em>Completed Task Index</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getUserUuid
+ * <em>User Uuid</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getGems
+ * <em>Gems</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCash
+ * <em>Cash</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getOil
+ * <em>Oil</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getExperience
+ * <em>Experience</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getOngoingTask
+ * <em>Ongoing Task</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCompletedTasks
+ * <em>Completed Tasks</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getItems
+ * <em>Items</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getMonsters
+ * <em>Monsters</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getTeamSlots
+ * <em>Team Slots</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getPendingOperations
+ * <em>Pending Operations</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getUdidForHistory
+ * <em>Udid For History</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getDeviceToken
+ * <em>Device Token</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#isFbIdSetOnUserCreate
+ * <em>Fb Id Set On User Create</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getGameCenterId
+ * <em>Game Center Id</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getAvatarMonsterMeta
+ * <em>Avatar Monster Meta</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastLogin
+ * <em>Last Login</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastLogout
+ * <em>Last Logout</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCreateTime
+ * <em>Create Time</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastObstacleSpawnTime
+ * <em>Last Obstacle Spawn Time</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getLastMiniJobGeneratedTime
+ * <em>Last Mini Job Generated Time</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#isIndexed
+ * <em>Indexed</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PlayerInternalImpl#getCompletedTaskIndex
+ * <em>Completed Task Index</em>}</li>
  * </ul>
  * </p>
  *
@@ -68,8 +113,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 		PlayerInternal {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected PlayerInternalImpl() {
@@ -77,8 +122,8 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -87,8 +132,8 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -97,87 +142,96 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public UUID getUserUuid() {
 		return (UUID) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__USER_UUID, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setUserUuid(UUID newUserUuid) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__USER_UUID,
 				newUserUuid);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public int getGems() {
 		return (Integer) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__GEMS, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setGems(int newGems) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__GEMS, newGems);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public int getCash() {
 		return (Integer) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__CASH, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setCash(int newCash) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__CASH, newCash);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public int getOil() {
 		return (Integer) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__OIL, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setOil(int newOil) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__OIL, newOil);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public int getExperience() {
 		return (Integer) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__EXPERIENCE,
@@ -185,20 +239,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setExperience(int newExperience) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__EXPERIENCE,
 				newExperience);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public OngoingTaskInternal getOngoingTask() {
 		return (OngoingTaskInternal) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__ONGOING_TASK,
@@ -206,20 +262,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setOngoingTask(OngoingTaskInternal newOngoingTask) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__ONGOING_TASK,
 				newOngoingTask);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<CompletedTaskInternal> getCompletedTasks() {
 		return (EList<CompletedTaskInternal>) eGet(
@@ -228,10 +286,11 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<ItemInternal> getItems() {
 		return (EList<ItemInternal>) eGet(
@@ -239,10 +298,11 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<MonsterInternal> getMonsters() {
 		return (EList<MonsterInternal>) eGet(
@@ -250,10 +310,11 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<MonsterInternal> getTeamSlots() {
 		return (EList<MonsterInternal>) eGet(
@@ -262,10 +323,11 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<PendingOperationInternal> getPendingOperations() {
 		return (EList<PendingOperationInternal>) eGet(
@@ -274,10 +336,11 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String getUdidForHistory() {
 		return (String) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__UDID_FOR_HISTORY,
@@ -285,20 +348,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setUdidForHistory(String newUdidForHistory) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__UDID_FOR_HISTORY,
 				newUdidForHistory);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String getDeviceToken() {
 		return (String) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__DEVICE_TOKEN,
@@ -306,20 +371,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setDeviceToken(String newDeviceToken) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__DEVICE_TOKEN,
 				newDeviceToken);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public boolean isFbIdSetOnUserCreate() {
 		return (Boolean) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__FB_ID_SET_ON_USER_CREATE,
@@ -327,20 +394,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setFbIdSetOnUserCreate(boolean newFbIdSetOnUserCreate) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__FB_ID_SET_ON_USER_CREATE,
 				newFbIdSetOnUserCreate);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String getGameCenterId() {
 		return (String) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__GAME_CENTER_ID,
@@ -348,20 +417,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setGameCenterId(String newGameCenterId) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__GAME_CENTER_ID,
 				newGameCenterId);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public IMonster getAvatarMonsterMeta() {
 		return (IMonster) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__AVATAR_MONSTER_META,
@@ -369,20 +440,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setAvatarMonsterMeta(IMonster newAvatarMonsterMeta) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__AVATAR_MONSTER_META,
 				newAvatarMonsterMeta);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getLastLogin() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGIN,
@@ -390,20 +463,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setLastLogin(Date newLastLogin) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGIN,
 				newLastLogin);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getLastLogout() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGOUT,
@@ -411,20 +486,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setLastLogout(Date newLastLogout) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_LOGOUT,
 				newLastLogout);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getCreateTime() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__CREATE_TIME,
@@ -432,20 +509,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setCreateTime(Date newCreateTime) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__CREATE_TIME,
 				newCreateTime);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getLastObstacleSpawnTime() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_OBSTACLE_SPAWN_TIME,
@@ -453,20 +532,22 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setLastObstacleSpawnTime(Date newLastObstacleSpawnTime) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_OBSTACLE_SPAWN_TIME,
 				newLastObstacleSpawnTime);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getLastMiniJobGeneratedTime() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_MINI_JOB_GENERATED_TIME,
@@ -474,30 +555,33 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setLastMiniJobGeneratedTime(Date newLastMiniJobGeneratedTime) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__LAST_MINI_JOB_GENERATED_TIME,
 				newLastMiniJobGeneratedTime);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public boolean isIndexed() {
 		return (Boolean) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__INDEXED, true);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public IndexedCollection<CompletedTask> getCompletedTaskIndex() {
 		return (IndexedCollection<CompletedTask>) eGet(
 				MobstersPlayerPackage.Literals.PLAYER_INTERNAL__COMPLETED_TASK_INDEX,
@@ -505,10 +589,11 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setCompletedTaskIndex(
 			IndexedCollection<CompletedTask> newCompletedTaskIndex) {
 		eSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__COMPLETED_TASK_INDEX,
@@ -516,38 +601,42 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void unsetCompletedTaskIndex() {
 		eUnset(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__COMPLETED_TASK_INDEX);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public boolean isSetCompletedTaskIndex() {
 		return eIsSet(MobstersPlayerPackage.Literals.PLAYER_INTERNAL__COMPLETED_TASK_INDEX);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void beginTask(final ITask taskMeta,
 			final Director<BeginTaskStagesBuilder> director) {
 
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void checkForIndices() {
 		boolean _isIndexed = this.isIndexed();
 		boolean _equals = (_isIndexed == false);
@@ -556,17 +645,18 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public CompletedTask getCompletedTaskFor(final ITask taskMeta) {
 		return null;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -587,4 +677,4 @@ public class PlayerInternalImpl extends MinimalEObjectImpl.Container implements
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //PlayerInternalImpl
+} // PlayerInternalImpl

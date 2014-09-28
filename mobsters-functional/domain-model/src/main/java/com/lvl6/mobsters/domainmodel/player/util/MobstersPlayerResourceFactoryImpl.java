@@ -9,17 +9,17 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Resource Factory</b> associated with the package.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Resource Factory</b> associated with the
+ * package. <!-- end-user-doc -->
+ * 
  * @see com.lvl6.mobsters.domainmodel.player.util.MobstersPlayerResourceImpl
  * @generated
  */
 public class MobstersPlayerResourceFactoryImpl extends ResourceFactoryImpl {
 	/**
-	 * Creates an instance of the resource factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the resource factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MobstersPlayerResourceFactoryImpl() {
@@ -27,9 +27,9 @@ public class MobstersPlayerResourceFactoryImpl extends ResourceFactoryImpl {
 	}
 
 	/**
-	 * Creates an instance of the resource.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -38,4 +38,4 @@ public class MobstersPlayerResourceFactoryImpl extends ResourceFactoryImpl {
 		return result;
 	}
 
-} //MobstersPlayerResourceFactoryImpl
+} // MobstersPlayerResourceFactoryImpl

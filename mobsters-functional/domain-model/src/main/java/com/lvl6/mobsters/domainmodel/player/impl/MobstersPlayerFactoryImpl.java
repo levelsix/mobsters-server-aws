@@ -35,17 +35,17 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 		MobstersPlayerFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static MobstersPlayerFactory init() {
@@ -62,9 +62,9 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MobstersPlayerFactoryImpl() {
@@ -72,8 +72,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -102,8 +102,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -142,8 +142,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -182,140 +182,191 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public PlayerInternal createPlayerInternal() {
 		PlayerInternalImpl playerInternal = new PlayerInternalImpl();
 		return playerInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public OngoingTaskInternal createOngoingTaskInternal() {
 		OngoingTaskInternalImpl ongoingTaskInternal = new OngoingTaskInternalImpl();
 		return ongoingTaskInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public TaskStageInternal createTaskStageInternal() {
 		TaskStageInternalImpl taskStageInternal = new TaskStageInternalImpl();
 		return taskStageInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public BeginTaskStagesBuilderInternal createBeginTaskStagesBuilderInternal() {
 		BeginTaskStagesBuilderInternalImpl beginTaskStagesBuilderInternal = new BeginTaskStagesBuilderInternalImpl();
 		return beginTaskStagesBuilderInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public CompletedTaskInternal createCompletedTaskInternal() {
 		CompletedTaskInternalImpl completedTaskInternal = new CompletedTaskInternalImpl();
 		return completedTaskInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public MonsterInternal createMonsterInternal() {
 		MonsterInternalImpl monsterInternal = new MonsterInternalImpl();
 		return monsterInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public ItemInternal createItemInternal() {
 		ItemInternalImpl itemInternal = new ItemInternalImpl();
 		return itemInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public CombineMonsterPiecesInternal createCombineMonsterPiecesInternal() {
 		CombineMonsterPiecesInternalImpl combineMonsterPiecesInternal = new CombineMonsterPiecesInternalImpl();
 		return combineMonsterPiecesInternal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public MonsterType createMonsterType(String literal) {
+		MonsterType result = MonsterType.get(literal);
+		if (result == null)
+			throw new IllegalArgumentException("The value '" + literal
+					+ "' is not a valid enumerator of '"
+					+ MobstersPlayerPackage.Literals.MONSTER_TYPE.getName()
+					+ "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MonsterType createMonsterTypeFromString(EDataType eDataType,
 			String initialValue) {
-		MonsterType result = MonsterType.get(initialValue);
-		if (result == null)
-			throw new IllegalArgumentException("The value '" + initialValue
-					+ "' is not a valid enumerator of '" + eDataType.getName()
-					+ "'");
-		return result;
+		return createMonsterType(initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertMonsterType(MonsterType instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertMonsterTypeToString(EDataType eDataType,
 			Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
+		return convertMonsterType((MonsterType) instanceValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public ElementType createElementTypeFromString(EDataType eDataType,
-			String initialValue) {
-		ElementType result = ElementType.get(initialValue);
+	@Override
+	public ElementType createElementType(String literal) {
+		ElementType result = ElementType.get(literal);
 		if (result == null)
-			throw new IllegalArgumentException("The value '" + initialValue
-					+ "' is not a valid enumerator of '" + eDataType.getName()
+			throw new IllegalArgumentException("The value '" + literal
+					+ "' is not a valid enumerator of '"
+					+ MobstersPlayerPackage.Literals.ELEMENT_TYPE.getName()
 					+ "'");
 		return result;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public String convertElementTypeToString(EDataType eDataType,
-			Object instanceValue) {
+	public ElementType createElementTypeFromString(EDataType eDataType,
+			String initialValue) {
+		return createElementType(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertElementType(ElementType instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	public String convertElementTypeToString(EDataType eDataType,
+			Object instanceValue) {
+		return convertElementType((ElementType) instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public IMonster createIMonster(final String it) {
 		final Pattern p = Pattern.compile("^Monster\\[(\\d+)\\]$");
 		final Matcher m = p.matcher(it);
@@ -332,8 +383,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IMonster createIMonsterFromString(EDataType eDataType,
@@ -342,18 +393,19 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String convertIMonster(final IMonster it) {
 		int _id = it.getId();
 		return String.format("Monster[%d]", Integer.valueOf(_id));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertIMonsterToString(EDataType eDataType,
@@ -362,10 +414,11 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public IItem createIItem(final String it) {
 		final Pattern p = Pattern.compile("^Item\\[(\\d+)\\]$");
 		final Matcher m = p.matcher(it);
@@ -382,8 +435,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IItem createIItemFromString(EDataType eDataType, String initialValue) {
@@ -391,18 +444,19 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String convertIItem(final IItem it) {
 		int _id = it.getId();
 		return String.format("Item[%d]", Integer.valueOf(_id));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertIItemToString(EDataType eDataType, Object instanceValue) {
@@ -410,10 +464,11 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public ITask createITask(final String it) {
 		final Pattern p = Pattern.compile("^Task\\[(\\d+)\\]$");
 		final Matcher m = p.matcher(it);
@@ -430,8 +485,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ITask createITaskFromString(EDataType eDataType, String initialValue) {
@@ -439,10 +494,11 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String convertITask(final ITask it) {
 		int _id = it.getId();
 		String _plus = ("Task[" + Integer.valueOf(_id));
@@ -450,8 +506,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertITaskToString(EDataType eDataType, Object instanceValue) {
@@ -459,10 +515,11 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public ITaskStage createITaskStage(final String it) {
 		final Pattern p = Pattern.compile("^TaskStage\\[(\\d+)\\]$");
 		final Matcher m = p.matcher(it);
@@ -479,8 +536,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ITaskStage createITaskStageFromString(EDataType eDataType,
@@ -489,18 +546,19 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String convertITaskStage(final ITaskStage it) {
 		int _id = it.getId();
 		return String.format("TaskStage[%d]", Integer.valueOf(_id));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertITaskStageToString(EDataType eDataType,
@@ -509,10 +567,11 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public ITaskStageMonster createITaskStageMonster(final String it) {
 		final Pattern p = Pattern.compile("^TaskStageMonster\\[(\\d+)\\]$");
 		final Matcher m = p.matcher(it);
@@ -529,8 +588,8 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ITaskStageMonster createITaskStageMonsterFromString(
@@ -539,18 +598,19 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String convertITaskStageMonster(final ITaskStageMonster it) {
 		int _id = it.getId();
 		return String.format("TaskStageMonster[%d]", Integer.valueOf(_id));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertITaskStageMonsterToString(EDataType eDataType,
@@ -559,96 +619,187 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public IQuest createIQuest(String literal) {
+		return (IQuest) super.createFromString(
+				MobstersPlayerPackage.Literals.IQUEST, literal);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IQuest createIQuestFromString(EDataType eDataType,
 			String initialValue) {
-		return (IQuest) super.createFromString(eDataType, initialValue);
+		return createIQuest(initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertIQuest(IQuest instanceValue) {
+		return super.convertToString(MobstersPlayerPackage.Literals.IQUEST,
+				instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertIQuestToString(EDataType eDataType,
 			Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
+		return convertIQuest((IQuest) instanceValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public IQuestJob createIQuestJob(String literal) {
+		return (IQuestJob) super.createFromString(
+				MobstersPlayerPackage.Literals.IQUEST_JOB, literal);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IQuestJob createIQuestJobFromString(EDataType eDataType,
 			String initialValue) {
-		return (IQuestJob) super.createFromString(eDataType, initialValue);
+		return createIQuestJob(initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertIQuestJob(IQuestJob instanceValue) {
+		return super.convertToString(MobstersPlayerPackage.Literals.IQUEST_JOB,
+				instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertIQuestJobToString(EDataType eDataType,
 			Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
+		return convertIQuestJob((IQuestJob) instanceValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public IQuestJobMonsterItem createIQuestJobMonsterItem(String literal) {
+		return (IQuestJobMonsterItem) super
+				.createFromString(
+						MobstersPlayerPackage.Literals.IQUEST_JOB_MONSTER_ITEM,
+						literal);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IQuestJobMonsterItem createIQuestJobMonsterItemFromString(
 			EDataType eDataType, String initialValue) {
-		return (IQuestJobMonsterItem) super.createFromString(eDataType,
-				initialValue);
+		return createIQuestJobMonsterItem(initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertIQuestJobMonsterItem(IQuestJobMonsterItem instanceValue) {
+		return super.convertToString(
+				MobstersPlayerPackage.Literals.IQUEST_JOB_MONSTER_ITEM,
+				instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertIQuestJobMonsterItemToString(EDataType eDataType,
 			Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
+		return convertIQuestJobMonsterItem((IQuestJobMonsterItem) instanceValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Date createDate(String literal) {
+		return (Date) super.createFromString(
+				MobstersPlayerPackage.Literals.DATE, literal);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Date createDateFromString(EDataType eDataType, String initialValue) {
-		return (Date) super.createFromString(eDataType, initialValue);
+		return createDate(initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertDate(Date instanceValue) {
+		return super.convertToString(MobstersPlayerPackage.Literals.DATE,
+				instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertDateToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
+		return convertDate((Date) instanceValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public UUID createUUID(final String it) {
 		return UUID.fromString(it);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public UUID createUUIDFromString(EDataType eDataType, String initialValue) {
@@ -656,17 +807,18 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String convertUUID(final UUID it) {
 		return it.toString();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertUUIDToString(EDataType eDataType, Object instanceValue) {
@@ -674,39 +826,63 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	public IndexedCollection<CompletedTask> createCompletedTaskIndexFromString(
-			EDataType eDataType, String initialValue) {
+	public IndexedCollection<CompletedTask> createCompletedTaskIndex(
+			String literal) {
 		return (IndexedCollection<CompletedTask>) super
-				.createFromString(initialValue);
+				.createFromString(literal);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	public String convertCompletedTaskIndexToString(EDataType eDataType,
-			Object instanceValue) {
+	public IndexedCollection<CompletedTask> createCompletedTaskIndexFromString(
+			EDataType eDataType, String initialValue) {
+		return createCompletedTaskIndex(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String convertCompletedTaskIndex(
+			IndexedCollection<CompletedTask> instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	public String convertCompletedTaskIndexToString(EDataType eDataType,
+			Object instanceValue) {
+		return convertCompletedTaskIndex((IndexedCollection<CompletedTask>) instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public MobstersPlayerPackage getMobstersPlayerPackage() {
 		return (MobstersPlayerPackage) getEPackage();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -715,4 +891,4 @@ public class MobstersPlayerFactoryImpl extends EFactoryImpl implements
 		return MobstersPlayerPackage.eINSTANCE;
 	}
 
-} //MobstersPlayerFactoryImpl
+} // MobstersPlayerFactoryImpl

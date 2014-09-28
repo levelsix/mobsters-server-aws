@@ -9,19 +9,19 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Element Type</b></em>',
- * and utility methods for working with them.
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '
+ * <em><b>Element Type</b></em>', and utility methods for working with them.
  * <!-- end-user-doc -->
+ * 
  * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage#getElementType()
  * @model
  * @generated
  */
 public enum ElementType implements Enumerator {
 	/**
-	 * The '<em><b>NO ELEMENT</b></em>' literal object.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>NO ELEMENT</b></em>' literal object. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #NO_ELEMENT_VALUE
 	 * @generated
 	 * @ordered
@@ -29,9 +29,9 @@ public enum ElementType implements Enumerator {
 	NO_ELEMENT(0, "NO_ELEMENT", "NO_ELEMENT"),
 
 	/**
-	 * The '<em><b>FIRE</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>FIRE</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #FIRE_VALUE
 	 * @generated
 	 * @ordered
@@ -39,9 +39,9 @@ public enum ElementType implements Enumerator {
 	FIRE(0, "FIRE", "FIRE"),
 
 	/**
-	 * The '<em><b>EARTH</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>EARTH</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #EARTH_VALUE
 	 * @generated
 	 * @ordered
@@ -49,9 +49,9 @@ public enum ElementType implements Enumerator {
 	EARTH(0, "EARTH", "EARTH"),
 
 	/**
-	 * The '<em><b>WATER</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>WATER</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #WATER_VALUE
 	 * @generated
 	 * @ordered
@@ -59,9 +59,9 @@ public enum ElementType implements Enumerator {
 	WATER(0, "WATER", "WATER"),
 
 	/**
-	 * The '<em><b>ROCK</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>ROCK</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #ROCK_VALUE
 	 * @generated
 	 * @ordered
@@ -69,9 +69,9 @@ public enum ElementType implements Enumerator {
 	ROCK(0, "ROCK", "ROCK"),
 
 	/**
-	 * The '<em><b>LIGHT</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>LIGHT</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #LIGHT_VALUE
 	 * @generated
 	 * @ordered
@@ -79,9 +79,9 @@ public enum ElementType implements Enumerator {
 	LIGHT(0, "LIGHT", "LIGHT"),
 
 	/**
-	 * The '<em><b>DARK</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>DARK</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #DARK_VALUE
 	 * @generated
 	 * @ordered
@@ -89,13 +89,13 @@ public enum ElementType implements Enumerator {
 	DARK(0, "DARK", "DARK");
 
 	/**
-	 * The '<em><b>NO ELEMENT</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>NO ELEMENT</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>NO ELEMENT</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>NO ELEMENT</b></em>' literal object isn't
+	 * clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #NO_ELEMENT
 	 * @model
 	 * @generated
@@ -104,13 +104,13 @@ public enum ElementType implements Enumerator {
 	public static final int NO_ELEMENT_VALUE = 0;
 
 	/**
-	 * The '<em><b>FIRE</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>FIRE</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>FIRE</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #FIRE
 	 * @model
 	 * @generated
@@ -119,13 +119,13 @@ public enum ElementType implements Enumerator {
 	public static final int FIRE_VALUE = 0;
 
 	/**
-	 * The '<em><b>EARTH</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>EARTH</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>EARTH</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #EARTH
 	 * @model
 	 * @generated
@@ -134,13 +134,13 @@ public enum ElementType implements Enumerator {
 	public static final int EARTH_VALUE = 0;
 
 	/**
-	 * The '<em><b>WATER</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>WATER</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>WATER</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #WATER
 	 * @model
 	 * @generated
@@ -149,13 +149,13 @@ public enum ElementType implements Enumerator {
 	public static final int WATER_VALUE = 0;
 
 	/**
-	 * The '<em><b>ROCK</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>ROCK</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>ROCK</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #ROCK
 	 * @model
 	 * @generated
@@ -164,13 +164,13 @@ public enum ElementType implements Enumerator {
 	public static final int ROCK_VALUE = 0;
 
 	/**
-	 * The '<em><b>LIGHT</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>LIGHT</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>LIGHT</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #LIGHT
 	 * @model
 	 * @generated
@@ -179,13 +179,13 @@ public enum ElementType implements Enumerator {
 	public static final int LIGHT_VALUE = 0;
 
 	/**
-	 * The '<em><b>DARK</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>DARK</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>DARK</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #DARK
 	 * @model
 	 * @generated
@@ -194,27 +194,27 @@ public enum ElementType implements Enumerator {
 	public static final int DARK_VALUE = 0;
 
 	/**
-	 * An array of all the '<em><b>Element Type</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * An array of all the '<em><b>Element Type</b></em>' enumerators. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static final ElementType[] VALUES_ARRAY = new ElementType[] {
 			NO_ELEMENT, FIRE, EARTH, WATER, ROCK, LIGHT, DARK, };
 
 	/**
-	 * A public read-only list of all the '<em><b>Element Type</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * A public read-only list of all the '<em><b>Element Type</b></em>'
+	 * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final List<ElementType> VALUES = Collections
 			.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Element Type</b></em>' literal with the specified literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Element Type</b></em>' literal with the specified
+	 * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static ElementType get(String literal) {
@@ -228,9 +228,9 @@ public enum ElementType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Element Type</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Element Type</b></em>' literal with the specified
+	 * name. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static ElementType getByName(String name) {
@@ -244,9 +244,9 @@ public enum ElementType implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Element Type</b></em>' literal with the specified integer value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Element Type</b></em>' literal with the specified
+	 * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static ElementType get(int value) {
@@ -258,30 +258,30 @@ public enum ElementType implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private ElementType(int value, String name, String literal) {
@@ -291,36 +291,39 @@ public enum ElementType implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public int getValue() {
 		return value;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public String getLiteral() {
 		return literal;
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string representation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the literal value of the enumerator, which is its string
+	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -328,4 +331,4 @@ public enum ElementType implements Enumerator {
 		return literal;
 	}
 
-} //ElementType
+} // ElementType

@@ -23,16 +23,23 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Ongoing Task Internal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Ongoing Task Internal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getTaskUuid <em>Task Uuid</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getPlayer <em>Player</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getTaskMeta <em>Task Meta</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getStages <em>Stages</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getTaskUuid
+ * <em>Task Uuid</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getPlayer
+ * <em>Player</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getTaskMeta
+ * <em>Task Meta</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.OngoingTaskInternalImpl#getStages
+ * <em>Stages</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,8 +48,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 		implements OngoingTaskInternal {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected OngoingTaskInternalImpl() {
@@ -50,8 +57,8 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -60,8 +67,8 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,10 +77,11 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public UUID getTaskUuid() {
 		return (UUID) eGet(
 				MobstersPlayerPackage.Literals.ONGOING_TASK_INTERNAL__TASK_UUID,
@@ -81,20 +89,22 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTaskUuid(UUID newTaskUuid) {
 		eSet(MobstersPlayerPackage.Literals.ONGOING_TASK_INTERNAL__TASK_UUID,
 				newTaskUuid);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public PlayerInternal getPlayer() {
 		return (PlayerInternal) eGet(
 				MobstersPlayerPackage.Literals.ONGOING_TASK_INTERNAL__PLAYER,
@@ -102,20 +112,22 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setPlayer(PlayerInternal newPlayer) {
 		eSet(MobstersPlayerPackage.Literals.ONGOING_TASK_INTERNAL__PLAYER,
 				newPlayer);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public ITask getTaskMeta() {
 		return (ITask) eGet(
 				MobstersPlayerPackage.Literals.ONGOING_TASK_INTERNAL__TASK_META,
@@ -123,20 +135,22 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTaskMeta(ITask newTaskMeta) {
 		eSet(MobstersPlayerPackage.Literals.ONGOING_TASK_INTERNAL__TASK_META,
 				newTaskMeta);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public EList<TaskStageInternal> getStages() {
 		return (EList<TaskStageInternal>) eGet(
@@ -145,10 +159,11 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void completeTask() {
 		PlayerInternal _player = this.getPlayer();
 		ITask _taskMeta = this.getTaskMeta();
@@ -160,8 +175,8 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -175,4 +190,4 @@ public class OngoingTaskInternalImpl extends MinimalEObjectImpl.Container
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //OngoingTaskInternalImpl
+} // OngoingTaskInternalImpl

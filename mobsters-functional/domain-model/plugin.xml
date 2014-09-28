@@ -13,6 +13,28 @@
             genModel="src/main/model/player.xcore"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <!-- @generated mobplayer -->
+      <parser
+            contentTypeIdentifier="application/mobsters"
+            class="com.lvl6.mobsters.domainmodel.player.util.MobstersPlayerResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- @generated mobplayer -->
+      <content-type
+            base-type="org.eclipse.emf.ecore.xmi"
+            file-extensions="usermob"
+            id="application/mobsters"
+            name="%_UI_MobstersPlayer_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://com/lvl6/mobsters/domainmodel/player"/>
+            <parameter name="kind" value="xmi"/>
+         </describer>
+      </content-type>
+   </extension>
+
    <extension point="org.eclipse.emf.ecore.extension_parser">
       <!-- @generated player -->
       <parser

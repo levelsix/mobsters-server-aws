@@ -14,13 +14,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Combine Monster Pieces Internal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Combine Monster Pieces Internal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.CombineMonsterPiecesInternalImpl#getNewMonster <em>New Monster</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.CombineMonsterPiecesInternalImpl#getNewMonster
+ * <em>New Monster</em>}</li>
  * </ul>
  * </p>
  *
@@ -29,8 +30,8 @@ import org.eclipse.emf.ecore.EClass;
 public class CombineMonsterPiecesInternalImpl extends
 		PendingOperationInternalImpl implements CombineMonsterPiecesInternal {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected CombineMonsterPiecesInternalImpl() {
@@ -38,8 +39,8 @@ public class CombineMonsterPiecesInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -48,10 +49,11 @@ public class CombineMonsterPiecesInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public MonsterInternal getNewMonster() {
 		return (MonsterInternal) eGet(
 				MobstersPlayerPackage.Literals.COMBINE_MONSTER_PIECES_INTERNAL__NEW_MONSTER,
@@ -59,20 +61,22 @@ public class CombineMonsterPiecesInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setNewMonster(MonsterInternal newNewMonster) {
 		eSet(MobstersPlayerPackage.Literals.COMBINE_MONSTER_PIECES_INTERNAL__NEW_MONSTER,
 				newNewMonster);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void happen() {
 		PlayerInternal _player = this.getPlayer();
 		EList<MonsterInternal> _monsters = _player.getMonsters();
@@ -82,8 +86,8 @@ public class CombineMonsterPiecesInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -97,4 +101,4 @@ public class CombineMonsterPiecesInternalImpl extends
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //CombineMonsterPiecesInternalImpl
+} // CombineMonsterPiecesInternalImpl

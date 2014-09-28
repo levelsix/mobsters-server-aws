@@ -31,14 +31,17 @@ import org.eclipse.xtext.xbase.lib.ObjectExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Begin Task Stages Builder Internal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Begin Task Stages Builder Internal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.BeginTaskStagesBuilderInternalImpl#getNewArtifact <em>New Artifact</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.BeginTaskStagesBuilderInternalImpl#getPlayer <em>Player</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.BeginTaskStagesBuilderInternalImpl#getNewArtifact
+ * <em>New Artifact</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.BeginTaskStagesBuilderInternalImpl#getPlayer
+ * <em>Player</em>}</li>
  * </ul>
  * </p>
  *
@@ -47,8 +50,8 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 public class BeginTaskStagesBuilderInternalImpl extends
 		MinimalEObjectImpl.Container implements BeginTaskStagesBuilderInternal {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BeginTaskStagesBuilderInternalImpl() {
@@ -56,8 +59,8 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -66,8 +69,8 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,10 +79,11 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public OngoingTaskInternal getNewArtifact() {
 		return (OngoingTaskInternal) eGet(
 				MobstersPlayerPackage.Literals.BEGIN_TASK_STAGES_BUILDER_INTERNAL__NEW_ARTIFACT,
@@ -87,20 +91,22 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setNewArtifact(OngoingTaskInternal newNewArtifact) {
 		eSet(MobstersPlayerPackage.Literals.BEGIN_TASK_STAGES_BUILDER_INTERNAL__NEW_ARTIFACT,
 				newNewArtifact);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public PlayerInternal getPlayer() {
 		return (PlayerInternal) eGet(
 				MobstersPlayerPackage.Literals.BEGIN_TASK_STAGES_BUILDER_INTERNAL__PLAYER,
@@ -108,20 +114,22 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setPlayer(PlayerInternal newPlayer) {
 		eSet(MobstersPlayerPackage.Literals.BEGIN_TASK_STAGES_BUILDER_INTERNAL__PLAYER,
 				newPlayer);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void init(final ITask taskMeta, final Player player) {
 		OngoingTaskInternal _createOngoingTaskInternal = MobstersPlayerFactory.eINSTANCE
 				.createOngoingTaskInternal();
@@ -131,10 +139,11 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public BeginTaskStagesBuilder addStage(final int stageNum,
 			final ITaskStage taskStage,
 			final ITaskStageMonster taskStageMonster, final int cashReward,
@@ -145,6 +154,7 @@ public class BeginTaskStagesBuilderInternalImpl extends
 		TaskStageInternal _createTaskStageInternal = MobstersPlayerFactory.eINSTANCE
 				.createTaskStageInternal();
 		final Procedure1<TaskStageInternal> _function = new Procedure1<TaskStageInternal>() {
+			@Override
 			public void apply(final TaskStageInternal it) {
 				UUID _randomUUID = UUID.randomUUID();
 				it.setTaskStageUuid(_randomUUID);
@@ -166,10 +176,11 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void build() {
 		OngoingTaskInternal _newArtifact = this.getNewArtifact();
 		UUID _randomUUID = UUID.randomUUID();
@@ -180,10 +191,11 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public BeginTaskStagesBuilder addStage(int stageNum, ITaskStage stageMeta,
 			ITaskStageMonster stageMonster, int cashReward, int oilReward,
 			int expReward, boolean rewardsMonsterPiece, IItem droppedItem) {
@@ -193,8 +205,8 @@ public class BeginTaskStagesBuilderInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -225,4 +237,4 @@ public class BeginTaskStagesBuilderInternalImpl extends
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //BeginTaskStagesBuilderInternalImpl
+} // BeginTaskStagesBuilderInternalImpl

@@ -14,26 +14,25 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Adapter Factory</b> for the model.
- * It provides an adapter <code>createXXX</code> method for each class of the model.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
+ * an adapter <code>createXXX</code> method for each class of the model. <!--
+ * end-user-doc -->
+ * 
  * @see com.lvl6.mobsters.domainmodel.player.MobstersPlayerPackage
  * @generated
  */
 public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	/**
-	 * The cached model package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static MobstersPlayerPackage modelPackage;
 
 	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MobstersPlayerAdapterFactory() {
@@ -44,9 +43,10 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> This implementation returns <code>true</code> if
+	 * the object is either the model's package or is an instance object of the
+	 * model. <!-- end-user-doc -->
+	 * 
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
@@ -62,9 +62,9 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The switch that delegates to the <code>createXXX</code> methods. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected MobstersPlayerSwitch<Adapter> modelSwitch = new MobstersPlayerSwitch<Adapter>() {
@@ -168,10 +168,11 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	};
 
 	/**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc -->
+	 * Creates an adapter for the <code>target</code>. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param target the object to adapt.
+	 * 
+	 * @param target
+	 *            the object to adapt.
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
 	 */
@@ -181,11 +182,12 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.utility.lambda.Director <em>Director</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.utility.lambda.Director <em>Director</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance
+	 * will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.utility.lambda.Director
 	 * @generated
@@ -195,11 +197,12 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.Player <em>Player</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.Player <em>Player</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance
+	 * will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.Player
 	 * @generated
@@ -209,11 +212,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.PlayerInternal <em>Player Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.PlayerInternal
+	 * <em>Player Internal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.PlayerInternal
 	 * @generated
@@ -223,11 +228,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.OngoingTask <em>Ongoing Task</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.OngoingTask
+	 * <em>Ongoing Task</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.OngoingTask
 	 * @generated
@@ -237,11 +244,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal <em>Ongoing Task Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal
+	 * <em>Ongoing Task Internal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.OngoingTaskInternal
 	 * @generated
@@ -251,11 +260,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.TaskStage <em>Task Stage</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.TaskStage
+	 * <em>Task Stage</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.TaskStage
 	 * @generated
@@ -265,11 +276,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.TaskStageInternal <em>Task Stage Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.TaskStageInternal
+	 * <em>Task Stage Internal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.TaskStageInternal
 	 * @generated
@@ -279,11 +292,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilder <em>Begin Task Stages Builder</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilder
+	 * <em>Begin Task Stages Builder</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilder
 	 * @generated
@@ -293,11 +308,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilderInternal <em>Begin Task Stages Builder Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilderInternal
+	 * <em>Begin Task Stages Builder Internal</em>}'. <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore
+	 * cases; it's useful to ignore a case when inheritance will catch all the
+	 * cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.BeginTaskStagesBuilderInternal
 	 * @generated
@@ -307,11 +324,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.CompletedTask <em>Completed Task</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.CompletedTask
+	 * <em>Completed Task</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.CompletedTask
 	 * @generated
@@ -321,11 +340,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.CompletedTaskInternal <em>Completed Task Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.CompletedTaskInternal
+	 * <em>Completed Task Internal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.CompletedTaskInternal
 	 * @generated
@@ -335,11 +356,12 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.Monster <em>Monster</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.Monster <em>Monster</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance
+	 * will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.Monster
 	 * @generated
@@ -349,11 +371,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.MonsterInternal <em>Monster Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.MonsterInternal
+	 * <em>Monster Internal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.MonsterInternal
 	 * @generated
@@ -363,11 +387,12 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.Item <em>Item</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.Item <em>Item</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance
+	 * will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.Item
 	 * @generated
@@ -377,11 +402,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.ItemInternal <em>Item Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.ItemInternal
+	 * <em>Item Internal</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.ItemInternal
 	 * @generated
@@ -391,11 +418,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.PendingOperation <em>Pending Operation</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.PendingOperation
+	 * <em>Pending Operation</em>}'. <!-- begin-user-doc --> This default
+	 * implementation returns null so that we can easily ignore cases; it's
+	 * useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.PendingOperation
 	 * @generated
@@ -405,11 +434,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.PendingOperationInternal <em>Pending Operation Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.PendingOperationInternal
+	 * <em>Pending Operation Internal</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.PendingOperationInternal
 	 * @generated
@@ -419,11 +450,13 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.lvl6.mobsters.domainmodel.player.CombineMonsterPiecesInternal <em>Combine Monster Pieces Internal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link com.lvl6.mobsters.domainmodel.player.CombineMonsterPiecesInternal
+	 * <em>Combine Monster Pieces Internal</em>}'. <!-- begin-user-doc --> This
+	 * default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see com.lvl6.mobsters.domainmodel.player.CombineMonsterPiecesInternal
 	 * @generated
@@ -433,10 +466,9 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for the default case. <!-- begin-user-doc --> This
+	 * default implementation returns null. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @generated
 	 */
@@ -444,4 +476,4 @@ public class MobstersPlayerAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //MobstersPlayerAdapterFactory
+} // MobstersPlayerAdapterFactory

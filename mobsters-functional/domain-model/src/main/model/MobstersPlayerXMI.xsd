@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xsd:schema xmlns:player="com.lvl6.mobsters.domainmodel.player" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="com.lvl6.mobsters.domainmodel.player">
+<xsd:schema xmlns:mobplayer="http://com/lvl6/mobsters/domainmodel/player" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://com/lvl6/mobsters/domainmodel/player">
   <xsd:import namespace="http://www.omg.org/XMI" schemaLocation="platform:/plugin/org.eclipse.emf.ecore/model/XMI.xsd"/>
   <xsd:simpleType name="MonsterType">
     <xsd:restriction base="xsd:NCName">
@@ -26,7 +26,7 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="Director" type="player:Director"/>
+  <xsd:element name="Director" type="mobplayer:Director"/>
   <xsd:complexType abstract="true" name="Player">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -34,17 +34,17 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="Player" type="player:Player"/>
+  <xsd:element name="Player" type="mobplayer:Player"/>
   <xsd:complexType name="PlayerInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:Player">
+      <xsd:extension base="mobplayer:Player">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="ongoingTask" type="player:OngoingTaskInternal"/>
-          <xsd:element name="completedTasks" type="player:CompletedTaskInternal"/>
-          <xsd:element name="items" type="player:ItemInternal"/>
-          <xsd:element name="monsters" type="player:MonsterInternal"/>
-          <xsd:element name="teamSlots" type="player:MonsterInternal"/>
-          <xsd:element name="pendingOperations" type="player:PendingOperationInternal"/>
+          <xsd:element name="ongoingTask" type="mobplayer:OngoingTaskInternal"/>
+          <xsd:element name="completedTasks" type="mobplayer:CompletedTaskInternal"/>
+          <xsd:element name="items" type="mobplayer:ItemInternal"/>
+          <xsd:element name="monsters" type="mobplayer:MonsterInternal"/>
+          <xsd:element name="teamSlots" type="mobplayer:MonsterInternal"/>
+          <xsd:element name="pendingOperations" type="mobplayer:PendingOperationInternal"/>
         </xsd:choice>
         <xsd:attribute name="userUuid" type="xsd:string"/>
         <xsd:attribute name="gems" type="xsd:int"/>
@@ -65,7 +65,7 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="PlayerInternal" type="player:PlayerInternal"/>
+  <xsd:element name="PlayerInternal" type="mobplayer:PlayerInternal"/>
   <xsd:complexType abstract="true" name="OngoingTask">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -73,13 +73,13 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="OngoingTask" type="player:OngoingTask"/>
+  <xsd:element name="OngoingTask" type="mobplayer:OngoingTask"/>
   <xsd:complexType name="OngoingTaskInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:OngoingTask">
+      <xsd:extension base="mobplayer:OngoingTask">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="player" type="player:PlayerInternal"/>
-          <xsd:element name="stages" type="player:TaskStageInternal"/>
+          <xsd:element name="player" type="mobplayer:PlayerInternal"/>
+          <xsd:element name="stages" type="mobplayer:TaskStageInternal"/>
         </xsd:choice>
         <xsd:attribute name="taskUuid" type="xsd:string"/>
         <xsd:attribute name="taskMeta" type="xsd:string"/>
@@ -87,7 +87,7 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="OngoingTaskInternal" type="player:OngoingTaskInternal"/>
+  <xsd:element name="OngoingTaskInternal" type="mobplayer:OngoingTaskInternal"/>
   <xsd:complexType abstract="true" name="TaskStage">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -95,12 +95,12 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="TaskStage" type="player:TaskStage"/>
+  <xsd:element name="TaskStage" type="mobplayer:TaskStage"/>
   <xsd:complexType name="TaskStageInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:TaskStage">
+      <xsd:extension base="mobplayer:TaskStage">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="task" type="player:OngoingTaskInternal"/>
+          <xsd:element name="task" type="mobplayer:OngoingTaskInternal"/>
         </xsd:choice>
         <xsd:attribute name="taskStageUuid" type="xsd:string"/>
         <xsd:attribute name="taskStage" type="xsd:string"/>
@@ -115,7 +115,7 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="TaskStageInternal" type="player:TaskStageInternal"/>
+  <xsd:element name="TaskStageInternal" type="mobplayer:TaskStageInternal"/>
   <xsd:complexType abstract="true" name="BeginTaskStagesBuilder">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -123,20 +123,20 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="BeginTaskStagesBuilder" type="player:BeginTaskStagesBuilder"/>
+  <xsd:element name="BeginTaskStagesBuilder" type="mobplayer:BeginTaskStagesBuilder"/>
   <xsd:complexType name="BeginTaskStagesBuilderInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:BeginTaskStagesBuilder">
+      <xsd:extension base="mobplayer:BeginTaskStagesBuilder">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="newArtifact" type="player:OngoingTaskInternal"/>
-          <xsd:element name="player" type="player:PlayerInternal"/>
+          <xsd:element name="newArtifact" type="mobplayer:OngoingTaskInternal"/>
+          <xsd:element name="player" type="mobplayer:PlayerInternal"/>
         </xsd:choice>
         <xsd:attribute name="newArtifact" type="xsd:string"/>
         <xsd:attribute name="player" type="xsd:string"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="BeginTaskStagesBuilderInternal" type="player:BeginTaskStagesBuilderInternal"/>
+  <xsd:element name="BeginTaskStagesBuilderInternal" type="mobplayer:BeginTaskStagesBuilderInternal"/>
   <xsd:complexType abstract="true" name="CompletedTask">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -144,12 +144,12 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="CompletedTask" type="player:CompletedTask"/>
+  <xsd:element name="CompletedTask" type="mobplayer:CompletedTask"/>
   <xsd:complexType name="CompletedTaskInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:CompletedTask">
+      <xsd:extension base="mobplayer:CompletedTask">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="player" type="player:PlayerInternal"/>
+          <xsd:element name="player" type="mobplayer:PlayerInternal"/>
         </xsd:choice>
         <xsd:attribute name="taskMeta" type="xsd:string"/>
         <xsd:attribute name="timeOfEntry" type="xsd:string"/>
@@ -157,7 +157,7 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="CompletedTaskInternal" type="player:CompletedTaskInternal"/>
+  <xsd:element name="CompletedTaskInternal" type="mobplayer:CompletedTaskInternal"/>
   <xsd:complexType abstract="true" name="Monster">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -165,12 +165,12 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="Monster" type="player:Monster"/>
+  <xsd:element name="Monster" type="mobplayer:Monster"/>
   <xsd:complexType name="MonsterInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:Monster">
+      <xsd:extension base="mobplayer:Monster">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="player" type="player:PlayerInternal"/>
+          <xsd:element name="player" type="mobplayer:PlayerInternal"/>
         </xsd:choice>
         <xsd:attribute name="monsterUuid" type="xsd:string"/>
         <xsd:attribute name="monsterMeta" type="xsd:string"/>
@@ -186,7 +186,7 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="MonsterInternal" type="player:MonsterInternal"/>
+  <xsd:element name="MonsterInternal" type="mobplayer:MonsterInternal"/>
   <xsd:complexType abstract="true" name="Item">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="xmi:Extension"/>
@@ -194,12 +194,12 @@
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="Item" type="player:Item"/>
+  <xsd:element name="Item" type="mobplayer:Item"/>
   <xsd:complexType name="ItemInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:Item">
+      <xsd:extension base="mobplayer:Item">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="player" type="player:PlayerInternal"/>
+          <xsd:element name="player" type="mobplayer:PlayerInternal"/>
         </xsd:choice>
         <xsd:attribute name="itemUuid" type="xsd:string"/>
         <xsd:attribute name="itemMeta" type="xsd:string"/>
@@ -207,7 +207,7 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="ItemInternal" type="player:ItemInternal"/>
+  <xsd:element name="ItemInternal" type="mobplayer:ItemInternal"/>
   <xsd:complexType abstract="true" name="PendingOperation">
     <xsd:annotation>
       <xsd:documentation>class Quest{
@@ -322,7 +322,7 @@ NOTE: The above also alleviates PendingOperations from needing to model state th
     <xsd:attribute ref="xmi:id"/>
     <xsd:attributeGroup ref="xmi:ObjectAttribs"/>
   </xsd:complexType>
-  <xsd:element name="PendingOperation" type="player:PendingOperation">
+  <xsd:element name="PendingOperation" type="mobplayer:PendingOperation">
     <xsd:annotation>
       <xsd:documentation>class Quest{
 
@@ -433,9 +433,9 @@ NOTE: The above also alleviates PendingOperations from needing to model state th
   </xsd:element>
   <xsd:complexType abstract="true" name="PendingOperationInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:PendingOperation">
+      <xsd:extension base="mobplayer:PendingOperation">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="player" type="player:PlayerInternal"/>
+          <xsd:element name="player" type="mobplayer:PlayerInternal"/>
         </xsd:choice>
         <xsd:attribute name="opStartTimer" type="xsd:string"/>
         <xsd:attribute name="opEndTimer" type="xsd:string"/>
@@ -443,16 +443,16 @@ NOTE: The above also alleviates PendingOperations from needing to model state th
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="PendingOperationInternal" type="player:PendingOperationInternal"/>
+  <xsd:element name="PendingOperationInternal" type="mobplayer:PendingOperationInternal"/>
   <xsd:complexType name="CombineMonsterPiecesInternal">
     <xsd:complexContent>
-      <xsd:extension base="player:PendingOperationInternal">
+      <xsd:extension base="mobplayer:PendingOperationInternal">
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
-          <xsd:element name="newMonster" type="player:MonsterInternal"/>
+          <xsd:element name="newMonster" type="mobplayer:MonsterInternal"/>
         </xsd:choice>
         <xsd:attribute name="newMonster" type="xsd:string"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="CombineMonsterPiecesInternal" type="player:CombineMonsterPiecesInternal"/>
+  <xsd:element name="CombineMonsterPiecesInternal" type="mobplayer:CombineMonsterPiecesInternal"/>
 </xsd:schema>

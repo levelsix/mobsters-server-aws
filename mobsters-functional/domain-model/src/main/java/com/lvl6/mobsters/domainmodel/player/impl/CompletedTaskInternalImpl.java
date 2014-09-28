@@ -15,15 +15,20 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Completed Task Internal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Completed Task Internal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.CompletedTaskInternalImpl#getPlayer <em>Player</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.CompletedTaskInternalImpl#getTaskMeta <em>Task Meta</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.CompletedTaskInternalImpl#getTimeOfEntry <em>Time Of Entry</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.CompletedTaskInternalImpl#getPlayer
+ * <em>Player</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.CompletedTaskInternalImpl#getTaskMeta
+ * <em>Task Meta</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.CompletedTaskInternalImpl#getTimeOfEntry
+ * <em>Time Of Entry</em>}</li>
  * </ul>
  * </p>
  *
@@ -32,8 +37,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 		implements CompletedTaskInternal {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected CompletedTaskInternalImpl() {
@@ -41,8 +46,8 @@ public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,8 +56,8 @@ public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -61,10 +66,11 @@ public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public PlayerInternal getPlayer() {
 		return (PlayerInternal) eGet(
 				MobstersPlayerPackage.Literals.COMPLETED_TASK_INTERNAL__PLAYER,
@@ -72,20 +78,22 @@ public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setPlayer(PlayerInternal newPlayer) {
 		eSet(MobstersPlayerPackage.Literals.COMPLETED_TASK_INTERNAL__PLAYER,
 				newPlayer);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public ITask getTaskMeta() {
 		return (ITask) eGet(
 				MobstersPlayerPackage.Literals.COMPLETED_TASK_INTERNAL__TASK_META,
@@ -93,20 +101,22 @@ public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTaskMeta(ITask newTaskMeta) {
 		eSet(MobstersPlayerPackage.Literals.COMPLETED_TASK_INTERNAL__TASK_META,
 				newTaskMeta);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getTimeOfEntry() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.COMPLETED_TASK_INTERNAL__TIME_OF_ENTRY,
@@ -114,13 +124,14 @@ public class CompletedTaskInternalImpl extends MinimalEObjectImpl.Container
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTimeOfEntry(Date newTimeOfEntry) {
 		eSet(MobstersPlayerPackage.Literals.COMPLETED_TASK_INTERNAL__TIME_OF_ENTRY,
 				newTimeOfEntry);
 	}
 
-} //CompletedTaskInternalImpl
+} // CompletedTaskInternalImpl

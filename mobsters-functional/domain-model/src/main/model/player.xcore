@@ -1,4 +1,5 @@
-@GenModel(modelName="player", prefix="MobstersPlayer", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", resource="XMI", codeFormatting="true", bundleManifest="false", publicationLocation="/domain/src/main/model")
+@GenModel(modelName="player", prefix="MobstersPlayer", featureDelegation="Reflective", generateSchema="true", loadInitialization="true", resource="XMI", codeFormatting="true", bundleManifest="false", publicationLocation="/domain-model/src/main/model/player.ecore", dataTypeConverters="true", contentTypeIdentifier="application/mobsters", modelPluginClass="", interfaceNamePattern="", cleanup="true", commentFormatting="true", pluginKey="mobplayer", testsDirectory="/domain-model/src/test/java", childCreationExtenders="true", language="", fileExtensions="usermob", generateExampleClass="false", templateDirectory="")
+@Ecore(nsPrefix="mobplayer", nsURI="http://com/lvl6/mobsters/domainmodel/player")
 package com.lvl6.mobsters.domainmodel.player
 
 import com.lvl6.mobsters.info.IMonster

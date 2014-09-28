@@ -19,15 +19,20 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Pending Operation Internal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Pending Operation Internal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PendingOperationInternalImpl#getPlayer <em>Player</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PendingOperationInternalImpl#getOpStartTimer <em>Op Start Timer</em>}</li>
- *   <li>{@link com.lvl6.mobsters.domainmodel.player.impl.PendingOperationInternalImpl#getOpEndTimer <em>Op End Timer</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PendingOperationInternalImpl#getPlayer
+ * <em>Player</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PendingOperationInternalImpl#getOpStartTimer
+ * <em>Op Start Timer</em>}</li>
+ * <li>
+ * {@link com.lvl6.mobsters.domainmodel.player.impl.PendingOperationInternalImpl#getOpEndTimer
+ * <em>Op End Timer</em>}</li>
  * </ul>
  * </p>
  *
@@ -36,8 +41,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public abstract class PendingOperationInternalImpl extends
 		MinimalEObjectImpl.Container implements PendingOperationInternal {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected PendingOperationInternalImpl() {
@@ -45,8 +50,8 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -55,8 +60,8 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -65,10 +70,11 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public PlayerInternal getPlayer() {
 		return (PlayerInternal) eGet(
 				MobstersPlayerPackage.Literals.PENDING_OPERATION_INTERNAL__PLAYER,
@@ -76,20 +82,22 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setPlayer(PlayerInternal newPlayer) {
 		eSet(MobstersPlayerPackage.Literals.PENDING_OPERATION_INTERNAL__PLAYER,
 				newPlayer);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getOpStartTimer() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PENDING_OPERATION_INTERNAL__OP_START_TIMER,
@@ -97,20 +105,22 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setOpStartTimer(Date newOpStartTimer) {
 		eSet(MobstersPlayerPackage.Literals.PENDING_OPERATION_INTERNAL__OP_START_TIMER,
 				newOpStartTimer);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public Date getOpEndTimer() {
 		return (Date) eGet(
 				MobstersPlayerPackage.Literals.PENDING_OPERATION_INTERNAL__OP_END_TIMER,
@@ -118,20 +128,22 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void setOpEndTimer(Date newOpEndTimer) {
 		eSet(MobstersPlayerPackage.Literals.PENDING_OPERATION_INTERNAL__OP_END_TIMER,
 				newOpEndTimer);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public void happen() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
@@ -139,10 +151,11 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
+	@Override
 	public boolean checkTimer() {
 		Date now = TimeUtils.createNow();
 		boolean retVal = false;
@@ -156,8 +169,8 @@ public abstract class PendingOperationInternalImpl extends
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -173,4 +186,4 @@ public abstract class PendingOperationInternalImpl extends
 		return super.eInvoke(operationID, arguments);
 	}
 
-} //PendingOperationInternalImpl
+} // PendingOperationInternalImpl
