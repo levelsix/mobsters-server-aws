@@ -91,6 +91,18 @@ public class Dispatcher  {
 		  
 		return transformedMessage;
 	}
+	/**
+	 * Process the next queued message if lock is cleared. Message will
+	 * ultimately be sent to dispatch() on this same thread.
+	 * @param entityKey
+	 * @return
+	 */
+	@InsightEndPoint
+	public Message<?> processQueue(String lockNodeDescription) {
+		return 
+			processQueue(
+				LockNode.fromString(lockNodeDescription));
+	}
 
 	/**
 	 * Process the next queued message if lock is cleared. Message will
@@ -99,7 +111,7 @@ public class Dispatcher  {
 	 * @return
 	 */
 	@InsightEndPoint
-	public synchronized Message<?> processQueue(LockNode lockNode){
+	public synchronized Message<?> processQueue(LockNode lockNode) {
         Message<?> queuedMessage = null;
         String entityKey = lockNode.getEntityKey();
         queuedMessage = nextMessage(entityKey);
