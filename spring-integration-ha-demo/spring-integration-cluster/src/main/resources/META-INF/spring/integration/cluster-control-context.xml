@@ -27,15 +27,15 @@
 	<int:control-bus input-channel="integration.cluster.control"/>
 		
 	<!-- Heartbeat -->	
-	<int:gateway id="integration.cluster.heartbeat.gateway" 
-		service-interface="org.springframework.integration.cluster.HeartbeatGateway"
-		default-request-channel="integration.cluster.heartbeat"/>
+	<task:executor id="integration.cluster.heartbeat.sender.executor" pool-size="1"/>
 	
 	<int:channel id="integration.cluster.heartbeat">
 		<int:dispatcher task-executor="integration.cluster.heartbeat.sender.executor"/>
 	</int:channel>
 	
-	<task:executor id="integration.cluster.heartbeat.sender.executor" pool-size="1"/>
+	<int:gateway id="integration.cluster.heartbeat.gateway" 
+		service-interface="org.springframework.integration.cluster.HeartbeatGateway"
+		default-request-channel="integration.cluster.heartbeat"/>
 	
 	<!-- Gatekeeper -->
 	<int:service-activator id="integration.cluster.gatekeeper"
