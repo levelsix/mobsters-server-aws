@@ -19,6 +19,11 @@
 		input-channel="strict.ordering.outbound"
 		output-channel="strict.ordering.to.tracker"
 		/>
+		
+	<int:bridge input-channel="worker.outbound" output-channel="test.output"/>
+	<int:channel id="test.output">
+		<int:queue/>
+	</int:channel>
 
 	<util:properties id="integration.cluster.properties">
 		<prop key="integration.cluster.application.id">Test</prop>
