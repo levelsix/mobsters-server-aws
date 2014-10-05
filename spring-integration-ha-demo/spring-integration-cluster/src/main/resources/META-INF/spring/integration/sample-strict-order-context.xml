@@ -62,13 +62,13 @@
 
 	<int:chain id="sample.worker.chain" 
 		input-channel="strict.ordering.to.worker" output-channel="worker.outbound">
-		<int:service-activator >
+		<int:service-activator id="sample.worker.delayService">
 			<int-groovy:script><![CDATA[
 			    Thread.sleep(new Random().nextInt(3000))
 				payload
 		 ]]></int-groovy:script>
 		</int:service-activator>
-		<int:service-activator >
+		<int:service-activator id="sample.worker.printService">
 			<int-groovy:script><![CDATA[
 				println('OUT:' + payload + ":" + headers.sequence)
 				payload
@@ -76,27 +76,28 @@
 		</int:service-activator>
 	</int:chain>
 	
-	<int:publish-subscribe-channel id="worker.outbound"/>
-
-	<int-stream:stdout-channel-adapter channel="worker.outbound" append-newline="true"/>
-
-	<int:bridge input-channel="worker.outbound" output-channel="test.output"/>
+	<!-- Doesn't using an executor here muck with the channel transaction that was launched on the
+	     work distribution input channel?? -->
+	<!--int:publish-subscribe-channel id="worker.outbound" task-executor="worker.task.executor"/-->
+	<!--task:executor id="worker.task.executor" pool-size="10"/-->
 	
+	<int:publish-subscribe-channel id="worker.outbound"/>
+	<int-stream:stdout-channel-adapter id="worker.stdout.adapter" channel="worker.outbound" append-newline="true"/>
+	
+	<!--int:bridge input-channel="worker.outbound" output-channel="test.output"/>
 	<int:channel id="test.output">
 		<int:queue/>
-	</int:channel>
+	</int:channel-->
 		
-	<task:executor id="worker.task.executor" pool-size="10"/>
 
 	<bean id="entityKeyExtractor"
 		class="org.springframework.integration.cluster.strictorder.entitykey.SpelEntityKeyExtractor">
 		<property name="payloadExpression" value="payload" />
 	</bean>
 
-	<task:executor id="distribution.exec" pool-size="10"/>
-	
-	<task:executor id="amqp.inbound.exec" pool-size="10"/>
-		
+	<!--task:executor id="distribution.exec" pool-size="10"/-->
+	<task:executor id="distribution.exec" pool-size="1"/>
+			
 	<!-- Unlock the entity after processing -->
 	<int:bridge id="unlock.bridge" 
 		input-channel="worker.outbound" 
@@ -112,7 +113,7 @@
 	</beans>		
 
 	<beans profile="amqp-redis">
-
+        <import resource="spring-configuration.xml" />
 		<import resource="sample-amqp-redis-context.xml"/>		
 	
 		<util:properties id="integration.cluster.properties">
@@ -122,6 +123,7 @@
 			<prop key="integration.cluster.inbound.adapter">sample.inbound.adapter</prop>
 			<prop key="integration.cluster.keepalive.interval">5000</prop>
 			<prop key="integration.cluster.monitor.interval">10000</prop>
+			<prop key="integration.cluster.file.dir">/tmp/gatekeeper</prop>
 			<prop key="integration.strict.ordering.dispatcher">Dispatcher1</prop>
 			<prop key="integration.strict.ordering.process">Process1</prop>
 		</util:properties>
