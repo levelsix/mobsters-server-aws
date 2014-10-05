@@ -10,3 +10,5 @@
 		<!-- parent="abstractVendorAdaptor"-->
 		
 	<util:properties id="jpaProperties" />
+	
+</beans>
