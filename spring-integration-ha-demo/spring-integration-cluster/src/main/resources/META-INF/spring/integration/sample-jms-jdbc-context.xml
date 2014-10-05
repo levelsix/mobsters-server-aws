@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms-2.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- inbound adapter -->
+	<int-jms:message-driven-channel-adapter id="sample.inbound.adapter"
+		channel="integration.cluster.inbound" 
+		connection-factory="connectionFactory"
+		transaction-manager="jmsTransactionManager"
+		cache-level="#{ T(org.springframework.jms.listener.DefaultMessageListenerContainer).CACHE_CONSUMER }"
+		auto-startup="false" 
+		destination="cluster.in.queue" />
+
+	<!-- Send cluster heartbeats to the inbound queue -->
+	<int-jms:outbound-channel-adapter channel="integration.cluster.heartbeat"
+		destination="cluster.in.queue"
+		jms-template="jmsTemplate" />
+
+	<!-- Strict ordering outbound messages distributed to workers -->
+	<int-jms:outbound-channel-adapter id="work.distribution.out"
+		channel="strict.ordering.outbound"
+		connection-factory="connectionFactory"
+		destination-name="strict.order.workQ"
+		extract-payload="false" />
+
+	<int-jms:message-driven-channel-adapter id="work.distribution.in"
+		channel="strict.ordering.to.tracker"
+		connection-factory="connectionFactory"
+		transaction-manager="jmsTransactionManager"
+		cache-level="#{ T(org.springframework.jms.listener.DefaultMessageListenerContainer).CACHE_CONSUMER }"
+		destination="strict.order.work.queue"
+		max-concurrent-consumers="5" />
+		
+	<bean id="strict.order.work.queue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="strict.order.workQ"/>
+	</bean>
+
+</beans>
