@@ -11,7 +11,10 @@
 		
 	<context:annotation-config />
 
-	<rabbit:connection-factory id="rabbitConnectionFactory" />
+	<rabbit:connection-factory id="rabbitConnectionFactory"
+		addresses="54.191.115.41:5672" channel-cache-size="6"
+		username="lvl6client" password="devclient" virtual-host="devmobsters"
+		requested-heartbeat="580" />
 	
 	<rabbit:template id="amqpTemplate" connection-factory="rabbitConnectionFactory" />
 	
