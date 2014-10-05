@@ -19,9 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.jdbc.support.lob.LobHandler;
-import org.springframework.jdbc.support.lob.OracleLobHandler;
-import org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor;
 
 /**
  * @author Gary Russell
@@ -36,16 +35,18 @@ public class JdbcEntityQueuesOracle extends JdbcEntityQueues {
 
 	@Override
 	protected byte[] getBlobAsBytes(ResultSet rs) throws SQLException {
-		OracleLobHandler oracleLobHandler = new OracleLobHandler();
-		oracleLobHandler.setNativeJdbcExtractor(new CommonsDbcpNativeJdbcExtractor());								
+		DefaultLobHandler oracleLobHandler = new DefaultLobHandler();
+		oracleLobHandler.setCreateTemporaryLob(true);
+		// oracleLobHandler.setNativeJdbcExtractor(new CommonsDbcpNativeJdbcExtractor());								
 		byte[] bytes = oracleLobHandler.getBlobAsBytes(rs, "message");
 		return bytes;
 	}
 
 	@Override
 	protected LobHandler getLobHandler() {
-		OracleLobHandler oracleLobHandler = new OracleLobHandler();
-		oracleLobHandler.setNativeJdbcExtractor(new CommonsDbcpNativeJdbcExtractor());
+		DefaultLobHandler oracleLobHandler = new DefaultLobHandler();
+		oracleLobHandler.setCreateTemporaryLob(true);
+		// oracleLobHandler.setNativeJdbcExtractor(new CommonsDbcpNativeJdbcExtractor());
 		return oracleLobHandler;
 	}
 

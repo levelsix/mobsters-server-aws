@@ -7,9 +7,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  * 
  * @author David Turanski
  *
- * @deprecated Use version in cic-common
  */
-@Deprecated
 public class SpelEntityKeyExtractor implements EntityKeyExtractor<Object, String>{
 	 
 	private volatile Expression payloadExpression;

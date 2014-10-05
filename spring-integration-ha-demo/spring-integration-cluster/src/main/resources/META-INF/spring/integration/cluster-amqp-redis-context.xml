@@ -4,10 +4,10 @@
 	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
 	xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
 	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp-2.1.xsd
-		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
-		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/integration/amqp http://www.springframework.org/schema/integration/amqp/spring-integration-amqp-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
+		http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
 	<bean id="integration.cluster.status.repository" class="org.springframework.integration.cluster.redis.ClusterStatusRepositoryImpl">
 		<constructor-arg ref="lock.redisTemplate" />
@@ -23,9 +23,32 @@
 		<property name="connectionFactory" ref="redisConnectionFactory" />
 	</bean>
 		
-	<bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" />
+	<bean id="redisConnectionFactory" 
+	      class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+	      <property name="hostName" value="${redis.host:localhost}"/>
+	      <property name="port" value="${redis.port:6380}"/>
+	      <property name="password" value="${redis.password:}"/>
+	      <property name="timeout" value="${redis.timeout:5000}"/>
+	      <!-- 
+	      <property name="shardInfo" value=${redis.shard_info}"/>
+	      <property name="usePool" value="${"/>
+	      <property name="poolConfig" ref="jedisPoolConfig"/>
+	      -->
+	</bean>
 	
-	<rabbit:connection-factory id="rabbitConnectionFactory" />
+	<!--  No executor provided means a fixed thread pool of five threads to drive the 
+          connection factory. -->
+	<task:executor id="amqp.inbound.exec" pool-size="10"/>
+
+	<rabbit:connection-factory id="rabbitConnectionFactory"
+		addresses="localhost:5673" channel-cache-size="10"
+		username="lvl6client" password="PMcGQFfQuy9gbX84e2UH" 
+		virtual-host="ha_cluster" requested-heartbeat="580" 
+		executor="amqp.inbound.exec"/>
+	<!--rabbit:connection-factory id="rabbitConnectionFactory"
+		addresses="54.191.115.41:5672" channel-cache-size="6"
+		username="lvl6client" password="devclient" virtual-host="devmobsters"
+		requested-heartbeat="580" executor="amqp.inbound.exec"/-->
 
     <rabbit:template id="amqpTemplate" 
     	connection-factory="rabbitConnectionFactory"
@@ -53,8 +76,7 @@
 		<constructor-arg value="${integration.strict.ordering.process}" />
 	</bean>
 
-	<int-amqp:channel id="strict.ordering.unlock.transformed" 
-		task-executor="unlock.exec"/>
+	<int-amqp:channel id="strict.ordering.unlock.transformed" task-executor="unlock.exec"/>
 
 	<task:executor id="unlock.exec" pool-size="1"/>
 	

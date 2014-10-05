@@ -112,8 +112,8 @@ public class JdbcEntityQueues implements EntityQueues<String, Message<?>>, Trigg
 	}
 
 	public int size(String key) {
-		return this.jdbcOperations.queryForInt("select count(id) from queued where entity_id = ?",
-				key);
+		return this.jdbcOperations.queryForObject("select count(id) from queued where entity_id = ?",
+				Integer.TYPE, key);
 	}
 
 	public Set<String> keySet() {
