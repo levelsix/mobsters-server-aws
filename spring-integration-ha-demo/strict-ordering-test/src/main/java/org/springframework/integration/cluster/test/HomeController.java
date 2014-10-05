@@ -11,7 +11,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import org.springframework.integration.cluster.ClusterControl;
 import org.springframework.integration.cluster.ClusterManagementMBean;
 import org.springframework.integration.cluster.ClusterStatusRepository;

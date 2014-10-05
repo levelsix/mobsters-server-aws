@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 
 public class MessageTracker {
 
@@ -113,17 +113,17 @@ public class MessageTracker {
 
 	protected synchronized void writeMessage(Message<?> message, String fileName) {
 		try {
-
 			List<Message<?>> list = readMessages(fileName);
 
 			FileOutputStream fos = new FileOutputStream(fileName);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			FileLock lock = fos.getChannel().lock();
 			try {
 				list.add(message);
-				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(list);
 			} finally {
 				lock.release();
+				oos.close();
 				fos.close();
 			}
 		} catch (Exception e) {

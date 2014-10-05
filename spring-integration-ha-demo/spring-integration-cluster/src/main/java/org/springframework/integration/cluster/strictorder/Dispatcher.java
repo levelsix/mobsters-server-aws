@@ -3,9 +3,9 @@ package org.springframework.integration.cluster.strictorder;
 
 
 import org.apache.log4j.Logger;
-import org.springframework.integration.Message;
 import org.springframework.integration.cluster.strictorder.entitykey.EntityKeyExtractor;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
 import com.springsource.insight.annotation.InsightEndPoint;

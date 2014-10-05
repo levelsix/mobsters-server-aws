@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class RabbitEntityQueues implements
-		EntityQueues<String, org.springframework.integration.Message<?>>,
+		EntityQueues<String, org.springframework.messaging.Message<?>>,
 		InitializingBean {
 
 	@Autowired
@@ -102,7 +102,7 @@ public class RabbitEntityQueues implements
 	}
 
 	@Override
-	public void add(String key,  org.springframework.integration.Message<?> entity) {
+	public void add(String key,  org.springframework.messaging.Message<?> entity) {
 		try {
 			Queue queue = new Queue(key);
 			this.admin.declareQueue(queue);

@@ -24,7 +24,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class AMQ {
 
 	public static void main(String[] args) throws Exception {
-		new ClassPathXmlApplicationContext("/META-INF/spring/integration/amq-broker-context.xml");
+		@SuppressWarnings({ "unused", "resource" })
+		final ClassPathXmlApplicationContext context = 
+			new ClassPathXmlApplicationContext(
+				"/META-INF/spring/integration/amq-broker-context.xml");
+		
 		System.out.println("Enter to terminate");
 		System.in.read();
 	}

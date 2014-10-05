@@ -15,7 +15,7 @@
  */
 package org.springframework.integration.cluster;
 
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
