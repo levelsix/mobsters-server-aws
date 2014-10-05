@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+	<bean id="propertyConfig" lazy-init="false" autowire-candidate="true"
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:META-INF/cluster.properties</value>
+				<value>classpath:META-INF/development/default/cluster.properties</value>
+				<!-- >value>classpath:META-INF/development/${USER}/cluster.properties</value>
+				<value>classpath:META-INF/development/${USER}/${BUILDENV}/cluster.properties</value -->
+			</list>
+		</property>
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
+	</bean>
+</beans>
