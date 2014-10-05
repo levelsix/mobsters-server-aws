@@ -31,7 +31,8 @@ import org.springframework.integration.cluster.ClusterStatusRepository;
  */
 public class ClusterStatusRepositoryImpl implements ClusterStatusRepository {
 
-	private final Log logger = LogFactory.getLog(this.getClass());
+	@SuppressWarnings("unused")
+	private static final Log LOG = LogFactory.getLog(ClusterStatusRepositoryImpl.class);
 	
 	private final RedisTemplate<String, ClusterStatus> statusTemplate;
 	
@@ -104,7 +105,8 @@ public class ClusterStatusRepositoryImpl implements ClusterStatusRepository {
 
 	public int updateStatusAll(String applicationId, String status) {
 		// TODO - maybe change locks to a set? What about cross-contention?
-		return 0;
+		// return 0;
+		throw new UnsupportedOperationException();
 	}
 
 	public void unlock(String applicationId) {

@@ -12,7 +12,7 @@
 	<import resource="classpath:/META-INF/spring/integration/spring-configuration.xml" />
 	<import resource="classpath:/META-INF/spring/integration/sample-strict-order-context.xml" />
 
-	<context:property-placeholder properties-ref="integration.cluster.properties"/>
+    <context:property-placeholder properties-ref="integration.cluster.properties"/>
 
 	<!-- Bridge strict ordering output to the distribution channel -->
 	<int:bridge id="strict.ordering.to.worker.bridge"

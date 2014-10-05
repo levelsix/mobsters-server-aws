@@ -13,7 +13,8 @@
 
 	<!-- inbound adapter -->
 	<int-amqp:inbound-channel-adapter
-		id="sample.inbound.adapter" task-executor="amqp.inbound.exec"
+		id="sample.inbound.adapter" 
+		task-executor="amqp.inbound.exec"
 		channel="sample.inbound" 
 		connection-factory="rabbitConnectionFactory"
 		channel-transacted="true"
@@ -22,18 +23,41 @@
 		auto-startup="false" />
 
 	<bean id="headerMapper" class="org.springframework.integration.amqp.support.DefaultAmqpHeaderMapper">
-		<property name="requestHeaderNames" value="sequence" />
+		<property name="requestHeaderNames" value="sequence,STANDARD_REQUEST_HEADERS" />
 	</bean>
 
 	<!-- Send cluster heartbeats to the inbound queue -->
 	<int-amqp:outbound-channel-adapter 
+	    id="cluster.heartbeat.out"
 		channel="integration.cluster.heartbeat"
 		exchange-name="strict.order.exchange" 
 		routing-key="cluster.inbound"	
 		amqp-template="amqpTemplate" />
 
 	<!-- Send ordering output to an AMQP channel for distribution -->
-	<int-amqp:channel id="strict.ordering.to.worker" task-executor="distribution.exec"
-		connection-factory="rabbitConnectionFactory" concurrent-consumers="5"/>
+	<int-amqp:outbound-channel-adapter 
+		id="work.distribution.out"
+	    default-delivery-mode="PERSISTENT" 
+	    mapped-request-headers="sequence,STANDARD_REQUEST_HEADERS,strict.order.lock"
+	    channel="strict.ordering.outbound" 
+	    exchange-name="strict.order.exchange" 
+	    routing-key="strict.order.work" 
+	    amqp-template="amqpTemplate"/>
 
+	<!-- int-amqp:channel id="strict.ordering.to.worker" task-executor="distribution.exec"
+		connection-factory="rabbitConnectionFactory" concurrent-consumers="5"/-->
+	<!--int-amqp:channel id="strict.ordering.to.worker" task-executor="distribution.exec"
+		connection-factory="rabbitConnectionFactory" queue-name="strict.order.workQ"
+		concurrent-consumers="5"/-->
+		
+	<!-- Workers receive input from am AMQP channel ordered for distribution -->
+	<int-amqp:inbound-channel-adapter
+		id="work.distribution.in" 
+		concurrent-consumers="1"
+		channel-transacted="true"
+		queue-names="strict.order.workQ"
+		channel="strict.ordering.to.tracker" 
+		connection-factory="rabbitConnectionFactory"
+		mapped-request-headers="sequence,STANDARD_REQUEST_HEADERS,strict.order.lock"
+		auto-startup="true" />
 </beans>

@@ -29,9 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class GateKeeperImpl implements GateKeeper<Object> {
 
-	private ClusterControl clusterControl;
+	private final ClusterControl clusterControl;
 	
-	private Log logger = LogFactory.getLog(this.getClass());
+	private final Log logger = LogFactory.getLog(this.getClass());
 	
 	public GateKeeperImpl(ClusterControl clusterControl) {
 		this.clusterControl = clusterControl;
@@ -40,7 +40,7 @@ public class GateKeeperImpl implements GateKeeper<Object> {
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public Object dispatch(Object in) {
 		if (!this.clusterControl.verifyStatus(false)) {
-			throw new RuntimeException("Message Processing Disabled");
+			throw new RuntimeException("Message processing privilege requires cluster master role");
 		}
 		return in;
 	}
@@ -49,7 +49,10 @@ public class GateKeeperImpl implements GateKeeper<Object> {
 	public void heartbeat(Heartbeat heartbeat) {
 		boolean result = this.clusterControl.verifyStatus(true);
 		if (logger.isDebugEnabled()) {
-			logger.debug("Received heartbeat " + heartbeat.getTimestamp() + " verify result:" + result);
+			logger.debug(
+				String.format(
+					"Received heartbeat %s.  Verification of master status yields %s",
+					heartbeat.getTimestamp(), result));
 		}
 	}
 
